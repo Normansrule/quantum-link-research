@@ -25,3 +25,6 @@ jobs:
       - run: pytest -m phase1 -q
       - run: pytest -m "not slow" -q
       - run: python -m qll.systems.traceability
+      - run: python scripts/make_figures.py
+        env:
+          MPLBACKEND: Agg

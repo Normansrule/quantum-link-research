@@ -1,0 +1,16 @@
+"""Every explorer must render headlessly and write a non-empty SVG."""
+import runpy
+import sys
+
+import pytest
+
+pytestmark = pytest.mark.phase1
+
+
+@pytest.mark.parametrize("name", ["thermal_explorer", "link_loss_explorer", "light_time_explorer",
+                                  "qkd_rate_explorer", "stack_map"])
+def test_explorer_renders_headless(name, tmp_path, monkeypatch):
+    out = tmp_path / f"{name}.svg"
+    monkeypatch.setattr(sys, "argv", [name, "--save", str(out)])
+    runpy.run_module(f"qll.viz.{name}", run_name="__main__")
+    assert out.exists() and out.stat().st_size > 5_000

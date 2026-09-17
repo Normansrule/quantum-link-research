@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>quantum-link-research — physics explorers</title>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+<style>
+  :root { --fg:#1b1f23; --bg:#fff; --muted:#666; --accent:#0b5fff; --warm:#d9480f; --grid:#e5e7eb; }
+  @media (prefers-color-scheme: dark) { :root { --fg:#e6e6e6; --bg:#0f1115; --muted:#9aa; --grid:#2a2e36; } }
+  body { font: 15px/1.5 system-ui, sans-serif; color: var(--fg); background: var(--bg); margin: 0; padding: 1.5rem; max-width: 1100px; margin-inline: auto; }
+  h1 { font-size: 1.6rem; margin: 0 0 .25rem; } h2 { font-size: 1.15rem; margin-top: 2rem; border-bottom: 1px solid var(--grid); padding-bottom: .25rem; }
+  .card { display: grid; grid-template-columns: 1fr 320px; gap: 1rem; align-items: start; }
+  @media (max-width: 800px) { .card { grid-template-columns: 1fr; } }
+  svg { width: 100%; height: auto; background: var(--bg); }
+  .axis line, .axis path { stroke: var(--muted); } .grid line { stroke: var(--grid); }
+  text { fill: var(--fg); font-size: 11px; } .muted { color: var(--muted); font-size: .9rem; }
+  label { display: block; margin: .5rem 0 .1rem; font-size: .9rem; } input[type=range] { width: 100%; }
+  .readout { font-family: ui-monospace, monospace; font-size: .85rem; background: rgba(127,127,127,.08); padding: .5rem .75rem; border-radius: 6px; }
+  .ref { font-size: .8rem; color: var(--muted); }
+  a { color: var(--accent); }
+</style>
+</head>
+<body>
+<h1>quantum-link-research · physics explorers</h1>
+<p class="muted">Every curve here is the same formula as the Python module named beside it; the Python version is the one the pytest suite validates, and the spot values shown in each panel can be checked against it in one line (see README, section "Apps"). Sliders are live.</p>
+
+<h2>1 · The temperature hurdle — <code>qll/circuits/noise/thermal.py</code></h2>
+<p>\( \bar n(\omega,T)=\dfrac{1}{e^{\hbar\omega/k_BT}-1},\qquad T_1(T)=\dfrac{T_1(0)}{2\bar n+1},\qquad p_{\rm exc}=\dfrac{\bar n}{2\bar n+1} \)</p>
+<div class="card">
+  <svg id="p1" viewBox="0 0 640 360"></svg>
+  <div>
+    <label>Qubit frequency <b id="f1v"></b> GHz</label><input id="f1" type="range" min="0.5" max="50" step="0.1" value="5">
+    <label>Optical carrier wavelength <b id="l1v"></b> nm</label><input id="l1" type="range" min="400" max="2000" step="10" value="1550">
+    <div class="readout" id="r1"></div>
+    <p class="ref">Clerk et al. (2010) <a href="https://doi.org/10.1103/RevModPhys.82.1155">10.1103/RevModPhys.82.1155</a>; Krantz et al. (2019) <a href="https://doi.org/10.1063/1.5089550">10.1063/1.5089550</a>.</p>
+  </div>
+</div>
+
+<h2>2 · Channel loss versus distance — <code>qll/channels/fiber_loss.py</code>, <code>free_space_diffraction.py</code>, <code>qll/qkd/plob_bound.py</code></h2>
+<p>\( \eta_{\rm fiber}=10^{-\alpha L/10},\qquad \theta=\dfrac{\lambda}{\pi w_0},\quad \eta_{\rm free}=\min\!\Big(1,\big(\tfrac{D_{\rm rx}}{2\theta L}\big)^2\Big),\qquad K_{\rm PLOB}=-\log_2(1-\eta) \)</p>
+<div class="card">
+  <svg id="p2" viewBox="0 0 640 360"></svg>
+  <div>
+    <label>Receiver aperture <b id="dv"></b> m</label><input id="d" type="range" min="0.1" max="10" step="0.1" value="1">
+    <label>Transmitter waist <b id="wv"></b> m</label><input id="w" type="range" min="0.01" max="2" step="0.01" value="0.15">
+    <label>Wavelength <b id="lv"></b> nm</label><input id="l" type="range" min="400" max="2000" step="10" value="810">
+    <div class="readout" id="r2"></div>
+    <p class="ref">Pirandola et al. (2017) <a href="https://doi.org/10.1038/ncomms15043">10.1038/ncomms15043</a>; Yin et al. (2017) 1200 km satellite link; Li et al. (2025) <a href="https://doi.org/10.1038/s41586-025-08739-z">10.1038/s41586-025-08739-z</a>.</p>
+  </div>
+</div>
+
+<h2>3 · Light time versus memory lifetime — <code>qll/channels/light_time_delay.py</code></h2>
+<p>\( \tau_{\rm one\,way}=\dfrac{d}{c},\qquad \tau_{\rm RT}=\dfrac{2d}{c},\qquad \text{teleportation completes only if } T_{\rm mem}\gtrsim \tau_{\rm RT} \)</p>
+<div class="card">
+  <svg id="p3" viewBox="0 0 640 360"></svg>
+  <div>
+    <label>Distance <b id="d3v"></b></label><input id="d3" type="range" min="3" max="12" step="0.01" value="10.75">
+    <div class="readout" id="r3"></div>
+    <p class="ref">Memory lifetimes: Zhong et al. (2015) <a href="https://doi.org/10.1038/nature14025">10.1038/nature14025</a>; Wang et al. (2025) <a href="https://doi.org/10.1103/PRXQuantum.6.010302">10.1103/PRXQuantum.6.010302</a>; Knaut et al. (2024) <a href="https://doi.org/10.1038/s41586-024-07252-z">10.1038/s41586-024-07252-z</a>.</p>
+  </div>
+</div>
+
+<h2>4 · BB84 secret fraction — <code>qll/qkd/key_rate.py</code></h2>
+<p>\( r(Q)=\max\big(0,\,1-2h_2(Q)\big),\qquad h_2(x)=-x\log_2 x-(1-x)\log_2(1-x),\qquad r=0 \text{ at } Q=11.0\% \)</p>
+<div class="card">
+  <svg id="p4" viewBox="0 0 640 300"></svg>
+  <div>
+    <label>Observed QBER <b id="qv"></b> %</label><input id="q" type="range" min="0" max="20" step="0.1" value="5">
+    <div class="readout" id="r4"></div>
+    <p class="ref">Shor &amp; Preskill (2000), Phys. Rev. Lett. 85, 441.</p>
+  </div>
+</div>
+
+<script>
+const C=299792458, H=6.62607015e-34, HBAR=H/(2*Math.PI), KB=1.380649e-23, AU=149597870700;
+const nbar=(omega,T)=>{ if(T<=0) return 0; const x=HBAR*omega/(KB*T); return x>700?0:1/Math.expm1(x); };
+const fiber=(Lkm,a)=>Math.pow(10,-a*Lkm/10);
+const freeSpace=(Lm,lam,w0,D)=>{ const th=lam/(Math.PI*w0); const w=Math.max(w0,th*Lm); return Math.min(1,(D/(2*w))**2); };
+const plob=eta=>-Math.log2(1-Math.min(eta,1-1e-15));
+const h2=x=>(x<=0||x>=1)?0:-x*Math.log2(x)-(1-x)*Math.log2(1-x);
+const bb84=Q=>Math.max(0,1-2*h2(Q));
+
+function plot(svgId, series, opts){
+  const svg=document.getElementById(svgId); const W=640,Hh=+svg.getAttribute('viewBox').split(' ')[3];
+  const m={l:70,r:20,t:20,b:45}, w=W-m.l-m.r, h=Hh-m.t-m.b;
+  const sx=v=>m.l+(opts.logx?Math.log10(v):v)-(opts.logx?Math.log10(opts.x[0]):opts.x[0]);
+  const X=v=>m.l+w*((opts.logx?Math.log10(v):v)-(opts.logx?Math.log10(opts.x[0]):opts.x[0]))/((opts.logx?Math.log10(opts.x[1]):opts.x[1])-(opts.logx?Math.log10(opts.x[0]):opts.x[0]));
+  const Y=v=>m.t+h-h*((opts.logy?Math.log10(Math.max(v,opts.y[0])):v)-(opts.logy?Math.log10(opts.y[0]):opts.y[0]))/((opts.logy?Math.log10(opts.y[1]):opts.y[1])-(opts.logy?Math.log10(opts.y[0]):opts.y[0]));
+  let out=`<g class="grid">`;
+  const ticks=(lo,hi,log)=>{ const t=[]; if(log){ for(let e=Math.ceil(Math.log10(lo)); e<=Math.floor(Math.log10(hi)); e++) t.push(10**e);} else { const st=(hi-lo)/5; for(let v=lo; v<=hi+1e-9; v+=st) t.push(v);} return t; };
+  for(const t of ticks(opts.x[0],opts.x[1],opts.logx)) out+=`<line x1="${X(t)}" x2="${X(t)}" y1="${m.t}" y2="${m.t+h}"/><text x="${X(t)}" y="${m.t+h+16}" text-anchor="middle">${opts.logx?fmt(t):t.toFixed(opts.xd??0)}</text>`;
+  for(const t of ticks(opts.y[0],opts.y[1],opts.logy)) { if(opts.logy && (Math.log10(t)%Math.max(1,Math.round((Math.log10(opts.y[1])-Math.log10(opts.y[0]))/8))!=0)) continue; out+=`<line x1="${m.l}" x2="${m.l+w}" y1="${Y(t)}" y2="${Y(t)}"/><text x="${m.l-6}" y="${Y(t)+4}" text-anchor="end">${opts.logy?fmt(t):t.toFixed(opts.yd??1)}</text>`; }
+  out+=`</g><g class="axis"><path d="M${m.l},${m.t}V${m.t+h}H${m.l+w}" fill="none"/></g>`;
+  out+=`<text x="${m.l+w/2}" y="${Hh-6}" text-anchor="middle">${opts.xl}</text><text transform="translate(14,${m.t+h/2}) rotate(-90)" text-anchor="middle">${opts.yl}</text>`;
+  for(const v of (opts.vlines||[])) out+=`<line x1="${X(v.x)}" x2="${X(v.x)}" y1="${m.t}" y2="${m.t+h}" stroke="var(--muted)" stroke-dasharray="4 3"/><text x="${X(v.x)+4}" y="${m.t+12}" fill="var(--muted)">${v.label}</text>`;
+  for(const hl of (opts.hlines||[])) out+=`<line x1="${m.l}" x2="${m.l+w}" y1="${Y(hl.y)}" y2="${Y(hl.y)}" stroke="var(--warm)" opacity=".5"/><text x="${m.l+6}" y="${Y(hl.y)-3}" fill="var(--warm)" font-size="9">${hl.label}</text>`;
+  series.forEach((s,i)=>{ let d=''; s.pts.forEach(([x,y],k)=>{ if(y<=0&&opts.logy) return; d+=(d?'L':'M')+X(x).toFixed(1)+','+Y(y).toFixed(1); }); out+=`<path d="${d}" fill="none" stroke="${s.color}" stroke-width="2" ${s.dash?'stroke-dasharray="5 4"':''}/>`; out+=`<text x="${m.l+w-6}" y="${m.t+14+14*i}" text-anchor="end" fill="${s.color}">${s.label}</text>`; });
+  svg.innerHTML=out;
+}
+const fmt=v=>{ const e=Math.round(Math.log10(v)); return e>=0&&e<4?String(10**e):`1e${e}`; };
+const logspace=(a,b,n)=>Array.from({length:n},(_,i)=>10**(a+(b-a)*i/(n-1)));
+
+function draw1(){ const f=+f1.value*1e9, lam=+l1.value*1e-9; f1v.textContent=(+f1.value).toFixed(1); l1v.textContent=l1.value;
+  const T=logspace(-3,3,300); const wq=2*Math.PI*f, wo=2*Math.PI*C/lam;
+  plot('p1',[{pts:T.map(t=>[t,nbar(wq,t)]),color:'var(--accent)',label:`${(+f1.value).toFixed(1)} GHz qubit`},{pts:T.map(t=>[t,nbar(wo,t)]),color:'var(--warm)',label:`${l1.value} nm photon`}],
+    {x:[1e-3,1e3],y:[1e-40,1e5],logx:true,logy:true,xl:'temperature T (K)',yl:'mean occupation n̄',vlines:[{x:0.015,label:'15 mK'},{x:300,label:'300 K'}]});
+  r1.innerHTML=`n̄(qubit, 15 mK) = ${nbar(wq,0.015).toExponential(2)}<br>n̄(qubit, 300 K) = ${nbar(wq,300).toFixed(0)}<br>n̄(photon, 300 K) = ${nbar(wo,300).toExponential(2)}<br>T₁(300 K)/T₁(0) = ${(1/(2*nbar(wq,300)+1)).toExponential(2)}`; }
+function draw2(){ const D=+d.value,w0=+w.value,lam=+l.value*1e-9; dv.textContent=D.toFixed(1); wv.textContent=w0.toFixed(2); lv.textContent=l.value;
+  const L=logspace(0,8.5,400); const fs=L.map(x=>[x,freeSpace(x*1e3,lam,w0,D)]);
+  plot('p2',[{pts:L.map(x=>[x,fiber(x,0.2)]),color:'var(--accent)',label:'fiber 0.2 dB/km'},{pts:L.map(x=>[x,fiber(x,2.0)]),color:'var(--accent)',dash:true,label:'fiber 2 dB/km'},{pts:fs,color:'#2b8a3e',label:'free space'},{pts:fs.map(([x,e])=>[x,plob(e)]),color:'var(--muted)',label:'PLOB bits/use'}],
+    {x:[1,10**8.5],y:[1e-18,2],logx:true,logy:true,xl:'distance L (km)',yl:'η  /  bits per use',vlines:[{x:1200,label:'Micius'},{x:384400,label:'Moon'},{x:5.57e7,label:'Mars min'}]});
+  const th=lam/(Math.PI*w0); r2.innerHTML=`θ = ${(th*1e6).toFixed(2)} µrad<br>η(1200 km) = ${freeSpace(1.2e6,lam,w0,D).toExponential(2)}<br>η(Moon) = ${freeSpace(3.844e8,lam,w0,D).toExponential(2)}<br>η(Mars min) = ${freeSpace(0.372*AU,lam,w0,D).toExponential(2)}<br>spot radius at Mars min = ${(th*0.372*AU/1e3).toFixed(0)} km`; }
+const MEM=[{y:1e-3,label:'atomic ensemble ~ms'},{y:1,label:'SiV nuclear spin ~1 s'},{y:60,label:'NV C-13 ~1 min'},{y:3600,label:'Yb⁺ ion > 1 h'},{y:6*3600,label:'Eu:YSO 6 h'},{y:13.1*3600,label:'Eu:YSO 13.1 h'}];
+function draw3(){ const dm=10**(+d3.value); d3v.textContent=dm>=AU*0.1?`${(dm/AU).toFixed(3)} au`:`${(dm/1e3).toLocaleString(undefined,{maximumFractionDigits:0})} km`;
+  const D=logspace(3,12,300);
+  plot('p3',[{pts:D.map(x=>[x/1e3,x/C]),color:'var(--accent)',label:'one way d/c'},{pts:D.map(x=>[x/1e3,2*x/C]),color:'var(--warm)',label:'round trip 2d/c'}],
+    {x:[1,1e9],y:[1e-6,1e6],logx:true,logy:true,xl:'distance d (km)',yl:'time (s)',hlines:MEM,vlines:[{x:dm/1e3,label:'you'}]});
+  const ow=dm/C, rt=2*dm/C, ok=MEM.filter(m=>m.y>=rt).map(m=>m.label);
+  r3.innerHTML=`one way = ${sec(ow)}<br>round trip = ${sec(rt)}<br>memories that outlast the round trip:<br>${ok.length?ok.join('<br>'):'none demonstrated'}`; }
+const sec=s=>s<1?`${(s*1e3).toFixed(2)} ms`:s<120?`${s.toFixed(2)} s`:s<7200?`${(s/60).toFixed(2)} min`:`${(s/3600).toFixed(2)} h`;
+function draw4(){ const Q=+q.value/100; qv.textContent=(+q.value).toFixed(1);
+  const Qs=Array.from({length:300},(_,i)=>i/300*0.2);
+  plot('p4',[{pts:Qs.map(x=>[x*100,bb84(x)]),color:'var(--accent)',label:'r = 1 − 2h₂(Q)'}],{x:[0,20],y:[0,1],xl:'QBER Q (%)',yl:'secret bits / sifted bit',xd:0,yd:1,vlines:[{x:11.0,label:'11.0% threshold'},{x:Q*100,label:'you'}]});
+  r4.innerHTML=`h₂(Q) = ${h2(Q).toFixed(4)}<br>r(Q) = ${bb84(Q).toFixed(4)}<br>${bb84(Q)>0?'secret key possible':'no secret key: abort'}`; }
+for(const [id,fn] of [['f1',draw1],['l1',draw1],['d',draw2],['w',draw2],['l',draw2],['d3',draw3],['q',draw4]]) document.getElementById(id).addEventListener('input',fn);
+draw1(); draw2(); draw3(); draw4();
+</script>
+</body>
+</html>
