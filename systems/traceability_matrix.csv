@@ -1,0 +1,18 @@
+req_id,statement,phase,test_path,status
+REQ-PHY-001,Classical information latency is never below d/c,1,tests/test_phase1_constants.py,verified
+REQ-PHY-002,Teleportation consumes exactly 2 classical bits per qubit,2,TBD,planned
+REQ-PHY-003,No public function returns two copies of an unknown input state,2,TBD,planned
+REQ-THM-001,Thermal occupation obeys Bose-Einstein limits at T=0 and high T,1,tests/test_phase1_thermal.py,verified
+REQ-THM-002,Generalized amplitude damping is trace preserving,1,tests/test_phase1_thermal.py,verified
+REQ-THM-003,Memory coherence time is modeled as a function of temperature,4,TBD,planned
+REQ-CHN-001,Fiber transmittance follows 10^(-alpha L/10),1,tests/test_phase1_channels.py,verified
+REQ-CHN-002,Free-space geometric loss follows 1/L^2 in the far field,1,tests/test_phase1_channels.py,verified
+REQ-CIR-001,Ideal teleportation fidelity equals 1,2,TBD,planned
+REQ-CIR-002,Noisy teleportation fidelity is compared with the 2/3 classical limit,2,TBD,planned
+REQ-CIR-003,Ideal CHSH value equals 2*sqrt(2),2,TBD,planned
+REQ-QKD-001,BB84 secret-key rate reaches zero at QBER 11%,1,tests/test_phase1_qkd_theory.py,verified
+REQ-QKD-002,All QKD rates are bounded by the PLOB capacity,3,TBD,planned
+REQ-NET-001,A repeater chain beats direct transmission beyond a crossover distance,4,TBD,planned
+REQ-CAP-001,Memory time is compared against light-time delay for each baseline,4,TBD,planned
+REQ-APP-001,The messenger fails closed on key exhaustion,6,TBD,planned
+REQ-SYS-001,No traceability row points at a non-existent test,1,tests/test_phase1_systems.py,verified

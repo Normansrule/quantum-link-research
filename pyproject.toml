@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "quantum-link-lab"
+version = "0.1.0"
+description = "Physics-first simulation lab for quantum links from bench to Earth-Mars"
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+license = {text = "MIT"}
+
+[tool.setuptools.packages.find]
+include = ["qll*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "--strict-markers"
+markers = [
+  "phase1: Phase 1 constants, channels, thermal, QKD theory, systems",
+  "phase2: Phase 2 circuits",
+  "phase3: Phase 3 links and hardware",
+  "phase4: Phase 4 network",
+  "phase5: Phase 5 space segment",
+  "phase6: Phase 6 application",
+  "slow: long-running simulations",
+]
