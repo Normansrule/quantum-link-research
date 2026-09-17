@@ -1,6 +1,6 @@
-# quantum-link-lab
+# quantum-link-research
 
-[![ci](https://github.com/OWNER/quantum-link-lab/actions/workflows/ci.yml/badge.svg)](https://github.com/OWNER/quantum-link-lab/actions/workflows/ci.yml)
+[![ci](https://github.com/OWNER/quantum-link-research/actions/workflows/ci.yml/badge.svg)](https://github.com/OWNER/quantum-link-research/actions/workflows/ci.yml)
 
 Physics-first models of quantum communication links, from a diamond qubit on a bench to an Earth-Mars relay chain, built in six phases on established simulators (Qiskit Aer, Stim, QuTiP, SeQUeNCe, Perceval) with every formula cited and every module checked against an analytic result.
 

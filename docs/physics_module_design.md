@@ -1,4 +1,4 @@
-# quantum-link-lab: Physics-First Modular Design Specification
+# quantum-link-research: Physics-First Modular Design Specification
 
 Version 0.1 · 2026-09-16 · lives at `docs/physics_module_design.md`
 Companion bib: `docs/references_additions_2.bib` (new keys introduced here). Earlier keys are in `references.bib` and `references_additions.bib`.

@@ -3,7 +3,7 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "quantum-link-lab"
+name = "quantum-link-research"
 version = "0.1.0"
 description = "Physics-first simulation lab for quantum links from bench to Earth-Mars"
 readme = "README.md"

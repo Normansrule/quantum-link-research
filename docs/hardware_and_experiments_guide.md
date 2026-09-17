@@ -1,4 +1,4 @@
-# quantum-link-lab: Hardware, Experiments, and Literature Guide
+# quantum-link-research: Hardware, Experiments, and Literature Guide
 
 Version 0.1 · 2026-09-16 · lives at `docs/hardware_and_experiments_guide.md`
 Companion file: `docs/references_additions.bib` (new bibkeys used below; merge into `docs/references.bib`).
