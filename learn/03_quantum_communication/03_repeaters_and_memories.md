@@ -23,6 +23,7 @@ Required memory time $\tau_{\rm mem}\gtrsim n\,\frac{L}{c}$ for generation-1 rep
 | ¹⁷¹Yb⁺ hyperfine | > 1 h | deterministic | 369 nm | Wang 2021 |
 
 ## Visual
+![crossover](../../docs/figures/memory_crossover.svg)
 ![repeater](../../docs/figures/repeater_rate_explorer.svg)
 ![light time](../../docs/figures/light_time_explorer.svg)
 
@@ -38,7 +39,7 @@ Required memory time $\tau_{\rm mem}\gtrsim n\,\frac{L}{c}$ for generation-1 rep
 - Rančić, M., et al. (2018). Coherence time of over a second in a telecom-compatible quantum memory storage material. *Nature Physics*, 14, 50.
 
 ## In this repo
-Phase 4: `qll/network/{memory_decoherence,purification,swapping_scheduler,repeater_chain,routing,relay_constellation,sequence_adapter}.py`; requirement `REQ-NET-001` (chain beats direct) and `REQ-CAP-001` (memory time vs light time).
+Implemented (0.8.0): `qll/network/{memory_decoherence,purification,swapping_scheduler,repeater_chain,routing}.py`. The stored-pair model is the exact Kraus map of Phase 2 applied to one qubit (verified against closed forms for depolarizing and dephasing memories, including the dephasing result $f_\infty=(2f_0+1)/6$, which means dephasing alone eventually kills teleportation too); BBPSSW is verified by a full 16×16 simulation against the recurrence; the nested schedule uses the exact expectation of the maximum of two geometric waiting times; REQ-NET-001 and REQ-CAP-001 are verified. Result worth stating: at $f_0=0.95$ the hour-class ion memory clears the Mars-max round trip with margin < 1.5×, and the rare-earth memories clear it with efficiencies below 5 %. `relay_constellation.py` and `sequence_adapter.py` remain for Phase 5.
 
 ## Exercises
 1. For $L=2000$ km fiber, $L_0=125$ km, compute the direct transmittance and the number of nesting levels $n$; estimate the memory time needed.

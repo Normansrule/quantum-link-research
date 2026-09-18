@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.8.0 — 2026-09-18 (Phase 4: memories and repeaters)
+- `network/memory_decoherence.py`: memory table (six demonstrated platforms with lifetime, efficiency, temperature, wavelength, bibkey), exact stored-pair channel from the Phase 2 Kraus maps, closed-form fractions for depolarizing and dephasing memories (the dephasing result $f_\infty=(2f_0+1)/6$ corrected during verification), crossover times, and the REQ-CAP-001 capability matrix against six baselines.
+- `network/purification.py`: BBPSSW recurrence and a full 16×16 numerical BBPSSW (bilateral CNOT + post-selection) agreeing to 1e-12; rounds-to-target and pair cost; classical time per round.
+- `network/swapping_scheduler.py`: exact expectation of the max of two geometric waits (Monte Carlo checked) and the nested schedule vs the 3/2 rule.
+- `network/repeater_chain.py`: memory-based nested chain with memory cutoff and fidelity after swaps and storage; all-photonic chain with redundancy; crossover distance (REQ-NET-001 verified: exists for a 1 s memory, absent for 1 ms).
+- `network/routing.py`: widest-path routing with a fidelity floor on networkx.
+- `qll/viz/memory_crossover.py` (REQ-CAP-001 in one figure); `repeater_rate_explorer` now uses the tested chain model.
+- Tests: 331; requirements verified 17 of 20.
+
 ## 0.7.0 — 2026-09-18 (Phase 3 part 2: QKD protocols)
 - `qll/qkd`: `sifting.py` (with biased-basis fraction), `error_correction.py` (leak f·n·h2(Q); LDPC one-way vs Cascade four round trips, each a `ClassicalMessage`), `privacy_amplification.py` (final length with ε, Toeplitz two-universal hash), `bb84.py` (`run_bb84`: full session, intercept-resend gives 25 % QBER and zero key, classical time ≥ light time), `e91.py` (device-independent rate from S and Q), `decoy_state.py` (GLLP decoy rate ~η vs no-decoy ~η²), `mdi.py`, `twin_field.py` (~√η, crossover with PLOB), `rate_bounds.py` (`assert_below_plob`, INV-5).
 - REQ-QKD-002 verified; `qll/viz/qkd_protocols_explorer.py` figure (which protocol wins at which loss).

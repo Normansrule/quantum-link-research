@@ -14,17 +14,11 @@ from qll.viz._common import cli, finish
 
 
 def chain_rate(L_km: float, n_seg: int, p_src: float, q: float, T2_s: float, alpha: float = 0.2) -> float:
-    """Pairs per second for a symmetric chain (crude nested estimate, memory cutoff included)."""
-    seg = L_km / n_seg
-    p0 = p_src * transmittance(seg / 2, alpha) ** 2  # heralded at a midpoint: both halves must arrive
-    t0 = round_trip_delay_s(seg * 1e3 / 2 * 1.47)      # fiber index 1.47
+    """Pairs per second from the tested Phase 4 chain model (qll.network.repeater_chain)."""
+    from qll.network.repeater_chain import memory_chain
+
     levels = max(0, round(math.log2(n_seg)))
-    rate = 1.0 / t0
-    for _ in range(levels):
-        rate *= q * 2.0 / 3.0                           # each nesting level: wait for both, then swap
-    rate *= p0
-    t_hold = t0 * (2 ** levels)                        # total hold time in the worst case
-    return rate * math.exp(-t_hold / T2_s)
+    return memory_chain(L_km, levels, T2_s, p_src=p_src, p_swap=q, alpha=alpha).rate_hz
 
 
 def direct_rate(L_km: float, p_src: float, rep_hz: float = 1e9, alpha: float = 0.2) -> float:
