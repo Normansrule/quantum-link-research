@@ -22,7 +22,7 @@ Pick a row, open its links, do it, add the test, move the row to `CHANGELOG.md`.
 | # | Task | Diff. | Read first |
 |---|---|---|---|
 | C12 | ~~atmosphere, pointing, link budget; Micius reproduced within 3 dB~~ done in 0.6.0; Jinan-1 exact figures still to verify | ★★ | learn 03/04, done/09 |
-| C13 | `qkd/bb84.py`, `e91.py`, `decoy_state.py`, `mdi.py`, `twin_field.py`, post-processing as `ClassicalMessage` rounds | ★★★ | learn 03/01 |
+| C13 | ~~QKD protocol family with post-processing as `ClassicalMessage` rounds~~ done in 0.7.0 | ★★★ | learn 03/01 |
 | C14 | ~~photon_source, detector, beam_splitter, nv_node~~ done in 0.6.0; Perceval adapter remains | ★★ | learn 00/12, 02/03, 02/06 |
 | C15 | `network/memory_decoherence.py` with the memory table (time *and* efficiency); `REQ-CAP-001` figure | ★★ | learn 03/03 |
 | C16 | `network/purification.py`, `swapping_scheduler.py`, `repeater_chain.py` with a photonic-node variant (T02) | ★★★ | learn 03/03, T02, T08 |

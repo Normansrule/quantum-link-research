@@ -11,7 +11,7 @@ REQ-CIR-001,Ideal teleportation fidelity equals 1,2,tests/test_phase2_circuits.p
 REQ-CIR-002,Noisy teleportation fidelity is compared with the 2/3 classical limit,2,tests/test_phase2_circuits.py::test_teleportation_werner_fidelity_matches_2f_plus_1_over_3,verified
 REQ-CIR-003,Ideal CHSH value equals 2*sqrt(2),2,tests/test_phase2_circuits.py::test_chsh_ideal_and_werner,verified
 REQ-QKD-001,BB84 secret-key rate reaches zero at QBER 11%,1,tests/test_phase1_qkd_theory.py,verified
-REQ-QKD-002,All QKD rates are bounded by the PLOB capacity,3,TBD,planned
+REQ-QKD-002,All repeaterless QKD rates are bounded by the PLOB capacity,3,tests/test_phase3_qkd.py::test_all_repeaterless_rates_below_plob,verified
 REQ-NET-001,A repeater chain beats direct transmission beyond a crossover distance,4,TBD,planned
 REQ-CAP-001,Memory time is compared against light-time delay for each baseline,4,TBD,planned
 REQ-APP-001,The messenger fails closed on key exhaustion,6,TBD,planned

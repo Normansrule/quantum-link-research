@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.7.0 — 2026-09-18 (Phase 3 part 2: QKD protocols)
+- `qll/qkd`: `sifting.py` (with biased-basis fraction), `error_correction.py` (leak f·n·h2(Q); LDPC one-way vs Cascade four round trips, each a `ClassicalMessage`), `privacy_amplification.py` (final length with ε, Toeplitz two-universal hash), `bb84.py` (`run_bb84`: full session, intercept-resend gives 25 % QBER and zero key, classical time ≥ light time), `e91.py` (device-independent rate from S and Q), `decoy_state.py` (GLLP decoy rate ~η vs no-decoy ~η²), `mdi.py`, `twin_field.py` (~√η, crossover with PLOB), `rate_bounds.py` (`assert_below_plob`, INV-5).
+- REQ-QKD-002 verified; `qll/viz/qkd_protocols_explorer.py` figure (which protocol wins at which loss).
+- Tests: 312.
+
 ## 0.6.0 — 2026-09-18 (Phase 3 part 1: links and hardware; reference verification)
 - `channels/free_space_diffraction.py`: exact Gaussian beam (Rayleigh range, w(L)) and the exact Gaussian-over-aperture transmittance; the old uniform-disc estimate kept as `_far_field` for teaching (it underestimates by 2×).
 - `channels/atmosphere.py` (Beer–Lambert with airmass, Fried parameter), `pointing_jitter.py`, `link_budget.py` (`LinkBudget` with per-factor breakdown, slant range, background QBER floor per gated pulse); published configurations `MICIUS_2017` and `JINAN1_2025`. The Micius two-downlink loss (64–82 dB) is reproduced within 3 dB → REQ-F2-001 (Micius part) verified.

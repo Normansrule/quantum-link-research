@@ -30,7 +30,9 @@ Every classical exchange in these protocols is a `ClassicalMessage` in `qll/chan
 - Pirandola, S., et al. (2020). Advances in quantum cryptography. *Adv. Opt. Photon.*, 12, 1012. https://doi.org/10.1364/AOP.361502
 
 ## In this repo
-Done: `qll/qkd/{binary_entropy,key_rate,plob_bound}.py`. Phase 3: `bb84.py`, `e91.py`, `decoy_state.py`, `mdi.py`, `twin_field.py`, `sifting.py`, `error_correction.py`, `privacy_amplification.py`, all with the module cards in `docs/physics_module_design.md`.
+![protocols](../../docs/figures/qkd_protocols_explorer.svg)
+
+All implemented (0.7.0): `qll/qkd/{binary_entropy,key_rate,plob_bound,sifting,error_correction,privacy_amplification,bb84,e91,decoy_state,mdi,twin_field,rate_bounds}.py`. `run_bb84` is a full session (basis choice from a declared `EntropySource`, sifting, reconciliation, Toeplitz privacy amplification) whose classical time is bounded below by the light time; `rate_bounds.assert_below_plob` enforces INV-5 (REQ-QKD-002).
 
 ## Exercises
 1. An intercept-resend attacker measures every photon in a random basis: show the induced QBER is 25%.
