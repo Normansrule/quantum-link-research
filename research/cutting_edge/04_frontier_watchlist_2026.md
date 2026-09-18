@@ -1,4 +1,4 @@
-# Frontier watchlist (2026): claims to verify before use
+# Frontier Watchlist 2026
 
 A living list of results that would change files in this repository if confirmed. Each entry: what is claimed, what would change, how to verify.
 

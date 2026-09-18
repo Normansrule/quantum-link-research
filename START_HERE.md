@@ -1,4 +1,4 @@
-# Start here (five minutes)
+# Start Here
 
 1. **Read the six sentences** in [README.md](README.md). That is the whole project.
 2. **Look at one picture**: `docs/figures/overview_storyboard.svg` (top of the README). Panel 5 is the thesis question.

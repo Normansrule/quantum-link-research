@@ -1,4 +1,4 @@
-# Physics overview: every equation in the repository, with its figure and its test
+# Physics Overview
 
 This is the long-form companion to the README. Each section states the physics, shows the figure the code draws, and names the module and test that carry it. Paths are relative to the repository root.
 

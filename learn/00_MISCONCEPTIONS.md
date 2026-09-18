@@ -1,4 +1,4 @@
-# Common misconceptions, corrected
+# Misconceptions
 
 | Misconception | Correction | Where the repo enforces it |
 |---|---|---|

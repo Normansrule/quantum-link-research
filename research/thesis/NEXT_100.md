@@ -1,4 +1,4 @@
-# The next 100 additions
+# Next 100
 
 Grouped by door. Each is one file, one module, one figure, one experiment, or one bench task. Cross-reference BACKLOG.md for the code and bench items already scheduled; this list is the *content* roadmap.
 

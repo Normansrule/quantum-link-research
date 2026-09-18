@@ -1,4 +1,4 @@
-# The three flagship experiments
+# Flagship Experiments
 
 Everything in this repository serves three experiments, each the same physics at a different distance. Each is staged **simulate → bench → field**, and each stage has a pass/fail number.
 

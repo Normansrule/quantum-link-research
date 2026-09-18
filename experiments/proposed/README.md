@@ -1,4 +1,4 @@
-# Proposed experiments
+# Proposed Experiments
 
 Each proposal answers the same five questions: the gap in the literature, the cheapest version a student lab can run, the research version, the physics it would settle, and the requirement in `systems/traceability_matrix.csv` it would verify. E1–E7 are the link-level proposals first written in `experiments/bench/hardware_guide.md` §6; E8–E10 come from the modality survey in `learn/02_qubit_modalities/`. Together they form the experimental program of the thesis: start on a $500 bench, end with a mission-relevant number.
 

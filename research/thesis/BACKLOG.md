@@ -1,4 +1,4 @@
-# Backlog: what to work on next
+# Backlog
 
 Pick a row, open its links, do it, add the test, move the row to `CHANGELOG.md`. Difficulty: ★ an afternoon · ★★ a week · ★★★ a semester. Rows are grouped by workstream; within a group they are in dependency order.
 

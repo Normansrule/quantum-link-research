@@ -1,4 +1,4 @@
-# 00 · Foundations
+# Foundations
 
 | # | File | One line | Figure |
 |---|---|---|---|

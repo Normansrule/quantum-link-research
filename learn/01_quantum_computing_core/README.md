@@ -1,4 +1,4 @@
-# 01 · Quantum computing core
+# Quantum Computing Core
 
 | # | File | One line |
 |---|---|---|

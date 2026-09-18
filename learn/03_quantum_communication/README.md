@@ -1,4 +1,4 @@
-# 03 · Quantum communication
+# Quantum Communication
 
 | # | File | One line | Repo module |
 |---|---|---|---|

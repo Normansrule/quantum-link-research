@@ -1,4 +1,6 @@
-# quantum-link-research
+# Quantum Link Research
+
+**Website:** https://Normansrule.github.io/quantum-link-research/ · **Explorers:** https://Normansrule.github.io/quantum-link-research/apps/
 
 [![ci](https://github.com/Normansrule/quantum-link-research/actions/workflows/ci.yml/badge.svg)](https://github.com/Normansrule/quantum-link-research/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
@@ -13,7 +15,7 @@
 
 ![storyboard](docs/figures/overview_storyboard.svg)
 
-## The three experiments everything serves
+## Three Experiments
 
 | F1 · two computers, one city | F2 · Earth ↔ satellite | F3 · Earth ↔ Mars |
 |---|---|---|
@@ -23,7 +25,7 @@
 
 ![flagships](docs/figures/flagship_overview.svg)
 
-## Three doors
+## Three Doors
 
 | | [**learn/**](learn/README.md) — understand | [**experiments/**](experiments/README.md) — build | [**research/**](research/README.md) — push the frontier |
 |---|---|---|---|
@@ -35,7 +37,7 @@ Around them sits **`qll/`**, the tested physics code, and **`docs/` + `systems/`
 
 ![map](docs/figures/repo_map.svg)
 
-## The whole idea in six sentences
+## Six Sentences
 
 1. **A qubit is an arrow on a sphere.** Any two-level system is a point on the Bloch sphere; noise shortens the arrow ($T_1$) and blurs its direction ($T_2$). → [learn/00/03](learn/00_foundations/03_qubit_and_bloch_sphere.md)
 2. **Heat is noise you can compute.** $\bar n = 1/(e^{\hbar\omega/k_BT}-1)$ thermal quanta per mode: microwave qubits need 15 mK, optical photons are already quiet at room temperature. That one formula decides where every part of a link must live. → [learn/00/06](learn/00_foundations/06_density_matrices_and_open_systems.md)
@@ -44,11 +46,18 @@ Around them sits **`qll/`**, the tested physics code, and **`docs/` + `systems/`
 5. **The memory must outlive the round trip.** 6–45 minutes to Mars and back; diamond lasts a minute, ions an hour, rare-earth crystals 13 hours at low efficiency. That gap is the thesis question. → [learn/03/03](learn/03_quantum_communication/03_repeaters_and_memories.md)
 6. **Everything is checked against an equation.** Every module cites a paper, every default traces to a requirement, every result has an analytic test on established simulators (Qiskit Aer, Stim, QuTiP, SeQUeNCe, Perceval). → [docs/physics_module_design.md](docs/physics_module_design.md)
 
-## Watch
+## Youtube
 
-[`youtube/README.md`](youtube/README.md): verified video links per topic (3Blue1Brown, MinutePhysics, Veritasium, Qiskit, QuTech, Monroe, Lukin, Microsoft, Google), each mapped to the `learn/` file it accompanies.
+[**Youtube**](youtube/README.md): verified video links per topic (3Blue1Brown, MinutePhysics, Veritasium, Qiskit, QuTech, Monroe, Lukin, Microsoft, Google), each mapped to the `learn/` file it accompanies.
 
-## Turn the knobs
+## Simulations
+
+[`simulations/`](simulations/README.md): five runnable, tested simulations that predict what each flagship bench must reproduce — CHSH vs noise (Aer), teleportation with light-time-delayed bits, the link budget sweep, a repetition code in Stim, key per satellite pass.
+
+| ![](docs/figures/sim_teleport_delay.svg) | ![](docs/figures/sim_repetition_code.svg) |
+|---|---|
+
+## Explorers
 
 **In the browser**, no install: **https://Normansrule.github.io/quantum-link-research/apps/** — five live panels (Bloch sphere with gates, temperature, loss, light time vs memory, QBER).
 
@@ -66,9 +75,11 @@ python scripts/make_figures.py          # regenerate every figure in docs/figure
 | ![](docs/figures/repeater_rate_explorer.svg) | ![](docs/figures/mars_light_time_cycle.svg) |
 | ![](docs/figures/surface_code_lattice.svg) | ![](docs/figures/modality_radar.svg) |
 
+References: [`docs/references.md`](docs/references.md), 270 entries by topic, generated from the BibTeX files.
+
 Every figure carries a "what to look for" note and is drawn by a function under test; `python scripts/make_figures.py` regenerates all 15.
 
-## A 60-second tour of the numbers
+## The Numbers
 
 | Question | Answer from the code | Where |
 |---|---|---|
@@ -84,7 +95,7 @@ Every figure carries a "what to look for" note and is drawn by a function under 
 
 All equations, with their figures and the tests that check them: [**docs/physics_overview.md**](docs/physics_overview.md).
 
-## Where things are
+## Map
 
 ```
 learn/          settled physics, 3 learning paths          research/        frontier + process
@@ -95,7 +106,7 @@ experiments/    build                                      qll/             test
                                                             systems/         needs, requirements, risks, TRL, traceability
 ```
 
-## Six phases
+## Phases
 
 | Phase | Deliverable | Must pass | Status |
 |---|---|---|---|
@@ -106,7 +117,7 @@ experiments/    build                                      qll/             test
 | 5 | ephemeris, conjunction, spacecraft cryogenics, classical DSOC-class link | Earth–Mars availability vs constellation | |
 | 6 | ML-KEM + QKD hybrid, AES-GCM, fail-closed messenger over 20-minute latency | never blocks, never sends unkeyed | |
 
-## Install and verify
+## Install
 
 ```bash
 git clone https://github.com/Normansrule/quantum-link-research.git && cd quantum-link-research
@@ -115,5 +126,5 @@ python scripts/check_env.py && pytest -q && python -m qll.systems.traceability
 ```
 CI runs the same on Ubuntu and Windows. Pins: Python 3.12, qiskit 2.5.2, qiskit-aer 0.17.2, stim 1.16.0, qutip 5.3.1, sequence 1.2.0, perceval-quandela 1.2.4, kyber-py 1.2.0, cryptography 50.0.1.
 
-## Contributing, citing, history
+## Contributing
 Six rules in [CONTRIBUTING.md](CONTRIBUTING.md) (physics correct · established libraries · every formula cited · every module tested · one idea per file · commit only green). Cite with [CITATION.cff](CITATION.cff). Session history in [docs/SESSION_LOG.md](docs/SESSION_LOG.md); decisions in [research/thesis/DESIGN_PROCESS.md](research/thesis/DESIGN_PROCESS.md).

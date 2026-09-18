@@ -1,4 +1,4 @@
-# Qubit modalities: how people actually build qubits
+# Qubit Modalities
 
 Every platform below is a real two-level system that satisfies, to some degree, the DiVincenzo criteria: (1) well-characterized scalable qubits, (2) initialization, (3) coherence long compared with gate time, (4) a universal gate set, (5) qubit-specific readout, plus for networks (6) conversion between stationary and flying qubits and (7) faithful transmission of flying qubits. The two network criteria are why this repository exists: a computer does not need them; a link does.
 

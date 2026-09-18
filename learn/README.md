@@ -1,4 +1,4 @@
-# learn/ — the educational library
+# Learn
 
 Everything here is for **understanding**. Nothing here asks you to buy or build anything; that is `../experiments/`. Nothing here is unsettled; that is `../research/`.
 
@@ -53,7 +53,7 @@ Tick as you go. Each item is one file, roughly one sitting.
 - [ ] then: [`../research/README.md`](../research/README.md) and [`../experiments/proposed/README.md`](../experiments/proposed/README.md)
 
 ## Videos
-Verified, topic-mapped video links: [`../youtube/README.md`](../youtube/README.md).
+[Youtube](../youtube/README.md): verified links, mapped to each file here.
 
 ## Reference files
 - [`00_GLOSSARY.md`](00_GLOSSARY.md) — every term, plain language first.

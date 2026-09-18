@@ -28,3 +28,4 @@ jobs:
       - run: python scripts/make_figures.py
         env:
           MPLBACKEND: Agg
+      - run: python scripts/build_reference_index.py

@@ -1,4 +1,4 @@
-# protocols/ — procedures you can follow line by line
+# Protocols
 
 | # | Protocol | Bench tier | Time | Prerequisite reading |
 |---|---|---|---|---|

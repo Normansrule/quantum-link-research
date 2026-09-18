@@ -1,4 +1,4 @@
-# theories/ — ten frontier ideas and what each would change for an Earth–Mars link
+# Theories
 
 | # | Idea | Maturity | If it works, the Mars architecture… |
 |---|---|---|---|

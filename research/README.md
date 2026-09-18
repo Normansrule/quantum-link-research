@@ -1,4 +1,4 @@
-# research/ — where the field is unsettled, and how this project moves it
+# Research
 
 Settled physics is in `../learn/`; hardware and procedures in `../experiments/`. This folder holds the **frontier** and the **design process** of the thesis.
 

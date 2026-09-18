@@ -8,3 +8,4 @@
 - 2026-09-18 0.2.0: repository redesign into learn/ experiments/ research/; protocols P01–P04; theories T01–T10; DESIGN_PROCESS and BACKLOG; visual README front door; physics moved to docs/physics_overview.md.
 - 2026-09-18 0.2.1: youtube/ verified links, NEXT_100 roadmap.
 - 2026-09-18 0.3.0: flagship experiments F1–F3, five new figures, Bloch gate panel, three learn files; 254 tests.
+- 2026-09-18 0.4.0: website landing page with animations, simulations/ (5, tested), reference database (270), clean headings.

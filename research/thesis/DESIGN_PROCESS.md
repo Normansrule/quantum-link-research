@@ -1,4 +1,4 @@
-# The design process: how a physics idea becomes a verified requirement
+# Design Process
 
 This project is run as a systems-engineering "V": needs on the left, verified capabilities on the right, and every artifact traceable across. The same loop applies whether the artifact is a Python module, a bench experiment, or a mission concept.
 

@@ -1,4 +1,4 @@
-# experiments/ — build, measure, propose
+# Experiments
 
 **Start with the three flagships**: [`flagship/README.md`](flagship/README.md) — F1 two computers in one city, F2 Earth to satellite, F3 Earth to Mars. Every protocol, landmark, and proposal below is a stage of one of them.
 

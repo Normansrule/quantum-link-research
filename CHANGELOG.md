@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.4.0 — 2026-09-18 (website, simulations, reference database)
+- Website: `docs/index.html` + `docs/site.css` — a clean landing page for GitHub Pages with an animated Earth→relay→Mars hero (photons in motion, a draggable distance slider that updates the light time), animated Bloch precession, cards for Learn / Experiments / Simulations / Research / Youtube / References, and figure galleries; the explorers page restyled to match.
+- `simulations/`: S01 CHSH vs noise (Aer), S02 teleportation with light-time-delayed bits and a decaying memory (Aer + `ClassicalMessage` guard), S03 link-budget sweep, S04 repetition code in Stim (majority vote, Λ), S05 BB84 key per satellite pass vs background; each writes a figure and has a test asserting an analytic limit.
+- References: `docs/references_additions_3.bib` (+95 entries) and `scripts/build_reference_index.py` → `docs/references.md`, 270 entries in 17 topics with verified / confident / TODO status; CI regenerates it.
+- Headings cleaned everywhere (e.g. "Youtube", "Learn", "Experiments", "Start Here").
+
 ## 0.3.0 — 2026-09-18 (flagships and understanding-first visuals)
 - `experiments/flagship/`: F1 Earth↔Earth (two computers, one city), F2 Earth↔satellite, F3 Earth↔Mars — each staged simulate → bench → field with pass numbers, requirements, and references; the README now leads with them.
 - Figures (each with a "what to look for" callout): `flagship_overview`, `repeater_rate_explorer` (chain vs direct, memory slider), `mars_light_time_cycle` (synodic cycle with conjunction), `modality_radar` (generated from `learn/02_qubit_modalities/modalities.json`), `surface_code_lattice`.

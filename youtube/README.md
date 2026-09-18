@@ -1,4 +1,4 @@
-# youtube/ — verified video links by topic
+# Youtube
 
 Every link below was returned by a web search on 2026-09-18 and points at a real video page; none is typed from memory. Titles are as listed by the platform. Where a topic has a strong TU Delft / QuTech lecture on **qutube.nl** (their own video site, not YouTube) it is listed as a bonus. English only. If a link dies, replace it and note the date; do not leave a dead link.
 
