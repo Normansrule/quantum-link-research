@@ -4,11 +4,68 @@
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Python 3.12](https://img.shields.io/badge/python-3.12-blue.svg)](environment.yml)
 [![explorers](https://img.shields.io/badge/physics_explorers-live-brightgreen.svg)](https://Normansrule.github.io/quantum-link-research/apps/)
+[![knowledge base](https://img.shields.io/badge/knowledge_base-66_files-8A2BE2.svg)](knowledge/README.md)
 
-**Physics-first models of quantum communication links, from a diamond qubit on a bench to an Earth–Mars relay chain.**
-Built in six phases on established simulators (Qiskit Aer, Stim, QuTiP, SeQUeNCe, Perceval); every formula cites a real paper, every module is checked against an analytic result in `pytest`, and every default number traces to a requirement in a machine-checked matrix.
+> **Can two people, one on Earth and one on Mars, share a secret that no eavesdropper and no future computer can read?**
+> Physics says yes, with a catch: the quantum part is instantaneous-looking but carries no message, and the classical part takes 3 to 22 minutes at the speed of light. This repository works out, in code that is tested against the equations, exactly what that catch costs, what hardware could pay it, and what a student lab can build on the way.
 
-![level map](docs/figures/stack_map.svg)
+![storyboard](docs/figures/overview_storyboard.svg)
+
+## The whole idea in six sentences
+
+1. **A qubit is an arrow on a sphere.** Any two-level quantum system (a spin in diamond, a superconducting circuit, a photon's polarization) is a point on the Bloch sphere; noise shortens the arrow (energy loss, $T_1$) and blurs its direction (dephasing, $T_2$).
+2. **Heat is noise you can compute.** A mode at frequency $\omega$ in a bath at temperature $T$ holds $\bar n = 1/(e^{\hbar\omega/k_BT}-1)$ thermal quanta. Microwave qubits need 15 mK; optical photons at room temperature already sit at $\bar n\approx10^{-14}$. That single formula decides where every part of a quantum link must live.
+3. **Photons are the only thing that travels.** In fiber they die exponentially ($10^{-\alpha L/10}$); in free space only as $1/L^2$. Past a few hundred kilometers the sky wins, which is why satellites exist and why Mars is reachable in principle.
+4. **Entanglement is a resource, not a radio.** Two qubits can share a Bell pair across any distance, but Bob's measurements look random until Alice's two classical bits arrive at light speed. This is the no-signaling theorem, and the code physically refuses to read a teleported state early.
+5. **The memory must outlive the round trip.** Teleportation only completes after the bits arrive, so the receiving half of the pair must stay coherent for 6 to 45 minutes. Diamond memories last a minute; ions an hour; rare-earth crystals 13 hours (at low efficiency). That gap is the thesis question.
+6. **Everything is checked against an equation.** Every module cites a paper, every default number traces to a requirement, every result has an analytic `pytest`, and the whole stack runs on established simulators (Qiskit Aer, Stim, QuTiP, SeQUeNCe, Perceval). No home-made quantum simulator anywhere.
+
+## Who this is for, and where to start
+
+| You are… | Start here | Then |
+|---|---|---|
+| New to quantum mechanics | [`knowledge/00_foundations/00_why_quantum…`](knowledge/00_foundations/00_why_quantum_a_history_in_ten_experiments.md) then the [Bloch sphere](knowledge/00_foundations/03_qubit_and_bloch_sphere.md) | play with the [live explorers](https://Normansrule.github.io/quantum-link-research/apps/) |
+| A student who wants to build something | [`docs/hardware_and_experiments_guide.md`](docs/hardware_and_experiments_guide.md) §5, the $100 NV magnetometer | [`knowledge/05_experiments/done/04_odmr_nv.md`](knowledge/05_experiments/done/04_odmr_nv.md) |
+| An engineer choosing a qubit platform | [`knowledge/02_qubit_modalities/README.md`](knowledge/02_qubit_modalities/README.md) comparison table | the modality file for your platform |
+| A physicist reading the code | [`docs/physics_module_design.md`](docs/physics_module_design.md) module cards | `tests/` |
+| A systems engineer or reviewer | [`systems/`](systems/) requirements, risks, TRL | [`knowledge/05_experiments/proposed/`](knowledge/05_experiments/proposed/README.md) E1–E10 |
+| Skeptical | [`knowledge/MISCONCEPTIONS.md`](knowledge/MISCONCEPTIONS.md) and [`knowledge/05_experiments/lessons/`](knowledge/05_experiments/lessons/01_contested_claims.md) | the [timeline](knowledge/04_cutting_edge/01_state_of_the_art_timeline.md) |
+
+## How the pieces fit
+
+```mermaid
+flowchart LR
+  subgraph Learn["knowledge/ — learn"]
+    F[foundations] --> C[computing core] --> M[qubit modalities] --> Q[communication] --> E[cutting edge]
+  end
+  subgraph Model["qll/ — model (tested)"]
+    K[constants] --> CH[channels] --> CI[circuits] --> KD[qkd] --> N[network] --> S[space] --> A[app]
+  end
+  subgraph Build["experiments — build"]
+    D[done: 10 landmarks with bench recreations] --> P[proposed: E1–E10 toward a Mars link]
+  end
+  Learn --> Model --> Build
+  V[qll/viz + docs/apps: turn the knobs] -.- Model
+  SYS[systems/: requirements · risks · TRL · traceability] -.reads.- Model
+```
+
+**Six phases**, each committed only when its tests pass: (1) constants, channels, thermal model, QKD theory, explorers, knowledge base — **done**; (2) circuits: Bell, teleportation, CHSH, noise, no-cloning guard; (3) links and hardware; (4) memories and repeaters; (5) space segment; (6) the application: a messenger that fails closed when it runs out of key.
+
+## A 60-second tour of the numbers
+
+| Question | Answer from the code | Where |
+|---|---|---|
+| How many thermal photons does a 5 GHz qubit see at room temperature? | ≈ 1250 (needs 15 mK to reach 10⁻⁷) | `noise/thermal.py` |
+| …and a 1550 nm photon? | ≈ 4 × 10⁻¹⁴ | same |
+| How far does fiber carry a photon before 99% are lost? | 100 km at 0.2 dB/km | `channels/fiber_loss.py` |
+| What fraction of a Micius-class beam reaches a 1 m telescope at 1200 km? | ~10⁻⁵ to 10⁻⁶ | `channels/free_space_diffraction.py` |
+| …and at Mars at closest approach? | ~10⁻¹¹ | same, with the explorer |
+| How long do Alice's two bits take to reach Mars? | 3.1 to 22.3 minutes | `channels/light_time_delay.py` |
+| When does BB84 stop producing key? | at 11.0% error rate | `qkd/key_rate.py` |
+| What is the best any repeaterless link can do? | −log₂(1−η) secret bits per use | `qkd/plob_bound.py` |
+| Which memories already outlast a Mars round trip? | Eu:YSO nuclear spins (6 h, 13.1 h); trapped ions (> 1 h) | `knowledge/03_quantum_communication/03` |
+
+Everything below is the detailed version: equations, figures, landmark experiments, the module map, and how to install.
 
 ---
 
@@ -22,10 +79,11 @@ Built in six phases on established simulators (Qiskit Aer, Stim, QuTiP, SeQUeNCe
 6. [Teleportation, stated precisely](#6-teleportation-stated-precisely)
 7. [What has actually been built](#7-what-has-actually-been-built)
 8. [Interactive apps](#8-interactive-apps)
-9. [Repository map](#9-repository-map)
-10. [Install and verify](#10-install-and-verify)
-11. [Roadmap](#11-roadmap)
-12. [References](#12-references)
+9. [Knowledge base](#9-knowledge-base-from-first-course-to-frontier)
+10. [Repository map](#10-repository-map)
+11. [Install and verify](#11-install-and-verify)
+12. [Roadmap](#12-roadmap)
+13. [References](#13-references)
 
 ---
 
@@ -219,7 +277,17 @@ python -c "from qll.circuits.noise.thermal import bose_einstein_occupation as n;
 
 ---
 
-## 9. Repository map
+## 9. Knowledge base: from first course to frontier
+
+[`knowledge/`](knowledge/README.md) is the curriculum behind the code, 66 files in six folders plus a glossary and a misconceptions list: [foundations](knowledge/00_foundations) (postulates, Bloch sphere, Rabi/Ramsey/echo, entanglement, open systems, information measures), [computing core](knowledge/01_quantum_computing_core) (gates, algorithms, error correction, benchmarking), [**qubit modalities**](knowledge/02_qubit_modalities/README.md) (how transmons/SQUIDs, silicon spins, diamond NV/SiV, trapped ions, Rydberg atoms, photons, Majoranas, and bosonic codes are actually built, modeled, and where each stands), [communication](knowledge/03_quantum_communication), [cutting edge](knowledge/04_cutting_edge) (a timeline to judge new claims against, open problems, reading list), and [**experiments**](knowledge/05_experiments/README.md): ten landmark experiments each with a bench-budget recreation, ten proposed experiments (E1–E10) that move the Earth–Mars concept forward, and the contested or retracted results the field learned from.
+
+![bloch](docs/figures/bloch_sphere.svg)
+![rabi](docs/figures/rabi_ramsey.svg)
+![transmon](docs/figures/transmon_levels.svg)
+
+---
+
+## 10. Repository map
 
 One physical idea per file; the import graph follows the physical stack and nothing imports upward.
 
@@ -250,13 +318,13 @@ Every module's card (idea, equations, interface, invariants, references, analyti
 
 ---
 
-## 10. Install and verify
+## 11. Install and verify
 
 ```bash
 git clone https://github.com/Normansrule/quantum-link-research.git && cd quantum-link-research
 conda env create -f environment.yml && conda activate qll
 python scripts/check_env.py            # pins match, heavy libraries import
-pytest -q                              # 33 analytic tests
+pytest -q                              # 178 tests: analytic physics, figure rendering, knowledge-base links
 python -m qll.systems.traceability     # 0 dangling requirement→test links
 ```
 
@@ -264,11 +332,11 @@ Pinned: Python 3.12, numpy 2.5.3, scipy 1.18.1, qiskit 2.5.2, qiskit-aer 0.17.2,
 
 ---
 
-## 11. Roadmap
+## 12. Roadmap
 
 | Phase | Deliverable | Must-pass physics target |
 |---|---|---|
-| 1 ✅ | Scaffold, constants, channels, thermal model, QKD theory, explorers | 33 analytic tests; 11.0% threshold; $\sum E^\dagger E=I$ |
+| 1 ✅ | Scaffold, constants, channels, thermal model, QKD theory, explorers, knowledge base | 178 tests; 11.0% threshold; $\sum E^\dagger E=I$ |
 | 2 | Bell, GHZ, teleportation, swapping, CHSH, fidelity, tomography, Kraus noise, no-cloning guard | $F_{\rm ideal}=1$; $F=(2f+1)/3$; $S=2\sqrt2$ |
 | 3 | Atmosphere, pointing, link budget; BB84/E91/decoy/MDI/twin-field; sources, detectors, NV node | reproduce Micius and Jinan-1 loss budgets; rates $\le$ PLOB |
 | 4 | Memories, purification, repeater chains, scheduling, SeQUeNCe adapter | chain beats direct past crossover; $T_{\rm mem}$ vs $2d/c$ |
@@ -279,7 +347,7 @@ Seven experiments that have **not** been done, each with a cheap version, are pr
 
 ---
 
-## 12. References
+## 13. References
 
 Every formula and default carries a `[bibkey]` in its docstring; the full BibTeX is in [`docs/references.bib`](docs/references.bib) plus two addition files. DOIs are linked only where they were verified against the publisher; entries marked *TODO* in the `.bib` files are not yet cited from code. Selected entries:
 
