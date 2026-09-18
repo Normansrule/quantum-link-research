@@ -23,6 +23,7 @@ Required memory time $\tau_{\rm mem}\gtrsim n\,\frac{L}{c}$ for generation-1 rep
 | ¹⁷¹Yb⁺ hyperfine | > 1 h | deterministic | 369 nm | Wang 2021 |
 
 ## Visual
+![repeater](../../docs/figures/repeater_rate_explorer.svg)
 ![light time](../../docs/figures/light_time_explorer.svg)
 
 ## Key papers

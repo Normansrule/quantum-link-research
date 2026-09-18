@@ -15,6 +15,10 @@ Every platform below is a real two-level system that satisfies, to some degree, 
 | Topological (Majorana) | parity of a pair of Majorana zero modes in a superconductor–semiconductor wire | 10–50 mK | topologically protected in theory | — | not demonstrated | 0 verified logical qubits | none | contested: see `../../experiments/lessons/` |
 | Bosonic (cat, GKP) | encoded state of a microwave cavity mode | 10–20 mK | ms | ~µs | bias-preserving | 1–10 | none | beyond-break-even QEC (2023) |
 
+![radar](../../docs/figures/modality_radar.svg)
+
+The radar is generated from [`modalities.json`](modalities.json); change the scores there and rerun `python -m qll.viz.modality_radar`.
+
 ## How to read the modality files
 Each file has the same sections: the physics of the two levels, the Hamiltonian, how the qubit is **built** (materials, fabrication, cryogenics, control chain), how it is **modeled** (what simulator, what noise model), what the **best published results** are, **what has failed** or is contested, and **what it means for a link** (photon interface, memory time versus light time).
 

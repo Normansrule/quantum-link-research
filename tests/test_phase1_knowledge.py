@@ -6,7 +6,7 @@ import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
 KNOW = ROOT / "learn"
-FILES = sorted(list((ROOT / "learn").rglob("*.md")) + list((ROOT / "experiments").rglob("*.md")) + list((ROOT / "research").rglob("*.md")))
+FILES = sorted(list((ROOT / "learn").rglob("*.md")) + list((ROOT / "experiments").rglob("*.md")) + list((ROOT / "research").rglob("*.md")) + list((ROOT / "youtube").rglob("*.md")))
 pytestmark = pytest.mark.phase1
 
 
@@ -22,7 +22,7 @@ def test_relative_links_resolve(path):
 @pytest.mark.parametrize("path", FILES, ids=lambda p: str(p.relative_to(ROOT)))
 def test_topic_files_cite_something(path):
     text = path.read_text(encoding="utf-8")
-    if path.name == "README.md" or path.name in {"01_state_of_the_art_timeline.md", "02_open_problems.md", "00_GLOSSARY.md", "00_MISCONCEPTIONS.md", "BACKLOG.md", "DESIGN_PROCESS.md", "INDEX.md", "_TEMPLATE.md"}:
+    if path.parent.name == "youtube" or path.name == "README.md" or path.name in {"01_state_of_the_art_timeline.md", "02_open_problems.md", "00_GLOSSARY.md", "00_MISCONCEPTIONS.md", "BACKLOG.md", "DESIGN_PROCESS.md", "INDEX.md", "_TEMPLATE.md", "NEXT_100.md"}:
         return  # synthesis files point into the topic files rather than citing directly
     assert re.search(r"\(\d{4}\)|\d{4}\)\.|Nature|Physical Review|arXiv|doi\.org", text), f"{path.name} has no references"
 

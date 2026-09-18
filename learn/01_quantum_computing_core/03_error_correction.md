@@ -14,6 +14,8 @@ $$p_L\approx A\left(\frac{p}{p_{\rm th}}\right)^{(d+1)/2},\qquad \Lambda=\frac{p
 "Below threshold" means $\Lambda>1$; Google's Willow reported $\Lambda\approx2.14$ from $d=3\to5\to7$ (2024). Knill–Laflamme condition for a code with projector $P$: $PE_a^\dagger E_bP=c_{ab}P$.
 
 ## Visual
+![surface code](../../docs/figures/surface_code_lattice.svg)
+
 ```mermaid
 flowchart LR
   D[data qubits] --> S[stabilizer measurements X-type / Z-type]

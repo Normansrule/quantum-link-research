@@ -1,5 +1,7 @@
 # experiments/ — build, measure, propose
 
+**Start with the three flagships**: [`flagship/README.md`](flagship/README.md) — F1 two computers in one city, F2 Earth to satellite, F3 Earth to Mars. Every protocol, landmark, and proposal below is a stage of one of them.
+
 Everything here involves hardware, a budget, a procedure, or a proposal. Theory lives in `../learn/`; unsettled science in `../research/`.
 
 ```mermaid
@@ -13,6 +15,7 @@ flowchart LR
 
 | Folder | What is in it | Start with |
 |---|---|---|
+| [`flagship/`](flagship/README.md) | the three experiments the whole repository serves, each staged simulate → bench → field with pass numbers | [`flagship/F1_earth_to_earth.md`](flagship/F1_earth_to_earth.md) |
 | [`bench/`](bench/hardware_guide.md) | the hardware guide: every part with a vendor link, three budget tiers ($500 weekend, $5–15k semester, turnkey), step-by-step accounts of how the NV and satellite experiments were run | [`bench/hardware_guide.md`](bench/hardware_guide.md) §5 |
 | [`protocols/`](protocols/README.md) | lab procedures you can follow line by line: ODMR on a $100 bench, pulsed NV control, SPDC Bell test, rooftop free-space link | [`protocols/P01_odmr_nv_bench.md`](protocols/P01_odmr_nv_bench.md) |
 | [`done/`](done/README.md) | ten experiments that made the field, each with Original · Physics · Simple recreation · What went wrong · Repo hook | [`done/04_odmr_nv.md`](done/04_odmr_nv.md) |

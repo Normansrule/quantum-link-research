@@ -25,6 +25,22 @@
 <h1>quantum-link-research · physics explorers</h1>
 <p class="muted">Every curve here is the same formula as the Python module named beside it; the Python version is the one the pytest suite validates, and the spot values shown in each panel can be checked against it in one line (see README, section "Apps"). Sliders are live.</p>
 
+
+<h2>0 · A qubit on the Bloch sphere: apply gates and watch it move — <code>qll/viz/bloch_sphere.py</code></h2>
+<p>\( |\psi\rangle=\cos\tfrac{\theta}{2}|0\rangle+e^{i\varphi}\sin\tfrac{\theta}{2}|1\rangle,\qquad \vec r=(\sin\theta\cos\varphi,\ \sin\theta\sin\varphi,\ \cos\theta) \)</p>
+<div class="card">
+  <svg id="p0" viewBox="0 0 640 360"></svg>
+  <div>
+    <label>θ <b id="thv"></b>°</label><input id="th" type="range" min="0" max="180" step="1" value="60">
+    <label>φ <b id="phv"></b>°</label><input id="ph" type="range" min="0" max="359" step="1" value="40">
+    <div style="margin:.5rem 0;display:flex;gap:.4rem;flex-wrap:wrap">
+      <button data-g="X">X</button><button data-g="Y">Y</button><button data-g="Z">Z</button><button data-g="H">H</button><button data-g="S">S</button><button data-g="T">T</button><button data-g="reset">reset |0⟩</button>
+    </div>
+    <div class="readout" id="r0"></div>
+    <p class="ref">Every gate is a rotation of the sphere; measurement in Z gives |0⟩ with probability cos²(θ/2). Nielsen &amp; Chuang (2010) ch. 1, 4.</p>
+  </div>
+</div>
+
 <h2>1 · The temperature hurdle — <code>qll/circuits/noise/thermal.py</code></h2>
 <p>\( \bar n(\omega,T)=\dfrac{1}{e^{\hbar\omega/k_BT}-1},\qquad T_1(T)=\dfrac{T_1(0)}{2\bar n+1},\qquad p_{\rm exc}=\dfrac{\bar n}{2\bar n+1} \)</p>
 <div class="card">
@@ -125,6 +141,36 @@ function draw4(){ const Q=+q.value/100; qv.textContent=(+q.value).toFixed(1);
   r4.innerHTML=`h₂(Q) = ${h2(Q).toFixed(4)}<br>r(Q) = ${bb84(Q).toFixed(4)}<br>${bb84(Q)>0?'secret key possible':'no secret key: abort'}`; }
 for(const [id,fn] of [['f1',draw1],['l1',draw1],['d',draw2],['w',draw2],['l',draw2],['d3',draw3],['q',draw4]]) document.getElementById(id).addEventListener('input',fn);
 draw1(); draw2(); draw3(); draw4();
+
+// ---- Bloch sphere with gates (state as complex amplitudes a|0>+b|1>) ----
+let st = {ar:1, ai:0, br:0, bi:0};
+const mulc=(x,y)=>[x[0]*y[0]-x[1]*y[1], x[0]*y[1]+x[1]*y[0]];
+const addc=(x,y)=>[x[0]+y[0], x[1]+y[1]];
+const GATES = {
+  X:[[[0,0],[1,0]],[[1,0],[0,0]]], Y:[[[0,0],[0,-1]],[[0,1],[0,0]]], Z:[[[1,0],[0,0]],[[0,0],[-1,0]]],
+  H:[[[Math.SQRT1_2,0],[Math.SQRT1_2,0]],[[Math.SQRT1_2,0],[-Math.SQRT1_2,0]]],
+  S:[[[1,0],[0,0]],[[0,0],[0,1]]], T:[[[1,0],[0,0]],[[0,0],[Math.SQRT1_2,Math.SQRT1_2]]]
+};
+function applyGate(g){ const M=GATES[g]; const a=[st.ar,st.ai], b=[st.br,st.bi];
+  const a2=addc(mulc(M[0][0],a),mulc(M[0][1],b)), b2=addc(mulc(M[1][0],a),mulc(M[1][1],b));
+  st={ar:a2[0],ai:a2[1],br:b2[0],bi:b2[1]}; stateToSliders(); draw0(); }
+function stateToSliders(){ const na=Math.hypot(st.ar,st.ai), nb=Math.hypot(st.br,st.bi);
+  const theta=2*Math.atan2(nb,na); let phi=Math.atan2(st.bi,st.br)-Math.atan2(st.ai,st.ar); phi=((phi%(2*Math.PI))+2*Math.PI)%(2*Math.PI);
+  th.value=Math.round(theta*180/Math.PI); ph.value=Math.round(phi*180/Math.PI)%360; }
+function slidersToState(){ const t=+th.value*Math.PI/180, f=+ph.value*Math.PI/180; st={ar:Math.cos(t/2),ai:0,br:Math.sin(t/2)*Math.cos(f),bi:Math.sin(t/2)*Math.sin(f)}; }
+function draw0(){ const t=+th.value*Math.PI/180, f=+ph.value*Math.PI/180; thv.textContent=th.value; phv.textContent=ph.value;
+  const r=[Math.sin(t)*Math.cos(f), Math.sin(t)*Math.sin(f), Math.cos(t)];
+  // simple oblique projection: x → right, y → depth, z → up
+  const P=(v)=>[320+150*(v[0]-0.45*v[1]), 180-150*(v[2]-0.35*v[1])];
+  let o=`<circle cx="320" cy="180" r="150" fill="none" stroke="var(--grid)"/>`;
+  o+=`<ellipse cx="320" cy="180" rx="150" ry="52" fill="none" stroke="var(--grid)" stroke-dasharray="4 3"/>`;
+  for(const [v,l] of [[[0,0,1],'|0⟩'],[[0,0,-1],'|1⟩'],[[1,0,0],'|+⟩'],[[0,1,0],'|+i⟩']]){ const q=P(v); o+=`<line x1="320" y1="180" x2="${q[0]}" y2="${q[1]}" stroke="var(--muted)" stroke-width="1"/><text x="${q[0]+6}" y="${q[1]-4}">${l}</text>`; }
+  const q=P(r); o+=`<line x1="320" y1="180" x2="${q[0]}" y2="${q[1]}" stroke="var(--accent)" stroke-width="3"/><circle cx="${q[0]}" cy="${q[1]}" r="6" fill="var(--accent)"/>`;
+  document.getElementById('p0').innerHTML=o;
+  r0.innerHTML=`Bloch vector r = (${r[0].toFixed(2)}, ${r[1].toFixed(2)}, ${r[2].toFixed(2)})<br>P(|0⟩) = cos²(θ/2) = ${(Math.cos(t/2)**2).toFixed(3)}<br>P(|1⟩) = ${(Math.sin(t/2)**2).toFixed(3)}<br>&lt;X&gt; = ${r[0].toFixed(3)}, &lt;Y&gt; = ${r[1].toFixed(3)}, &lt;Z&gt; = ${r[2].toFixed(3)}`; }
+th.addEventListener('input',()=>{slidersToState();draw0();}); ph.addEventListener('input',()=>{slidersToState();draw0();});
+document.querySelectorAll('button[data-g]').forEach(b=>b.addEventListener('click',()=>{ if(b.dataset.g==='reset'){st={ar:1,ai:0,br:0,bi:0}; stateToSliders();} else applyGate(b.dataset.g); draw0(); }));
+slidersToState(); draw0();
 </script>
 </body>
 </html>

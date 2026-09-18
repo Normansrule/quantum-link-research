@@ -1,0 +1,14 @@
+{
+  "axes": ["coherence", "gate fidelity", "gate speed", "qubit count", "photon interface", "warm operation", "maturity"],
+  "note": "Qualitative 1-5 scores from the comparison table in README.md (2024-2026 public results). Re-score when the table changes; the radar figure is generated from this file.",
+  "platforms": {
+    "Transmon": {"color": "#4c72b0", "scores": {"coherence": 3, "gate fidelity": 4, "gate speed": 5, "qubit count": 5, "photon interface": 1, "warm operation": 1, "maturity": 5}},
+    "Silicon spin": {"color": "#dd8452", "scores": {"coherence": 4, "gate fidelity": 4, "gate speed": 4, "qubit count": 2, "photon interface": 1, "warm operation": 2, "maturity": 3}},
+    "Diamond NV / SiV": {"color": "#55a868", "scores": {"coherence": 4, "gate fidelity": 3, "gate speed": 2, "qubit count": 2, "photon interface": 5, "warm operation": 4, "maturity": 4}},
+    "Trapped ion": {"color": "#c44e52", "scores": {"coherence": 5, "gate fidelity": 5, "gate speed": 2, "qubit count": 3, "photon interface": 4, "warm operation": 4, "maturity": 5}},
+    "Neutral atom": {"color": "#8172b2", "scores": {"coherence": 4, "gate fidelity": 4, "gate speed": 3, "qubit count": 5, "photon interface": 3, "warm operation": 4, "maturity": 4}},
+    "Photonic": {"color": "#937860", "scores": {"coherence": 5, "gate fidelity": 2, "gate speed": 5, "qubit count": 4, "photon interface": 5, "warm operation": 5, "maturity": 3}},
+    "Rare-earth memory": {"color": "#da8bc3", "scores": {"coherence": 5, "gate fidelity": 1, "gate speed": 1, "qubit count": 1, "photon interface": 5, "warm operation": 2, "maturity": 2}},
+    "Topological": {"color": "#8c8c8c", "scores": {"coherence": 1, "gate fidelity": 1, "gate speed": 1, "qubit count": 1, "photon interface": 1, "warm operation": 1, "maturity": 1}}
+  }
+}

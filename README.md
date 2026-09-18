@@ -13,12 +13,22 @@
 
 ![storyboard](docs/figures/overview_storyboard.svg)
 
+## The three experiments everything serves
+
+| F1 · two computers, one city | F2 · Earth ↔ satellite | F3 · Earth ↔ Mars |
+|---|---|---|
+| heralded entanglement and teleportation over 25 km of deployed fiber; herald round trip 0.25 ms | single-photon downlink from low Earth orbit; loss $10^{-6}$; one pass = one budget | the same protocol with a 6–45 minute classical round trip; memory must outlive it |
+| done in the field (2024); our version: P03 bench → campus fiber | done (Micius 2017, Jinan-1 2025); our version: budget reproduction → rooftop link | done nowhere; our version: delayed-bits bench, scheduling sim, fail-closed messenger |
+| [F1](experiments/flagship/F1_earth_to_earth.md) | [F2](experiments/flagship/F2_earth_to_satellite.md) | [F3](experiments/flagship/F3_earth_to_mars.md) |
+
+![flagships](docs/figures/flagship_overview.svg)
+
 ## Three doors
 
 | | [**learn/**](learn/README.md) — understand | [**experiments/**](experiments/README.md) — build | [**research/**](research/README.md) — push the frontier |
 |---|---|---|---|
 | **What** | 46 files from "why quantum" to how every kind of qubit is built | parts and budgets, 4 lab protocols, 10 landmark experiments with cheap recreations, 10 proposals | timeline, open problems, 10 frontier theories, the design process, the backlog |
-| **Start** | [three learning paths](learn/README.md#three-learning-paths) | [P01: ODMR on a $100 bench](experiments/protocols/P01_odmr_nv_bench.md) | [BACKLOG: what to work on next](research/thesis/BACKLOG.md) |
+| **Start** | [three learning paths](learn/README.md#three-learning-paths) | [P01: ODMR on a $100 bench](experiments/protocols/P01_odmr_nv_bench.md) | [BACKLOG](research/thesis/BACKLOG.md) · [NEXT_100](research/thesis/NEXT_100.md) |
 | **Rule** | settled physics only, every file cites | every step has a cost and a safety line | every claim has a year and a "verify by" |
 
 Around them sits **`qll/`**, the tested physics code, and **`docs/` + `systems/`**, the engineering record (equations, module cards, requirements, risks, traceability).
@@ -34,21 +44,29 @@ Around them sits **`qll/`**, the tested physics code, and **`docs/` + `systems/`
 5. **The memory must outlive the round trip.** 6–45 minutes to Mars and back; diamond lasts a minute, ions an hour, rare-earth crystals 13 hours at low efficiency. That gap is the thesis question. → [learn/03/03](learn/03_quantum_communication/03_repeaters_and_memories.md)
 6. **Everything is checked against an equation.** Every module cites a paper, every default traces to a requirement, every result has an analytic test on established simulators (Qiskit Aer, Stim, QuTiP, SeQUeNCe, Perceval). → [docs/physics_module_design.md](docs/physics_module_design.md)
 
+## Watch
+
+[`youtube/README.md`](youtube/README.md): verified video links per topic (3Blue1Brown, MinutePhysics, Veritasium, Qiskit, QuTech, Monroe, Lukin, Microsoft, Google), each mapped to the `learn/` file it accompanies.
+
 ## Turn the knobs
 
-**In the browser**, no install: **https://Normansrule.github.io/quantum-link-research/apps/** — four live panels (temperature, loss, light time vs memory, QBER).
+**In the browser**, no install: **https://Normansrule.github.io/quantum-link-research/apps/** — five live panels (Bloch sphere with gates, temperature, loss, light time vs memory, QBER).
 
 **On your machine**, matplotlib windows with sliders:
 ```bash
 conda env create -f environment.yml && conda activate qll
 python -m qll.viz.thermal_explorer      # also: link_loss_explorer, light_time_explorer, qkd_rate_explorer,
-python -m qll.viz.bloch_sphere          #       rabi_ramsey, transmon_levels, stack_map, overview_storyboard, repo_map
+python -m qll.viz.bloch_sphere          #       rabi_ramsey, transmon_levels, stack_map, overview_storyboard, repo_map,
+python -m qll.viz.repeater_rate_explorer#       flagship_overview, mars_light_time_cycle, modality_radar, surface_code_lattice
 python scripts/make_figures.py          # regenerate every figure in docs/figures/
 ```
 
 | ![](docs/figures/bloch_sphere.svg) | ![](docs/figures/rabi_ramsey.svg) |
 |---|---|
-| ![](docs/figures/link_loss_explorer.svg) | ![](docs/figures/light_time_explorer.svg) |
+| ![](docs/figures/repeater_rate_explorer.svg) | ![](docs/figures/mars_light_time_cycle.svg) |
+| ![](docs/figures/surface_code_lattice.svg) | ![](docs/figures/modality_radar.svg) |
+
+Every figure carries a "what to look for" note and is drawn by a function under test; `python scripts/make_figures.py` regenerates all 15.
 
 ## A 60-second tour of the numbers
 

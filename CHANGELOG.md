@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.3.0 — 2026-09-18 (flagships and understanding-first visuals)
+- `experiments/flagship/`: F1 Earth↔Earth (two computers, one city), F2 Earth↔satellite, F3 Earth↔Mars — each staged simulate → bench → field with pass numbers, requirements, and references; the README now leads with them.
+- Figures (each with a "what to look for" callout): `flagship_overview`, `repeater_rate_explorer` (chain vs direct, memory slider), `mars_light_time_cycle` (synodic cycle with conjunction), `modality_radar` (generated from `learn/02_qubit_modalities/modalities.json`), `surface_code_lattice`.
+- Browser app: Bloch-sphere panel with X/Y/Z/H/S/T gate buttons.
+- learn/: Micius link budget line by line, clock synchronization for quantum networks, deep-space optical communication (DSOC) as the classical half of F3.
+- NEXT_100 items implemented: 60, 62, 63, 96–100.
+
+## 0.2.1 — 2026-09-18 (videos and roadmap)
+- `youtube/README.md`: ~45 verified video links (searched and confirmed 2026-09-18) grouped by topic and mapped to `learn/` files; TU Delft qutube.nl bonuses; a "still missing" list.
+- `research/thesis/NEXT_100.md`: the next hundred additions by door.
+
 ## 0.2.0 — 2026-09-18 (repository redesign: three doors)
 - Structure: `knowledge/` split into `learn/` (settled physics, 3 learning paths, per-folder indexes), `experiments/` (bench guide moved here; new `protocols/` P01–P04 lab procedures with safety, parts, build, align, measure, analyze; `done/`, `proposed/`, `lessons/`; `_TEMPLATE.md`), and `research/` (`cutting_edge/` with a 2026 watchlist; `theories/` T01–T10 frontier ideas each with "what it would change for a Mars link"; `thesis/DESIGN_PROCESS.md` systems-engineering loop and decision record; `thesis/BACKLOG.md` what to work on next, by workstream).
 - README rewritten as a short visual front door (three doors table, storyboard, repo map figure, six sentences, knobs, 60-second numbers, phases); the equation-heavy content moved to `docs/physics_overview.md`; `START_HERE.md` added.
