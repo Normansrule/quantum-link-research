@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.5.0 — 2026-09-18 (Phase 2: circuits)
+- `qll/circuits`: `noise/_kraus_base.py` (CPTP-checked `KrausChannel` with Aer and QuTiP adapters, average gate fidelity), `fidelity.py` (Uhlmann, trace distance, Fuchs–van de Graaf), `bell.py` (four Bell states, Qiskit and Stim builders, Werner states, Schmidt coefficients, concurrence), `bell_measurement.py` (deterministic and linear-optics), `teleportation.py` (`TeleportationRecord` with a `SealedQubit` that cannot be opened before the `ClassicalMessage` arrives; Haar-averaged fidelity; (2f+1)/3), `entanglement_swapping.py` (heralded, Briegel recurrence verified), `chsh.py` (analytic and Stim-sampled with a declared `EntropySource`), `superdense_coding.py`, `ghz.py` (Stim to 10³ qubits), `tomography.py` (linear inversion + Smolin projection), `no_cloning_guard.py`; noise: depolarizing, amplitude damping, phase damping with QuTiP Lindblad cross-checks.
+- `qll/hardware/randomness.py`: `EntropySource` protocol, `NumpyPRNG` (labelled non-quantum), `SerialQrng` for the FPGA board, DI min-entropy from CHSH, SP 800-90B-style health checks.
+- Tests: 34 new (phase2), including the no-cloning reflection guard and the import-DAG check; traceability rows REQ-PHY-002/003, REQ-CIR-001..003, REQ-THM-002 → verified; new REQ-CAP-002 and REQ-SYS-002. `notebooks/01_circuits.ipynb`.
+- Thesis: `research/thesis/THESIS_OUTLINE.md` and `VERIFICATION_PLAN.md`.
+
 ## 0.4.0 — 2026-09-18 (website, simulations, reference database)
 - Website: `docs/index.html` + `docs/site.css` — a clean landing page for GitHub Pages with an animated Earth→relay→Mars hero (photons in motion, a draggable distance slider that updates the light time), animated Bloch precession, cards for Learn / Experiments / Simulations / Research / Youtube / References, and figure galleries; the explorers page restyled to match.
 - `simulations/`: S01 CHSH vs noise (Aer), S02 teleportation with light-time-delayed bits and a decaying memory (Aer + `ClassicalMessage` guard), S03 link-budget sweep, S04 repetition code in Stim (majority vote, Λ), S05 BB84 key per satellite pass vs background; each writes a figure and has a test asserting an analytic limit.

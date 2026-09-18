@@ -2,7 +2,7 @@
 
 Pick a row, open its links, do it, add the test, move the row to `CHANGELOG.md`. Difficulty: ★ an afternoon · ★★ a week · ★★★ a semester. Rows are grouped by workstream; within a group they are in dependency order.
 
-## Code — Phase 2 (circuits), in the order of `docs/physics_module_design.md` §11
+## Code — Phase 2 (circuits) — **done in 0.5.0** (C1–C9, C11); C10 remains
 
 | # | Task | Diff. | Read first | Verifies |
 |---|---|---|---|---|

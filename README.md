@@ -111,8 +111,8 @@ experiments/    build                                      qll/             test
 | Phase | Deliverable | Must pass | Status |
 |---|---|---|---|
 | 1 | constants, channels, thermal model, QKD theory, explorers, learn/experiments/research library | 180+ analytic and integrity tests | **done** |
-| 2 | Bell, teleportation, swapping, CHSH, fidelity, tomography, Kraus noise, no-cloning guard | $F_{\rm ideal}=1$; $F=(2f+1)/3$; $S=2\sqrt2$ | next → [BACKLOG C1–C11](research/thesis/BACKLOG.md) |
-| 3 | atmosphere, pointing, link budget; BB84/E91/decoy/MDI/TF; sources, detectors, NV node | reproduce Micius and Jinan-1 budgets; rates ≤ PLOB | |
+| 2 | Bell, teleportation, swapping, CHSH, fidelity, tomography, Kraus noise, no-cloning guard | $F_{\rm ideal}=1$; $F=(2f+1)/3$; $S=2\sqrt2$ | **done** |
+| 3 | atmosphere, pointing, link budget; BB84/E91/decoy/MDI/TF; sources, detectors, NV node | reproduce Micius and Jinan-1 budgets; rates ≤ PLOB | next → [BACKLOG C12–C14](research/thesis/BACKLOG.md) |
 | 4 | memories, purification, repeaters (memory-based and all-photonic), scheduling | chain beats direct; $T_{\rm mem}$ vs $2d/c$ | |
 | 5 | ephemeris, conjunction, spacecraft cryogenics, classical DSOC-class link | Earth–Mars availability vs constellation | |
 | 6 | ML-KEM + QKD hybrid, AES-GCM, fail-closed messenger over 20-minute latency | never blocks, never sends unkeyed | |
