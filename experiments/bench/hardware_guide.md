@@ -1,6 +1,6 @@
 # quantum-link-research: Hardware, Experiments, and Literature Guide
 
-Version 0.1 · 2026-09-16 · lives at `docs/hardware_and_experiments_guide.md`
+Version 0.1 · 2026-09-16 · lives at `experiments/bench/hardware_guide.md`
 Companion file: `docs/references_additions.bib` (new bibkeys used below; merge into `docs/references.bib`).
 
 This guide maps the six software phases of the repository onto (1) the physics each phase encodes, (2) the landmark experiments that established that physics in hardware, (3) what a student lab can actually build, at three budget tiers, with links to real vendors and open-source designs, and (4) experiments nobody has run yet that would move the Earth-Mars concept of operations (CONOPS) from Technology Readiness Level (TRL) 1-2 toward TRL 3-4.

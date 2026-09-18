@@ -3,5 +3,6 @@
 - 2026-09-16 Docs added: hardware/experiments guide, physics module design spec, bib additions.
 - 2026-09-16 Repository rebuilt from the handoff document on a fresh Ubuntu machine; 28 tests pass.
 - 2026-09-17 Environment gate passed on the owner's Ubuntu (WSL2) machine; all pins and heavy imports OK. Added qll.viz explorers, figures, browser app, visual README; 33 tests. Version 0.1.1.
-- 2026-09-17 Published to github.com/Normansrule/quantum-link-research (v0.1.1). Added knowledge/ curriculum (53 files), three qubit-physics figures, knowledge integrity tests; 143 tests. Version 0.1.2.
+- 2026-09-17 Published to github.com/Normansrule/quantum-link-research (v0.1.1). Added learn/ curriculum (53 files), three qubit-physics figures, knowledge integrity tests; 143 tests. Version 0.1.2.
 - 2026-09-18 0.1.3: deepened foundations (+13 knowledge files, glossary, misconceptions), engineering-layer files, storyboard figure, newcomer README introduction; 178 tests.
+- 2026-09-18 0.2.0: repository redesign into learn/ experiments/ research/; protocols P01–P04; theories T01–T10; DESIGN_PROCESS and BACKLOG; visual README front door; physics moved to docs/physics_overview.md.
