@@ -6,7 +6,7 @@ REQ-THM-001,Thermal occupation obeys Bose-Einstein limits at T=0 and high T,1,te
 REQ-THM-002,Generalized amplitude damping is trace preserving,1,tests/test_phase2_noise.py,verified
 REQ-THM-003,Memory coherence time is modeled as a function of temperature,4,TBD,planned
 REQ-CHN-001,Fiber transmittance follows 10^(-alpha L/10),1,tests/test_phase1_channels.py,verified
-REQ-CHN-002,Free-space geometric loss follows 1/L^2 in the far field,1,tests/test_phase1_channels.py,verified
+REQ-CHN-002,Free-space geometric loss follows the exact Gaussian-over-aperture law with 1/L^2 far-field limit,3,tests/test_phase3_links.py::test_exact_gaussian_reduces_to_far_field_and_near_field_limits,verified
 REQ-CIR-001,Ideal teleportation fidelity equals 1,2,tests/test_phase2_circuits.py::test_teleportation_ideal_fidelity_is_one,verified
 REQ-CIR-002,Noisy teleportation fidelity is compared with the 2/3 classical limit,2,tests/test_phase2_circuits.py::test_teleportation_werner_fidelity_matches_2f_plus_1_over_3,verified
 REQ-CIR-003,Ideal CHSH value equals 2*sqrt(2),2,tests/test_phase2_circuits.py::test_chsh_ideal_and_werner,verified
@@ -18,3 +18,4 @@ REQ-APP-001,The messenger fails closed on key exhaustion,6,TBD,planned
 REQ-SYS-001,No traceability row points at a non-existent test,1,tests/test_phase1_systems.py,verified
 REQ-CAP-002,Teleportation completes after a light-time-delayed classical channel (bench analogue: simulation S02),2,tests/test_simulations.py,verified
 REQ-SYS-002,No module imports upward in the physical stack (constants→channels→circuits→qkd→network→space→app),2,tests/test_phase2_dag.py,verified
+REQ-F2-001,Link-budget model reproduces the Micius two-downlink loss (64-82 dB) within 3 dB; Jinan-1 within 3 dB once exact figures are verified,3,tests/test_phase3_links.py::test_micius_two_downlink_loss_within_3db_of_reported,verified (Micius); Jinan-1 pending

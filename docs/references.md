@@ -9,7 +9,7 @@
 |---|---|---|
 | `lloyd1996` | Lloyd (1996). Universal quantum simulators. *Science*, 273, 1073--1078. [doi](https://doi.org/10.1126/science.273.5278.1073) | confident |
 | `bernstein1997` | Bernstein et al. (1997). Quantum complexity theory. *SIAM Journal on Computing*, 26, 1411--1473. [doi](https://doi.org/10.1137/S0097539796300921) | confident |
-| `wu2021sequence` | Wu et al. (2021). SeQUeNCe: a customizable discrete-event simulator of quantum networks. *Quantum Science and Technology*, 6, 045027. | TODO verify |
+| `wu2021sequence` | Wu et al. (2021). SeQUeNCe: a customizable discrete-event simulator of quantum networks. *Quantum Science and Technology*, 6, 045027. [arXiv](https://arxiv.org/abs/2009.12000) | TODO verify |
 
 ## Bell tests and nonlocality
 
@@ -97,7 +97,7 @@
 | `delange2010` | de Lange et al. (2010). Universal dynamical decoupling of a single solid-state spin from a spin bath. *Science*, 330, 60--63. [doi](https://doi.org/10.1126/science.1192739) | confident |
 | `magesan2011` | Magesan et al. (2011). Scalable and robust randomized benchmarking of quantum processes. *Physical Review Letters*, 106, 180504. [doi](https://doi.org/10.1103/PhysRevLett.106.180504) | confident |
 | `smolin2012` | Smolin et al. (2012). Efficient method for computing the maximum-likelihood quantum state from measurements with additive Gaussian noise. *Physical Review Letters*, 108, 070502. [doi](https://doi.org/10.1103/PhysRevLett.108.070502) | confident |
-| `gidney2021stim` | Gidney (2021). Stim: a fast stabilizer circuit simulator. *Quantum*, 5, 497. | TODO verify |
+| `gidney2021stim` | Gidney (2021). Stim: a fast stabilizer circuit simulator. *Quantum*, 5, 497. [arXiv](https://arxiv.org/abs/2103.02202) | TODO verify |
 
 ## Foundations and general
 
@@ -106,7 +106,7 @@
 | `bohm1951` | Bohm (1951). Quantum Theory. *Prentice-Hall*. | no DOI |
 | `jozsa1994` | Jozsa (1994). Fidelity for mixed quantum states. *Journal of Modern Optics*, 41, 2315--2323. [doi](https://doi.org/10.1080/09500349414552171) | confident |
 | `mandel1995` | Mandel et al. (1995). Optical Coherence and Quantum Optics. *Cambridge University Press*. | no DOI |
-| `kimble2008` | Kimble (2008). The quantum internet. *Nature*, 453, 1023--1030. | TODO verify |
+| `kimble2008` | Kimble (2008). The quantum internet. *Nature*, 453, 1023--1030. [arXiv](https://arxiv.org/abs/0806.4195) | TODO verify |
 | `bernien2013` | Bernien et al. (2013). Heralded entanglement between solid-state qubits separated by three metres. *Nature*, 497, 86--90. [doi](https://doi.org/10.1038/nature12016) | confident |
 | `ronnow2014` | R\onnow et al. (2014). Defining and detecting quantum speedup. *Science*, 345, 420--424. [doi](https://doi.org/10.1126/science.1252319) | confident |
 | `humphreys2018` | Humphreys et al. (2018). Deterministic delivery of remote entanglement on a quantum network. *Nature*, 558, 268--273. [doi](https://doi.org/10.1038/s41586-018-0200-5) | confident |
@@ -146,11 +146,11 @@
 | `bennett1995pa` | Bennett et al. (1995). Generalized privacy amplification. *IEEE Transactions on Information Theory*, 41, 1915--1923. [doi](https://doi.org/10.1109/18.476316) | confident |
 | `deutsch1996` | Deutsch et al. (1996). Quantum privacy amplification and the security of quantum cryptography over noisy channels. *Physical Review Letters*, 77, 2818--2821. [doi](https://doi.org/10.1103/PhysRevLett.77.2818) | confident |
 | `fuchs1999` | Fuchs et al. (1999). Cryptographic distinguishability measures for quantum-mechanical states. *IEEE Transactions on Information Theory*, 45, 1216--1227. [doi](https://doi.org/10.1109/18.761271) | confident |
-| `shor2000` | Shor et al. (2000). Simple proof of security of the BB84 quantum key distribution protocol. *Physical Review Letters*, 85, 441--444. | TODO verify |
+| `shor2000` | Shor et al. (2000). Simple proof of security of the BB84 quantum key distribution protocol. *Physical Review Letters*, 85, 441--444. [doi](https://doi.org/10.1103/PhysRevLett.85.441) | verified |
 | `grosshans2002` | Grosshans et al. (2002). Continuous variable quantum cryptography using coherent states. *Physical Review Letters*, 88, 057902. [doi](https://doi.org/10.1103/PhysRevLett.88.057902) | confident |
 | `hwang2003` | Hwang (2003). Quantum key distribution with high loss: toward global secure communication. *Physical Review Letters*, 91, 057901. [doi](https://doi.org/10.1103/PhysRevLett.91.057901) | confident |
 | `devetak2005` | Devetak et al. (2005). Distillation of secret key and entanglement from quantum states. *Proceedings of the Royal Society A*, 461, 207--235. [doi](https://doi.org/10.1098/rspa.2004.1372) | confident |
-| `lo2005` | Lo et al. (2005). Decoy state quantum key distribution. *Physical Review Letters*, 94, 230504. | TODO verify |
+| `lo2005` | Lo et al. (2005). Decoy state quantum key distribution. *Physical Review Letters*, 94, 230504. [arXiv](https://arxiv.org/abs/quant-ph/0411004) | TODO verify |
 | `lo2005efficient` | Lo et al. (2005). Efficient quantum key distribution scheme and a proof of its unconditional security. *Journal of Cryptology*, 18, 133--165. [doi](https://doi.org/10.1007/s00145-004-0142-y) | confident |
 | `ma2005` | Ma et al. (2005). Practical decoy state for quantum key distribution. *Physical Review A*, 72, 012326. [doi](https://doi.org/10.1103/PhysRevA.72.012326) | confident |
 | `renner2005` | Renner (2005). Security of quantum key distribution. **. | no DOI |
@@ -162,10 +162,10 @@
 | `scarani2009` | Scarani et al. (2009). The security of practical quantum key distribution. *Reviews of Modern Physics*, 81, 1301--1350. [doi](https://doi.org/10.1103/RevModPhys.81.1301) | confident |
 | `lydersen2010` | Lydersen et al. (2010). Hacking commercial quantum cryptography systems by tailored bright illumination. *Nature Photonics*, 4, 686--689. [doi](https://doi.org/10.1038/nphoton.2010.214) | confident |
 | `braunstein2012` | Braunstein et al. (2012). Side-channel-free quantum key distribution. *Physical Review Letters*, 108, 130502. [doi](https://doi.org/10.1103/PhysRevLett.108.130502) | confident |
-| `lo2012` | Lo et al. (2012). Measurement-device-independent quantum key distribution. *Physical Review Letters*, 108, 130503. | TODO verify |
+| `lo2012` | Lo et al. (2012). Measurement-device-independent quantum key distribution. *Physical Review Letters*, 108, 130503. [arXiv](https://arxiv.org/abs/1109.1473) | TODO verify |
 | `takeoka2014` | Takeoka et al. (2014). Fundamental rate-loss tradeoff for optical quantum key distribution. *Nature Communications*, 5, 5235. [doi](https://doi.org/10.1038/ncomms6235) | confident |
 | `bedington2017` | Bedington et al. (2017). Progress in satellite quantum key distribution. *npj Quantum Information*, 3, 30. [doi](https://doi.org/10.1038/s41534-017-0031-5) | verified |
-| `liao2017` | Liao et al. (2017). Satellite-to-ground quantum key distribution. *Nature*, 549, 43--47. | TODO verify |
+| `liao2017` | Liao et al. (2017). Satellite-to-ground quantum key distribution. *Nature*, 549, 43--47. [doi](https://doi.org/10.1038/nature23655) | verified |
 | `lucamarini2018` | Lucamarini et al. (2018). Overcoming the rate--distance limit of quantum key distribution without quantum repeaters. *Nature*, 557, 400--403. [doi](https://doi.org/10.1038/s41586-018-0066-6) | confident |
 | `pirandola2020` | Pirandola et al. (2020). Advances in quantum cryptography. *Advances in Optics and Photonics*, 12, 1012--1236. [doi](https://doi.org/10.1364/AOP.361502) | verified |
 | `polnik2020` | Polnik et al. (2020). Scheduling of space to ground quantum key distribution. *EPJ Quantum Technology*, 7, 3. | TODO verify |
@@ -193,8 +193,8 @@
 |---|---|---|
 | `massar1995` | Massar et al. (1995). Optimal extraction of information from finite quantum ensembles. *Physical Review Letters*, 74, 1259--1263. [doi](https://doi.org/10.1103/PhysRevLett.74.1259) | confident |
 | `shor1995` | Shor (1995). Scheme for reducing decoherence in quantum computer memory. *Physical Review A*, 52, R2493--R2496. [doi](https://doi.org/10.1103/PhysRevA.52.R2493) | confident |
-| `briegel1998` | Briegel et al. (1998). Quantum repeaters: the role of imperfect local operations in quantum communication. *Physical Review Letters*, 81, 5932--5935. | TODO verify |
-| `duan2001` | Duan et al. (2001). Long-distance quantum communication with atomic ensembles and linear optics. *Nature*, 414, 413--418. | TODO verify |
+| `briegel1998` | Briegel et al. (1998). Quantum repeaters: the role of imperfect local operations in quantum communication. *Physical Review Letters*, 81, 5932--5935. [arXiv](https://arxiv.org/abs/quant-ph/9803056) | TODO verify |
+| `duan2001` | Duan et al. (2001). Long-distance quantum communication with atomic ensembles and linear optics. *Nature*, 414, 413--418. [arXiv](https://arxiv.org/abs/quant-ph/0105105) | TODO verify |
 | `balasubramanian2009` | Balasubramanian et al. (2009). Ultralong spin coherence time in isotopically engineered diamond. *Nature Materials*, 8, 383--387. [doi](https://doi.org/10.1038/nmat2420) | confident |
 | `lvovsky2009` | Lvovsky et al. (2009). Optical quantum memory. *Nature Photonics*, 3, 706--714. [doi](https://doi.org/10.1038/nphoton.2009.231) | confident |
 | `sangouard2011` | Sangouard et al. (2011). Quantum repeaters based on atomic ensembles and linear optics. *Reviews of Modern Physics*, 83, 33--80. [doi](https://doi.org/10.1103/RevModPhys.83.33) | confident |
@@ -225,8 +225,8 @@
 |---|---|---|
 | `rabi1937` | Rabi (1937). Space quantization in a gyrating magnetic field. *Physical Review*, 51, 652--654. [doi](https://doi.org/10.1103/PhysRev.51.652) | confident |
 | `uhlmann1976` | Uhlmann (1976). The ``transition probability'' in the state space of a *-algebra. *Reports on Mathematical Physics*, 9, 273--279. [doi](https://doi.org/10.1016/0034-4877(76)90060-4) | confident |
-| `bourgoin2013` | Bourgoin et al. (2013). A comprehensive design and performance analysis of low Earth orbit satellite quantum communication. *New Journal of Physics*, 15, 023006. | TODO verify |
-| `yin2017` | Yin et al. (2017). Satellite-based entanglement distribution over 1200 kilometers. *Science*, 356, 1140--1144. | TODO verify |
+| `bourgoin2013` | Bourgoin et al. (2013). A comprehensive design and performance analysis of low Earth orbit satellite quantum communication. *New Journal of Physics*, 15, 023006. [doi](https://doi.org/10.1088/1367-2630/15/2/023006) | verified |
+| `yin2017` | Yin et al. (2017). Satellite-based entanglement distribution over 1200 kilometers. *Science*, 356, 1140--1144. [arXiv](https://arxiv.org/abs/1707.01339) | TODO verify |
 | `liao2018` | Liao et al. (2018). Satellite-relayed intercontinental quantum network. *Physical Review Letters*, 120, 030501. | TODO verify |
 | `avesani2021` | Avesani et al. (2021). Full daylight quantum-key-distribution at 1550 nm enabled by integrated silicon photonics. *npj Quantum Information*, 7, 93. | TODO verify |
 | `burt2021` | Burt et al. (2021). Demonstration of a trapped-ion atomic clock in space. *Nature*, 595, 43--47. [doi](https://doi.org/10.1038/s41586-021-03571-7) | confident |
@@ -275,7 +275,7 @@
 |---|---|---|
 | `bennett1993` | Bennett et al. (1993). Teleporting an unknown quantum state via dual classical and Einstein-Podolsky-Rosen channels. *Physical Review Letters*, 70, 1895--1899. [doi](https://doi.org/10.1103/PhysRevLett.70.1895) | confident |
 | `zukowski1993` | \.Zukowski et al. (1993). ``Event-ready-detectors'' Bell experiment via entanglement swapping. *Physical Review Letters*, 71, 4287--4290. [doi](https://doi.org/10.1103/PhysRevLett.71.4287) | confident |
-| `bennett1996` | Bennett et al. (1996). Purification of noisy entanglement and faithful teleportation via noisy channels. *Physical Review Letters*, 76, 722--725. | TODO verify |
+| `bennett1996` | Bennett et al. (1996). Purification of noisy entanglement and faithful teleportation via noisy channels. *Physical Review Letters*, 76, 722--725. [arXiv](https://arxiv.org/abs/quant-ph/9511027) | TODO verify |
 | `mattle1996` | Mattle et al. (1996). Dense coding in experimental quantum communication. *Physical Review Letters*, 76, 4656--4659. [doi](https://doi.org/10.1103/PhysRevLett.76.4656) | confident |
 | `bouwmeester1997` | Bouwmeester et al. (1997). Experimental quantum teleportation. *Nature*, 390, 575--579. [doi](https://doi.org/10.1038/37539) | confident |
 | `pan1998` | Pan et al. (1998). Experimental entanglement swapping: entangling photons that never interacted. *Physical Review Letters*, 80, 3891--3894. [doi](https://doi.org/10.1103/PhysRevLett.80.3891) | confident |
@@ -283,7 +283,7 @@
 | `calsamiglia2001` | Calsamiglia et al. (2001). Maximum efficiency of a linear-optical Bell-state analyzer. *Applied Physics B*, 72, 67--71. | TODO verify |
 | `pfaff2014` | Pfaff et al. (2014). Unconditional quantum teleportation between distant solid-state quantum bits. *Science*, 345, 532--535. [doi](https://doi.org/10.1126/science.1253512) | confident |
 | `pirandola2015tele` | Pirandola et al. (2015). Advances in quantum teleportation. *Nature Photonics*, 9, 641--652. [doi](https://doi.org/10.1038/nphoton.2015.154) | confident |
-| `ren2017` | Ren et al. (2017). Ground-to-satellite quantum teleportation. *Nature*, 549, 70--73. | TODO verify |
+| `ren2017` | Ren et al. (2017). Ground-to-satellite quantum teleportation. *Nature*, 549, 70--73. [arXiv](https://arxiv.org/abs/1707.00934) | TODO verify |
 | `hermans2022` | Hermans et al. (2022). Qubit teleportation between non-neighbouring nodes in a quantum network. *Nature*, 605, 663--668. [doi](https://doi.org/10.1038/s41586-022-04697-y) | verified |
 | `crogman2025` | TODO (2025). TODO (Majorana parity teleportation; authors, title, DOI unconfirmed). **. | no DOI |
 
@@ -339,7 +339,7 @@
 | `weedbrook2012` | Weedbrook et al. (2012). Gaussian quantum information. *Reviews of Modern Physics*, 84, 621--669. [doi](https://doi.org/10.1103/RevModPhys.84.621) | confident |
 | `georgescu2014` | Georgescu et al. (2014). Quantum simulation. *Reviews of Modern Physics*, 86, 153--185. [doi](https://doi.org/10.1103/RevModPhys.86.153) | confident |
 | `deschenes2016` | Desch\^enes et al. (2016). Synchronization of distant optical clocks at the femtosecond level. *Physical Review X*, 6, 021016. [doi](https://doi.org/10.1103/PhysRevX.6.021016) | confident |
-| `muralidharan2016` | Muralidharan et al. (2016). Optimal architectures for long distance quantum communication. *Scientific Reports*, 6, 20463. | TODO verify |
+| `muralidharan2016` | Muralidharan et al. (2016). Optimal architectures for long distance quantum communication. *Scientific Reports*, 6, 20463. [arXiv](https://arxiv.org/abs/1509.08435) | TODO verify |
 | `ipus2017` | Ipus et al. (2017). Implementation of a cost-efficient device for wireless photon coincidence detection. **. [arXiv](https://arxiv.org/abs/1706.04927) | verified |
 | `albash2018` | Albash et al. (2018). Adiabatic quantum computation. *Reviews of Modern Physics*, 90, 015002. [doi](https://doi.org/10.1103/RevModPhys.90.015002) | confident |
 | `nist800-90b` | Turan et al. (2018). Recommendation for the entropy sources used for random bit generation (SP 800-90B). **. [doi](https://doi.org/10.6028/NIST.SP.800-90B) | confident |
@@ -348,12 +348,12 @@
 | `bipm2019` | BIPM (2019). The International System of Units (SI). *\urlhttps://www.bipm.org/en/publications/si-brochure*. | no DOI |
 | `bruzewicz2019` | Bruzewicz et al. (2019). Trapped-ion quantum computing: progress and challenges. *Applied Physics Reviews*, 6, 021314. [doi](https://doi.org/10.1063/1.5088164) | confident |
 | `pant2019` | Pant et al. (2019). Routing entanglement in the quantum internet. *npj Quantum Information*, 5, 25. | TODO verify |
-| `lauk2020` | Lauk et al. (2020). Perspectives on quantum transduction. *Quantum Science and Technology*, 5, 020501. | TODO verify |
+| `lauk2020` | Lauk et al. (2020). Perspectives on quantum transduction. *Quantum Science and Technology*, 5, 020501. [arXiv](https://arxiv.org/abs/1910.04821) | TODO verify |
 | `mcardle2020` | McArdle et al. (2020). Quantum computational chemistry. *Reviews of Modern Physics*, 92, 015003. [doi](https://doi.org/10.1103/RevModPhys.92.015003) | confident |
 | `zhong2020jiuzhang` | Zhong et al. (2020). Quantum computational advantage using photons. *Science*, 370, 1460--1463. [doi](https://doi.org/10.1126/science.abe8770) | confident |
 | `coopmans2021netsquid` | Coopmans et al. (2021). NetSquid, a NETwork Simulator for QUantum Information using Discrete events. *Communications Physics*, 4, 164. | TODO verify |
 | `diadamo2021qunetsim` | DiAdamo et al. (2021). QuNetSim: a software framework for quantum networks. *IEEE Transactions on Quantum Engineering*, 2. | TODO verify |
-| `pompili2021` | Pompili et al. (2021). Realization of a multinode quantum network of remote solid-state qubits. *Science*, 372, 259--264. | TODO verify |
+| `pompili2021` | Pompili et al. (2021). Realization of a multinode quantum network of remote solid-state qubits. *Science*, 372, 259--264. [arXiv](https://arxiv.org/abs/2102.04471) | TODO verify |
 | `madsen2022` | Madsen et al. (2022). Quantum computational advantage with a programmable photonic processor. *Nature*, 606, 75--81. [doi](https://doi.org/10.1038/s41586-022-04725-x) | confident |
 | `nist2024fips203` | NIST (2024). Module-Lattice-Based Key-Encapsulation Mechanism Standard (FIPS 203). **. | TODO verify |
 | `google2025willow` | Google Quantum AI (2025). Quantum error correction below the surface code threshold. *Nature*, 638, 920--926. [doi](https://doi.org/10.1038/s41586-024-08449-y) | verified |

@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.6.0 — 2026-09-18 (Phase 3 part 1: links and hardware; reference verification)
+- `channels/free_space_diffraction.py`: exact Gaussian beam (Rayleigh range, w(L)) and the exact Gaussian-over-aperture transmittance; the old uniform-disc estimate kept as `_far_field` for teaching (it underestimates by 2×).
+- `channels/atmosphere.py` (Beer–Lambert with airmass, Fried parameter), `pointing_jitter.py`, `link_budget.py` (`LinkBudget` with per-factor breakdown, slant range, background QBER floor per gated pulse); published configurations `MICIUS_2017` and `JINAN1_2025`. The Micius two-downlink loss (64–82 dB) is reproduced within 3 dB → REQ-F2-001 (Micius part) verified.
+- `hardware/photon_source.py` (SPDC thermal statistics with numerically computed heralded g2 ≈ 2x, weak coherent Poisson with multiphoton fraction, single-emitter herald probabilities), `detector.py` (Si SPAD, InGaAs, SNSPD parameter sets), `beam_splitter.py` (unitary, HOM coincidence vs visibility and reflectivity, dip shape), `nv_node.py` (spin-1 Hamiltonian, exact ODMR lines, Purcell-enhanced herald rate, magnetometer sensitivity).
+- References: `shor2000`, `liao2017`, `bourgoin2013` verified against publisher pages; memory-recalled arXiv ids added to 13 entries with explicit TODO flags.
+- Tests: 304; REQ-CHN-002 tightened to the exact law.
+
 ## 0.5.0 — 2026-09-18 (Phase 2: circuits)
 - `qll/circuits`: `noise/_kraus_base.py` (CPTP-checked `KrausChannel` with Aer and QuTiP adapters, average gate fidelity), `fidelity.py` (Uhlmann, trace distance, Fuchs–van de Graaf), `bell.py` (four Bell states, Qiskit and Stim builders, Werner states, Schmidt coefficients, concurrence), `bell_measurement.py` (deterministic and linear-optics), `teleportation.py` (`TeleportationRecord` with a `SealedQubit` that cannot be opened before the `ClassicalMessage` arrives; Haar-averaged fidelity; (2f+1)/3), `entanglement_swapping.py` (heralded, Briegel recurrence verified), `chsh.py` (analytic and Stim-sampled with a declared `EntropySource`), `superdense_coding.py`, `ghz.py` (Stim to 10³ qubits), `tomography.py` (linear inversion + Smolin projection), `no_cloning_guard.py`; noise: depolarizing, amplitude damping, phase damping with QuTiP Lindblad cross-checks.
 - `qll/hardware/randomness.py`: `EntropySource` protocol, `NumpyPRNG` (labelled non-quantum), `SerialQrng` for the FPGA board, DI min-entropy from CHSH, SP 800-90B-style health checks.

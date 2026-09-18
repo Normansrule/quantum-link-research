@@ -10,3 +10,4 @@
 - 2026-09-18 0.3.0: flagship experiments F1–F3, five new figures, Bloch gate panel, three learn files; 254 tests.
 - 2026-09-18 0.4.0: website landing page with animations, simulations/ (5, tested), reference database (270), clean headings.
 - 2026-09-18 0.5.0: Phase 2 circuits complete with 34 tests; traceability updated; thesis outline and verification plan.
+- 2026-09-18 0.6.0: Phase 3 part 1 (exact beam, atmosphere, pointing, link budget reproducing Micius; sources, detectors, beam splitter, NV node); 3 DOIs verified; 304 tests.

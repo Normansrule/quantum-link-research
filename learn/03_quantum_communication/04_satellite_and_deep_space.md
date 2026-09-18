@@ -8,7 +8,7 @@
 - **Deep space**: NASA's Deep Space Quantum Link (DSQL) concept for lunar-distance and beyond quantum optical experiments; the Deep Space Optical Communications (DSOC) demonstration on Psyche (2023–2024) showed classical optical links at hundreds of Mbit/s from > 30 million km, which anchors the *classical* half of the Earth–Mars CONOPS. **TODO: add DSOC citation.**
 
 ## Equations
-$$\theta=\frac{\lambda}{\pi w_0},\qquad \eta_{\rm geo}\approx\left(\frac{D_{\rm rx}}{2\theta L}\right)^2,\qquad \eta_{\rm point}=\frac{w^2}{w^2+4\sigma_p^2L^2},\qquad Q_{\rm bg}\approx\frac{N\tau}{2(R\eta+N\tau)}$$
+$$\theta=\frac{\lambda}{\pi w_0},\qquad \eta_{\rm geo}=1-e^{-2r_{\rm rx}^2/w(L)^2}\approx\frac{2r_{\rm rx}^2}{(\theta L)^2},\qquad \eta_{\rm point}=\frac{w^2}{w^2+4\sigma_p^2L^2},\qquad Q_{\rm bg}\approx\frac{N\tau}{2(R\eta+N\tau)}$$
 At Mars opposition with $w_0=0.15$ m, $\lambda=810$ nm, $D_{\rm rx}=1$ m: spot radius ~100 km, $\eta_{\rm geo}\sim10^{-11}$; with a 10 m receiver and 1550 nm, still $\sim10^{-9}$. Pair sources at 10⁷–10⁸ pairs/s give at best ~1 detected pair per minute to hour: the link is possible in principle and starved in practice, which is why relays and memories are the only route.
 
 ## Visual

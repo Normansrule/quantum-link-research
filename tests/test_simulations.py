@@ -26,7 +26,7 @@ def test_s02_zero_delay_gives_unit_fidelity_and_guard_holds():
 def test_s03_fiber_and_free_space_limits():
     from s03_link_budget_sweep import fiber_rate, free_space_rate, R_SRC, ETA_OPT, ETA_DET
     assert math.isclose(fiber_rate(100), R_SRC * 0.01 * ETA_OPT * ETA_DET, rel_tol=1e-9)
-    assert free_space_rate(2e6, 0.15, 1.0) / free_space_rate(4e6, 0.15, 1.0) == pytest.approx(4.0, rel=1e-6)
+    assert free_space_rate(2e6, 0.15, 1.0) / free_space_rate(4e6, 0.15, 1.0) == pytest.approx(4.0, rel=0.03)
 
 
 def test_s04_repetition_code_below_threshold():

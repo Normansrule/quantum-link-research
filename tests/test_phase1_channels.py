@@ -18,13 +18,13 @@ def test_attenuation_length():
 
 
 def test_near_field_transmittance_is_one():
-    assert geometric_transmittance(1.0, 850e-9, 0.05, 0.3) == 1.0
+    assert geometric_transmittance(1.0, 850e-9, 0.05, 0.3) == pytest.approx(1.0, abs=1e-6)
 
 
 def test_far_field_inverse_square():
     eta1 = geometric_transmittance(1e6, 850e-9, 0.05, 0.3)
     eta2 = geometric_transmittance(2e6, 850e-9, 0.05, 0.3)
-    assert math.isclose(eta1 / eta2, 4.0, rel_tol=1e-9)
+    assert math.isclose(eta1 / eta2, 4.0, rel_tol=2e-3)   # exact Gaussian: 1/L^2 to first order in the far field
 
 
 def test_divergence_850nm_5cm_waist():

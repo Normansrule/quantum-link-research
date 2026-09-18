@@ -62,7 +62,7 @@ $$
 
 $$
 \theta=\frac{\lambda}{\pi w_0},\qquad w(L)\simeq\theta L,\qquad
-\eta_{\rm free}=\min\!\left(1,\Big(\frac{D_{\rm rx}}{2w}\Big)^{2}\right)\propto\frac{1}{L^{2}}
+\eta_{\rm free}=1-\exp\!\left(-\frac{2 r_{\rm rx}^{2}}{w(L)^{2}}\right)\;\xrightarrow{\ \text{far field}\ }\;\frac{2r_{\rm rx}^{2}}{w^{2}}\propto\frac{1}{L^{2}}
 $$
 
 Fiber loss is exponential; diffraction loss is only quadratic. That single fact is why satellites beat fiber past a few hundred kilometers [Bourgoin et al. 2013; Yin et al. 2017; [Bedington et al. 2017](https://doi.org/10.1038/s41534-017-0031-5)], and why any Earth–Mars link is optical and free-space.

@@ -11,9 +11,9 @@ import numpy as np
 from qll.qkd.key_rate import bb84_rate_per_sifted_bit
 
 
-def key_bits_per_pass(R_det: float, N_bg: float, tau: float = 1e-9, q_intrinsic: float = 0.01, T_pass: float = 300.0) -> float:
-    Q = q_intrinsic + N_bg * tau / (2 * (R_det + N_bg * tau) / max(R_det, 1e-30) * R_det + 1e-30) if R_det > 0 else 0.5
-    Q = min(0.5, q_intrinsic + (N_bg * tau) / (2 * (R_det + N_bg * tau)) * 2)  # fraction of gated clicks that are background, half wrong
+def key_bits_per_pass(R_det: float, N_bg: float, tau: float = 1e-9, q_intrinsic: float = 0.01, T_pass: float = 300.0, rep_rate: float = 1e8) -> float:
+    from qll.channels.link_budget import LinkBudget
+    Q = min(0.5, q_intrinsic + LinkBudget.qber_from_background(R_det, N_bg, tau, rep_rate))
     r = bb84_rate_per_sifted_bit(Q)
     return 0.5 * R_det * T_pass * r
 

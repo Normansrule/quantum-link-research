@@ -15,15 +15,15 @@ Pick a row, open its links, do it, add the test, move the row to `CHANGELOG.md`.
 | C7 | `entanglement_swapping.py`, `superdense_coding.py`, `ghz.py` (Stim), `tomography.py` | ★★ | learn 01/01 | REQ-PHY-003 groundwork |
 | C8 | No-cloning guard test over `qll.circuits` | ★ | learn 00/02 | REQ-PHY-003 |
 | C9 | Noisy-teleportation sweep vs temperature; `notebooks/01_circuits.ipynb`; CHANGELOG 0.2.0 | ★★ | C4, C5 | REQ-CIR-002 |
-| C10 | Exact Gaussian beam forms in `free_space_diffraction.py` | ★ | learn 03/04 | REQ-CHN-002 tightened |
+| C10 | ~~Exact Gaussian beam forms~~ done in 0.6.0 | ★ | learn 03/04 | REQ-CHN-002 verified |
 | C11 | `check_import_dag()` and `check_module_cards()` in `systems/traceability.py` | ★ | design spec §0 | new REQ-SYS-002 |
 
 ## Code — Phases 3 to 6 (after Phase 2 lands)
 | # | Task | Diff. | Read first |
 |---|---|---|---|
-| C12 | `channels/atmosphere.py`, `pointing_jitter.py`, `link_budget.py`; reproduce Micius and Jinan-1 budgets | ★★ | learn 03/04, done/09 |
+| C12 | ~~atmosphere, pointing, link budget; Micius reproduced within 3 dB~~ done in 0.6.0; Jinan-1 exact figures still to verify | ★★ | learn 03/04, done/09 |
 | C13 | `qkd/bb84.py`, `e91.py`, `decoy_state.py`, `mdi.py`, `twin_field.py`, post-processing as `ClassicalMessage` rounds | ★★★ | learn 03/01 |
-| C14 | `hardware/photon_source.py`, `detector.py`, `beam_splitter.py`, `nv_node.py`, Perceval adapter | ★★ | learn 00/12, 02/03, 02/06 |
+| C14 | ~~photon_source, detector, beam_splitter, nv_node~~ done in 0.6.0; Perceval adapter remains | ★★ | learn 00/12, 02/03, 02/06 |
 | C15 | `network/memory_decoherence.py` with the memory table (time *and* efficiency); `REQ-CAP-001` figure | ★★ | learn 03/03 |
 | C16 | `network/purification.py`, `swapping_scheduler.py`, `repeater_chain.py` with a photonic-node variant (T02) | ★★★ | learn 03/03, T02, T08 |
 | C17 | `qll/space/`: ephemeris (Horizons), conjunction, platform thermal (cryocooler table), classical link (T06) | ★★★ | learn 02/10, T05, T06 |
