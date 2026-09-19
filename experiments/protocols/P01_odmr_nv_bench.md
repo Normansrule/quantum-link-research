@@ -22,6 +22,8 @@ Fluorescent microdiamond (Adámas, ~150 µm, NV-rich) · green laser module or L
 8. Bring the magnet within a few centimetres; the dip splits into up to eight lines (four NV orientations × two transitions).
 
 ## Analyze
+Save the sweep as `data/odmr/YYYY-MM-DD_<setup>_<run>.csv` with columns `frequency_hz,signal` and a sidecar `.json` (see `data/README.md`), then run `python -m qll.analysis.odmr_report data/odmr/<file>.csv`. It fits the Lorentzians, prints $D$, $B_\parallel$, width, contrast, sensitivity, and the residual, flags a $D$ that disagrees with 2.870 GHz corrected by −74 kHz/K to your temperature, and writes the figure. The pipeline is tested on synthetic spectra (`tests/test_analysis_odmr.py`) so a bad fit means bad data, not bad code.
+
 9. Fit dips to Lorentzians; extract centre frequencies $f_\pm$. With the field along one NV axis, $f_\pm=D\pm\gamma_eB_\parallel$ with $\gamma_e/2\pi=2.8$ MHz/G, so $B_\parallel=(f_+-f_-)/(2\gamma_e)$.
 10. Record contrast $C$, photon rate $R$, linewidth; compute the DC magnetometer sensitivity $\eta_B\approx\frac{\Delta f}{\gamma_eC\sqrt R}$ (`learn/01_quantum_computing_core/06`).
 11. Compare with `qll/hardware/nv_node.py` parameters (Phase 3) and log the run.

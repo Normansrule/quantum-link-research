@@ -50,6 +50,10 @@ Around them sits **`qll/`**, the tested physics code, and **`docs/` + `systems/`
 
 [**Youtube**](youtube/README.md): verified video links per topic (3Blue1Brown, MinutePhysics, Veritasium, Qiskit, QuTech, Monroe, Lukin, Microsoft, Google), each mapped to the `learn/` file it accompanies.
 
+## Data
+
+[`data/`](data/README.md): where measurements go, one CSV per run with a JSON sidecar; `python -m qll.analysis.odmr_report <file>` fits the P01 spectrum and compares it with the tested NV model. A synthetic example is included so the pipeline is proven before the bench exists.
+
 ## Simulations
 
 [`simulations/`](simulations/README.md): five runnable, tested simulations that predict what each flagship bench must reproduce — CHSH vs noise (Aer), teleportation with light-time-delayed bits, the link budget sweep, a repetition code in Stim, key per satellite pass.

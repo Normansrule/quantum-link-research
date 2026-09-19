@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.10.1 — 2026-09-19 (bench-data scaffold)
+- `qll/analysis/odmr_fit.py` (multi-Lorentzian fit, D and B_∥ extraction, sensitivity, temperature-corrected D check, synthetic spectra) and `odmr_report.py` (CLI: fit, print, flag, figure); `data/` with README, naming and sidecar conventions, and a synthetic example; tests recover D to 0.5 MHz and B to 0.5 G.
+
 ## 0.10.0 — 2026-09-18 (Phase 6: application layer; all six phases implemented)
 - `qll/app/hybrid_kem.py`: ML-KEM-768 (kyber-py, FIPS 203) combined with a QKD share through HKDF; one exchange costs one classical round trip.
 - `qll/app/aes_gcm_layer.py`: AES-256-GCM with counter nonces bound to a key id, replay rejection, tamper detection, and a per-key message budget.
