@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.10.2 — 2026-09-19 (citation integrity)
+- `tests/test_citations.py`: every `[bibkey]` cited in a `qll` docstring must exist in the BibTeX files, and braces must balance. The check found seven keys cited from code without entries (Holevo-capacity papers, GLLP, JPL mean elements, Planck/JWST/ADR coolers, DSOC); all added, `giovannetti2004` verified against the publisher record. 281 entries.
+
 ## 0.10.1 — 2026-09-19 (bench-data scaffold)
 - `qll/analysis/odmr_fit.py` (multi-Lorentzian fit, D and B_∥ extraction, sensitivity, temperature-corrected D check, synthetic spectra) and `odmr_report.py` (CLI: fit, print, flag, figure); `data/` with README, naming and sidecar conventions, and a synthetic example; tests recover D to 0.5 MHz and B to 0.5 G.
 
