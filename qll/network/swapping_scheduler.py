@@ -24,7 +24,7 @@ def expected_max_of_two_geometric(p: float) -> float:
         return 1.0
     if p <= 0.0:
         return float("inf")
-    return 2 / p - 1 / (1 - (1 - p) ** 2)
+    return 2 / p - 1 / (p * (2 - p))   # 1 - (1-p)^2 = p(2-p), written stably for tiny p
 
 
 def nested_expected_time_s(L_m: float, n_levels: int, p0: float, p_swap: float, fiber_index: float = 1.47) -> float:

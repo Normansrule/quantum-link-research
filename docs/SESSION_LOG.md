@@ -13,3 +13,4 @@
 - 2026-09-18 0.6.0: Phase 3 part 1 (exact beam, atmosphere, pointing, link budget reproducing Micius; sources, detectors, beam splitter, NV node); 3 DOIs verified; 304 tests.
 - 2026-09-18 0.7.0: Phase 3 part 2, QKD protocol family; REQ-QKD-002 verified; 312 tests.
 - 2026-09-18 0.8.0: Phase 4 memories, purification, scheduling, repeater chain, routing; REQ-NET-001 and REQ-CAP-001 verified; 331 tests.
+- 2026-09-18 0.9.0: Phase 5 space segment; REQ-SPC-001..003; 338 tests.

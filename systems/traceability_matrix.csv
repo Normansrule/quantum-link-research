@@ -19,3 +19,6 @@ REQ-SYS-001,No traceability row points at a non-existent test,1,tests/test_phase
 REQ-CAP-002,Teleportation completes after a light-time-delayed classical channel (bench analogue: simulation S02),2,tests/test_simulations.py,verified
 REQ-SYS-002,No module imports upward in the physical stack (constants→channels→circuits→qkd→network→space→app),2,tests/test_phase2_dag.py,verified
 REQ-F2-001,Link-budget model reproduces the Micius two-downlink loss (64-82 dB) within 3 dB; Jinan-1 within 3 dB once exact figures are verified,3,tests/test_phase3_links.py::test_micius_two_downlink_loss_within_3db_of_reported,verified (Micius); Jinan-1 pending
+REQ-SPC-001,Earth-Mars range envelope from the ephemeris matches the constants within 1 % and the light-time bounds 3.0-3.2 and 22.0-22.6 min,5,tests/test_phase5_space.py::test_range_envelope_matches_constants,verified
+REQ-SPC-002,Solar-conjunction blackouts recur once per synodic period with 2-3 week duration at SEP < 3 deg and an L4/L5 relay keeps availability above 99.9 %,5,tests/test_phase5_space.py::test_relays_raise_availability_and_l4_geometry,verified
+REQ-SPC-003,Memory operating temperature and heat load are checked against flown cooler classes,5,tests/test_phase5_space.py::test_platform_thermal_table,verified

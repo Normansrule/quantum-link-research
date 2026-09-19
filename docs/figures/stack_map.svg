@@ -6,7 +6,7 @@
   <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
    <cc:Work>
     <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
-    <dc:date>2026-09-18T20:43:12.512244</dc:date>
+    <dc:date>2026-09-18T20:49:16.542174</dc:date>
     <dc:format>image/svg+xml</dc:format>
     <dc:creator>
      <cc:Agent>
@@ -35,7 +35,7 @@ L 603.771429 105.666263
 L 603.771429 73.007474 
 L 7.2 73.007474 
 z
-" clip-path="url(#pf4d8435264)" style="fill: #1f77b4; opacity: 0.08; stroke: #1f77b4; stroke-linejoin: miter"/>
+" clip-path="url(#pfdcdbdfe1f)" style="fill: #1f77b4; opacity: 0.08; stroke: #1f77b4; stroke-linejoin: miter"/>
    </g>
    <g id="patch_3">
     <path d="M 7.2 149.211315 
@@ -43,7 +43,7 @@ L 603.771429 149.211315
 L 603.771429 116.552526 
 L 7.2 116.552526 
 z
-" clip-path="url(#pf4d8435264)" style="fill: #1f77b4; opacity: 0.13; stroke: #1f77b4; stroke-linejoin: miter"/>
+" clip-path="url(#pfdcdbdfe1f)" style="fill: #1f77b4; opacity: 0.13; stroke: #1f77b4; stroke-linejoin: miter"/>
    </g>
    <g id="patch_4">
     <path d="M 7.2 192.756367 
@@ -51,7 +51,7 @@ L 603.771429 192.756367
 L 603.771429 160.097578 
 L 7.2 160.097578 
 z
-" clip-path="url(#pf4d8435264)" style="fill: #1f77b4; opacity: 0.18; stroke: #1f77b4; stroke-linejoin: miter"/>
+" clip-path="url(#pfdcdbdfe1f)" style="fill: #1f77b4; opacity: 0.18; stroke: #1f77b4; stroke-linejoin: miter"/>
    </g>
    <g id="patch_5">
     <path d="M 7.2 236.301419 
@@ -59,7 +59,7 @@ L 603.771429 236.301419
 L 603.771429 203.64263 
 L 7.2 203.64263 
 z
-" clip-path="url(#pf4d8435264)" style="fill: #1f77b4; opacity: 0.23; stroke: #1f77b4; stroke-linejoin: miter"/>
+" clip-path="url(#pfdcdbdfe1f)" style="fill: #1f77b4; opacity: 0.23; stroke: #1f77b4; stroke-linejoin: miter"/>
    </g>
    <g id="patch_6">
     <path d="M 7.2 279.846471 
@@ -67,7 +67,7 @@ L 603.771429 279.846471
 L 603.771429 247.187682 
 L 7.2 247.187682 
 z
-" clip-path="url(#pf4d8435264)" style="fill: #1f77b4; opacity: 0.28; stroke: #1f77b4; stroke-linejoin: miter"/>
+" clip-path="url(#pfdcdbdfe1f)" style="fill: #1f77b4; opacity: 0.28; stroke: #1f77b4; stroke-linejoin: miter"/>
    </g>
    <g id="text_1">
     <!-- Level 0  qubit &amp; photon -->
@@ -3280,7 +3280,7 @@ z
   </g>
  </g>
  <defs>
-  <clipPath id="pf4d8435264">
+  <clipPath id="pfdcdbdfe1f">
    <rect x="7.2" y="66.475716" width="626.4" height="222.079765"/>
   </clipPath>
  </defs>

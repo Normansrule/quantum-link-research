@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.9.0 — 2026-09-18 (Phase 5: space segment)
+- `qll/space/ephemeris.py`: Kepler mean-element orbits for Earth and Mars (Newton solver for Kepler's equation, verified perihelion/aphelion radii), range and light time versus time, synodic period 779.9 d, range envelope matching `constants/astro` to 1 % (closes that TODO to the mean-element level); Horizons CSV loader.
+- `qll/space/conjunction.py`: Sun–Earth–Mars angle, blackout windows at a SEP threshold (≈ once per synodic period, ~20 days at 3°), availability.
+- `qll/space/relay_constellation.py`: relays in Earth orbit, Sun–Earth L4/L5, Mars orbit; per-leg range and SEP; long-leg pair yield from the diffraction law; short-leg log-normal pass yields (Jinan-1-shaped, TODO fit); constellation availability (L4/L5 keep > 99.9 % through conjunction).
+- `qll/space/platform_thermal.py`: flown cooler classes with realistic cooling power (tens of mW at 4–6 K, µW at 50–100 mK; no flown dilution refrigerator); `flyable(T, heat_load)`.
+- `qll/space/classical_link.py`: Holevo capacity of the pure-loss channel, DSOC-class received photon rate and PPM data rate with the terminal's rate cap (tens of Mb/s beyond 2 au reproduced).
+- `qll/viz/relay_constellation_explorer.py`; `mars_light_time_cycle` now uses the Kepler ephemeris.
+- Requirements REQ-SPC-001..003 added and verified; tests 338; verified 20 of 23.
+
 ## 0.8.0 — 2026-09-18 (Phase 4: memories and repeaters)
 - `network/memory_decoherence.py`: memory table (six demonstrated platforms with lifetime, efficiency, temperature, wavelength, bibkey), exact stored-pair channel from the Phase 2 Kraus maps, closed-form fractions for depolarizing and dephasing memories (the dephasing result $f_\infty=(2f_0+1)/6$ corrected during verification), crossover times, and the REQ-CAP-001 capability matrix against six baselines.
 - `network/purification.py`: BBPSSW recurrence and a full 16×16 numerical BBPSSW (bilateral CNOT + post-selection) agreeing to 1e-12; rounds-to-target and pair cost; classical time per round.
