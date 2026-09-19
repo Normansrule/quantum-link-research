@@ -14,7 +14,7 @@ REQ-QKD-001,BB84 secret-key rate reaches zero at QBER 11%,1,tests/test_phase1_qk
 REQ-QKD-002,All repeaterless QKD rates are bounded by the PLOB capacity,3,tests/test_phase3_qkd.py::test_all_repeaterless_rates_below_plob,verified
 REQ-NET-001,A repeater chain beats direct transmission beyond a crossover distance that depends on memory time,4,tests/test_phase4_network.py::test_repeater_chain_crossover_exists_and_depends_on_memory,verified
 REQ-CAP-001,Each demonstrated memory is compared against the classical round trip of each baseline (metro to Mars max),4,tests/test_phase4_network.py::test_capability_matrix_req_cap_001,verified
-REQ-APP-001,The messenger fails closed on key exhaustion,6,TBD,planned
+REQ-APP-001,The messenger refuses to send when the QKD key buffer is empty (never downgrades) and cannot deliver before d/c,6,tests/test_phase6_app.py::test_messenger_fails_closed_and_respects_light_time,verified
 REQ-SYS-001,No traceability row points at a non-existent test,1,tests/test_phase1_systems.py,verified
 REQ-CAP-002,Teleportation completes after a light-time-delayed classical channel (bench analogue: simulation S02),2,tests/test_simulations.py,verified
 REQ-SYS-002,No module imports upward in the physical stack (constants→channels→circuits→qkd→network→space→app),2,tests/test_phase2_dag.py,verified
@@ -22,3 +22,4 @@ REQ-F2-001,Link-budget model reproduces the Micius two-downlink loss (64-82 dB) 
 REQ-SPC-001,Earth-Mars range envelope from the ephemeris matches the constants within 1 % and the light-time bounds 3.0-3.2 and 22.0-22.6 min,5,tests/test_phase5_space.py::test_range_envelope_matches_constants,verified
 REQ-SPC-002,Solar-conjunction blackouts recur once per synodic period with 2-3 week duration at SEP < 3 deg and an L4/L5 relay keeps availability above 99.9 %,5,tests/test_phase5_space.py::test_relays_raise_availability_and_l4_geometry,verified
 REQ-SPC-003,Memory operating temperature and heat load are checked against flown cooler classes,5,tests/test_phase5_space.py::test_platform_thermal_table,verified
+REQ-APP-002,Hybrid ML-KEM + QKD session keys agree on both ends and depend on both inputs,6,tests/test_phase6_app.py::test_hybrid_kem_both_sides_agree_and_depend_on_both_inputs,verified

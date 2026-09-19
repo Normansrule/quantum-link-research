@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.10.0 — 2026-09-18 (Phase 6: application layer; all six phases implemented)
+- `qll/app/hybrid_kem.py`: ML-KEM-768 (kyber-py, FIPS 203) combined with a QKD share through HKDF; one exchange costs one classical round trip.
+- `qll/app/aes_gcm_layer.py`: AES-256-GCM with counter nonces bound to a key id, replay rejection, tamper detection, and a per-key message budget.
+- `qll/app/messenger.py`: `KeyBuffer` refilled at the physical key rate, `Messenger` that establishes hybrid sessions, transports every envelope as a `ClassicalMessage`, and **refuses to send when the QKD buffer is empty** (REQ-APP-001 verified); buffer sizing rule for a round trip of unacknowledged traffic.
+- `qll/app/benchmark.py`: the three honest numbers (key per day, round trip, refusals) from a simulated conversation; `qll/viz/messenger_latency.py`.
+- Requirements REQ-APP-001 and REQ-APP-002 verified: 22 of 24. Tests 343.
+
 ## 0.9.0 — 2026-09-18 (Phase 5: space segment)
 - `qll/space/ephemeris.py`: Kepler mean-element orbits for Earth and Mars (Newton solver for Kepler's equation, verified perihelion/aphelion radii), range and light time versus time, synodic period 779.9 d, range envelope matching `constants/astro` to 1 % (closes that TODO to the mean-element level); Horizons CSV loader.
 - `qll/space/conjunction.py`: Sun–Earth–Mars angle, blackout windows at a SEP threshold (≈ once per synodic period, ~20 days at 3°), availability.

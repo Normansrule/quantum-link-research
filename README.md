@@ -112,10 +112,10 @@ experiments/    build                                      qll/             test
 |---|---|---|---|
 | 1 | constants, channels, thermal model, QKD theory, explorers, learn/experiments/research library | 180+ analytic and integrity tests | **done** |
 | 2 | Bell, teleportation, swapping, CHSH, fidelity, tomography, Kraus noise, no-cloning guard | $F_{\rm ideal}=1$; $F=(2f+1)/3$; $S=2\sqrt2$ | **done** |
-| 3 | atmosphere, pointing, link budget; BB84/E91/decoy/MDI/TF; sources, detectors, NV node | reproduce Micius and Jinan-1 budgets; rates ≤ PLOB | next → [BACKLOG C12–C14](research/thesis/BACKLOG.md) |
-| 4 | memories, purification, repeaters (memory-based and all-photonic), scheduling | chain beats direct; $T_{\rm mem}$ vs $2d/c$ | |
-| 5 | ephemeris, conjunction, spacecraft cryogenics, classical DSOC-class link | Earth–Mars availability vs constellation | |
-| 6 | ML-KEM + QKD hybrid, AES-GCM, fail-closed messenger over 20-minute latency | never blocks, never sends unkeyed | |
+| 3 | atmosphere, pointing, link budget; BB84/E91/decoy/MDI/TF; sources, detectors, NV node | Micius reproduced within 3 dB; rates ≤ PLOB | **done** |
+| 4 | memories, purification, repeaters (memory-based and all-photonic), scheduling, routing | chain beats direct; $T_{\rm mem}$ vs $2d/c$ | **done** |
+| 5 | Kepler ephemeris, conjunction, relay constellations, flown coolers, DSOC-class classical link | envelope within 1 %; L4/L5 > 99.9 % availability | **done** |
+| 6 | ML-KEM + QKD hybrid, AES-GCM, fail-closed messenger, benchmark | never sends unkeyed; buffer sizing rule | **done** (SeQUeNCe/Perceval adapters, Jinan-1 fit, bench data remain) |
 
 ## Install
 

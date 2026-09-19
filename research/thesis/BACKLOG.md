@@ -27,7 +27,7 @@ Pick a row, open its links, do it, add the test, move the row to `CHANGELOG.md`.
 | C15 | ~~memory_decoherence with the memory table; REQ-CAP-001 figure~~ done in 0.8.0 | ★★ | learn 03/03 |
 | C16 | ~~purification, swapping_scheduler, repeater_chain (memory + all-photonic), routing~~ done in 0.8.0; SeQUeNCe adapter remains | ★★★ | learn 03/03, T02, T08 |
 | C17 | ~~qll/space: Kepler ephemeris, conjunction, relay constellation, platform thermal, classical link~~ done in 0.9.0; Horizons CSV loader present, relativistic corrections and Jinan-1 fit remain | ★★★ | learn 02/10, T05, T06 |
-| C18 | `app/`: hybrid KEM, AES-GCM, fail-closed messenger through `DelayQueue` (E5) | ★★ | learn 03/01, E5 |
+| C18 | ~~hybrid KEM, AES-GCM, fail-closed messenger, benchmark~~ done in 0.10.0 (E5 cheap version) | ★★ | learn 03/01, E5 |
 
 ## Bench
 | # | Task | Diff. | Cost | Protocol |

@@ -8,7 +8,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 FIGS = ["thermal_explorer", "link_loss_explorer", "light_time_explorer", "qkd_rate_explorer", "stack_map",
         "bloch_sphere", "rabi_ramsey", "transmon_levels", "overview_storyboard", "repo_map",
-        "flagship_overview", "repeater_rate_explorer", "mars_light_time_cycle", "modality_radar", "surface_code_lattice", "qkd_protocols_explorer", "memory_crossover", "relay_constellation_explorer"]
+        "flagship_overview", "repeater_rate_explorer", "mars_light_time_cycle", "modality_radar", "surface_code_lattice", "qkd_protocols_explorer", "memory_crossover", "relay_constellation_explorer", "messenger_latency"]
 
 if __name__ == "__main__":
     (ROOT / "docs" / "figures").mkdir(parents=True, exist_ok=True)
