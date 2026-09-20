@@ -1,0 +1,21 @@
+# Chapter 2 — Background (draft, condensed from `learn/`)
+
+## 2.1 Qubits, noise, and temperature
+
+A qubit is a two-level quantum system: a unit vector cos(θ/2)|0⟩ + e^{iφ} sin(θ/2)|1⟩, a point on the Bloch sphere. Noise moves that point inward: energy relaxation with time constant T₁ pulls it toward the ground state, and dephasing with time constant T₂ blurs its azimuth, with 1/T₂ = 1/(2T₁) + 1/T_φ. Both are completely positive trace-preserving maps with Kraus representations (Kraus, 1983; Nielsen & Chuang, 2010), and both depend on temperature through the Bose–Einstein occupation n̄ = 1/(e^{ħω/k_BT} − 1) of the bath at the qubit's frequency (Clerk et al., 2010). The occupation is the quantity that decides where every component of a link must operate: a 5 GHz superconducting qubit requires millikelvin temperatures, while a 193 THz photon is effectively at zero temperature in a room. Full treatment: `learn/00_foundations/03`, `06`, `08`–`12`.
+
+## 2.2 Entanglement, Bell tests, and the limits that hold everywhere
+
+Two qubits can share a Bell state whose correlations violate the Clauser–Horne–Shimony–Holt (CHSH) inequality, S ≤ 2 for any local model, up to the quantum maximum 2√2 (Clauser et al., 1969; Brunner et al., 2014). Three theorems constrain what entanglement can do and are enforced as invariants in this work: no unknown state can be copied (Wootters & Zurek, 1982); no local operation on one half of a pair changes the statistics of the other half, so entanglement alone carries no message (Ghirardi et al., 1980; Peres & Terno, 2004); and teleporting one qubit costs exactly one Bell pair and two classical bits (Bennett et al., 1993), with a resource of fully entangled fraction f giving average fidelity (2f+1)/3 against a classical ceiling of 2/3 (Massar & Popescu, 1995; Horodecki et al., 1999). Full treatment: `learn/00_foundations/05`, `07`; `learn/03_quantum_communication/02`.
+
+## 2.3 How qubits are built
+
+Eight physical platforms are compared in `learn/02_qubit_modalities/`. For a communication link three properties dominate: a native optical interface, a memory lifetime long compared with the classical round trip, and an operating temperature that a flown cooler can reach. Superconducting transmons (Koch et al., 2007; Krantz et al., 2019) lead in gate speed and count but have no optical interface and need 10–20 mK. Trapped ions (Cirac & Zoller, 1995; Bruzewicz et al., 2019) offer the highest gate fidelities, hour-class coherence (Wang et al., 2021), and ultraviolet photon emission, with room-temperature traps. Color centers in diamond (Doherty et al., 2013) offer the strongest network record: remote entanglement, a loophole-free Bell test, three-node networks, and teleportation between non-neighbouring nodes (Hensen et al., 2015; Pompili et al., 2021; Hermans et al., 2022), at 4 K, with a bench-scale teaching version for about one hundred dollars. Rare-earth ions in crystals hold nuclear-spin coherence for 6 to 13 hours (Zhong et al., 2015; Wang et al., 2025) at low retrieval efficiency. Photons are the flying qubit in every case.
+
+## 2.4 Communication: keys, repeaters, satellites
+
+Quantum key distribution grows a shared secret from single-photon statistics; the BB84 protocol tolerates an error rate up to 11 % (Shor & Preskill, 2000), decoy states make weak-laser sources safe (Lo et al., 2005), measurement-device-independent protocols remove detector side channels (Lo et al., 2012), and no repeaterless protocol can exceed −log₂(1−η) secret bits per channel use (Pirandola et al., 2017). Fiber loses photons exponentially, so beyond a few hundred kilometres either satellites (Yin et al., 2017; Li et al., 2025) or repeaters with quantum memories (Briegel et al., 1998; Sangouard et al., 2011; Azuma et al., 2023) are required. The only published concept for links beyond the Moon is NASA's Deep Space Quantum Link (Mohageg et al., 2022). Full treatment: `learn/03_quantum_communication/`.
+
+## 2.5 The gap this thesis addresses
+
+The literature quantifies memories, repeaters, and satellite links separately and at terrestrial or cislunar scale. No published work places demonstrated memory lifetimes against planetary light times, routes every classical exchange of a protocol through a physical delay, and reports the end-to-end consequence for an application. Chapters 3 and 4 do that.
