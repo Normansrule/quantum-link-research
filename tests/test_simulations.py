@@ -40,3 +40,17 @@ def test_s05_no_background_matches_bb84_formula():
     from s05_bb84_key_over_a_pass import key_bits_per_pass
     from qll.qkd.key_rate import bb84_rate_per_sifted_bit
     assert math.isclose(key_bits_per_pass(1e4, 0.0), 0.5 * 1e4 * 300 * bb84_rate_per_sifted_bit(0.01), rel_tol=1e-9)
+
+
+def test_s06_finite_key_di_limits_and_sealing():
+    pytest.importorskip("stim")
+    from s06_di_certification_under_latency import certify_after_light_time
+    from qll.qkd.e91 import di_rate_finite_key, di_rate_per_round, rounds_for_positive_di_key
+    S = 2 * math.sqrt(2)
+    assert abs(di_rate_finite_key(S, 0.0, 10**9) - di_rate_per_round(S, 0.0)) < 1e-2     # asymptotic limit (slow: infinite slope of the bound at 2√2)
+    assert di_rate_finite_key(S, 0.0, 10) == 0.0                                        # too few rounds
+    n = rounds_for_positive_di_key(0.95 * S, 0.01)
+    assert 1000 < n < 5000 and di_rate_finite_key(0.95 * S, 0.01, n) > 0 >= di_rate_finite_key(0.95 * S, 0.01, n - 1)
+    assert rounds_for_positive_di_key(2.0, 0.0) is None                                 # no violation, no key
+    Sm, err, r = certify_after_light_time(5000, 1e8, seed=3)
+    assert abs(Sm - S) < 4 * err + 0.05 and r > 0

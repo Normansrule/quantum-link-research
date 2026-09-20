@@ -1,6 +1,6 @@
 # Status
 
-Version 0.13.1 · 382 tests · 23/24 requirements verified · 286 references (21 verified) · 51 learn files · 5 simulations · 25 figures
+Version 0.14.0 · 383 tests · 24/25 requirements verified · 286 references (21 verified) · 51 learn files · 6 simulations · 26 figures
 
 | Requirement | Statement | Phase | Status |
 |---|---|---|---|
@@ -28,3 +28,4 @@ Version 0.13.1 · 382 tests · 23/24 requirements verified · 286 references (21
 | REQ-SPC-002 | Solar-conjunction blackouts recur once per synodic period with 2-3 week duration at SEP < 3 deg and an L4/L5 relay keeps availability above 99.9 % | 5 | verified |
 | REQ-SPC-003 | Memory operating temperature and heat load are checked against flown cooler classes | 5 | verified |
 | REQ-APP-002 | Hybrid ML-KEM + QKD session keys agree on both ends and depend on both inputs | 6 | verified |
+| REQ-SEC-001 | The link can certify its own key device-independently with settings and outcomes exchanged no faster than d/c; the finite-key rate is positive once enough rounds accumulate per round trip | 6 | verified (model) |

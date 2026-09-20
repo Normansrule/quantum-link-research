@@ -46,7 +46,7 @@ Pick a row, open its links, do it, add the test, move the row to `CHANGELOG.md`.
 | R1 | Verify every **TODO** DOI in `docs/references*.bib`; move confirmed keys to `references.bib` | ★★ | clean bibliography |
 | R2 | E8 modality trade study with data and sensitivity analysis | ★★★ | `systems/trade_studies.md` + figure |
 | R3 | E3 constellation scheduling on Jinan-1 pass data | ★★★ | `qll/network/relay_constellation.py` + figure |
-| R4 | E10 DI certification under latency (Stim + `DelayQueue`) | ★★ | `qll/qkd/e91.py` + REQ-SEC-001 |
+| R4 | ~~E10 DI certification under latency~~ done in 0.14.0 (model-level) | ★★ | `qll/qkd/e91.py`, S06, REQ-SEC-001 |
 | R5 | Fill the 2026 row of the timeline with verified items; track T02–T10 status | ★ | `research/cutting_edge/01` |
 | R6 | Thesis chapters: Introduction (README §"six sentences"), Background (learn/), Method (design process), Results (Phases 2–4), Experiments (E1, E2, E6), Discussion (lessons, open problems) | ★★★ | thesis draft |
 

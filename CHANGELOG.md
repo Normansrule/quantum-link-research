@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.14.0 — 2026-09-20 (E10: device-independent certification under latency)
+- `qll/qkd/e91.py`: finite-key DI rate with a simplified statistical penalty (converges to the asymptotic rate; documented as a scheduling model, not a security proof) and the minimum rounds for a positive key.
+- `simulations/s06_di_certification_under_latency.py`: CHSH rounds sampled with a declared entropy source, records sealed for the light time, S and finite-key rate evaluated only after arrival; result: an S = 0.95·2√2 device needs ≈ 2 500 rounds, one Mars-max round trip at 1 pair/s supplies ≈ 2 700, so the pair rate decides certifiability.
+- REQ-SEC-001 added and verified at model level; 25 requirements, 24 verified.
+
 ## 0.13.1 — 2026-09-20 (learning material against the implemented code)
 - learn/03: Security Proofs 101 (uncertainty relation → min-entropy → key length, mapped to `qll.qkd`) and Post-Processing With Code (sifting, Cascade vs LDPC at Mars latency, Toeplitz hashing, authentication) — NEXT_100 #51–52.
 - Notebooks 02 (BB84 session step by step, intercept-resend, protocol comparison) and 03 (memory capability matrix, purification cost, chain-vs-direct crossover); `tests/test_notebooks.py` executes every notebook headlessly (slow).

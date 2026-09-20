@@ -38,7 +38,7 @@ def missing_tests(rows: list[dict[str, str]] | None = None) -> list[str]:
 def main() -> int:
     rows = load_matrix()
     miss = missing_tests(rows)
-    verified = sum(1 for r in rows if r["status"].strip().lower() == "verified")
+    verified = sum(1 for r in rows if r["status"].strip().lower().startswith("verified"))
     print(f"{len(rows)} requirements, {verified} verified, {len(miss)} dangling test paths")
     for req in miss:
         print(f"  DANGLING {req}")

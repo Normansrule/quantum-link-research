@@ -23,3 +23,4 @@ REQ-SPC-001,Earth-Mars range envelope from the ephemeris matches the constants w
 REQ-SPC-002,Solar-conjunction blackouts recur once per synodic period with 2-3 week duration at SEP < 3 deg and an L4/L5 relay keeps availability above 99.9 %,5,tests/test_phase5_space.py::test_relays_raise_availability_and_l4_geometry,verified
 REQ-SPC-003,Memory operating temperature and heat load are checked against flown cooler classes,5,tests/test_phase5_space.py::test_platform_thermal_table,verified
 REQ-APP-002,Hybrid ML-KEM + QKD session keys agree on both ends and depend on both inputs,6,tests/test_phase6_app.py::test_hybrid_kem_both_sides_agree_and_depend_on_both_inputs,verified
+REQ-SEC-001,The link can certify its own key device-independently with settings and outcomes exchanged no faster than d/c; the finite-key rate is positive once enough rounds accumulate per round trip,6,tests/test_simulations.py::test_s06_finite_key_di_limits_and_sealing,verified (model)
