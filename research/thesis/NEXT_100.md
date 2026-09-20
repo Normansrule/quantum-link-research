@@ -57,8 +57,8 @@ Grouped by door. Each is one file, one module, one figure, one experiment, or on
 50. Radiation effects on qubits (cosmic rays, TID) with implications for spaceflight
 
 ## learn/ — communication (51–65)
-51. Security proofs 101: entropic uncertainty, entropy accumulation, finite-key analysis
-52. Post-processing walkthrough: Cascade vs LDPC, privacy amplification with universal hashing (with code)
+51. ~~Security proofs 101~~ done in 0.13.1
+52. ~~Post-processing walkthrough with code~~ done in 0.13.1
 53. Side-channel attacks catalogue (blinding, Trojan horse, time-shift) and countermeasures
 54. Twin-field QKD derivation of the √η scaling
 55. CV-QKD Gaussian modulation rate derivation with a figure

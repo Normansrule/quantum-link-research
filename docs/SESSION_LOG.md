@@ -22,3 +22,4 @@
 - 2026-09-20 0.12.0: results tables generated from code; chapters 1, 3, 4 drafted.
 - 2026-09-20 0.12.1: chapters 2, 5, 6, 7 drafted; THESIS_DRAFT.md assembled.
 - 2026-09-20 0.13.0: status generator, pre-commit, weekly link check; website and README refreshed.
+- 2026-09-20 0.13.1: security proofs and post-processing learn files, notebooks 02–03 executed in tests.

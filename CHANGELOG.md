@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.13.1 — 2026-09-20 (learning material against the implemented code)
+- learn/03: Security Proofs 101 (uncertainty relation → min-entropy → key length, mapped to `qll.qkd`) and Post-Processing With Code (sifting, Cascade vs LDPC at Mars latency, Toeplitz hashing, authentication) — NEXT_100 #51–52.
+- Notebooks 02 (BB84 session step by step, intercept-resend, protocol comparison) and 03 (memory capability matrix, purification cost, chain-vs-direct crossover); `tests/test_notebooks.py` executes every notebook headlessly (slow).
+- pre-commit hooks now `always_run`.
+
 ## 0.13.0 — 2026-09-20 (self-updating status, pre-commit, link check)
 - `scripts/build_status.py` → `docs/status.json` and `docs/status.md`: version, test count, requirements verified, references (and how many verified), file counts; README badges/status line and the website hero and a new Status section now come from it.
 - `.pre-commit-config.yaml`: fast tests plus regeneration of the references index and status on every commit.
