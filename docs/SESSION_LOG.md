@@ -17,3 +17,4 @@
 - 2026-09-18 0.10.0: Phase 6 application layer; REQ-APP-001/002 verified; all six phases implemented; 343 tests.
 - 2026-09-19 0.10.1: bench-data scaffold (ODMR fit and report, data/ conventions).
 - 2026-09-19 0.10.2: citation integrity test; 7 missing entries added; 281 references.
+- 2026-09-19 0.11.0: Perceval and SeQUeNCe adapters validated against the analytic models; 355 tests.

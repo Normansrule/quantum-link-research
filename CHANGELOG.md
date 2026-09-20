@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.11.0 — 2026-09-19 (simulator adapters)
+- `qll/hardware/perceval_adapter.py`: Perceval computes the HOM output distribution for a source of indistinguishability V (matches $(1-V)/2$ to 1e-9) and the linear-optics polarization Bell analyser's success (exactly 1/2: Ψ± identified, Φ± confused).
+- `qll/network/sequence_adapter.py`: SeQUeNCe two-router meet-in-the-middle link from a generated topology; delivery times and fidelities returned; every delivery time exceeds the herald round trip (INV-1 inside a third-party simulator); delivery slows with distance.
+- `tests/test_adapters.py` (marked slow; skipped when the libraries are absent). Tests 355.
+
 ## 0.10.2 — 2026-09-19 (citation integrity)
 - `tests/test_citations.py`: every `[bibkey]` cited in a `qll` docstring must exist in the BibTeX files, and braces must balance. The check found seven keys cited from code without entries (Holevo-capacity papers, GLLP, JPL mean elements, Planck/JWST/ADR coolers, DSOC); all added, `giovannetti2004` verified against the publisher record. 281 entries.
 

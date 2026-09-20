@@ -23,6 +23,9 @@ flowchart TD
   Q -->|network timing, memories, protocols| SeQUeNCe
 ```
 
+## Adapters in this repo
+`qll/network/sequence_adapter.py` builds a two-router meet-in-the-middle link in SeQUeNCe and checks that no memory is entangled before the herald round trip; `qll/hardware/perceval_adapter.py` reproduces the Hong–Ou–Mandel law $(1-V)/2$ and the 1/2 success of the linear-optics Bell analyser from the circuit. Both are compared with the analytic modules in `tests/test_adapters.py`.
+
 ## Rule 2 in practice
 CONTRIBUTING rule 2 forbids writing a simulator from scratch. The `qll` package is glue and physics: analytic formulas with tests, thin adapters to these libraries, and invariants (no-signaling, no-cloning, CPTP, capacity bounds) that the libraries do not enforce for you.
 
