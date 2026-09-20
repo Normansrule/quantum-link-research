@@ -19,7 +19,7 @@ Microwave switch (e.g., a reflective SPDT with ~10 ns rise) · pulse generator: 
 8. Repeat 7 at 77 K (diamond in a small liquid-nitrogen bath, optics outside) and near 350 K (heater) for proposal E2.
 
 ## Analyze
-Fit with `qll.viz.rabi_ramsey` functions; compare $T_1(T)$ with `qll.circuits.noise.thermal.thermal_t1` and expect the model to *fail* at room temperature (phonon-limited), which is the point of E2.
+Save each dataset as `data/pulsed/YYYY-MM-DD_<setup>_<experiment>.csv` with columns `time_s,signal`. Fit with `qll.analysis.relaxation_fit` (`fit_rabi`, `fit_ramsey`, `fit_echo`, `fit_t1`); for step 8 collect $T_1$ at each temperature and run `fit_t1_vs_temperature`, which fits the Orbach + Raman phonon model of Jarmola et al. (2012), and plot it against `thermal_model_prediction`, the Phase 1 bath-occupation law. The two differ by orders of magnitude between 77 K and 350 K; the data decide, and that closes REQ-THM-003. The pipeline is tested on synthetic data (`tests/test_analysis_relaxation.py`).
 
 ## Expected numbers
 Ensemble in commercial microdiamond: $T_2^*$ 0.3–2 µs, echo $T_2$ 5–100 µs, $T_1$ ~ 1–5 ms at 300 K; contrast 1–3%.

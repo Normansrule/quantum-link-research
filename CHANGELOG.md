@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.16.0 — 2026-09-20 (P02 analysis pipeline, P01 bill of materials)
+- `qll/analysis/relaxation_fit.py`: Rabi, Ramsey, Hahn-echo, and T1 fits; the Orbach + Raman phonon model for T1(T) [jarmola2012]; the Phase 1 bath-occupation prediction for comparison. Tests recover every parameter from synthetic data and show the two temperature laws differ by orders of magnitude, so P02 step 8 can close REQ-THM-003 with data. (Verification corrected my first claim: the bath law does move T1 by the linear factor 2n̄+1, about 4.5× over 77–350 K; phonons move it by 10³ or more.)
+- `experiments/bench/P01_bill_of_materials.md`: itemized parts, quantities, planning prices, verified links, assembly order, and what to record.
+
 ## 0.15.0 — 2026-09-20 (E7: transduction trade study)
 - `qll/hardware/transduction.py`: transducer model (efficiency, added noise, signal fraction η_t/(η_t+n_add) as the entanglement-fidelity bound, matched-cooperativity efficiency) with representative device points flagged for verification.
 - `simulations/s07_transduction_free_vs_through.py`: through a 2020-class or even an optimistic 2025-class transducer the link fidelity falls below the classical 2/3; a target device would win on rate; the transduction-free architecture is confirmed as the baseline in `systems/trade_studies.md`.

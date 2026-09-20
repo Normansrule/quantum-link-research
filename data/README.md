@@ -7,7 +7,7 @@ synthetic files so the analysis pipeline can be tested before the bench exists.
 | Folder | Experiment | Columns | Analysis |
 |---|---|---|---|
 | `odmr/` | P01 ODMR (continuous-wave) | `frequency_hz, signal` | `python -m qll.analysis.odmr_report data/odmr/<file>.csv` |
-| `pulsed/` | P02 Rabi, Ramsey, echo, T1 | `time_s, signal` | (fit functions in `qll.viz.rabi_ramsey`; report script to add with the first file) |
+| `pulsed/` | P02 Rabi, Ramsey, echo, T1, T1(T) | `time_s, signal` (and a `temperature_k` in the sidecar) | `qll.analysis.relaxation_fit` (`fit_rabi`, `fit_ramsey`, `fit_echo`, `fit_t1`, `fit_t1_vs_temperature`) |
 | `spdc/` | P03 coincidences vs angle | `angle_a_deg, angle_b_deg, coincidences, singles_a, singles_b, seconds` | (CHSH from `qll.circuits.chsh`; report script to add) |
 
 Sidecar `.json` fields for ODMR: `{"diamond": "...", "laser_mw": 0.8, "microwave_dbm": 20, "dwell_ms": 30, "averages": 20,

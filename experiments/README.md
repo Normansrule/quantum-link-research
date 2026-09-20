@@ -16,7 +16,7 @@ flowchart LR
 | Folder | What is in it | Start with |
 |---|---|---|
 | [`flagship/`](flagship/README.md) | the three experiments the whole repository serves, each staged simulate → bench → field with pass numbers | [`flagship/F1_earth_to_earth.md`](flagship/F1_earth_to_earth.md) |
-| [`bench/`](bench/hardware_guide.md) | the hardware guide: every part with a vendor link, three budget tiers ($500 weekend, $5–15k semester, turnkey), step-by-step accounts of how the NV and satellite experiments were run | [`bench/hardware_guide.md`](bench/hardware_guide.md) §5 |
+| [`bench/`](bench/hardware_guide.md) | the hardware guide and the [P01 bill of materials](bench/P01_bill_of_materials.md): every part with a vendor link, three budget tiers ($500 weekend, $5–15k semester, turnkey), step-by-step accounts of how the NV and satellite experiments were run | [`bench/hardware_guide.md`](bench/hardware_guide.md) §5 |
 | [`protocols/`](protocols/README.md) | lab procedures you can follow line by line: ODMR on a $100 bench, pulsed NV control, SPDC Bell test, rooftop free-space link | [`protocols/P01_odmr_nv_bench.md`](protocols/P01_odmr_nv_bench.md) |
 | [`done/`](done/README.md) | ten experiments that made the field, each with Original · Physics · Simple recreation · What went wrong · Repo hook | [`done/04_odmr_nv.md`](done/04_odmr_nv.md) |
 | [`proposed/`](proposed/README.md) | E1–E10, each with gap · cheapest version · research version · requirement verified | [`proposed/E01…`](proposed/E01_delayed_classical_channel_teleportation.md) |
