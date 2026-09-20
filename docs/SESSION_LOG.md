@@ -24,3 +24,4 @@
 - 2026-09-20 0.13.0: status generator, pre-commit, weekly link check; website and README refreshed.
 - 2026-09-20 0.13.1: security proofs and post-processing learn files, notebooks 02–03 executed in tests.
 - 2026-09-20 0.14.0: E10 implemented (finite-key DI under latency), REQ-SEC-001.
+- 2026-09-20 0.15.0: E7 transduction trade implemented; design stance confirmed by simulation.

@@ -54,3 +54,21 @@ def test_s06_finite_key_di_limits_and_sealing():
     assert rounds_for_positive_di_key(2.0, 0.0) is None                                 # no violation, no key
     Sm, err, r = certify_after_light_time(5000, 1e8, seed=3)
     assert abs(Sm - S) < 4 * err + 0.05 and r > 0
+
+
+def test_s07_transduction_bounds_and_architectures():
+    from s07_transduction_free_vs_through import architecture_a, architecture_b
+    from qll.hardware.nv_node import NvNode
+    from qll.hardware.transduction import STATE_OF_THE_ART_2020, TARGET, Transducer, matched_cooperativity_efficiency
+    t = Transducer(0.2, 0.05)
+    assert t.signal_fraction() == pytest.approx(0.8) and t.preserves_entanglement()
+    assert not Transducer(0.1, 0.1).preserves_entanglement()                            # n_add = eta_t is the edge
+    assert matched_cooperativity_efficiency(1e4, 1e4) == pytest.approx(1.0, abs=1e-3)
+    assert matched_cooperativity_efficiency(1, 1) == pytest.approx(4 / 9)
+    r20, F20 = architecture_a(STATE_OF_THE_ART_2020)
+    assert F20 <= 2 / 3 + 1e-9                                                            # 2020-class device: no useful entanglement
+    rT, FT = architecture_a(TARGET)
+    assert FT > 0.9 and rT > architecture_b(NvNode())[0]                                  # a target-class transducer wins on rate
+    rb, Fb = architecture_b(NvNode())
+    assert Fb == pytest.approx(architecture_b(NvNode(purcell_factor=30))[1])             # B's fidelity does not depend on ZPL
+    assert architecture_b(NvNode(purcell_factor=30))[0] > 10 * rb                         # but its rate does

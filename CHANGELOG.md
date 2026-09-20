@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.15.0 — 2026-09-20 (E7: transduction trade study)
+- `qll/hardware/transduction.py`: transducer model (efficiency, added noise, signal fraction η_t/(η_t+n_add) as the entanglement-fidelity bound, matched-cooperativity efficiency) with representative device points flagged for verification.
+- `simulations/s07_transduction_free_vs_through.py`: through a 2020-class or even an optimistic 2025-class transducer the link fidelity falls below the classical 2/3; a target device would win on rate; the transduction-free architecture is confirmed as the baseline in `systems/trade_studies.md`.
+
 ## 0.14.0 — 2026-09-20 (E10: device-independent certification under latency)
 - `qll/qkd/e91.py`: finite-key DI rate with a simplified statistical penalty (converges to the asymptotic rate; documented as a scheduling model, not a security proof) and the minimum rounds for a positive key.
 - `simulations/s06_di_certification_under_latency.py`: CHSH rounds sampled with a declared entropy source, records sealed for the light time, S and finite-key rate evaluated only after arrival; result: an S = 0.95·2√2 device needs ≈ 2 500 rounds, one Mars-max round trip at 1 pair/s supplies ≈ 2 700, so the pair rate decides certifiability.
