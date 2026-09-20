@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.12.0 — 2026-09-20 (thesis: results generated from code)
+- `scripts/build_results_tables.py` → `research/thesis/results/tables.md`: thermal occupation, channels and light time, satellite link budgets, key rates, the REQ-CAP-001 memory capability matrix, repeater crossovers and purification cost, space segment, messenger buffer — every number computed by the tested functions; a test regenerates the file and checks the headline values.
+- `research/thesis/chapters/`: drafts of Chapter 1 (Introduction), Chapter 3 (Method), and Chapter 4 (Results, citing only the generated tables).
+- Tests 356.
+
 ## 0.11.1 — 2026-09-19 (citation pass, continued)
 - Verified against publisher records: `clauser1969` (PRL 23, 880), `ekert1991` (PRL 67, 661); `cirelson1980` DOI recorded from a citing bibliography and marked confident. Remaining code-cited TODOs: 28, listed by `python -c` in the session log.
 

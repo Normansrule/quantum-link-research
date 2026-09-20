@@ -22,7 +22,7 @@ def test_relative_links_resolve(path):
 @pytest.mark.parametrize("path", FILES, ids=lambda p: str(p.relative_to(ROOT)))
 def test_topic_files_cite_something(path):
     text = path.read_text(encoding="utf-8")
-    if path.parent.name == "youtube" or path.name == "README.md" or path.name in {"01_state_of_the_art_timeline.md", "02_open_problems.md", "00_GLOSSARY.md", "00_MISCONCEPTIONS.md", "BACKLOG.md", "DESIGN_PROCESS.md", "INDEX.md", "_TEMPLATE.md", "NEXT_100.md", "THESIS_OUTLINE.md", "VERIFICATION_PLAN.md"}:
+    if path.parent.name in ("youtube", "chapters", "results") or path.name == "README.md" or path.name in {"01_state_of_the_art_timeline.md", "02_open_problems.md", "00_GLOSSARY.md", "00_MISCONCEPTIONS.md", "BACKLOG.md", "DESIGN_PROCESS.md", "INDEX.md", "_TEMPLATE.md", "NEXT_100.md", "THESIS_OUTLINE.md", "VERIFICATION_PLAN.md", "tables.md"}:
         return  # synthesis files point into the topic files rather than citing directly
     assert re.search(r"\(\d{4}\)|\d{4}\)\.|Nature|Physical Review|arXiv|doi\.org", text), f"{path.name} has no references"
 

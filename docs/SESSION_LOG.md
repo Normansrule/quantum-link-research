@@ -19,3 +19,4 @@
 - 2026-09-19 0.10.2: citation integrity test; 7 missing entries added; 281 references.
 - 2026-09-19 0.11.0: Perceval and SeQUeNCe adapters validated against the analytic models; 355 tests.
 - 2026-09-19 0.11.1: clauser1969 and ekert1991 verified; 28 code-cited keys still TODO (bennett1996, bindel2019, biswas2024, brassard1994, briegel1998, calsamiglia2001, chakraborty2019, codata2018, dsn2020, elkouss2009, ghirardi1980, gidney2021stim, heurtel2023perceval, lauk2020, liu2023tf, liu2024, lo2005, lo2012, nist2024fips203, pant2019, planck2011, sewani2020, shirron2014, standish1992, wang2021ion, wang2022tf, wu2021sequence, yin2017).
+- 2026-09-20 0.12.0: results tables generated from code; chapters 1, 3, 4 drafted.

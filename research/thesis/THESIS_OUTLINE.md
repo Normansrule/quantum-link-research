@@ -4,13 +4,13 @@ Chapter map with the files and figures that already back each section. A section
 
 | Ch. | Section | Backed by | Status |
 |---|---|---|---|
-| 1 | Introduction: the question, the catch, the three flagships | README §Six Sentences, `experiments/flagship/README.md`, `figures/overview_storyboard.svg`, `flagship_overview.svg` | drafted in README |
+| 1 | Introduction: the question, the catch, the three flagships | [`chapters/01_introduction.md`](chapters/01_introduction.md) | **drafted** |
 | 2 | Background: quantum mechanics for the link | `learn/00_foundations/*` (15 files) | 80 % written |
 | 2 | Background: qubit platforms compared | `learn/02_qubit_modalities/*`, `modality_radar.svg` | 80 % written |
 | 2 | Background: communication theory | `learn/03_quantum_communication/*` | 80 % written |
-| 3 | Method: systems-engineering V, requirements, traceability | `research/thesis/DESIGN_PROCESS.md`, `systems/*` | written |
+| 3 | Method: systems-engineering V, requirements, traceability | [`chapters/03_method.md`](chapters/03_method.md), `DESIGN_PROCESS.md`, `systems/*` | **drafted** |
 | 3 | Method: physics-first modular code, invariants, tests | `docs/physics_module_design.md`, `qll/`, CI | written; Phase 2 implemented |
-| 4 | Results I: circuits (teleportation, swapping, CHSH, noise) | `tests/test_phase2_*`, `notebooks/01_circuits.ipynb` | Phase 2 done |
+| 4 | Results I–IV: all six phases | [`chapters/04_results.md`](chapters/04_results.md), [`results/tables.md`](results/tables.md) (generated) | **drafted from code** |
 | 4 | Results II: links (budgets, F2 reproduction) | Phase 3 (C12–C14) | not started |
 | 4 | Results III: memories and repeaters (crossover, REQ-CAP-001) | Phase 4 (C15–C16), `repeater_rate_explorer.svg`, S02 | simulation only |
 | 4 | Results IV: Earth–Mars scheduling and messenger | Phase 5–6 (C17–C18), `mars_light_time_cycle.svg` | not started |
