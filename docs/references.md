@@ -17,13 +17,13 @@
 |---|---|---|
 | `einstein1935` | Einstein et al. (1935). Can quantum-mechanical description of physical reality be considered complete?. *Physical Review*, 47, 777--780. [doi](https://doi.org/10.1103/PhysRev.47.777) | confident |
 | `bell1964` | Bell (1964). On the Einstein Podolsky Rosen paradox. *Physics Physique Fizika*, 1, 195--200. [doi](https://doi.org/10.1103/PhysicsPhysiqueFizika.1.195) | confident |
-| `cirelson1980` | Cirel'son (1980). Quantum generalizations of Bell's inequality. *Letters in Mathematical Physics*, 4, 93--100. | TODO verify |
+| `cirelson1980` | Cirel'son (1980). Quantum generalizations of Bell's inequality. *Letters in Mathematical Physics*, 4, 93--100. [doi](https://doi.org/10.1007/BF00417500) | confident |
 | `aspect1982` | Aspect et al. (1982). Experimental test of Bell's inequalities using time-varying analyzers. *Physical Review Letters*, 49, 1804--1807. [doi](https://doi.org/10.1103/PhysRevLett.49.1804) | confident |
 | `dieks1982` | Dieks (1982). Communication by EPR devices. *Physics Letters A*, 92, 271--272. [doi](https://doi.org/10.1016/0375-9601(82)90084-6) | confident |
 | `garg1987` | Garg et al. (1987). Detector inefficiencies in the Einstein-Podolsky-Rosen experiment. *Physical Review D*, 35, 3831--3835. [doi](https://doi.org/10.1103/PhysRevD.35.3831) | confident |
 | `greenberger1989` | Greenberger et al. (1989). Going beyond Bell's theorem. *Bell's Theorem, Quantum Theory, and Conceptions of the Universe*, 69--72. | no DOI |
 | `werner1989` | Werner (1989). Quantum states with Einstein-Podolsky-Rosen correlations admitting a hidden-variable model. *Physical Review A*, 40, 4277--4281. [doi](https://doi.org/10.1103/PhysRevA.40.4277) | confident |
-| `ekert1991` | Ekert (1991). Quantum cryptography based on Bell's theorem. *Physical Review Letters*, 67, 661--663. | TODO verify |
+| `ekert1991` | Ekert (1991). Quantum cryptography based on Bell's theorem. *Physical Review Letters*, 67, 661--663. [doi](https://doi.org/10.1103/PhysRevLett.67.661) | verified |
 | `bennett1992` | Bennett et al. (1992). Communication via one- and two-particle operators on Einstein-Podolsky-Rosen states. *Physical Review Letters*, 69, 2881--2884. [doi](https://doi.org/10.1103/PhysRevLett.69.2881) | confident |
 | `bennett1992bbm` | Bennett et al. (1992). Quantum cryptography without Bell's theorem. *Physical Review Letters*, 68, 557--559. [doi](https://doi.org/10.1103/PhysRevLett.68.557) | confident |
 | `eberhard1993` | Eberhard (1993). Background level and counter efficiencies required for a loophole-free Einstein-Podolsky-Rosen experiment. *Physical Review A*, 47, R747--R750. [doi](https://doi.org/10.1103/PhysRevA.47.R747) | confident |
@@ -48,7 +48,7 @@
 | `bornfock1928` | Born et al. (1928). Beweis des Adiabatensatzes. *Zeitschrift f\"ur Physik*, 51, 165--180. [doi](https://doi.org/10.1007/BF01343193) | confident |
 | `hahn1950` | Hahn (1950). Spin echoes. *Physical Review*, 80, 580--594. [doi](https://doi.org/10.1103/PhysRev.80.580) | confident |
 | `ramsey1950` | Ramsey (1950). A molecular beam resonance method with separated oscillating fields. *Physical Review*, 78, 695--699. [doi](https://doi.org/10.1103/PhysRev.78.695) | confident |
-| `clauser1969` | Clauser et al. (1969). Proposed experiment to test local hidden-variable theories. *Physical Review Letters*, 23, 880--884. | TODO verify |
+| `clauser1969` | Clauser et al. (1969). Proposed experiment to test local hidden-variable theories. *Physical Review Letters*, 23, 880--884. [doi](https://doi.org/10.1103/PhysRevLett.23.880) | verified |
 | `wootters1982` | Wootters et al. (1982). A single quantum cannot be cloned. *Nature*, 299, 802--803. [doi](https://doi.org/10.1038/299802a0) | confident |
 | `ghirardi1986` | Ghirardi et al. (1986). Unified dynamics for microscopic and macroscopic systems. *Physical Review D*, 34, 470--491. [doi](https://doi.org/10.1103/PhysRevD.34.470) | confident |
 | `siegman1986` | Siegman (1986). Lasers. *University Science Books*. | no DOI |

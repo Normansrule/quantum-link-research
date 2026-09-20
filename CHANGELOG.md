@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.11.1 — 2026-09-19 (citation pass, continued)
+- Verified against publisher records: `clauser1969` (PRL 23, 880), `ekert1991` (PRL 67, 661); `cirelson1980` DOI recorded from a citing bibliography and marked confident. Remaining code-cited TODOs: 28, listed by `python -c` in the session log.
+
 ## 0.11.0 — 2026-09-19 (simulator adapters)
 - `qll/hardware/perceval_adapter.py`: Perceval computes the HOM output distribution for a source of indistinguishability V (matches $(1-V)/2$ to 1e-9) and the linear-optics polarization Bell analyser's success (exactly 1/2: Ψ± identified, Φ± confused).
 - `qll/network/sequence_adapter.py`: SeQUeNCe two-router meet-in-the-middle link from a generated topology; delivery times and fidelities returned; every delivery time exceeds the herald round trip (INV-1 inside a third-party simulator); delivery slows with distance.
