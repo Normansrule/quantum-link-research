@@ -6,14 +6,17 @@
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Python 3.12](https://img.shields.io/badge/python-3.12-blue.svg)](environment.yml)
 [![explorers](https://img.shields.io/badge/live_explorers-open-brightgreen.svg)](https://Normansrule.github.io/quantum-link-research/apps/)
-[![learn](https://img.shields.io/badge/learn-46_files-4c72b0.svg)](learn/README.md)
-[![experiments](https://img.shields.io/badge/experiments-32_files-55a868.svg)](experiments/README.md)
-[![research](https://img.shields.io/badge/research-18_files-c44e52.svg)](research/README.md)
+[![learn](https://img.shields.io/badge/learn-49_files-4c72b0.svg)](learn/README.md)
+[![experiments](https://img.shields.io/badge/experiments-36_files-55a868.svg)](experiments/README.md)
+[![research](https://img.shields.io/badge/research-30_files-c44e52.svg)](research/README.md)
+[![status](https://img.shields.io/badge/requirements-23%2F24_verified-8A2BE2.svg)](docs/status.md)
 
 > **Can two people, one on Earth and one on Mars, share a secret that no eavesdropper and no future computer can read?**
 > Physics says yes, with a catch: entanglement carries no message by itself, and the two classical bits every teleportation needs take 3 to 22 minutes at light speed. This repository is a library, a lab manual, and a tested codebase for working out exactly what that catch costs and what could pay it — starting from a $100 diamond qubit on a bench.
 
 ![storyboard](docs/figures/overview_storyboard.svg)
+
+**Status:** version 0.12.1 · all six phases implemented · 374 tests · 23/24 requirements verified ([status](docs/status.md)) · thesis first draft in [`research/thesis/`](research/thesis/THESIS_OUTLINE.md)
 
 ## Three Experiments
 
@@ -114,7 +117,7 @@ experiments/    build                                      qll/             test
 
 | Phase | Deliverable | Must pass | Status |
 |---|---|---|---|
-| 1 | constants, channels, thermal model, QKD theory, explorers, learn/experiments/research library | 180+ analytic and integrity tests | **done** |
+| 1 | constants, channels, thermal model, QKD theory, explorers, learn/experiments/research library | analytic and integrity tests | **done** |
 | 2 | Bell, teleportation, swapping, CHSH, fidelity, tomography, Kraus noise, no-cloning guard | $F_{\rm ideal}=1$; $F=(2f+1)/3$; $S=2\sqrt2$ | **done** |
 | 3 | atmosphere, pointing, link budget; BB84/E91/decoy/MDI/TF; sources, detectors, NV node | Micius reproduced within 3 dB; rates ≤ PLOB | **done** |
 | 4 | memories, purification, repeaters (memory-based and all-photonic), scheduling, routing | chain beats direct; $T_{\rm mem}$ vs $2d/c$ | **done** |

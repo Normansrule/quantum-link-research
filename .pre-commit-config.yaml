@@ -1,0 +1,14 @@
+# Install once: pip install pre-commit && pre-commit install
+repos:
+  - repo: local
+    hooks:
+      - id: pytest-fast
+        name: fast tests (phase1, citations, results tables)
+        entry: python -m pytest -q -m "phase1 or phase2" -x --no-header
+        language: system
+        pass_filenames: false
+      - id: references-index
+        name: regenerate references index and status
+        entry: bash -c "python scripts/build_reference_index.py && python scripts/build_status.py && git add docs/references.md docs/status.md docs/status.json"
+        language: system
+        pass_filenames: false

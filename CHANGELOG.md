@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.13.0 — 2026-09-20 (self-updating status, pre-commit, link check)
+- `scripts/build_status.py` → `docs/status.json` and `docs/status.md`: version, test count, requirements verified, references (and how many verified), file counts; README badges/status line and the website hero and a new Status section now come from it.
+- `.pre-commit-config.yaml`: fast tests plus regeneration of the references index and status on every commit.
+- `.github/workflows/links.yml`: weekly external-link check (lychee) over the video list, the reference index, and the hardware guide.
+
 ## 0.12.1 — 2026-09-20 (complete thesis first draft)
 - Chapters 2 (background condensed from `learn/`), 5 (experiments: simulations performed, bench prepared, proposals), 6 (discussion), 7 (conclusion) drafted; `scripts/build_thesis.py` assembles all chapters, the generated results tables, and the verification plan into `research/thesis/THESIS_DRAFT.md`.
 
