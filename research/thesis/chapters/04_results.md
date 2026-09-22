@@ -25,3 +25,11 @@ A Kepler mean-element ephemeris gives an Earth–Mars range envelope of 0.3711 t
 ## 4.6 Application (Phase 6)
 
 The messenger refuses to send when its QKD key buffer is empty rather than downgrading to a computational key, and cannot deliver before d/c. The buffer needed to sustain one message per minute through a Mars-maximum round trip with no key replenishment is about 1.4 kB; a key rate matched to consumption needs almost none. The honest statement of performance is therefore three numbers, not one: key bits per day, round-trip time, and refusals.
+
+## 4.7 Proposals settled in software
+
+Two of the ten proposals could be answered without a bench. For device-independent certification (E10, Table 9), a device reaching 0.95 of the Tsirelson bound needs about 2 500 rounds for a positive finite key at ε = 10⁻¹⁰; one Mars-maximum round trip at one pair per second accumulates about 2 700, so the light-time delay does not by itself prevent Mars from certifying its key, while a device at 0.92 of the bound would need 3 400 rounds and fail at that rate. The pair rate, not the delay, decides. For the transduction trade (E7, Table 10), a 2020-class microwave-to-optical transducer leaves a teleportation fidelity of 0.50 after the link and an optimistic η_t = n_add = 0.1 device leaves 0.65, both below the classical 2/3, whereas a target device with η_t = 0.5 and n_add = 0.01 would preserve 0.95 and out-rate a bare nitrogen-vacancy emitter. The transduction-free architecture is therefore the baseline, with a stated condition for revisiting it: added noise well below efficiency.
+
+## 4.8 Pipelines waiting for data
+
+The analysis for the two requirements that need hardware is implemented and tested on synthetic data. The ODMR fit recovers the zero-field splitting to 0.5 MHz and the field to 0.5 G; the pulsed-control fits recover Rabi, Ramsey, echo, and T₁ parameters; and the T₁(T) fit distinguishes the Orbach–Raman phonon law from the bath-occupation law by orders of magnitude between 77 K and 350 K. The first real spectrum closes Section 5.3; six temperatures close REQ-THM-003.

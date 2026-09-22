@@ -99,6 +99,23 @@ def main() -> None:
     for d, n in ((3.844e8, "Moon"), (EARTH_MARS_MIN_M, "Mars min"), (EARTH_MARS_MAX_M, "Mars max")):
         lines.append(f"| {n} | {fmt_s(round_trip_delay_s(d))} | {required_buffer_bytes(0.0, d, 32, messages_per_s=1/60)/1e3:.2f} kB |")
 
+    # 9 DI under latency (E10)
+    from qll.qkd.e91 import di_rate_per_round, rounds_for_positive_di_key
+    S = 2 * math.sqrt(2)
+    lines += ["", "## 9. Device-independent certification under latency (E10, REQ-SEC-001)", "", "| Device S | Asymptotic rate | Rounds for positive key (ε = 1e-10) | Pair rate to gather them in one Mars-max round trip |", "|---|---|---|---|"]
+    for frac in (1.0, 0.98, 0.95, 0.92):
+        n = rounds_for_positive_di_key(S * frac, 0.01)
+        lines.append(f"| {frac:.2f}·2√2 | {di_rate_per_round(S*frac, 0.01):.3f} | {n:,} | {n/round_trip_delay_s(EARTH_MARS_MAX_M):.2f} pairs/s |")
+
+    # 10 transduction (E7)
+    from qll.circuits.teleportation import analytic_average_fidelity
+    from qll.hardware.transduction import OPTIMISTIC_2025, STATE_OF_THE_ART_2020, TARGET
+    lines += ["", "## 10. Transduction trade (E7)", "", "| Transducer | η_t | n_add | Signal fraction | Teleportation fidelity through it | Entanglement survives |", "|---|---|---|---|---|---|"]
+    for t in (STATE_OF_THE_ART_2020, OPTIMISTIC_2025, TARGET):
+        f = max(0.95 * t.signal_fraction(), 0.25)
+        lines.append(f"| {t.name.split(' [')[0]} | {t.efficiency:g} | {t.added_noise:g} | {t.signal_fraction():.2f} | {analytic_average_fidelity(f):.3f} | {'yes' if t.preserves_entanglement() else 'no'} |")
+    lines.append(f"\nTransduction-free reference at the same source fraction 0.95: F = {analytic_average_fidelity(0.95):.3f}.")
+
     (OUT / "tables.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
     print(f"wrote {OUT/'tables.md'}")
 

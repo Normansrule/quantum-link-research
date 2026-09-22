@@ -106,6 +106,14 @@ A Kepler mean-element ephemeris gives an Earth–Mars range envelope of 0.3711 t
 
 The messenger refuses to send when its QKD key buffer is empty rather than downgrading to a computational key, and cannot deliver before d/c. The buffer needed to sustain one message per minute through a Mars-maximum round trip with no key replenishment is about 1.4 kB; a key rate matched to consumption needs almost none. The honest statement of performance is therefore three numbers, not one: key bits per day, round-trip time, and refusals.
 
+## 4.7 Proposals settled in software
+
+Two of the ten proposals could be answered without a bench. For device-independent certification (E10, Table 9), a device reaching 0.95 of the Tsirelson bound needs about 2 500 rounds for a positive finite key at ε = 10⁻¹⁰; one Mars-maximum round trip at one pair per second accumulates about 2 700, so the light-time delay does not by itself prevent Mars from certifying its key, while a device at 0.92 of the bound would need 3 400 rounds and fail at that rate. The pair rate, not the delay, decides. For the transduction trade (E7, Table 10), a 2020-class microwave-to-optical transducer leaves a teleportation fidelity of 0.50 after the link and an optimistic η_t = n_add = 0.1 device leaves 0.65, both below the classical 2/3, whereas a target device with η_t = 0.5 and n_add = 0.01 would preserve 0.95 and out-rate a bare nitrogen-vacancy emitter. The transduction-free architecture is therefore the baseline, with a stated condition for revisiting it: added noise well below efficiency.
+
+## 4.8 Pipelines waiting for data
+
+The analysis for the two requirements that need hardware is implemented and tested on synthetic data. The ODMR fit recovers the zero-field splitting to 0.5 MHz and the field to 0.5 G; the pulsed-control fits recover Rabi, Ramsey, echo, and T₁ parameters; and the T₁(T) fit distinguishes the Orbach–Raman phonon law from the bath-occupation law by orders of magnitude between 77 K and 350 K. The first real spectrum closes Section 5.3; six temperatures close REQ-THM-003.
+
 \newpage
 
 # Chapter 5 — Experiments (draft)
@@ -116,12 +124,14 @@ The work is organized around three experiments at three distances that share one
 
 ## 5.2 Simulations performed
 
-Five simulations (`simulations/S01–S05`) were run and are regression-tested against analytic limits:
+Seven simulations (`simulations/S01–S07`) were run and are regression-tested against analytic limits:
 - S01: CHSH versus depolarizing noise in Qiskit Aer; the ideal value 2√2 is reproduced to 0.03 and the violation is lost near p ≈ 0.15 per qubit.
 - S02: teleportation with the two classical bits delayed by a light time while a one-hour memory decays; fidelity crosses 2/3 at T₂ ln 3 ≈ 66 minutes, so the Mars maximum one-way delay of 22 minutes leaves F ≈ 0.85. The `NotYetArrived` guard is exercised in the same run.
 - S03: photons per second at the receiver from a 10⁸ pairs/s source, from 1 km of fiber to Mars at maximum range.
 - S04: a repetition code in Stim with majority-vote decoding, showing logical error falling with distance below threshold.
 - S05: secret bits per 300-second satellite pass against background count rate, showing that daylight ends the key before it ends the signal.
+- S06: device-independent key with settings and outcomes sealed for the light time (E10); the pair rate, not the delay, decides certifiability.
+- S07: teleportation fidelity through a transducer versus a native optical emitter (E7); the transduction-free architecture is confirmed as baseline.
 
 The Perceval and SeQUeNCe adapters (`tests/test_adapters.py`) add two third-party checks: the linear-optics Bell analyser succeeds exactly half the time, and no simulated memory becomes entangled before the herald round trip.
 
@@ -131,7 +141,7 @@ Four protocols are written to be followed line by line (`experiments/protocols/`
 
 ## 5.4 Proposed experiments
 
-Ten proposals (`experiments/proposed/E01–E10`) extend the field toward the interplanetary case; each states its gap, a cheap version, a research version, and the requirement it verifies. Three are within reach of a student laboratory in one semester and directly serve the thesis: E1, teleportation on the photonic bench with the classical record released only after a software delay equal to the Mars light time (a bench demonstration of the no-signaling theorem and the two-bit cost); E2, nitrogen-vacancy T₁ and T₂ from 77 K to 350 K against the thermal model, which closes REQ-THM-003; and E6, measurement bases chosen by a quantum random-number generator on the same bench, which closes the freedom-of-choice loophole at teaching-lab scale.
+Ten proposals (`experiments/proposed/E01–E10`) extend the field toward the interplanetary case; each states its gap, a cheap version, a research version, and the requirement it verifies. Six have their cheap version in this repository's code (E1, E5, E7, E8, E9, E10). Three of the remainder are within reach of a student laboratory in one semester and directly serve the thesis: E1, teleportation on the photonic bench with the classical record released only after a software delay equal to the Mars light time (a bench demonstration of the no-signaling theorem and the two-bit cost); E2, nitrogen-vacancy T₁ and T₂ from 77 K to 350 K against the thermal model, which closes REQ-THM-003; and E6, measurement bases chosen by a quantum random-number generator on the same bench, which closes the freedom-of-choice loophole at teaching-lab scale.
 
 \newpage
 
@@ -142,6 +152,8 @@ Ten proposals (`experiments/proposed/E01–E10`) extend the field toward the int
 The thesis question has a quantitative answer. Against a Mars-maximum round trip of 44.6 minutes, three demonstrated memories keep a pair useful for teleportation: the hour-class trapped-ion qubit with less than 1.5× margin at 99 % retrieval efficiency, and two europium-doped crystals with wide margin at 1 % and 0.5 % efficiency. Diamond and ensemble memories, which carry the strongest network record, reach the Moon and no farther. Lifetime and efficiency therefore trade against each other across today's platforms, and the honest architecture is heterogeneous: crystals or ions to hold entanglement across the wait, color centers or photons to interface and process. That trade is proposal E8.
 
 The rate problem is separate from the memory problem and is worse. Diffraction over an astronomical unit leaves about 10⁻⁹ of the photons even for a 10 m receiver, so a bright source delivers pairs per hour, not per second. Multiplexing by three to six orders of magnitude (E9) or relays at intermediate points, which do not exist between Earth and Mars, are the only remedies. Relays at Sun–Earth L4/L5 solve a different problem, conjunction blackouts, and the model shows they keep a path open through every one.
+
+Two proposals settled in software sharpen the picture. Device-independent certification survives the light time provided the pair rate exceeds roughly one pair per second for a good device (E10), so the security model can be the strongest one available without a change of architecture. And the transducer question is settled for now: no verified device keeps entanglement above the classical threshold, so the node must speak optics natively (E7).
 
 The classical half is not a bottleneck: a DSOC-class terminal delivers tens of megabits per second beyond 2 au, and the two bits per teleported qubit are negligible. Latency is the whole cost, and no throughput hides it; the messenger's three reported numbers make this explicit.
 
@@ -252,6 +264,25 @@ BBPSSW from F = 0.80 to 0.99: 10 rounds, F = 0.9925, 2917 input pairs per output
 | Moon | 2.6 s | 0.00 kB |
 | Mars min | 6.2 min | 0.20 kB |
 | Mars max | 44.6 min | 1.43 kB |
+
+## 9. Device-independent certification under latency (E10, REQ-SEC-001)
+
+| Device S | Asymptotic rate | Rounds for positive key (ε = 1e-10) | Pair rate to gather them in one Mars-max round trip |
+|---|---|---|---|
+| 1.00·2√2 | 0.919 | 1,680 | 0.63 pairs/s |
+| 0.98·2√2 | 0.777 | 1,958 | 0.73 pairs/s |
+| 0.95·2√2 | 0.627 | 2,535 | 0.95 pairs/s |
+| 0.92·2√2 | 0.504 | 3,425 | 1.28 pairs/s |
+
+## 10. Transduction trade (E7)
+
+| Transducer | η_t | n_add | Signal fraction | Teleportation fidelity through it | Entanglement survives |
+|---|---|---|---|---|---|
+| piezo-optomechanical 2020 | 0.001 | 1 | 0.00 | 0.500 | no |
+| optimistic 2025 electro-optic (TODO: verify) | 0.1 | 0.1 | 0.50 | 0.650 | no |
+| target for a network node | 0.5 | 0.01 | 0.98 | 0.954 | yes |
+
+Transduction-free reference at the same source fraction 0.95: F = 0.967.
 
 
 \newpage

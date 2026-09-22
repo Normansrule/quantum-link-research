@@ -84,3 +84,22 @@ BBPSSW from F = 0.80 to 0.99: 10 rounds, F = 0.9925, 2917 input pairs per output
 | Moon | 2.6 s | 0.00 kB |
 | Mars min | 6.2 min | 0.20 kB |
 | Mars max | 44.6 min | 1.43 kB |
+
+## 9. Device-independent certification under latency (E10, REQ-SEC-001)
+
+| Device S | Asymptotic rate | Rounds for positive key (ε = 1e-10) | Pair rate to gather them in one Mars-max round trip |
+|---|---|---|---|
+| 1.00·2√2 | 0.919 | 1,680 | 0.63 pairs/s |
+| 0.98·2√2 | 0.777 | 1,958 | 0.73 pairs/s |
+| 0.95·2√2 | 0.627 | 2,535 | 0.95 pairs/s |
+| 0.92·2√2 | 0.504 | 3,425 | 1.28 pairs/s |
+
+## 10. Transduction trade (E7)
+
+| Transducer | η_t | n_add | Signal fraction | Teleportation fidelity through it | Entanglement survives |
+|---|---|---|---|---|---|
+| piezo-optomechanical 2020 | 0.001 | 1 | 0.00 | 0.500 | no |
+| optimistic 2025 electro-optic (TODO: verify) | 0.1 | 0.1 | 0.50 | 0.650 | no |
+| target for a network node | 0.5 | 0.01 | 0.98 | 0.954 | yes |
+
+Transduction-free reference at the same source fraction 0.95: F = 0.967.

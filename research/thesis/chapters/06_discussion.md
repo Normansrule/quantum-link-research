@@ -6,6 +6,8 @@ The thesis question has a quantitative answer. Against a Mars-maximum round trip
 
 The rate problem is separate from the memory problem and is worse. Diffraction over an astronomical unit leaves about 10⁻⁹ of the photons even for a 10 m receiver, so a bright source delivers pairs per hour, not per second. Multiplexing by three to six orders of magnitude (E9) or relays at intermediate points, which do not exist between Earth and Mars, are the only remedies. Relays at Sun–Earth L4/L5 solve a different problem, conjunction blackouts, and the model shows they keep a path open through every one.
 
+Two proposals settled in software sharpen the picture. Device-independent certification survives the light time provided the pair rate exceeds roughly one pair per second for a good device (E10), so the security model can be the strongest one available without a change of architecture. And the transducer question is settled for now: no verified device keeps entanglement above the classical threshold, so the node must speak optics natively (E7).
+
 The classical half is not a bottleneck: a DSOC-class terminal delivers tens of megabits per second beyond 2 au, and the two bits per teleported qubit are negligible. Latency is the whole cost, and no throughput hides it; the messenger's three reported numbers make this explicit.
 
 ## 6.2 Where the models are weakest
