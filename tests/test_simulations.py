@@ -72,3 +72,16 @@ def test_s07_transduction_bounds_and_architectures():
     rb, Fb = architecture_b(NvNode())
     assert Fb == pytest.approx(architecture_b(NvNode(purcell_factor=30))[1])             # B's fidelity does not depend on ZPL
     assert architecture_b(NvNode(purcell_factor=30))[0] > 10 * rb                         # but its rate does
+
+
+def test_s08_multiplexing_scalings():
+    from s08_multiplexing_at_au_scale import multiplexing_needed, pairs_per_day
+    from qll.constants.astro import EARTH_MARS_MAX_M, EARTH_MARS_MIN_M
+    # far field: pairs ∝ D_rx^2 and ∝ w0^2 (θ = λ/πw0), so M needed ∝ 1/(D² w0²)
+    m1 = multiplexing_needed(EARTH_MARS_MAX_M, 0.5, 1.0, 1e8, 1.0); m2 = multiplexing_needed(EARTH_MARS_MAX_M, 0.5, 10.0, 1e8, 1.0)
+    assert m1 / m2 == pytest.approx(100.0, rel=0.02)
+    m3 = multiplexing_needed(EARTH_MARS_MAX_M, 1.5, 1.0, 1e8, 1.0)
+    assert m1 / m3 == pytest.approx(9.0, rel=0.02)
+    assert multiplexing_needed(EARTH_MARS_MIN_M, 0.5, 10.0, 1e8, 1.0) < multiplexing_needed(EARTH_MARS_MAX_M, 0.5, 10.0, 1e8, 1.0) / 30
+    assert 1e2 < multiplexing_needed(EARTH_MARS_MAX_M, 0.5, 10.0, 1e8, 1.0) < 1e4              # the thesis number: 10²–10³ with 1 m → 10 m optics
+    assert pairs_per_day(EARTH_MARS_MAX_M, 0.5, 10.0, 1e8, 1) < 1e4                              # single mode: pairs per day, not per second

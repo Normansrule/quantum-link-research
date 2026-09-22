@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.17.0 — 2026-09-22 (E9 multiplexing number; E4 prefactor closed)
+- `thermal_background.py`: the mode-counting prefactor verified against an independent Planck-radiance derivation (exactly 1 per polarization, 2 for both), the Phase 1 TODO removed, a `polarizations` argument added, and `background_from_spectral_radiance` for measured daylight sky radiance (E4's input). REQ-CHN-003 prefactor verified; the absolute daylight level remains a bench item.
+- `simulations/s08_multiplexing_at_au_scale.py`: the multiplexing factor Mars needs, replacing "10³–10⁶" with computed values: ≈2×10³ for 1 pair/s at Mars max with 1 m → 10 m optics (≈50 for a 1 kbit/day key), ≈2×10⁶ with 30 cm optics; scalings D²w₀² asserted in tests.
+
 ## 0.16.1 — 2026-09-22 (thesis synchronized with the code)
 - Results tables gain sections 9 (device-independent certification under latency) and 10 (transduction trade), generated from the code; Chapter 4 gains §4.7 (proposals settled in software) and §4.8 (pipelines waiting for data); Chapters 5 and 6 updated for S06/S07 and the six proposals with code.
 

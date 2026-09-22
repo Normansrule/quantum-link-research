@@ -27,3 +27,4 @@
 - 2026-09-20 0.15.0: E7 transduction trade implemented; design stance confirmed by simulation.
 - 2026-09-20 0.16.0: P02 relaxation pipeline (T1(T) phonon model vs bath law), P01 BOM.
 - 2026-09-22 0.16.1: thesis synchronized with E7/E10 and the analysis pipelines.
+- 2026-09-22 0.17.0: background prefactor verified (E4 half), multiplexing numbers computed (E9, S08).

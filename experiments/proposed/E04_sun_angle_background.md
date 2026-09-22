@@ -4,6 +4,8 @@
 
 **Cheapest version (Tier 1 rooftop).** Point the receiver at controlled angles 3°, 5°, 10°, 20° from the Sun (never at it; use a baffle and an attenuator on the alignment path), record counts vs filter bandwidth (3, 1, 0.3 nm) and field of view; fit to `background_count_rate()` and fix the "TODO: verify prefactor" in `qll/channels/thermal_background.py` with data.
 
+**Prefactor check done (0.17.0).** The mode-counting formula n·B·(AΩ/λ²) equals the Planck-radiance route L_ν A Ω B/(hν) exactly for one polarization (factor 2 for both), so the Phase 1 TODO is closed; `background_from_spectral_radiance` accepts a measured daylight sky radiance, which is what this experiment supplies.
+
 **Verifies.** The channel-noise model; gives REQ-CHN-003 ("background prefactor validated on hardware").
 
 **Failure modes.** Detector saturation and afterpulsing at high background; stray-light paths in the receiver; forgetting that Mars' own albedo adds to the background on the Earth-receiving side.

@@ -35,3 +35,14 @@ def test_divergence_850nm_5cm_waist():
 def test_split_path_sums_to_total():
     segs = split_path(1000.0, [0.2, 0.3, 0.5])
     assert len(segs) == 3 and math.isclose(sum(segs), 1000.0)
+
+
+def test_background_prefactor_derivation_check():                              # REQ-CHN-003 (prefactor)
+    from qll.channels.thermal_background import background_count_rate, background_count_rate_from_radiance, background_from_spectral_radiance
+    args = (3.7e14, 300.0, 1e9, 0.5, 1e-9, 0.7)
+    both = background_count_rate(*args, polarizations=2)
+    assert both == pytest.approx(background_count_rate_from_radiance(*args), rel=1e-9)   # Planck route = mode-counting route
+    assert background_count_rate(*args) == pytest.approx(both / 2, rel=1e-12)
+    # daylight: 1e7 W m^-2 sr^-1 m^-1 at 810 nm through a 1 nm filter, 1 m^2, 10 urad FOV -> ~1e5-1e6 /s
+    N = background_from_spectral_radiance(1e7, 810e-9, 1e-9, 1.0, math.pi * (10e-6) ** 2, 0.5)
+    assert 1e4 < N < 1e7
