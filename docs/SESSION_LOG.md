@@ -31,3 +31,4 @@
 - 2026-09-23 0.18.0: course syllabus; purification/generations learn file and figures.
 - 2026-09-24 0.19.0: DEJMPS; purification numbers corrected; E3 loader; problem sets.
 - 2026-09-24 0.20.0: relativity and turbulence models, four learn files, PS4.
+- 2026-09-24 0.21.0: AFC memory, frequency conversion, Purcell; learn 03/16, 02/13, 02/14.

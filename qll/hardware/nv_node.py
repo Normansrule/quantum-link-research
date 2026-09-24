@@ -21,6 +21,18 @@ GAMMA_E_HZ_PER_G = 2.8e6
 H_OVER_G_MU_B_T_PER_HZ = 1 / (28.0e9)  # T per Hz for g = 2
 
 
+def purcell_factor(Q: float, V_over_lambda_n_cubed: float) -> float:
+    """Purcell enhancement F_P = (3/4 pi^2) (lambda/n)^3 Q / V for an emitter on resonance at a field maximum [purcell1946];
+    V is the mode volume in units of (lambda/n)^3. Diamond nanophotonic cavities reach Q ~ 1e4, V ~ 1 -> F_P ~ 700 [bhaskar2020]."""
+    return 3 / (4 * math.pi**2) * Q / V_over_lambda_n_cubed
+
+
+def cooperativity(F_P: float, debye_waller: float = 0.03, quantum_efficiency: float = 0.7) -> float:
+    """C = F_P * (ZPL fraction) * QE, the ratio of coherent to incoherent emission that sets the spin-photon interface quality."""
+    return F_P * debye_waller * quantum_efficiency
+
+
+
 def nv_hamiltonian_hz(B_gauss: np.ndarray) -> np.ndarray:
     """3x3 spin-1 Hamiltonian in Hz; B in gauss in the NV frame (z along the NV axis)."""
     sx = np.array([[0, 1, 0], [1, 0, 1], [0, 1, 0]]) / math.sqrt(2)

@@ -19,6 +19,9 @@ Every platform below is a real two-level system that satisfies, to some degree, 
 
 The radar is generated from [`modalities.json`](modalities.json); change the scores there and rerun `python -m qll.viz.modality_radar`.
 
+| 13 | [Frequency conversion and cavities](13_frequency_conversion_and_cavities.md) | the two devices that let a solid-state emitter join a telecom network |
+| 14 | [Detectors and radiation](14_detectors_and_radiation.md) | SPAD, InGaAs, SNSPD, TES; TID, displacement, single-event effects |
+
 ## How to read the modality files
 Each file has the same sections: the physics of the two levels, the Hamiltonian, how the qubit is **built** (materials, fabrication, cryogenics, control chain), how it is **modeled** (what simulator, what noise model), what the **best published results** are, **what has failed** or is contested, and **what it means for a link** (photon interface, memory time versus light time).
 

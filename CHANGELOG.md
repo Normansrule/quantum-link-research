@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.21.0 — 2026-09-24 (memories, conversion, cavities, detectors)
+- `qll/network/afc_memory.py`: AFC forward/backward efficiency laws (54 % forward limit at d/F = 2 verified), temporal-mode count, `AfcMemory`.
+- `qll/channels/frequency_conversion.py` (Phase 3 stub filled): DFG target wavelength (NV + 1064 nm → 1588 nm), sin² conversion law with P_max ≈ 150 mW for a 4 cm PPLN waveguide, converter noise and the QBER floor it implies; the signal-to-noise ratio falls monotonically with pump, so the operating point is a rate/QBER trade.
+- `qll/hardware/nv_node.py`: Purcell factor and cooperativity (Q = 10⁴, V = (λ/n)³ → F_P ≈ 760).
+- learn: 03/16 AFC memories and rare-earth crystals; 02/13 frequency conversion and cavities; 02/14 detectors and radiation (NEXT_100 #40, #47, #48, #50, #58, #59).
+
 ## 0.20.0 — 2026-09-24 (relativity, turbulence, four library files, PS4)
 - `qll/space/relativity.py`: gravitational redshift (Sun + planets; +3.5e-9 Mars vs Earth), range rate from the ephemeris (up to ~17 km/s), first- and second-order Doppler, Shapiro delay (~150 µs at conjunction), and a timing budget per minute of uncorrected clock; tests pin the textbook magnitudes.
 - `qll/channels/atmosphere.py`: Hufnagel–Valley 5/7 profile, C_n² integral, Fried parameter checked against site values (5 cm at 500 nm), Rytov variance, scintillation index, aperture averaging, uplink beam wander.

@@ -44,17 +44,17 @@ Grouped by door. Each is one file, one module, one figure, one experiment, or on
 37. Donor qubits (Kane) and the flip-flop qubit
 38. NV: charge-state dynamics (NV⁻/NV⁰) and why resonant excitation needs charge control
 39. SiV/GeV/SnV comparison table with strain, temperature, and cavity requirements
-40. Nanophotonic cavities: Purcell factor, cooperativity, a worked design
+~~40. Nanophotonic cavities: Purcell factor, cooperativity, a worked design~~ done in 0.21.0
 41. Trapped-ion gate zoo: Cirac–Zoller, Mølmer–Sørensen, light-shift, Raman vs quadrupole
 42. QCCD architecture and ion shuttling; photonic interconnects between traps
 43. Rydberg gates in detail: blockade, Levine–Pichler gate, erasure conversion
 44. Optical tweezer arrays: SLM vs AOD, loading, rearrangement algorithms
 45. Photonic qubits: quantum-dot single-photon sources, indistinguishability, brightness
 46. Integrated photonics for quantum: waveguide loss, thin-film lithium niobate modulators
-47. Superconducting nanowire single-photon detectors (SNSPD): physics, efficiency, jitter, timing
-48. Frequency conversion (NV→telecom): efficiency, noise, PPLN design
+~~47. Superconducting nanowire single-photon detectors (SNSPD): physics, efficiency, jitter, timing~~ done in 0.21.0
+~~48. Frequency conversion (NV→telecom): efficiency, noise, PPLN design~~ done in 0.21.0
 49. Cryogenic wiring budget: heat load per line, attenuation, filtering, a worked 100-qubit budget
-50. Radiation effects on qubits (cosmic rays, TID) with implications for spaceflight
+~~50. Radiation effects on qubits (cosmic rays, TID) with implications for spaceflight~~ done in 0.21.0
 
 ## learn/ — communication (51–65)
 51. ~~Security proofs 101~~ done in 0.13.1
@@ -64,8 +64,8 @@ Grouped by door. Each is one file, one module, one figure, one experiment, or on
 55. CV-QKD Gaussian modulation rate derivation with a figure
 56. ~~Entanglement purification with recurrence plots~~ done in 0.18.0–0.19.0 (BBPSSW and DEJMPS; hashing remains)
 57. ~~Repeater generations compared quantitatively~~ done in 0.18.0
-58. Atomic-frequency-comb memories: how AFC storage works, multimode capacity
-59. Rare-earth ZEFOZ and dynamical decoupling: how 13 hours is reached, and the efficiency price
+~~58. Atomic-frequency-comb memories: how AFC storage works, multimode capacity~~ done in 0.21.0
+~~59. Rare-earth ZEFOZ and dynamical decoupling: how 13 hours is reached, and the efficiency price~~ done in 0.21.0
 60. Free-space link budget worked example: Micius numbers reproduced line by line
 ~~61. Atmospheric turbulence: Fried parameter, scintillation, adaptive optics for quantum links~~ done in 0.20.0
 62. Clock synchronization for networks: GPS-disciplined, White Rabbit, optical two-way time transfer
