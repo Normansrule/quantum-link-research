@@ -1,6 +1,6 @@
 # Status
 
-Version 0.19.0 · 426 tests · 24/25 requirements verified · 289 references (21 verified) · 57 learn files · 8 simulations · 30 figures
+Version 0.20.0 · 444 tests · 24/25 requirements verified · 295 references (21 verified) · 62 learn files · 8 simulations · 30 figures
 
 | Requirement | Statement | Phase | Status |
 |---|---|---|---|

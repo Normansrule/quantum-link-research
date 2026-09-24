@@ -25,3 +25,11 @@ ps3_crossover_s = None
 ps3_beats_mars_max = None
 ps3_bbpssw_rounds = None
 ps3_dejmps_rounds = None
+
+# PS4
+ps4_lt_18au_min = None
+ps4_conjunctions_10y = None
+ps4_doppler_frac = None
+ps4_doppler_ghz = None
+ps4_holevo_1e4 = None
+ps4_buffer_bytes = None

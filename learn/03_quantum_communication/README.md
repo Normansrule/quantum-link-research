@@ -12,6 +12,10 @@
 | 08 | [Deep-space optical communication](08_deep_space_optical_communication_dsoc.md) | the classical half of F3 (DSOC, PPM, Holevo) | `qll/space/classical_link.py` |
 | 09 | [Security proofs 101](09_security_proofs_101.md) | uncertainty relation → min-entropy → key length, as the code does it | `qll/qkd/{key_rate,privacy_amplification,e91}.py` |
 | 11 | [Purification and repeater generations](11_purification_and_repeater_generations.md) | the BBPSSW map, its cost at Mars, why gen-2/3 exist | `qll/network/{purification,repeater_chain}.py` |
+| 12 | [Turbulence and adaptive optics](12_turbulence_and_adaptive_optics.md) | why downlinks; r₀, Rytov, aperture averaging | `qll/channels/atmosphere.py` |
+| 13 | [Relativistic effects on the link](13_relativistic_effects_on_the_link.md) | redshift, Doppler, Shapiro; the timing budget | `qll/space/relativity.py` |
+| 14 | [Side channels and countermeasures](14_side_channels_and_countermeasures.md) | eight published attacks and the two structural answers | `qll/qkd/{decoy_state,mdi,e91}.py` |
+| 15 | [Standards and roadmaps](15_standards_and_roadmaps.md) | ETSI, ITU, IETF, NIST, ISO, EuroQCI, DSQL, CCSDS | `qll/app/` |
 | 10 | [Post-processing with code](10_post_processing_with_code.md) | sifting, Cascade vs LDPC at Mars latency, Toeplitz hashing, authentication | `qll/qkd/{sifting,error_correction,privacy_amplification}.py` |
 
 Figures: `docs/figures/link_loss_explorer.svg`, `light_time_explorer.svg`, `qkd_rate_explorer.svg`.

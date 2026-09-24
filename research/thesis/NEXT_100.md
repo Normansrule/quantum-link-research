@@ -59,7 +59,7 @@ Grouped by door. Each is one file, one module, one figure, one experiment, or on
 ## learn/ — communication (51–65)
 51. ~~Security proofs 101~~ done in 0.13.1
 52. ~~Post-processing walkthrough with code~~ done in 0.13.1
-53. Side-channel attacks catalogue (blinding, Trojan horse, time-shift) and countermeasures
+~~53. Side-channel attacks catalogue (blinding, Trojan horse, time-shift) and countermeasures~~ done in 0.20.0
 54. Twin-field QKD derivation of the √η scaling
 55. CV-QKD Gaussian modulation rate derivation with a figure
 56. ~~Entanglement purification with recurrence plots~~ done in 0.18.0–0.19.0 (BBPSSW and DEJMPS; hashing remains)
@@ -67,11 +67,11 @@ Grouped by door. Each is one file, one module, one figure, one experiment, or on
 58. Atomic-frequency-comb memories: how AFC storage works, multimode capacity
 59. Rare-earth ZEFOZ and dynamical decoupling: how 13 hours is reached, and the efficiency price
 60. Free-space link budget worked example: Micius numbers reproduced line by line
-61. Atmospheric turbulence: Fried parameter, scintillation, adaptive optics for quantum links
+~~61. Atmospheric turbulence: Fried parameter, scintillation, adaptive optics for quantum links~~ done in 0.20.0
 62. Clock synchronization for networks: GPS-disciplined, White Rabbit, optical two-way time transfer
 63. Deep-space optical communication: DSOC, PPM coding, photon-starved links (classical half)
-64. Relativistic effects on photons over interplanetary baselines (redshift, Doppler, Shapiro)
-65. Standards and roadmaps: ETSI QKD, IETF QIRG, EuroQCI, NIST PQC timelines
+~~64. Relativistic effects on photons over interplanetary baselines (redshift, Doppler, Shapiro)~~ done in 0.20.0
+~~65. Standards and roadmaps: ETSI QKD, IETF QIRG, EuroQCI, NIST PQC timelines~~ done in 0.20.0
 
 ## experiments/ — protocols and recreations (66–80)
 66. P05: Single-photon anticorrelation (Grangier) on the SPDC bench

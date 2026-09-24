@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.20.0 — 2026-09-24 (relativity, turbulence, four library files, PS4)
+- `qll/space/relativity.py`: gravitational redshift (Sun + planets; +3.5e-9 Mars vs Earth), range rate from the ephemeris (up to ~17 km/s), first- and second-order Doppler, Shapiro delay (~150 µs at conjunction), and a timing budget per minute of uncorrected clock; tests pin the textbook magnitudes.
+- `qll/channels/atmosphere.py`: Hufnagel–Valley 5/7 profile, C_n² integral, Fried parameter checked against site values (5 cm at 500 nm), Rytov variance, scintillation index, aperture averaging, uplink beam wander.
+- learn/03: 12 Turbulence and Adaptive Optics, 13 Relativistic Effects on the Link, 14 Side Channels and Countermeasures, 15 Standards and Roadmaps (NEXT_100 #53, #61, #64, #65).
+- Problem Set 4 (space segment and application) with machine-checked answers.
+
 ## 0.19.0 — 2026-09-24 (DEJMPS, E3 pipeline, problem sets)
 - `network/purification.py`: DEJMPS map and an exact numeric DEJMPS; the two agree round by round. **Correction:** earlier drafts of Chapter 4 and learn 03/11 stated BBPSSW from F = 0.8 to 0.99 costs "3 rounds and 18 pairs"; the computed values are 10 rounds and ~2 900 pairs (DEJMPS: 4 rounds, ~32 pairs). Text, figure, and tests now carry the computed numbers.
 - `space/relay_constellation.py`: `load_pass_table`, `fit_lognormal`, bootstrap daily key totals — E3 runs on the real Jinan-1 table once downloaded; synthetic campaign file included.

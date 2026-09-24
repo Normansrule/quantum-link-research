@@ -7,3 +7,4 @@ Problem sets for the course in [`../COURSE_SYLLABUS.md`](../COURSE_SYLLABUS.md).
 | [PS1](ps1_qubits_and_temperature.md) | 1–3 | qubits, noise, temperature | 4 | 2 |
 | [PS2](ps2_entanglement_and_teleportation.md) | 5–6 | Bell tests, teleportation, light time | 4 | 2 |
 | [PS3](ps3_links_keys_memories.md) | 9–11 | loss, keys, memories, purification | 5 | 2 |
+| [PS4](ps4_space_and_application.md) | 13–14 | space segment, relativity, classical link, messenger | 5 | 2 |

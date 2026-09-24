@@ -30,6 +30,9 @@ def references() -> dict:
     from qll.network.purification import bbpssw_rounds_to_target, bell_diagonal_weights, dejmps_rounds_to_target
     from qll.qkd.key_rate import bb84_rate_per_sifted_bit
     from qll.qkd.plob_bound import plob_bits_per_use
+    from qll.space.ephemeris import SYNODIC_PERIOD_DAYS
+    from qll.space.classical_link import holevo_capacity_bits_per_mode
+    from qll.app.messenger import required_buffer_bytes
     th, ph = math.pi / 3, math.pi / 4
     w = 2 * math.pi * 6e9
     return {
@@ -44,6 +47,11 @@ def references() -> dict:
         "ps3_crossover_s": crossover_time_s(0.95, 3600.0), "ps3_beats_mars_max": crossover_time_s(0.95, 3600.0) > round_trip_delay_s(EARTH_MARS_MAX_M),
         "ps3_bbpssw_rounds": bbpssw_rounds_to_target(0.8, 0.99)[0],
         "ps3_dejmps_rounds": dejmps_rounds_to_target(bell_diagonal_weights(werner_state(0.8)), 0.99)[0],
+        "ps4_lt_18au_min": one_way_delay_s(1.8 * AU_METERS) / 60,
+        "ps4_conjunctions_10y": int(round(10 * 365.25 / SYNODIC_PERIOD_DAYS)),
+        "ps4_doppler_frac": 12e3 / 299_792_458.0, "ps4_doppler_ghz": 193.4e12 * 12e3 / 299_792_458.0 / 1e9,
+        "ps4_holevo_1e4": holevo_capacity_bits_per_mode(1e-4),
+        "ps4_buffer_bytes": required_buffer_bytes(0.0, EARTH_MARS_MAX_M, 32, messages_per_s=1 / 30),
     }
 
 
