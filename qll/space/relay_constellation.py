@@ -90,3 +90,32 @@ def best_relay_pairs_per_day(relays: list[Relay], t_days: float, sep_threshold_d
             continue
         best = max(best, long_leg_pairs_per_day(r, max(lg["earth"]["range_m"], lg["mars"]["range_m"]), **kw))
     return best
+
+
+# --- E3: real pass statistics -------------------------------------------------------------------------------
+def load_pass_table(path: str, key_column: str = "key_bits", duration_column: str | None = None) -> np.ndarray:
+    """Load per-pass key yields (bits) from a CSV such as the Jinan-1 campaign table (Zenodo 10.5281/zenodo.14732295;
+    TODO: confirm column names when downloaded). Returns the yields as an array; passes with zero key are kept."""
+    import csv
+
+    out = []
+    with open(path, newline="") as fh:
+        for row in csv.DictReader(fh):
+            v = row.get(key_column, "").strip()
+            if v:
+                out.append(float(v))
+    return np.asarray(out, dtype=float)
+
+
+def fit_lognormal(yields: np.ndarray) -> tuple[float, float]:
+    """(median_bits, sigma) of a log-normal fitted to the positive yields; used by short_leg_key_bits_per_day."""
+    y = np.asarray(yields, dtype=float)
+    y = y[y > 0]
+    logs = np.log(y)
+    return float(np.exp(logs.mean())), float(logs.std(ddof=1)) if len(logs) > 1 else 0.0
+
+
+def key_bits_per_day_from_table(yields: np.ndarray, passes_per_day: float, rng: np.random.Generator, days: int = 365) -> np.ndarray:
+    """Bootstrap daily key totals by resampling measured passes (empirical distribution, no model)."""
+    y = np.asarray(yields, dtype=float)
+    return np.array([y[rng.integers(0, len(y), size=rng.poisson(passes_per_day))].sum() for _ in range(days)])

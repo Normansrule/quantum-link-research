@@ -76,3 +76,43 @@ def bbpssw_numeric(rho_a: np.ndarray, rho_b: np.ndarray) -> tuple[np.ndarray, fl
         p_tot += float(np.real(np.trace(red.reshape(4, 4))))
         out += red.reshape(4, 4)
     return out / p_tot, p_tot
+
+
+# ---------------------------------------------------------------------------------------------------------
+# DEJMPS [deutsch1996]: Alice applies R_x(pi/2), Bob R_x(-pi/2) to their qubits of both pairs, then the same
+# bilateral CNOT + agreement post-selection as BBPSSW. On Bell-diagonal states (weights p_phi+, p_phi-, p_psi+,
+# p_psi-) the map is
+#   p'_A = (A^2 + B^2)/N,  p'_B = 2 C D / N,  p'_C = (C^2 + D^2)/N,  p'_D = 2 A B / N,  N = (A+B)^2 + (C+D)^2,
+# in Deutsch's labelling (A the target). In this repository's Bell labels the numeric protocol puts the 2AB weight
+# on phi- rather than psi- (a relabelling by the rotation), which the next round's rotation undoes; the target fidelity
+# and success probability agree round by round with the map, which the tests check by iterating both,
+# which converges faster than BBPSSW because it does not first twirl to a Werner state.
+# ---------------------------------------------------------------------------------------------------------
+def dejmps_step(p: tuple[float, float, float, float]) -> tuple[tuple[float, float, float, float], float]:
+    """One DEJMPS round on two identical Bell-diagonal pairs with weights (phi+, phi-, psi+, psi-)."""
+    a, b, c, d = p
+    N = (a + b) ** 2 + (c + d) ** 2
+    return ((a * a + b * b) / N, 2 * c * d / N, (c * c + d * d) / N, 2 * a * b / N), N
+
+
+def dejmps_numeric(rho_a: np.ndarray, rho_b: np.ndarray) -> tuple[np.ndarray, float]:
+    """Exact DEJMPS on two arbitrary 4x4 pair states: the R_x(±π/2) rotations followed by BBPSSW's circuit."""
+    rx = lambda th: np.array([[np.cos(th / 2), -1j * np.sin(th / 2)], [-1j * np.sin(th / 2), np.cos(th / 2)]])
+    U = np.kron(rx(np.pi / 2), rx(-np.pi / 2))          # Alice, Bob
+    ra = U @ rho_a @ U.conj().T
+    rb = U @ rho_b @ U.conj().T
+    return bbpssw_numeric(ra, rb)
+
+
+def bell_diagonal_weights(rho: np.ndarray) -> tuple[float, float, float, float]:
+    from qll.circuits.bell import bell_state
+    return tuple(float(np.real(bell_state(k).conj() @ rho @ bell_state(k))) for k in ("phi+", "phi-", "psi+", "psi-"))
+
+
+def dejmps_rounds_to_target(p0: tuple[float, float, float, float], F_target: float, max_rounds: int = 50) -> tuple[int, float, float]:
+    p, pairs, rounds = p0, 1.0, 0
+    while p[0] < F_target and rounds < max_rounds:
+        p, N = dejmps_step(p)
+        pairs = 2 * pairs / N
+        rounds += 1
+    return rounds, p[0], pairs

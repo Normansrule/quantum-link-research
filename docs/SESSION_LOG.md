@@ -29,3 +29,4 @@
 - 2026-09-22 0.16.1: thesis synchronized with E7/E10 and the analysis pipelines.
 - 2026-09-22 0.17.0: background prefactor verified (E4 half), multiplexing numbers computed (E9, S08).
 - 2026-09-23 0.18.0: course syllabus; purification/generations learn file and figures.
+- 2026-09-24 0.19.0: DEJMPS; purification numbers corrected; E3 loader; problem sets.

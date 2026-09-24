@@ -53,7 +53,7 @@ Tick as you go. Each item is one file, roughly one sitting.
 - [ ] then: [`../research/README.md`](../research/README.md) and [`../experiments/proposed/README.md`](../experiments/proposed/README.md)
 
 ## Teaching
-[`COURSE_SYLLABUS.md`](COURSE_SYLLABUS.md): a 15-week course built from this repository, with weekly readings, computations, and laboratories.
+[`COURSE_SYLLABUS.md`](COURSE_SYLLABUS.md): a 15-week course built from this repository, with weekly readings, computations, and laboratories; [`assignments/`](assignments/README.md) holds three problem sets with a machine-checked answer key.
 
 ## Videos
 [Youtube](../youtube/README.md): verified links, mapped to each file here.

@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.19.0 — 2026-09-24 (DEJMPS, E3 pipeline, problem sets)
+- `network/purification.py`: DEJMPS map and an exact numeric DEJMPS; the two agree round by round. **Correction:** earlier drafts of Chapter 4 and learn 03/11 stated BBPSSW from F = 0.8 to 0.99 costs "3 rounds and 18 pairs"; the computed values are 10 rounds and ~2 900 pairs (DEJMPS: 4 rounds, ~32 pairs). Text, figure, and tests now carry the computed numbers.
+- `space/relay_constellation.py`: `load_pass_table`, `fit_lognormal`, bootstrap daily key totals — E3 runs on the real Jinan-1 table once downloaded; synthetic campaign file included.
+- `learn/assignments/`: three problem sets (qubits and temperature; entanglement and teleportation; links, keys, memories) with `answers.py` and `tests/test_assignments.py`, whose reference values are computed from `qll` and self-tested.
+
 ## 0.18.0 — 2026-09-23 (course syllabus; purification and repeater generations)
 - `learn/COURSE_SYLLABUS.md`: a 15-week course built from the repository — readings, computations, laboratories, final project, budget tiers, instructor notes.
 - `learn/03/11` Purification and Repeater Generations with two generated figures (`purification_recurrence`, `repeater_generations`) — NEXT_100 #56–57.

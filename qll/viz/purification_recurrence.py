@@ -21,13 +21,16 @@ def main() -> None:
     for _ in range(6):            # cobweb
         f2 = bbpssw_step(f)[0]; a.plot([f, f, f2], [f, f2, f2], color="C3", lw=1); f = f2
     a.set(xlabel="input fidelity F", ylabel="output fidelity F'", title="One BBPSSW round: F > ½ improves, F < ½ degrades"); a.legend(fontsize=8)
+    from qll.circuits.bell import werner_state
+    from qll.network.purification import bell_diagonal_weights, dejmps_rounds_to_target
     Fs = np.linspace(0.55, 0.95, 9)
     cost = [bbpssw_rounds_to_target(f, 0.99)[2] for f in Fs]; rounds = [bbpssw_rounds_to_target(f, 0.99)[0] for f in Fs]
-    b.semilogy(Fs, cost, "o-", lw=2, label="input pairs per output pair (target 0.99)")
+    b.semilogy(Fs, cost, "o-", lw=2, label="BBPSSW: input pairs per output pair (target 0.99)")
+    b.semilogy(Fs, [dejmps_rounds_to_target(bell_diagonal_weights(werner_state(f)), 0.99)[2] for f in Fs], "s-", lw=2, label="DEJMPS")
     for x, r in zip(Fs, rounds):
         b.text(x, cost[list(Fs).index(x)] * 1.3, f"{r} rounds", fontsize=7, ha="center")
     b.set(xlabel="input fidelity F", ylabel="pairs consumed", title="Cost: each round halves the pairs and costs one classical round trip"); b.legend(fontsize=8)
-    b.text(0.02, 0.05, "What to look for: from F = 0.6 the price is hundreds of pairs and 5 round trips;\nat Mars that is hours of classical exchange per purified pair.", transform=b.transAxes, fontsize=8, color="0.3")
+    b.text(0.02, 0.05, "What to look for: BBPSSW from F = 0.8 needs 10 rounds and ~2 900 pairs; DEJMPS needs 4 and ~32.\nEach round is a classical round trip: at Mars, hours per purified pair.", transform=b.transAxes, fontsize=8, color="0.3")
     finish(fig, args)
 
 

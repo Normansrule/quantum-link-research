@@ -71,3 +71,13 @@ def test_classical_link_limits():
     assert ppm_data_rate_bps(received_photons_per_s(L_m=0.2 * AU_METERS, **DSOC_PSYCHE)) == 267e6   # modulator cap
     assert holevo_limited_rate_bps(1e7, 1e9) > ppm_data_rate_bps(1e7)              # PPM sits below Holevo
     assert one_way_light_time_s(0.0) > 0
+
+
+def test_pass_table_loader_and_bootstrap():                                       # E3 pipeline
+    from qll.space.relay_constellation import fit_lognormal, key_bits_per_day_from_table, load_pass_table
+    y = load_pass_table("data/_examples/synthetic_jinan1_passes.csv")
+    assert len(y) == 20 and (y == 0).sum() == 3
+    med, sig = fit_lognormal(y)
+    assert 1e5 < med < 6e5 and 0.4 < sig < 1.3
+    daily = key_bits_per_day_from_table(y, passes_per_day=4.0, rng=np.random.default_rng(0), days=200)
+    assert daily.mean() == pytest.approx(4.0 * y.mean(), rel=0.15)              # bootstrap reproduces the empirical mean

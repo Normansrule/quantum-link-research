@@ -106,3 +106,16 @@ def test_routing_widest_path_with_fidelity_floor():
     assert r.herald_round_trip_s == pytest.approx(round_trip_delay_s(100e3))
     strict = widest_path(G, "A", "C", f_min=0.85)
     assert strict.path == ["A", "C"]                                              # fidelity floor forces the direct link
+
+
+def test_dejmps_numeric_matches_deutsch_map_round_by_round_and_beats_bbpssw():
+    from qll.network.purification import bell_diagonal_weights, dejmps_numeric, dejmps_rounds_to_target, dejmps_step
+    rho = werner_state(0.8); p = bell_diagonal_weights(rho)
+    for _ in range(4):
+        rho, N = dejmps_numeric(rho, rho)
+        p, N2 = dejmps_step(p)
+        assert bell_diagonal_weights(rho)[0] == pytest.approx(p[0], abs=1e-9) and N == pytest.approx(N2, abs=1e-9)
+    assert p[0] > 0.99
+    rb, Fb, pairs_b = bbpssw_rounds_to_target(0.8, 0.99)
+    rd, Fd, pairs_d = dejmps_rounds_to_target(bell_diagonal_weights(werner_state(0.8)), 0.99)
+    assert rd < rb and pairs_d < pairs_b / 50                                  # 4 rounds / ~32 pairs vs 10 / ~2900

@@ -62,7 +62,7 @@ Grouped by door. Each is one file, one module, one figure, one experiment, or on
 53. Side-channel attacks catalogue (blinding, Trojan horse, time-shift) and countermeasures
 54. Twin-field QKD derivation of the √η scaling
 55. CV-QKD Gaussian modulation rate derivation with a figure
-56. ~~Entanglement purification with recurrence plots~~ done in 0.18.0 (BBPSSW; DEJMPS and hashing remain)
+56. ~~Entanglement purification with recurrence plots~~ done in 0.18.0–0.19.0 (BBPSSW and DEJMPS; hashing remains)
 57. ~~Repeater generations compared quantitatively~~ done in 0.18.0
 58. Atomic-frequency-comb memories: how AFC storage works, multimode capacity
 59. Rare-earth ZEFOZ and dynamical decoupling: how 13 hours is reached, and the efficiency price

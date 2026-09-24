@@ -4,6 +4,8 @@
 
 **Cheapest version.** Software only: `qll/network/relay_constellation.py` with the Jinan-1 empirical distribution per pass, JPL Horizons ranges (`qll/space/ephemeris.py`), conjunction windows (Sun–Earth–Mars angle < 3°), and SeQUeNCe for the discrete-event timeline. Output: key or entanglement availability versus number of relays and their placement (Earth orbit, Sun–Earth L1/L2, Mars orbit).
 
+**Pipeline ready (0.19.0).** `qll/space/relay_constellation.py` gains `load_pass_table` (CSV of per-pass key bits, column `key_bits`), `fit_lognormal`, and a bootstrap `key_bits_per_day_from_table` that resamples measured passes without a model; tested on `data/_examples/synthetic_jinan1_passes.csv`. Download the Zenodo table, save it as `data/passes/jinan1_2025.csv` with a `key_bits` column, and the constellation model runs on real statistics.
+
 **Verifies.** REQ-NET-001 (chain beats direct beyond crossover) at planetary scale; feeds trade study "relay placement".
 
 **Failure modes.** Over-fitting to one satellite's statistics; ignoring pointing acquisition time per pass; assuming the relay memory outlives the inter-pass gap.

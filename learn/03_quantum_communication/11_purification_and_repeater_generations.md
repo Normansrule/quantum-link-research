@@ -6,7 +6,7 @@
 
 ## The BBPSSW map
 $$F'=\frac{F^2+\big(\tfrac{1-F}{3}\big)^2}{F^2+\tfrac{2F(1-F)}{3}+5\big(\tfrac{1-F}{3}\big)^2},\qquad p_{\rm succ}=F^2+\tfrac{2F(1-F)}{3}+5\big(\tfrac{1-F}{3}\big)^2.$$
-Fixed points at $F=\tfrac12$ (unstable) and $F=1$ (stable): a pair below one half gets worse. Each round halves the number of pairs, succeeds with $p_{\rm succ}$, and costs one classical round trip to compare outcomes. From $F=0.8$ to $0.99$: 3 rounds and about 18 input pairs per output pair; from $0.6$: 5 rounds and hundreds. `qll/network/purification.py` implements the map and a full 16-dimensional simulation of the protocol; the two agree to $10^{-12}$.
+Fixed points at $F=\tfrac12$ (unstable) and $F=1$ (stable): a pair below one half gets worse. Each round halves the number of pairs, succeeds with $p_{\rm succ}$, and costs one classical round trip to compare outcomes. From $F=0.8$ to $0.99$ BBPSSW takes 10 rounds and about 2 900 input pairs per output pair; from $0.6$, 16 rounds and millions. DEJMPS [deutsch1996], which rotates before the bilateral CNOT and so does not waste the Bell-diagonal structure, reaches 0.99 from 0.8 in 4 rounds and about 32 pairs, and from 0.6 in 7 rounds and about 1 300. Both maps are in `qll/network/purification.py` and both are checked against exact simulations of the circuits. `qll/network/purification.py` implements the map and a full 16-dimensional simulation of the protocol; the two agree to $10^{-12}$.
 
 ![purification](../../docs/figures/purification_recurrence.svg)
 
@@ -16,7 +16,7 @@ Gen-1 is limited by the two-way classical exchange: every swap herald and every 
 ![generations](../../docs/figures/repeater_generations.svg)
 
 ## Consequence for the Mars link
-Purification at Mars costs 6–45 minutes per round; three rounds are 20 minutes to two and a quarter hours of classical exchange per purified pair. Either the link must deliver pairs of high enough fidelity that no purification is needed (F ≳ 0.9 after storage), or the protocol must be one-way (gen-2 or gen-3), which is proposal T02/T03 territory. This is open problem 3 in `research/cutting_edge/02_open_problems.md`.
+Purification at Mars costs 6–45 minutes per round; the four DEJMPS rounds from 0.8 are 25 minutes to three hours of classical exchange per purified pair, and BBPSSW's ten rounds are an hour to seven and a half. Either the link must deliver pairs of high enough fidelity that no purification is needed (F ≳ 0.9 after storage), or the protocol must be one-way (gen-2 or gen-3), which is proposal T02/T03 territory. This is open problem 3 in `research/cutting_edge/02_open_problems.md`.
 
 ## Key papers
 - Bennett, C. H., Brassard, G., Popescu, S., Schumacher, B., Smolin, J. A., & Wootters, W. K. (1996). Purification of noisy entanglement and faithful teleportation via noisy channels. *Physical Review Letters*, 76, 722. https://doi.org/10.1103/PhysRevLett.76.722
