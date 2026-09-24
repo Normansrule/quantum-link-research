@@ -52,6 +52,9 @@ Tick as you go. Each item is one file, roughly one sitting.
 - [ ] [Complexity: what quantum computers cannot do](01_quantum_computing_core/05_complexity_and_what_quantum_computers_cannot_do.md) (so the security claim is stated correctly)
 - [ ] then: [`../research/README.md`](../research/README.md) and [`../experiments/proposed/README.md`](../experiments/proposed/README.md)
 
+## Teaching
+[`COURSE_SYLLABUS.md`](COURSE_SYLLABUS.md): a 15-week course built from this repository, with weekly readings, computations, and laboratories.
+
 ## Videos
 [Youtube](../youtube/README.md): verified links, mapped to each file here.
 

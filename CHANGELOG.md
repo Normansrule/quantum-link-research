@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.18.0 — 2026-09-23 (course syllabus; purification and repeater generations)
+- `learn/COURSE_SYLLABUS.md`: a 15-week course built from the repository — readings, computations, laboratories, final project, budget tiers, instructor notes.
+- `learn/03/11` Purification and Repeater Generations with two generated figures (`purification_recurrence`, `repeater_generations`) — NEXT_100 #56–57.
+
 ## 0.17.0 — 2026-09-22 (E9 multiplexing number; E4 prefactor closed)
 - `thermal_background.py`: the mode-counting prefactor verified against an independent Planck-radiance derivation (exactly 1 per polarization, 2 for both), the Phase 1 TODO removed, a `polarizations` argument added, and `background_from_spectral_radiance` for measured daylight sky radiance (E4's input). REQ-CHN-003 prefactor verified; the absolute daylight level remains a bench item.
 - `simulations/s08_multiplexing_at_au_scale.py`: the multiplexing factor Mars needs, replacing "10³–10⁶" with computed values: ≈2×10³ for 1 pair/s at Mars max with 1 m → 10 m optics (≈50 for a 1 kbit/day key), ≈2×10⁶ with 30 cm optics; scalings D²w₀² asserted in tests.

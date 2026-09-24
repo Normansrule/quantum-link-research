@@ -22,5 +22,6 @@ def finish(fig, args) -> None:
     if args.save:
         fig.savefig(args.save, bbox_inches="tight")
         print(f"wrote {args.save}")
+        plt.close(fig)          # 20+ explorers render in one test session; do not accumulate figures
     else:
         plt.show()

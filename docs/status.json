@@ -1,14 +1,14 @@
 {
- "version": "0.17.0",
- "tests": 390,
+ "version": "0.18.0",
+ "tests": 396,
  "requirements": 25,
  "requirements_verified": 24,
  "references": 289,
  "references_verified": 21,
- "learn_files": 51,
+ "learn_files": 53,
  "experiment_files": 37,
  "research_files": 30,
  "simulations": 8,
- "figures": 28,
+ "figures": 30,
  "phases_done": 6
 }
