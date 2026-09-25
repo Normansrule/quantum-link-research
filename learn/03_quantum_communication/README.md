@@ -18,6 +18,7 @@
 | 15 | [Standards and roadmaps](15_standards_and_roadmaps.md) | ETSI, ITU, IETF, NIST, ISO, EuroQCI, DSQL, CCSDS | `qll/app/` |
 | 16 | [AFC memories and rare-earth crystals](16_afc_memories_and_rare_earth_crystals.md) | efficiency laws, ZEFOZ, multiplexing, why < 5 % at hours | `qll/network/afc_memory.py` |
 | 17 | [Continuous-variable QKD](17_cv_qkd_derivation.md) | GG02 rate, the excess-noise threshold, why it suits daylight | `qll/qkd/cv_qkd.py` |
+| 18 | [Twin-field derivation](18_twin_field_derivation.md) | where √η comes from, what it costs, why it is not a repeater | `qll/qkd/twin_field.py` |
 | 10 | [Post-processing with code](10_post_processing_with_code.md) | sifting, Cascade vs LDPC at Mars latency, Toeplitz hashing, authentication | `qll/qkd/{sifting,error_correction,privacy_amplification}.py` |
 
 Figures: `docs/figures/link_loss_explorer.svg`, `light_time_explorer.svg`, `qkd_rate_explorer.svg`.

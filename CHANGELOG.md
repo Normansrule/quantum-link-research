@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.23.0 — 2026-09-24 (wiring budget, ion gates, four library files)
+- `qll/hardware/cryo_wiring.py`: passive (conduction) and active (attenuator) heat loads per stage for a list of lines, total load against stage cooling powers, and the limiting stage / maximum line count (representative conductivity integrals, flagged for calibration against Krinner et al. Table 2).
+- `qll/hardware/trapped_ion.py`: Lamb–Dicke parameter (∝ 1/√(mω)), Mølmer–Sørensen gate time, and the heating/scattering/off-resonant budget with its speed trade.
+- learn: 02/17 cryogenic wiring budget, 02/18 ion gates and QCCD, 02/19 quantum-dot sources and integrated photonics, 03/18 twin-field derivation (NEXT_100 #41, #42, #45, #46, #49, #54).
+
 ## 0.22.0 — 2026-09-24 (processor physics, CV-QKD, protocols P05–P07)
 - `qll/hardware/superconducting.py`: fluxonium and transmon spectra by diagonalisation (transmon matches √(8E_JE_C)−E_C; fluxonium drops tenfold at half flux), dispersive shift, and a readout SNR/fidelity budget with an optimal measurement time against T₁ and amplifier noise.
 - `qll/hardware/rydberg.py`: blockade radius (7.5 µm at 5 MHz for Rb 70S), interaction, gate-infidelity budget, blackbody lifetime scaling.
