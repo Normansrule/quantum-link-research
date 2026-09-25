@@ -11,9 +11,9 @@ Grouped by door. Each is one file, one module, one figure, one experiment, or on
 6. Scattering theory basics: cross sections, why photons scatter off atoms (the readout mechanism)
 7. Path integrals in one page and why they matter for interference (link to the Veritasium video)
 8. Second quantization worked examples: Hubbard model, Jaynes–Cummings ladder
-9. Bell inequalities beyond CHSH: CH, Eberhard, Mermin–GHZ, and steering
-10. Entanglement measures for mixed states: negativity, PPT criterion, entanglement witnesses
-11. Quantum channels catalogue: 12 named channels with Kraus operators and figures
+~~9. Bell inequalities beyond CHSH: CH, Eberhard, Mermin–GHZ, and steering~~ done in 0.24.0
+~~10. Entanglement measures for mixed states: negativity, PPT criterion, entanglement witnesses~~ done in 0.24.0
+~~11. Quantum channels catalogue: 12 named channels with Kraus operators and figures~~ done in 0.24.0
 12. Master equations beyond Lindblad: Bloch–Redfield, non-Markovian baths, 1/f noise
 13. Quantum thermodynamics: Landauer, Maxwell's demon, thermal machines with qubits
 14. Gate decompositions: Solovay–Kitaev, KAK, two-qubit gate synthesis
@@ -26,7 +26,7 @@ Grouped by door. Each is one file, one module, one figure, one experiment, or on
 21. Magic-state distillation and the T-count economy
 22. qLDPC codes explained (bivariate bicycle, gross code) with a figure
 23. Bosonic codes: cat, binomial, GKP with Wigner-function figures
-24. Randomized benchmarking notebook: simulate, fit, extract error per Clifford
+~~24. Randomized benchmarking notebook: simulate, fit, extract error per Clifford~~ done in 0.24.0
 25. Quantum volume and other holistic benchmarks; why they mislead
 26. Noise spectroscopy: dynamical decoupling as a filter function
 27. Quantum machine learning: what is real, what dequantizes

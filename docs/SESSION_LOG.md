@@ -34,3 +34,4 @@
 - 2026-09-24 0.21.0: AFC memory, frequency conversion, Purcell; learn 03/16, 02/13, 02/14.
 - 2026-09-24 0.22.0: superconducting spectra/readout, Rydberg, CV-QKD; learn 02/15-16, 03/17; P05-P07.
 - 2026-09-24 0.23.0: cryo wiring and ion gate models; learn 02/17-19, 03/18.
+- 2026-09-25 0.24.0: entanglement measures, Mermin, channel catalogue, RB; learn 00/16, 01/09-10.

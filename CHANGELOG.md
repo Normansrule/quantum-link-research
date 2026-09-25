@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.24.0 — 2026-09-25 (foundations: measures, Mermin, channel catalogue, RB)
+- `qll/circuits/entanglement_measures.py`: partial transpose, negativity (Werner: max(0, f − ½)), PPT test, witness; all three agree on the f = ½ threshold.
+- `qll/circuits/mermin.py`: three-qubit Mermin value exact and Stim-sampled; |M| = 4 for GHZ, ≤ 2 for products.
+- `qll/circuits/noise/catalogue.py`: twelve named channels (bit/phase/bit-phase flip, Pauli, depolarizing, amplitude and generalized amplitude damping, phase damping, complete dephasing, reset, coherent rotation error, its Pauli twirl), each CPTP-checked on construction; twirling preserves average fidelity, shown by test.
+- `qll/circuits/benchmarking.py`: single-qubit randomized benchmarking in Aer with the 24-element Clifford group; decay fit recovers the error per Clifford (slow test).
+- learn: 00/16 entanglement measures and multipartite Bell; 01/09 channel catalogue; 01/10 randomized benchmarking in practice (NEXT_100 #9–11, #24).
+
 ## 0.23.0 — 2026-09-24 (wiring budget, ion gates, four library files)
 - `qll/hardware/cryo_wiring.py`: passive (conduction) and active (attenuator) heat loads per stage for a list of lines, total load against stage cooling powers, and the limiting stage / maximum line count (representative conductivity integrals, flagged for calibration against Krinner et al. Table 2).
 - `qll/hardware/trapped_ion.py`: Lamb–Dicke parameter (∝ 1/√(mω)), Mølmer–Sørensen gate time, and the heating/scattering/off-resonant budget with its speed trade.
