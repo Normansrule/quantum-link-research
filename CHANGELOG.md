@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.25.0 — 2026-09-25 (computing core: codes, QFT, H2, magic states, oscillators)
+- `qll/circuits/stabilizer_codes.py`: repetition, five-qubit, and Steane codes with syndromes from Stim Pauli algebra (five-qubit code shown perfect: 16/16 syndromes), and a Stim bit-flip memory experiment reproducing 3p².
+- `qll/circuits/algorithms.py`: QFT verified against the Fourier matrix for n = 2–4 in Qiskit's little-endian convention (a first draft had the ordering wrong); phase estimation reads 0.375 exactly with 4 bits and 0.3 to one bit with 5.
+- `qll/circuits/chemistry_h2.py`: two-qubit H₂ Hamiltonian; electronic −1.851 Ha + nuclear repulsion 0.714 Ha = −1.137 Ha, the experimental value; a one-parameter VQE ansatz reaches it exactly.
+- `qll/circuits/magic_states.py`: 15-to-1 distillation (35p³), rounds and raw states per T, algorithm budgets.
+- `qll/circuits/oscillator_states.py`: coherent and squeezed statistics in QuTiP pinned to closed forms.
+- learn: 01/11 stabilizer codes hands-on, 01/12 QFT/phase estimation/H₂/magic states, 00/17 oscillator states (NEXT_100 #2, #17, #18, #19, #21).
+
 ## 0.24.0 — 2026-09-25 (foundations: measures, Mermin, channel catalogue, RB)
 - `qll/circuits/entanglement_measures.py`: partial transpose, negativity (Werner: max(0, f − ½)), PPT test, witness; all three agree on the f = ½ threshold.
 - `qll/circuits/mermin.py`: three-qubit Mermin value exact and Stim-sampled; |M| = 4 for GHZ, ≤ 2 for products.

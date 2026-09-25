@@ -4,7 +4,7 @@ Grouped by door. Each is one file, one module, one figure, one experiment, or on
 
 ## learn/ — foundations and computing (1–30)
 1. Time evolution operators and the Heisenberg picture
-2. The harmonic oscillator in full: coherent-state dynamics, displacement, squeezing operators
+~~2. The harmonic oscillator in full: coherent-state dynamics, displacement, squeezing operators~~ done in 0.25.0
 3. Angular momentum coupling tables (Clebsch–Gordan) with the NV/¹³C example worked
 4. Hydrogen fine and hyperfine structure; why ¹⁷¹Yb⁺ and ⁸⁷Rb are chosen
 5. Symmetries and conservation laws (Noether, parity, time reversal) and their use in selection rules
@@ -19,11 +19,11 @@ Grouped by door. Each is one file, one module, one figure, one experiment, or on
 14. Gate decompositions: Solovay–Kitaev, KAK, two-qubit gate synthesis
 15. Measurement-based quantum computing and cluster states
 16. Adiabatic gates and optimal control (GRAPE, CRAB) with a worked pulse
-17. Quantum Fourier transform derived and drawn; phase estimation circuit walk-through
-18. Hamiltonian simulation resource counts with a small worked molecule (H₂)
-19. Stabilizer formalism tutorial with Stim examples (5-qubit code, Steane, surface)
+~~17. Quantum Fourier transform derived and drawn; phase estimation circuit walk-through~~ done in 0.25.0
+~~18. Hamiltonian simulation resource counts with a small worked molecule (H₂)~~ done in 0.25.0
+~~19. Stabilizer formalism tutorial with Stim examples (5-qubit code, Steane, surface)~~ done in 0.25.0
 20. Decoders: MWPM, union-find, belief propagation, neural; PyMatching demo
-21. Magic-state distillation and the T-count economy
+~~21. Magic-state distillation and the T-count economy~~ done in 0.25.0
 22. qLDPC codes explained (bivariate bicycle, gross code) with a figure
 23. Bosonic codes: cat, binomial, GKP with Wigner-function figures
 ~~24. Randomized benchmarking notebook: simulate, fit, extract error per Clifford~~ done in 0.24.0
