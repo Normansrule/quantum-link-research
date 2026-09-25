@@ -20,7 +20,7 @@ flowchart LR
 | [`protocols/`](protocols/README.md) | lab procedures you can follow line by line: ODMR on a $100 bench, pulsed NV control, SPDC Bell test, rooftop free-space link | [`protocols/P01_odmr_nv_bench.md`](protocols/P01_odmr_nv_bench.md) |
 | [`done/`](done/README.md) | ten experiments that made the field, each with Original · Physics · Simple recreation · What went wrong · Repo hook | [`done/04_odmr_nv.md`](done/04_odmr_nv.md) |
 | [`proposed/`](proposed/README.md) | E1–E10, each with gap · cheapest version · research version · requirement verified | [`proposed/E01…`](proposed/E01_delayed_classical_channel_teleportation.md) |
-| [`lessons/`](lessons/01_contested_claims.md) | contested and retracted claims; what scaled and why | [`lessons/02_what_scaled_and_why.md`](lessons/02_what_scaled_and_why.md) |
+| [`lessons/`](lessons/01_contested_claims.md) | contested and retracted claims; what scaled and why; timelines that slipped; a reproducibility checklist; the QKD hacking cycle | [`lessons/02_what_scaled_and_why.md`](lessons/02_what_scaled_and_why.md) |
 
 ## The recommended order on a student budget
 1. **ODMR** ([done/04](done/04_odmr_nv.md), [P01](protocols/P01_odmr_nv_bench.md)) — $100–500, one weekend; you now own a working qubit readout.

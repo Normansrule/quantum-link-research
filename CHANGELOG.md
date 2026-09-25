@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.27.0 — 2026-09-25 (landmarks 11–15, lessons 03–05, P08)
+- experiments/done: 11 Aspect 1982 (time-varying analyzers), 12 Furusawa 1998 (CV teleportation), 13 Bhaskar 2020 (memory-enhanced communication), 14 Jinan-1 2025 (microsatellite QKD), 15 Bluvstein 2024 (logical atom processor), each with physics, cheap recreation, what went wrong, and the repository hook.
+- experiments/lessons: 03 timelines that slipped, 04 reproducibility checklist, 05 the QKD hacking–countermeasure cycle.
+- experiments/protocols: P08 time-bin encoding and a phase-locked fibre interferometer (NEXT_100 #69, #76–80, #86–88).
+
 ## 0.26.0 — 2026-09-25 (theories T11–T15, modality notes)
 - research/theories: T11 communication complexity and fingerprinting, T12 position verification, T13 quantum-secured time transfer, T14 error-corrected memories in space (with the distance-25 arithmetic for a 45-minute hold), T15 ML decoders and remote calibration; each with claim, mechanism, Mars relevance, design change, evidence/TRL, cheap version, references.
 - learn/02: 20 silicon spins in depth; 21 NV charge state and the group-IV table (NEXT_100 #35, #38, #39, #89–93).

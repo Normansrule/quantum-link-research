@@ -77,18 +77,18 @@ Grouped by door. Each is one file, one module, one figure, one experiment, or on
 ~~66. P05: Single-photon anticorrelation (Grangier) on the SPDC bench~~ done in 0.22.0
 ~~67. P06: Quantum eraser and delayed choice on the SPDC bench~~ done in 0.22.0
 ~~68. P07: BB84 over a 1 km fiber spool with the SPDC source and the QRNG board~~ done in 0.22.0
-69. P08: Time-bin encoding and a fiber interferometer (the format satellites and NV links use)
+~~69. P08: Time-bin encoding and a fiber interferometer (the format satellites and NV links use)~~ done in 0.27.0
 70. P09: NV T₁ vs temperature with a liquid-nitrogen dewar (E2, full procedure)
 71. P10: NV ensemble magnetometry sensitivity measurement and Allan deviation
 72. P11: ODMR with the four NV orientations and vector magnetometry
 73. P12: Software recreation of the surface code (Stim + PyMatching) with Λ extraction
 74. P13: Software recreation of a three-node repeater with SeQUeNCe
 75. P14: Lindblad simulation of thermal T₁ in QuTiP and comparison with `thermal.py`
-76. done/11: Aspect 1982 in full detail with the switching scheme
-77. done/12: Furusawa 1998 unconditional CV teleportation
-78. done/13: Bhaskar 2020 memory-enhanced communication
-79. done/14: Jinan-1 2025 microsatellite QKD, step by step
-80. done/15: Bluvstein 2024 logical atom processor
+~~76. done/11: Aspect 1982 in full detail with the switching scheme~~ done in 0.27.0
+~~77. done/12: Furusawa 1998 unconditional CV teleportation~~ done in 0.27.0
+~~78. done/13: Bhaskar 2020 memory-enhanced communication~~ done in 0.27.0
+~~79. done/14: Jinan-1 2025 microsatellite QKD, step by step~~ done in 0.27.0
+~~80. done/15: Bluvstein 2024 logical atom processor~~ done in 0.27.0
 
 ## experiments/ — proposals and lessons (81–88)
 81. E11: Delegated (blind) computation under 20-minute latency, batched rounds
@@ -96,9 +96,9 @@ Grouped by door. Each is one file, one module, one figure, one experiment, or on
 83. E13: Frequency-multiplexed heralding on the SPDC bench with fiber Bragg gratings
 84. E14: Relativistic timing test with two GPS-disciplined nodes and a fiber link (Sagnac/redshift-scale sanity)
 85. E15: Radiation-hardness screening of NV and SPDC components (gamma source at a university facility)
-86. lessons/03: History of over-optimistic timelines (1990s "10 years away")
-87. lessons/04: Reproducibility checklist for quantum experiments (data, code, calibration logs)
-88. lessons/05: Case study of the QKD hacking–countermeasure cycle
+~~86. lessons/03: History of over-optimistic timelines (1990s "10 years away")~~ done in 0.27.0
+~~87. lessons/04: Reproducibility checklist for quantum experiments (data, code, calibration logs)~~ done in 0.27.0
+~~88. lessons/05: Case study of the QKD hacking–countermeasure cycle~~ done in 0.27.0
 
 ## research/ — theories and process (89–95)
 ~~89. T11: Quantum advantage in communication complexity (fingerprinting) — what a Mars link could compute with fewer bits~~ done in 0.26.0
