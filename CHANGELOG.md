@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.26.0 — 2026-09-25 (theories T11–T15, modality notes)
+- research/theories: T11 communication complexity and fingerprinting, T12 position verification, T13 quantum-secured time transfer, T14 error-corrected memories in space (with the distance-25 arithmetic for a 45-minute hold), T15 ML decoders and remote calibration; each with claim, mechanism, Mars relevance, design change, evidence/TRL, cheap version, references.
+- learn/02: 20 silicon spins in depth; 21 NV charge state and the group-IV table (NEXT_100 #35, #38, #39, #89–93).
+
 ## 0.25.0 — 2026-09-25 (computing core: codes, QFT, H2, magic states, oscillators)
 - `qll/circuits/stabilizer_codes.py`: repetition, five-qubit, and Steane codes with syndromes from Stim Pauli algebra (five-qubit code shown perfect: 16/16 syndromes), and a Stim bit-flip memory experiment reproducing 3p².
 - `qll/circuits/algorithms.py`: QFT verified against the Fourier matrix for n = 2–4 in Qiskit's little-endian convention (a first draft had the ordering wrong); phase estimation reads 0.375 exactly with 4 bits and 0.3 to one bit with 5.

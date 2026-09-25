@@ -14,3 +14,8 @@
 | [T10](T10_certified_randomness_and_semi_di_devices.md) | Certified and semi-device-independent randomness | commercial QRNGs; DI demos 2018 | the QRNG board's output becomes provably random, not just tested |
 
 Every file: **The idea · Equations · Status (with years) · What it would change · Key papers · Repo hook**.
+| T11 | [Communication complexity and fingerprinting](T11_communication_complexity_and_fingerprinting.md) | one-round equality checks with fewer transmitted photons than classical bits | 3 |
+| T12 | [Position verification](T12_position_verification.md) | physical authentication of the Mars node by light-time constraints | 2 |
+| T13 | [Quantum-secured time transfer](T13_quantum_secured_time_transfer.md) | tamper-evident clock synchronization riding on the entanglement channel | 4 |
+| T14 | [Error-corrected memories in space](T14_error_corrected_memories_in_space.md) | logical memories as the long-term alternative to rare-earth crystals | 2 |
+| T15 | [ML decoders and remote calibration](T15_machine_learning_decoders_and_remote_calibration.md) | autonomy at the node as the answer to 20-minute command loops | 3 |

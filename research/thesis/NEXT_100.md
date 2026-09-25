@@ -39,11 +39,11 @@ Grouped by door. Each is one file, one module, one figure, one experiment, or on
 32. Tunable couplers and the CZ gate on Google-class hardware, with a pulse figure
 33. Cross-resonance gate (IBM) derivation
 ~~34. Readout physics: dispersive shift derivation, JPA/TWPA, single-shot fidelity budget~~ done in 0.22.0
-35. Silicon spin: valley physics, micromagnets, gate-based reflectometry readout
+~~35. Silicon spin: valley physics, micromagnets, gate-based reflectometry readout~~ done in 0.26.0
 36. Hole spins in germanium and why they are fast
 37. Donor qubits (Kane) and the flip-flop qubit
-38. NV: charge-state dynamics (NV⁻/NV⁰) and why resonant excitation needs charge control
-39. SiV/GeV/SnV comparison table with strain, temperature, and cavity requirements
+~~38. NV: charge-state dynamics (NV⁻/NV⁰) and why resonant excitation needs charge control~~ done in 0.26.0
+~~39. SiV/GeV/SnV comparison table with strain, temperature, and cavity requirements~~ done in 0.26.0
 ~~40. Nanophotonic cavities: Purcell factor, cooperativity, a worked design~~ done in 0.21.0
 ~~41. Trapped-ion gate zoo: Cirac–Zoller, Mølmer–Sørensen, light-shift, Raman vs quadrupole~~ done in 0.23.0
 ~~42. QCCD architecture and ion shuttling; photonic interconnects between traps~~ done in 0.23.0
@@ -101,11 +101,11 @@ Grouped by door. Each is one file, one module, one figure, one experiment, or on
 88. lessons/05: Case study of the QKD hacking–countermeasure cycle
 
 ## research/ — theories and process (89–95)
-89. T11: Quantum advantage in communication complexity (fingerprinting) — what a Mars link could compute with fewer bits
-90. T12: Quantum position verification and its relevance to spacecraft authentication
-91. T13: Quantum-secured time transfer and clock networks for navigation
-92. T14: Error-corrected quantum memories in space (surface-code memories vs rare-earth)
-93. T15: Machine-learning decoders and calibration for remote hardware with high latency
+~~89. T11: Quantum advantage in communication complexity (fingerprinting) — what a Mars link could compute with fewer bits~~ done in 0.26.0
+~~90. T12: Quantum position verification and its relevance to spacecraft authentication~~ done in 0.26.0
+~~91. T13: Quantum-secured time transfer and clock networks for navigation~~ done in 0.26.0
+~~92. T14: Error-corrected quantum memories in space (surface-code memories vs rare-earth)~~ done in 0.26.0
+~~93. T15: Machine-learning decoders and calibration for remote hardware with high latency~~ done in 0.26.0
 94. thesis/ THESIS_OUTLINE.md: chapter map with pointers to files and figures
 95. thesis/ VERIFICATION_PLAN.md: which requirement is verified by which test, bench, or literature value
 

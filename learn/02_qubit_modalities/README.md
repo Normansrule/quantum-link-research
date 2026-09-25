@@ -25,6 +25,8 @@ The radar is generated from [`modalities.json`](modalities.json); change the sco
 | 17 | [Cryogenic wiring budget](17_cryogenic_wiring_budget.md) | per-line heat loads, the limiting stage, why millikelvin processors do not fly |
 | 18 | [Ion gates and QCCD](18_ion_gates_and_qccd.md) | Cirac–Zoller to Mølmer–Sørensen, the speed trade, zoned traps with transport |
 | 19 | [Quantum-dot sources and integrated photonics](19_quantum_dot_sources_and_integrated_photonics.md) | deterministic photons; waveguides, modulators, on-chip analysers |
+| 20 | [Silicon spins in depth](20_silicon_spins_in_depth.md) | valleys, isotopic purification, reflectometry readout, hot operation |
+| 21 | [NV charge state and group-IV centres](21_nv_charge_state_and_group_iv_table.md) | why NV needs a re-pump; SiV/GeV/SnV/PbV compared |
 | 14 | [Detectors and radiation](14_detectors_and_radiation.md) | SPAD, InGaAs, SNSPD, TES; TID, displacement, single-event effects |
 
 ## How to read the modality files

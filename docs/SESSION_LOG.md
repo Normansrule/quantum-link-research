@@ -36,3 +36,4 @@
 - 2026-09-24 0.23.0: cryo wiring and ion gate models; learn 02/17-19, 03/18.
 - 2026-09-25 0.24.0: entanglement measures, Mermin, channel catalogue, RB; learn 00/16, 01/09-10.
 - 2026-09-25 0.25.0: stabilizer codes, QFT/QPE, H2, magic states, oscillator states; learn 01/11-12, 00/17.
+- 2026-09-25 0.26.0: theories T11-T15; learn 02/20-21.

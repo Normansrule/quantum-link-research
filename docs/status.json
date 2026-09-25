@@ -1,13 +1,13 @@
 {
- "version": "0.25.0",
- "tests": 500,
+ "version": "0.26.0",
+ "tests": 514,
  "requirements": 25,
  "requirements_verified": 24,
- "references": 351,
+ "references": 359,
  "references_verified": 21,
- "learn_files": 78,
+ "learn_files": 80,
  "experiment_files": 40,
- "research_files": 30,
+ "research_files": 35,
  "simulations": 8,
  "figures": 30,
  "phases_done": 6
