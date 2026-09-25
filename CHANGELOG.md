@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.28.0 — 2026-09-25 (decompositions, MBQC, filter functions, walks, Landauer, Wigner)
+- `qll/circuits/decompositions.py`: ZYZ angles reconstruct random unitaries exactly; KAK CNOT counts (0/1/3/3 for I, CNOT, SWAP, generic); one-bit teleportation on a cluster state matches X^m H Rz(φ).
+- `qll/circuits/noise/filter_functions.py`: filter functions for arbitrary pulse sequences (FID and echo closed forms verified), CPMG times, decay exponent against a spectrum (more pulses → more coherence for 1/f noise), passband frequency.
+- `qll/circuits/quantum_walk.py`: Hadamard walk vs classical walk; ballistic t versus diffusive √t scaling asserted (σ ≈ 0.54 t).
+- `qll/circuits/thermodynamics.py`: Landauer energy and reset-power bound.
+- `qll/viz/cat_state_wigner.py`: Wigner functions of coherent, squeezed, and even-cat states with negativity (linked from T03).
+- learn: 01/13 gate decompositions and MBQC, 01/14 noise spectroscopy and decoupling, 00/18 quantum walks and thermodynamics (NEXT_100 #13, #14, #15, #23, #26, #28).
+
 ## 0.27.0 — 2026-09-25 (landmarks 11–15, lessons 03–05, P08)
 - experiments/done: 11 Aspect 1982 (time-varying analyzers), 12 Furusawa 1998 (CV teleportation), 13 Bhaskar 2020 (memory-enhanced communication), 14 Jinan-1 2025 (microsatellite QKD), 15 Bluvstein 2024 (logical atom processor), each with physics, cheap recreation, what went wrong, and the repository hook.
 - experiments/lessons: 03 timelines that slipped, 04 reproducibility checklist, 05 the QKD hacking–countermeasure cycle.

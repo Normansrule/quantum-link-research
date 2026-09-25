@@ -15,9 +15,9 @@ Grouped by door. Each is one file, one module, one figure, one experiment, or on
 ~~10. Entanglement measures for mixed states: negativity, PPT criterion, entanglement witnesses~~ done in 0.24.0
 ~~11. Quantum channels catalogue: 12 named channels with Kraus operators and figures~~ done in 0.24.0
 12. Master equations beyond Lindblad: Bloch–Redfield, non-Markovian baths, 1/f noise
-13. Quantum thermodynamics: Landauer, Maxwell's demon, thermal machines with qubits
-14. Gate decompositions: Solovay–Kitaev, KAK, two-qubit gate synthesis
-15. Measurement-based quantum computing and cluster states
+~~13. Quantum thermodynamics: Landauer, Maxwell's demon, thermal machines with qubits~~ done in 0.28.0
+~~14. Gate decompositions: Solovay–Kitaev, KAK, two-qubit gate synthesis~~ done in 0.28.0
+~~15. Measurement-based quantum computing and cluster states~~ done in 0.28.0
 16. Adiabatic gates and optimal control (GRAPE, CRAB) with a worked pulse
 ~~17. Quantum Fourier transform derived and drawn; phase estimation circuit walk-through~~ done in 0.25.0
 ~~18. Hamiltonian simulation resource counts with a small worked molecule (H₂)~~ done in 0.25.0
@@ -25,12 +25,12 @@ Grouped by door. Each is one file, one module, one figure, one experiment, or on
 20. Decoders: MWPM, union-find, belief propagation, neural; PyMatching demo
 ~~21. Magic-state distillation and the T-count economy~~ done in 0.25.0
 22. qLDPC codes explained (bivariate bicycle, gross code) with a figure
-23. Bosonic codes: cat, binomial, GKP with Wigner-function figures
+~~23. Bosonic codes: cat, binomial, GKP with Wigner-function figures~~ done in 0.28.0
 ~~24. Randomized benchmarking notebook: simulate, fit, extract error per Clifford~~ done in 0.24.0
 25. Quantum volume and other holistic benchmarks; why they mislead
-26. Noise spectroscopy: dynamical decoupling as a filter function
+~~26. Noise spectroscopy: dynamical decoupling as a filter function~~ done in 0.28.0
 27. Quantum machine learning: what is real, what dequantizes
-28. Quantum random walks and their algorithms
+~~28. Quantum random walks and their algorithms~~ done in 0.28.0
 29. Complexity: QMA, BQP vs NP, the PH separation, sampling hardness, in one narrative
 30. A math appendix on group theory for physicists (SU(2), SO(3), Pauli/Clifford groups)
 

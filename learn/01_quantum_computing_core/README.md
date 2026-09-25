@@ -9,6 +9,8 @@
 | 05 | [Complexity](05_complexity_and_what_quantum_computers_cannot_do.md) | BQP and its limits; why the thesis claims security, not speed |
 | 06 | [Sensing and metrology](06_quantum_sensing_and_metrology.md) | SQL vs Heisenberg; the NV magnetometer |
 | 07 | [Simulation and chemistry](07_quantum_simulation_and_chemistry.md) | Trotter, analog simulators, FeMoco |
+| 13 | [Gate decompositions and MBQC](13_gate_decompositions_and_measurement_based_computing.md) | ZYZ, KAK CNOT counts, Solovay–Kitaev, one-bit teleportation |
+| 14 | [Noise spectroscopy and decoupling](14_noise_spectroscopy_and_dynamical_decoupling.md) | filter functions; the qubit as a spectrum analyser |
 | 11 | [Stabilizer codes hands-on](11_stabilizer_codes_hands_on.md) | repetition, five-qubit, Steane in Stim; a memory experiment |
 | 12 | [QFT, phase estimation, and H₂](12_qft_phase_estimation_and_h2.md) | the Fourier matrix verified, phases read to t bits, −1.137 Ha, magic-state budgets |
 | 09 | [Channel catalogue](09_channel_catalogue.md) | twelve channels, CPTP-checked; coherent vs stochastic errors |

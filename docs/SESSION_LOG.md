@@ -38,3 +38,4 @@
 - 2026-09-25 0.25.0: stabilizer codes, QFT/QPE, H2, magic states, oscillator states; learn 01/11-12, 00/17.
 - 2026-09-25 0.26.0: theories T11-T15; learn 02/20-21.
 - 2026-09-25 0.27.0: landmarks 11-15, lessons 03-05, P08.
+- 2026-09-25 0.28.0: decompositions, MBQC, filter functions, walks, Landauer, Wigner figure; learn 01/13-14, 00/18.
