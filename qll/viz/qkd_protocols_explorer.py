@@ -8,6 +8,7 @@ from qll.qkd.decoy_state import decoy_rate_per_pulse
 from qll.qkd.mdi import mdi_rate_per_pulse
 from qll.qkd.plob_bound import plob_bits_per_use
 from qll.qkd.twin_field import twin_field_rate_per_pulse
+from qll.qkd.cv_qkd import cv_rate_per_symbol
 from qll.viz._common import cli, finish
 
 
@@ -22,6 +23,7 @@ def main() -> None:
     ax.loglog(L_km, [decoy_rate_per_pulse(e) for e in eta], lw=2, label="decoy-state BB84 (~η)")
     ax.loglog(L_km, [mdi_rate_per_pulse(e) for e in eta], lw=2, label="MDI-QKD (~η, no detector side channels)")
     ax.loglog(L_km, [twin_field_rate_per_pulse(e) for e in eta], lw=2, label="twin-field (~√η)")
+    ax.loglog(L_km, [max(cv_rate_per_symbol(e, 0.01), 1e-13) for e in eta], lw=2, ls="--", label="CV-QKD GG02, ξ = 1 % (asymptotic)")
     ax.set(xlabel="fiber length at 0.2 dB/km (km)", ylabel="secret bits per pulse", ylim=(1e-12, 2),
            title="Which QKD protocol wins at which loss")
     ax.legend(fontsize=8, loc="lower left")

@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.22.0 — 2026-09-24 (processor physics, CV-QKD, protocols P05–P07)
+- `qll/hardware/superconducting.py`: fluxonium and transmon spectra by diagonalisation (transmon matches √(8E_JE_C)−E_C; fluxonium drops tenfold at half flux), dispersive shift, and a readout SNR/fidelity budget with an optimal measurement time against T₁ and amplifier noise.
+- `qll/hardware/rydberg.py`: blockade radius (7.5 µm at 5 MHz for Rb 70S), interaction, gate-infidelity budget, blackbody lifetime scaling.
+- `qll/qkd/cv_qkd.py`: GG02 asymptotic rate with trusted homodyne noise; below PLOB at every transmittance; the tolerance is to excess noise rather than loss (ξ = 1 % positive at any loss, ξ = 10 % dead beyond ~10 dB). CV curve added to the protocol explorer.
+- learn: 02/15 fluxonium and readout, 02/16 Rydberg gates and arrays, 03/17 CV-QKD; protocols P05 (anticorrelation), P06 (quantum eraser), P07 (BB84 over a spool with QRNG bases, F1 stage S2). NEXT_100 #31, #34, #43, #44, #55, #66–68.
+
 ## 0.21.0 — 2026-09-24 (memories, conversion, cavities, detectors)
 - `qll/network/afc_memory.py`: AFC forward/backward efficiency laws (54 % forward limit at d/F = 2 verified), temporal-mode count, `AfcMemory`.
 - `qll/channels/frequency_conversion.py` (Phase 3 stub filled): DFG target wavelength (NV + 1064 nm → 1588 nm), sin² conversion law with P_max ≈ 150 mW for a 4 cm PPLN waveguide, converter noise and the QBER floor it implies; the signal-to-noise ratio falls monotonically with pump, so the operating point is a rate/QBER trade.

@@ -20,6 +20,8 @@ Every platform below is a real two-level system that satisfies, to some degree, 
 The radar is generated from [`modalities.json`](modalities.json); change the scores there and rerun `python -m qll.viz.modality_radar`.
 
 | 13 | [Frequency conversion and cavities](13_frequency_conversion_and_cavities.md) | the two devices that let a solid-state emitter join a telecom network |
+| 15 | [Fluxonium and dispersive readout](15_fluxonium_and_dispersive_readout.md) | the double-well qubit; the readout SNR budget and why every fridge has a parametric amplifier |
+| 16 | [Rydberg gates and tweezer arrays](16_rydberg_gates_and_tweezer_arrays.md) | blockade radius, gate infidelity budget, erasure conversion, zoned arrays |
 | 14 | [Detectors and radiation](14_detectors_and_radiation.md) | SPAD, InGaAs, SNSPD, TES; TID, displacement, single-event effects |
 
 ## How to read the modality files

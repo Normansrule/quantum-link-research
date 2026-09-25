@@ -35,10 +35,10 @@ Grouped by door. Each is one file, one module, one figure, one experiment, or on
 30. A math appendix on group theory for physicists (SU(2), SO(3), Pauli/Clifford groups)
 
 ## learn/ — modalities and engineering (31–50)
-31. Fluxonium in depth: circuit, spectrum, why it may replace the transmon
+~~31. Fluxonium in depth: circuit, spectrum, why it may replace the transmon~~ done in 0.22.0
 32. Tunable couplers and the CZ gate on Google-class hardware, with a pulse figure
 33. Cross-resonance gate (IBM) derivation
-34. Readout physics: dispersive shift derivation, JPA/TWPA, single-shot fidelity budget
+~~34. Readout physics: dispersive shift derivation, JPA/TWPA, single-shot fidelity budget~~ done in 0.22.0
 35. Silicon spin: valley physics, micromagnets, gate-based reflectometry readout
 36. Hole spins in germanium and why they are fast
 37. Donor qubits (Kane) and the flip-flop qubit
@@ -47,8 +47,8 @@ Grouped by door. Each is one file, one module, one figure, one experiment, or on
 ~~40. Nanophotonic cavities: Purcell factor, cooperativity, a worked design~~ done in 0.21.0
 41. Trapped-ion gate zoo: Cirac–Zoller, Mølmer–Sørensen, light-shift, Raman vs quadrupole
 42. QCCD architecture and ion shuttling; photonic interconnects between traps
-43. Rydberg gates in detail: blockade, Levine–Pichler gate, erasure conversion
-44. Optical tweezer arrays: SLM vs AOD, loading, rearrangement algorithms
+~~43. Rydberg gates in detail: blockade, Levine–Pichler gate, erasure conversion~~ done in 0.22.0
+~~44. Optical tweezer arrays: SLM vs AOD, loading, rearrangement algorithms~~ done in 0.22.0
 45. Photonic qubits: quantum-dot single-photon sources, indistinguishability, brightness
 46. Integrated photonics for quantum: waveguide loss, thin-film lithium niobate modulators
 ~~47. Superconducting nanowire single-photon detectors (SNSPD): physics, efficiency, jitter, timing~~ done in 0.21.0
@@ -61,7 +61,7 @@ Grouped by door. Each is one file, one module, one figure, one experiment, or on
 52. ~~Post-processing walkthrough with code~~ done in 0.13.1
 ~~53. Side-channel attacks catalogue (blinding, Trojan horse, time-shift) and countermeasures~~ done in 0.20.0
 54. Twin-field QKD derivation of the √η scaling
-55. CV-QKD Gaussian modulation rate derivation with a figure
+~~55. CV-QKD Gaussian modulation rate derivation with a figure~~ done in 0.22.0
 56. ~~Entanglement purification with recurrence plots~~ done in 0.18.0–0.19.0 (BBPSSW and DEJMPS; hashing remains)
 57. ~~Repeater generations compared quantitatively~~ done in 0.18.0
 ~~58. Atomic-frequency-comb memories: how AFC storage works, multimode capacity~~ done in 0.21.0
@@ -74,9 +74,9 @@ Grouped by door. Each is one file, one module, one figure, one experiment, or on
 ~~65. Standards and roadmaps: ETSI QKD, IETF QIRG, EuroQCI, NIST PQC timelines~~ done in 0.20.0
 
 ## experiments/ — protocols and recreations (66–80)
-66. P05: Single-photon anticorrelation (Grangier) on the SPDC bench
-67. P06: Quantum eraser and delayed choice on the SPDC bench
-68. P07: BB84 over a 1 km fiber spool with the SPDC source and the QRNG board
+~~66. P05: Single-photon anticorrelation (Grangier) on the SPDC bench~~ done in 0.22.0
+~~67. P06: Quantum eraser and delayed choice on the SPDC bench~~ done in 0.22.0
+~~68. P07: BB84 over a 1 km fiber spool with the SPDC source and the QRNG board~~ done in 0.22.0
 69. P08: Time-bin encoding and a fiber interferometer (the format satellites and NV links use)
 70. P09: NV T₁ vs temperature with a liquid-nitrogen dewar (E2, full procedure)
 71. P10: NV ensemble magnetometry sensitivity measurement and Allan deviation
