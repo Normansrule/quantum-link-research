@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.31.0 — 2026-09-26 (offline site, page tests, README animations, social card)
+- **Vendored libraries** (`docs/vendor/`): three.js 0.186.1 (minified with esbuild), GSAP 3.15.0 with ScrollTrigger, KaTeX 0.18.9 with its fonts, each with its licence; no page loads anything from a CDN (enforced by `tests/test_site.py`).
+- **Headless page tests** (`tests/test_pages_headless.py`, marker `browser`) in Chromium: every page loads with no JavaScript error; the landing page typesets all equations, renders the capability matrix, and ticks the round trip to 44.6 min; the explainer reaches fidelity 1.000000 with a zero outcome-averaged Bloch vector; the monitor refuses messages through the first conjunction without relays and none through the second with them; the simulator reports light time. A new CI job runs them on every push.
+- **README animations**: `scripts/record_site.py` records the real pages with Playwright into GIFs (hero, Mars simulator, teleportation steps, interference lab) using one shared palette per GIF so unchanged pixels cost nothing (Mars: 3.3 → 1.1 MB).
+- **Social card** (`docs/og.png`) and Open Graph / Twitter tags on every page.
+
 ## 0.30.0 — 2026-09-25 (teleportation explainer, link monitor, interference lab, stack diagram)
 *Includes all of 0.29.0, which was not applied on the owner's machine (the overlay was not in Downloads).*
 - **Teleportation explainer** (`docs/teleport/`): scroll-driven steps with the exact eight-amplitude state (`docs/js/teleport_core.js`, checked against Qiskit to 10⁻¹²), each outcome at probability ¼, Bob's outcome-averaged Bloch vector at zero (no signalling), the bits' flight at the chosen light time, and fidelity 1 after correction. After llm-viz and transformer-explainer; steps driven by GSAP ScrollTrigger.

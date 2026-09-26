@@ -16,12 +16,14 @@ The website is plain HTML, CSS, and JavaScript with no build step, so GitHub Pag
 | [transformer-explainer](https://github.com/poloclub/transformer-explainer) (Polo Club) | MIT | a scroll-and-step explainer with a fixed visual panel and prose alongside | the explainer's sticky-stage layout |
 | [gods-eye-view](https://github.com/bilawalsidhu/gods-eye-view) (Bilawal Sidhu) | see repository | a live "situation" view of a real model's state | the hero's live range / light-time / Sun-angle strip |
 | [worldmonitor](https://github.com/koala73/worldmonitor) (koala73) | see repository | a dashboard of status tiles, timelines, and an event feed | the **link monitor** (`docs/monitor/`) |
-| [Remotion](https://github.com/remotion-dev/remotion) | Remotion licence (company licence above a size threshold) | considered for rendered videos of the simulator; **not used yet** (the README uses an animated SVG banner and screenshots) | — |
+| [Remotion](https://github.com/remotion-dev/remotion) | Remotion licence (company licence above a size threshold) | the idea of rendering the product itself into video for the README; realised instead with Playwright frame capture (`scripts/record_site.py`), which needs no licence review | the animated GIFs in the README |
 
-## Libraries loaded by the website (CDN, pinned)
+## Libraries used by the website (vendored in `docs/vendor/`, pinned)
 - [three.js](https://threejs.org) 0.186.1 (MIT): the hero scene and the Bloch sphere.
 - [GSAP](https://gsap.com) 3.15.0 with ScrollTrigger: scroll reveals, tickers, and explainer steps.
 - [KaTeX](https://katex.org) 0.18.9 (MIT): equations.
+
+They are copied from the npm packages into `docs/vendor/` (three.js minified with esbuild) with their licences, so the site needs no CDN; `docs/vendor/README.md` says how to update them.
 
 ## Physics and data
 Every number on the site comes from `scripts/build_site_data.py`, which calls the tested `qll` functions. The JavaScript models are ports of tested Python, and `tests/test_site.py` checks each one against its original:

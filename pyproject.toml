@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "quantum-link-research"
-version = "0.30.0"
+version = "0.31.0"
 description = "Physics-first simulation lab for quantum links from bench to Earth-Mars"
 readme = "README.md"
 requires-python = ">=3.12,<3.13"
@@ -24,4 +24,5 @@ markers = [
   "phase5: Phase 5 space segment",
   "phase6: Phase 6 application",
   "slow: long-running simulations",
+  "browser: headless-Chromium page tests (need playwright and a browser)",
 ]

@@ -30,3 +30,14 @@ jobs:
           MPLBACKEND: Agg
       - run: python scripts/build_reference_index.py
       - run: python scripts/build_site_data.py && python scripts/make_banner.py
+  pages:
+    name: website (headless Chromium)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pytest playwright
+      - run: python -m playwright install --with-deps chromium
+      - run: python -m pytest -q -m browser -p no:cacheprovider tests/test_pages_headless.py

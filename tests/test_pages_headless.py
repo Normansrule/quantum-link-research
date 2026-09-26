@@ -1,0 +1,90 @@
+"""Headless-browser tests of the website: every page loads without a JavaScript error, and the physics each page
+shows is what the tested Python says. Skipped unless Playwright and a Chromium build are available; CI installs both.
+Run locally with:  pip install playwright && python -m playwright install chromium && python -m pytest -m browser"""
+import functools
+import http.server
+import os
+import threading
+from pathlib import Path
+
+import pytest
+
+DOCS = Path(__file__).resolve().parents[1] / "docs"
+pytestmark = [pytest.mark.browser, pytest.mark.slow]
+sync_api = pytest.importorskip("playwright.sync_api")
+
+
+@pytest.fixture(scope="module")
+def server():
+    handler = functools.partial(http.server.SimpleHTTPRequestHandler, directory=str(DOCS))
+    handler.log_message = lambda *a, **k: None
+    httpd = http.server.ThreadingHTTPServer(("127.0.0.1", 0), handler)
+    threading.Thread(target=httpd.serve_forever, daemon=True).start()
+    yield f"http://127.0.0.1:{httpd.server_address[1]}"
+    httpd.shutdown()
+
+
+@pytest.fixture(scope="module")
+def browser():
+    args = ["--use-gl=angle", "--use-angle=swiftshader", "--enable-unsafe-swiftshader"]
+    with sync_api.sync_playwright() as p:
+        b = None
+        for kw in ({}, {"executable_path": os.environ.get("QLL_CHROMIUM", "/opt/pw-browsers/chromium-1194/chrome-linux/chrome")}):
+            try:
+                b = p.chromium.launch(args=args, **kw); break
+            except Exception:
+                continue
+        if b is None:
+            pytest.skip("no Chromium available (python -m playwright install chromium)")
+        yield b
+        b.close()
+
+
+def open_page(browser, url):
+    page = browser.new_page(viewport={"width": 1280, "height": 860})
+    errors = []
+    page.on("pageerror", lambda e: errors.append(str(e)))
+    page.on("console", lambda m: errors.append(m.text) if m.type == "error" else None)
+    page.route("**/*", lambda r: r.continue_() if r.request.url.startswith("http://127.0.0.1") else r.abort())  # offline: vendored only
+    page.goto(url, wait_until="commit")
+    page.wait_for_function("document.readyState === 'complete'", timeout=60000)
+    return page, errors
+
+
+def test_landing_page_renders_data_equations_and_matrix(browser, server):
+    page, errors = open_page(browser, server + "/")
+    page.wait_for_function("document.querySelectorAll('#matrix tbody tr').length >= 6", timeout=30000)
+    assert page.locator(".katex").count() >= 9                               # every equation card typeset
+    page.evaluate("document.documentElement.style.scrollBehavior='auto'; document.querySelector('#numbers').scrollIntoView()")
+    page.wait_for_function("document.querySelector('[data-num=\"headline.round_trip_max_min\"]').textContent.trim() === '44.6'", timeout=30000)
+    assert page.locator("#matrix td.yes").count() >= 20
+    assert errors == []
+
+
+def test_teleportation_explainer_reaches_unit_fidelity(browser, server):
+    page, errors = open_page(browser, server + "/teleport/")
+    page.evaluate("document.documentElement.style.scrollBehavior='auto'; document.querySelector('[data-step=\"5\"]').scrollIntoView({block:'center'})")
+    page.wait_for_function("document.getElementById('bob').textContent.includes('fidelity')", timeout=30000)
+    text = page.locator("#bob").inner_text()
+    assert "1.000000" in text and "(0.00, 0.00, 0.00)" in text                # corrected state; outcome-averaged Bloch vector is zero
+    assert errors == []
+
+
+def test_link_monitor_refuses_without_relays_and_not_with_them(browser, server):
+    page, errors = open_page(browser, server + "/monitor/")
+    page.select_option("#speed", "80")
+    page.wait_for_function("parseInt(document.getElementById('k-day').textContent.split('+')[1]) > 420", timeout=90000)   # past the first conjunction
+    refused = int(page.locator("#k-msg").inner_text().split("refused")[1].replace(",", "").strip())
+    assert refused > 0
+    page.check("#relay"); page.dispatch_event("#relay", "input")                  # counters reset; the second conjunction (~day 950) must pass without refusals
+    page.wait_for_function("parseInt(document.getElementById('k-day').textContent.split('+')[1]) > 1000", timeout=90000)
+    refused_relay = int(page.locator("#k-msg").inner_text().split("refused")[1].replace(",", "").strip())
+    assert refused_relay == 0
+    assert errors == []
+
+
+def test_mars_simulator_reports_light_time(browser, server):
+    page, errors = open_page(browser, server + "/mars/")
+    page.wait_for_function("document.getElementById('state').textContent.includes('au')", timeout=30000)
+    assert "one-way light time" in page.locator("#state").inner_text()
+    assert errors == []

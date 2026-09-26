@@ -108,3 +108,13 @@ def test_js_buffer_rule_matches_messenger(tmp_path):
     out = json.loads(subprocess.run([node, str(script), str(DOCS / "js" / "linkmodel.js"), json.dumps(cases)], capture_output=True, text=True, check=True).stdout)
     for a, v in zip(cases, out):
         assert v == pytest.approx(required_buffer_bytes(*a[:3], sessions_per_message=a[3], messages_per_s=a[4]), rel=1e-12)
+
+
+def test_pages_need_no_cdn_and_vendored_files_exist():
+    for page in ("index.html", "mars/index.html", "teleport/index.html", "monitor/index.html"):
+        html = (DOCS / page).read_text()
+        assert "cdn.jsdelivr" not in html and "unpkg.com" not in html, page
+    for f in ("three/three.module.js", "three/three.core.js", "three/addons/controls/OrbitControls.js", "gsap/gsap.min.js",
+              "gsap/ScrollTrigger.min.js", "katex/katex.min.js", "katex/katex.min.css", "katex/contrib/auto-render.min.js", "three/LICENSE", "katex/LICENSE"):
+        assert (DOCS / "vendor" / f).exists(), f
+    assert len(list((DOCS / "vendor" / "katex" / "fonts").glob("*.woff2"))) >= 10
