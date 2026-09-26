@@ -29,3 +29,4 @@ jobs:
         env:
           MPLBACKEND: Agg
       - run: python scripts/build_reference_index.py
+      - run: python scripts/build_site_data.py && python scripts/make_banner.py

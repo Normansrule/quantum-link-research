@@ -14,3 +14,8 @@ Each proposal answers the same five questions: the gap in the literature, the ch
 | E8 | Modality trade study for a Mars memory node, with data | literature + `memory_decoherence.py` | REQ-CAP-001 |
 | E9 | Herald-rate multiplexing at AU-scale loss | simulation, then SPDC bench with time-bin multiplexing | REQ-NET-001 |
 | E10 | Device-independent certification under planetary latency | software (Stim CHSH sampling with delayed settings) | new REQ-SEC-001 |
+| [E11](E11_blind_computation_under_latency.md) | Blind computation under a 20-minute latency | software |
+| [E12](E12_erasure_aware_atom_repeater.md) | Erasure-aware neutral-atom repeater node | software |
+| [E13](E13_frequency_multiplexed_heralding.md) | Frequency-multiplexed heralding on the SPDC bench | bench |
+| [E14](E14_relativistic_timing_sanity_test.md) | Relativistic timing sanity test with two GPS-disciplined nodes | bench |
+| [E15](E15_radiation_screening.md) | Radiation screening of diamond, crystal, detectors | bench + facility |

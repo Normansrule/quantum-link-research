@@ -1,178 +1,213 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="no-js">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Quantum Link Research</title>
-<meta name="description" content="From a diamond qubit on a bench to a message to Mars: a library, a lab manual, simulations, and tested code for quantum communication.">
-<link rel="stylesheet" href="site.css">
+<title>Quantum Link Research — from a diamond on a bench to a message to Mars</title>
+<meta name="description" content="Tested physics, simulations, bench protocols, and a thesis on physics-secured communication between Earth and Mars. Every number on this page is computed by the repository's tested code.">
+<meta property="og:title" content="Quantum Link Research">
+<meta property="og:description" content="Can Earth and Mars share a secret no computer can read? Tested physics from a qubit to a planetary link.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛰️</text></svg>">
+<link rel="stylesheet" href="space.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.18.9/dist/katex.min.css">
+<script type="importmap">{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js", "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/" } }</script>
 </head>
 <body>
+<div class="aurora"></div>
+
 <header class="top">
-  <a class="brand" href="#">Quantum Link Research</a>
+  <a class="brand" href="#"><span class="dot"></span>Quantum Link Research</a>
   <nav>
-    <a href="#learn">Learn</a><a href="#experiments">Experiments</a><a href="#simulations">Simulations</a><a href="#research">Research</a><a href="apps/">Explorers</a><a href="#videos">Youtube</a><a href="#references">References</a>
-    <a class="gh" href="https://github.com/Normansrule/quantum-link-research">GitHub</a>
+    <a href="#numbers">Numbers</a><a href="#equations">Equations</a><a href="#flagships">Experiments</a><a href="#memories">Memories</a>
+    <a href="#bloch">Bloch</a><a href="#interference">Interference</a><a href="mars/">Mars</a><a href="teleport/">Teleport</a><a href="monitor/">Monitor</a><a href="#library">Library</a>
+    <a class="gh" href="https://github.com/Normansrule/quantum-link-research">GitHub ↗</a>
   </nav>
 </header>
 
 <section class="hero">
-  <div class="hero-text">
-    <h1>Can Earth and Mars share a secret no computer can read?</h1>
-    <p>Physics says yes, with one catch: entanglement carries no message by itself, and the two classical bits every teleportation needs take <b id="lt">3 to 22 minutes</b> at the speed of light. This project works out, in code that is tested against the equations, what that catch costs, what hardware could pay it, and what a student can build on the way.</p>
+  <canvas id="hero-canvas" aria-label="The inner Solar System with Earth, Mars, a relay at Sun–Earth L4, entangled photons and classical bits"></canvas>
+  <div class="hero-inner">
+    <span class="eyebrow"><b>●</b> v<span data-status="version">0.28</span> · <span data-status="tests">500+</span> tests · <span data-status="requirements_verified">24</span>/<span data-status="requirements">25</span> requirements verified</span>
+    <h1 class="title">Can Earth and Mars share a secret<br><span class="gradient-text">no computer can read?</span></h1>
+    <p class="lede">Physics says yes, with one catch: entanglement carries no message, and the two classical bits every teleportation needs take minutes at the speed of light. This project computes what that catch costs, what hardware can pay it, and what a student can build on the way, in code that is tested against the equations.</p>
     <div class="cta">
-      <a class="btn primary" href="#start">Start here</a>
-      <a class="btn" href="apps/">Open the explorers</a>
-      <a class="btn" href="https://github.com/Normansrule/quantum-link-research/blob/main/experiments/flagship/README.md">The three experiments</a>
-    </div>
-    <div class="stats">
-      <div><b id="n-learn">49</b><span>learn files</span></div>
-      <div><b id="n-exp">36</b><span>experiment files</span></div>
-      <div><b>5</b><span>simulations</span></div>
-      <div><b id="n-ref">281</b><span>references</span></div>
-      <div><b>374</b><span>tests</span></div>
-      <div><b>23/24</b><span>requirements verified</span></div>
+      <a class="btn primary" href="mars/">Open the Mars link simulator →</a>
+      <a class="btn" href="#numbers">The numbers</a>
+      <a class="btn" href="https://github.com/Normansrule/quantum-link-research/blob/main/research/thesis/THESIS_DRAFT.md">Read the thesis draft</a>
     </div>
   </div>
-  <div class="hero-art">
-    <svg id="link" viewBox="0 0 640 360" aria-label="Photons travelling from Earth to a relay to Mars">
-      <defs>
-        <radialGradient id="ge"><stop offset="0" stop-color="#7fb2ff"/><stop offset="1" stop-color="#1b4fb0"/></radialGradient>
-        <radialGradient id="gm"><stop offset="0" stop-color="#ffb08a"/><stop offset="1" stop-color="#b8402a"/></radialGradient>
-        <path id="pathA" d="M110,250 Q300,80 320,120"/>
-        <path id="pathB" d="M320,120 Q360,80 540,250"/>
-      </defs>
-      <circle cx="110" cy="250" r="46" fill="url(#ge)"/>
-      <text x="110" y="315" text-anchor="middle" class="lbl">Earth</text>
-      <circle cx="540" cy="250" r="30" fill="url(#gm)"/>
-      <text x="540" y="300" text-anchor="middle" class="lbl">Mars</text>
-      <rect x="305" y="105" width="30" height="30" rx="6" fill="#3aa876"/>
-      <text x="320" y="92" text-anchor="middle" class="lbl">relay: source + memory</text>
-      <use href="#pathA" fill="none" stroke="#3aa876" stroke-dasharray="4 4" opacity=".6"/>
-      <use href="#pathB" fill="none" stroke="#3aa876" stroke-dasharray="4 4" opacity=".6"/>
-      <g class="photons">
-        <circle r="5" fill="#3aa876"><animateMotion dur="3s" repeatCount="indefinite"><mpath href="#pathA"/></animateMotion></circle>
-        <circle r="5" fill="#3aa876"><animateMotion dur="3s" repeatCount="indefinite"><mpath href="#pathB"/></animateMotion></circle>
-        <circle r="5" fill="#3aa876"><animateMotion dur="3s" begin="1.5s" repeatCount="indefinite"><mpath href="#pathA"/></animateMotion></circle>
-        <circle r="5" fill="#3aa876"><animateMotion dur="3s" begin="1.5s" repeatCount="indefinite"><mpath href="#pathB"/></animateMotion></circle>
-      </g>
-      <line x1="156" y1="250" x2="510" y2="250" stroke="#d9480f" stroke-width="3"/>
-      <circle r="6" fill="#d9480f"><animateMotion dur="8s" repeatCount="indefinite" path="M156,250 L510,250"/></circle>
-      <text x="333" y="272" text-anchor="middle" class="lbl warm">two classical bits · light speed · <tspan id="ltmin">3–22</tspan> min</text>
-      <text x="333" y="345" text-anchor="middle" class="lbl muted">green: entanglement (no message) · red: the bits that complete teleportation</text>
-    </svg>
-    <div class="range">
-      <label>Earth–Mars distance <b id="dv">0.37</b> au (drag)</label>
-      <input id="d" type="range" min="0.37" max="2.68" step="0.01" value="0.37">
+  <div class="live" aria-live="polite">
+    <span><span data-live="day">J2000</span></span>
+    <span>range <b data-live="range">—</b></span>
+    <span>one-way light time <b data-live="lt">—</b></span>
+    <span>Sun–Earth–Mars <b data-live="sep" class="ok">—</b></span>
+    <span style="color:var(--green)">● entangled photons</span><span style="color:var(--warm)">● classical bits</span>
+  </div>
+</section>
+
+<section id="numbers" class="band">
+  <div class="kicker reveal">The catch, in numbers</div>
+  <h2 class="reveal">Every figure below is computed by the repository's tested functions</h2>
+  <p class="sub reveal">Generated into <code>site_data.json</code> by <code>scripts/build_site_data.py</code> on every commit. Change the physics and the page changes with it.</p>
+  <div class="tickers">
+    <div class="tick warm reveal"><span class="n" data-num="headline.one_way_min_min" data-dec="1">3.1</span><span class="u">–<span data-val="headline.one_way_max_min" data-dec="1">22.3</span> min</span><div class="l">one-way light time, Earth → Mars</div></div>
+    <div class="tick warm reveal"><span class="n" data-num="headline.round_trip_max_min" data-dec="1">44.6</span><span class="u">min</span><div class="l">round trip a memory must survive at maximum range</div></div>
+    <div class="tick green reveal"><span class="n" data-num="headline.mars_capable_memories" data-dec="0">3</span><span class="u">of <span data-val="headline.n_memories" data-dec="0">6</span></span><div class="l">demonstrated memories that outlive it (f₀ = 0.95)</div></div>
+    <div class="tick blue reveal"><span class="n" data-num="headline.micius_two_link_loss_db_30deg" data-dec="1">65.7</span><span class="u">dB</span><div class="l">Micius two-downlink loss, reproduced at 30° elevation</div></div>
+    <div class="tick violet reveal"><span class="n" data-num="headline.bb84_threshold_pct" data-dec="2">11.00</span><span class="u">%</span><div class="l">BB84 error threshold</div></div>
+    <div class="tick blue reveal"><span class="n" data-num="headline.chain_crossover_km_1s_memory" data-dec="0">393</span><span class="u">km</span><div class="l">where an 8-segment repeater with 1 s memories beats direct fiber</div></div>
+    <div class="tick green reveal"><span class="n" data-num="headline.dejmps_pairs" data-dec="0">32</span><span class="u">pairs</span><div class="l">DEJMPS cost to purify 0.80 → 0.99 (BBPSSW: <span data-val="headline.bbpssw_pairs" data-dec="0">2917</span>)</div></div>
+    <div class="tick violet reveal"><span class="n" data-num="headline.messenger_buffer_kB_mars_max" data-dec="2">1.43</span><span class="u">kB</span><div class="l">key buffer to message once a minute through a Mars round trip</div></div>
+  </div>
+</section>
+
+<section id="equations" class="band">
+  <div class="kicker reveal">The physics</div>
+  <h2 class="reveal">Nine equations carry the whole argument</h2>
+  <p class="sub reveal">Each is implemented in a module with an analytic test; the value shown is the module's output.</p>
+  <div class="grid">
+    <div class="card eq reveal"><span class="tag">thermal</span><div class="formula">$$\bar n(\omega,T)=\frac{1}{e^{\hbar\omega/k_BT}-1}$$</div><div class="value">5 GHz: n̄ = <span data-val="headline.nbar_5ghz_300K" data-dec="0">1250</span> at 300 K, <span data-val="headline.nbar_5ghz_15mK" data-dec="1">1e-7</span> at 15 mK</div><div class="src">qll/circuits/noise/thermal.py</div></div>
+    <div class="card eq reveal"><span class="tag warm">light time</span><div class="formula">$$\begin{gathered}\tau=\frac{d(t)}{c}\\ d(t)=\lvert\mathbf r_{\rm Mars}(t)-\mathbf r_\oplus(t)\rvert\end{gathered}$$</div><div class="value">range <span data-val="headline.range_min_au" data-dec="4">0.3711</span>–<span data-val="headline.range_max_au" data-dec="4">2.6755</span> au from Kepler elements</div><div class="src">qll/space/ephemeris.py · docs/js/ephemeris.js (agrees to 1e-15)</div></div>
+    <div class="card eq reveal"><span class="tag">free space</span><div class="formula">$$\begin{gathered}\eta_{\rm geo}=1-e^{-2r_{\rm rx}^2/w(L)^2}\\ w(L)=w_0\sqrt{1+(L/z_R)^2}\end{gathered}$$</div><div class="value">Micius: <span data-val="headline.micius_two_link_loss_db_30deg" data-dec="1">65.7</span> dB (reported 64–82 dB)</div><div class="src">qll/channels/free_space_diffraction.py, link_budget.py</div></div>
+    <div class="card eq reveal"><span class="tag green">teleportation</span><div class="formula">$$\bar F=\frac{2f+1}{3}\;>\;\frac23\iff f>\frac12$$</div><div class="value">exact Kraus simulation agrees to 2×10⁻³</div><div class="src">qll/circuits/teleportation.py</div></div>
+    <div class="card eq reveal"><span class="tag green">memory</span><div class="formula">$$f(t)=\tfrac14+\big(f_0-\tfrac14\big)e^{-t/T_{\rm mem}}$$</div><div class="value">useful until T·ln(4f₀−1); Mars max round trip <span data-val="headline.round_trip_max_min" data-dec="1">44.6</span> min</div><div class="src">qll/network/memory_decoherence.py</div></div>
+    <div class="card eq reveal"><span class="tag">keys</span><div class="formula">$$\begin{gathered}r_{\rm BB84}=1-2h_2(Q)\\ K\le-\log_2(1-\eta)\end{gathered}$$</div><div class="value">threshold <span data-val="headline.bb84_threshold_pct" data-dec="2">11.00</span> %; every repeaterless rate asserted below PLOB</div><div class="src">qll/qkd/key_rate.py, rate_bounds.py</div></div>
+    <div class="card eq reveal"><span class="tag">nonlocality</span><div class="formula">$$S=2\sqrt2\,\frac{4f-1}{3}\;\le\;2\sqrt2$$</div><div class="value">local bound 2; Stim-sampled GHZ gives |M| = 4 for Mermin</div><div class="src">qll/circuits/chsh.py, mermin.py</div></div>
+    <div class="card eq reveal"><span class="tag green">purification</span><div class="formula">$$F'=\frac{F^2+\left(\frac{1-F}{3}\right)^2}{F^2+\frac{2F(1-F)}{3}+5\left(\frac{1-F}{3}\right)^2}$$</div><div class="value">BBPSSW <span data-val="headline.bbpssw_rounds_08_to_099" data-dec="0">10</span> rounds vs DEJMPS <span data-val="headline.dejmps_rounds_08_to_099" data-dec="0">4</span> for 0.80 → 0.99</div><div class="src">qll/network/purification.py (16×16 simulation agrees to 1e-12)</div></div>
+    <div class="card eq reveal"><span class="tag warm">relativity</span><div class="formula">$$\frac{\Delta f}{f}=\frac{\Phi_{\rm Mars}-\Phi_\oplus}{c^2}$$</div><div class="value">Mars clock runs fast by <span data-val="headline.mars_clock_redshift" data-dec="2">3.5e-9</span></div><div class="src">qll/space/relativity.py</div></div>
+  </div>
+</section>
+
+<section id="flagships" class="band">
+  <div class="kicker reveal">Three experiments, one physics</div>
+  <h2 class="reveal">The same protocol at three distances</h2>
+  <div class="bento">
+    <a class="card c2 reveal" href="https://github.com/Normansrule/quantum-link-research/blob/main/experiments/flagship/F1_earth_to_earth.md"><span class="tag">F1</span><h3>Two computers, one city</h3><p>Heralded entanglement and teleportation over deployed fiber; herald round trip 0.25 ms. Done in the field in 2024; our version starts on a bench.</p><div class="pass">pass: herald &gt; 1 Hz · S &gt; 2.2 · F &gt; 0.7</div></a>
+    <a class="card c2 reveal" href="https://github.com/Normansrule/quantum-link-research/blob/main/experiments/flagship/F2_earth_to_satellite.md"><span class="tag">F2</span><h3>Earth to satellite</h3><p>A single-photon downlink from low orbit; the Micius budget reproduced within 3 dB; rooftop link, then a ground station.</p><div class="pass">pass: budget ±3 dB · QBER &lt; 5 % at 10° from the Sun</div></a>
+    <a class="card c2 reveal" href="https://github.com/Normansrule/quantum-link-research/blob/main/experiments/flagship/F3_earth_to_mars.md"><span class="tag warm">F3</span><h3>Earth to Mars</h3><p>The same protocol with a 6–45 minute round trip and 10⁻⁹ loss. Done nowhere. Our version: delayed bits, relay scheduling, a messenger that fails closed.</p><div class="pass">pass: F &gt; 2/3 after a stored 22-minute delay</div></a>
+    <a class="card c3 reveal" href="https://github.com/Normansrule/quantum-link-research/tree/main/simulations"><span class="tag green">8 simulations</span><h3>Predict before you build</h3><p>CHSH vs noise, teleportation with delayed bits, link budgets, repetition codes, key per pass, device-independent certification under latency, transduction trade, multiplexing at AU scale.</p></a>
+    <a class="card c3 reveal" href="https://github.com/Normansrule/quantum-link-research/tree/main/experiments/protocols"><span class="tag green">8 protocols</span><h3>Build it on a bench</h3><p>ODMR on a $170 diamond bench, pulsed NV control, an SPDC Bell source, a rooftop link, anticorrelation, a quantum eraser, BB84 over fiber with quantum-random bases, time-bin encoding.</p></a>
+  </div>
+</section>
+
+<section id="memories" class="band">
+  <div class="kicker reveal">The thesis question, answered</div>
+  <h2 class="reveal">Which memory outlives which round trip</h2>
+  <p class="sub reveal">A Bell pair of fraction 0.95 stored in each demonstrated memory, decaying by the exact Kraus map, compared with the classical round trip of each baseline. Only hour-class ions and rare-earth crystals reach Mars, and the crystals pay for it in retrieval efficiency.</p>
+  <div class="matrix reveal" id="matrix"><p style="padding:1rem;color:var(--muted)">Loading the capability matrix…</p></div>
+</section>
+
+<section id="bloch" class="band">
+  <div class="kicker reveal">Play with a qubit</div>
+  <h2 class="reveal">Gates are rotations of a sphere</h2>
+  <div class="split">
+    <canvas id="bloch-canvas" class="stage reveal" aria-label="Interactive Bloch sphere"></canvas>
+    <div class="reveal">
+      <p class="sub">Apply gates and watch the state move. Drag to rotate the view. The amplitudes are multiplied exactly; probabilities follow the Born rule.</p>
+      <div class="gates"><button data-gate="X">X</button><button data-gate="Y">Y</button><button data-gate="Z">Z</button><button data-gate="H">H</button><button data-gate="S">S</button><button data-gate="T">T</button><button data-gate="reset">reset</button></div>
+      <div class="bar"><span id="bloch-p0"></span></div>
+      <div class="readout" id="bloch-readout"></div>
+      <p class="sub" style="margin-top:1rem">Try <code>H</code>, then <code>T</code> eight times: the arrow goes once around the equator. Try <code>H</code> <code>Z</code> <code>H</code>: it is an <code>X</code>.</p>
     </div>
   </div>
 </section>
 
-<section id="start" class="band">
-  <h2>The idea in six sentences</h2>
-  <ol class="six">
-    <li><b>A qubit is an arrow on a sphere.</b> Noise shortens it (T₁) and blurs its direction (T₂).<span class="anim"><svg viewBox="0 0 80 80"><circle cx="40" cy="40" r="30" fill="none" stroke="#cbd2dc"/><line x1="40" y1="40" x2="40" y2="12" stroke="#1b4fb0" stroke-width="3" stroke-linecap="round"><animateTransform attributeName="transform" type="rotate" from="0 40 40" to="360 40 40" dur="6s" repeatCount="indefinite"/></line></svg></span></li>
-    <li><b>Heat is noise you can compute.</b> n̄ = 1/(e^{ħω/kT} − 1): microwave qubits need 15 mK; optical photons are already quiet at room temperature.</li>
-    <li><b>Photons are the only thing that travels.</b> Fiber loses them exponentially, free space only as 1/L². Past a few hundred km, the sky wins.</li>
-    <li><b>Entanglement is a resource, not a radio.</b> Bob's results look random until Alice's two bits arrive; the code refuses to read a teleported state early.</li>
-    <li><b>The memory must outlive the round trip.</b> 6–45 minutes to Mars and back. Diamond lasts a minute, ions an hour, rare-earth crystals 13 hours.</li>
-    <li><b>Everything is checked against an equation.</b> Every module cites a paper, every number traces to a requirement, every result has a test.</li>
-  </ol>
+
+<section id="stack" class="band">
+  <div class="kicker reveal">How the code fits together</div>
+  <h2 class="reveal">From a thermal occupation to a message that refuses to send without a key</h2>
+  <div class="reveal"><svg class="beams" viewBox="0 0 1160 280" role="img" aria-label="The qll software stack from constants to the messenger">
+<defs><linearGradient id="bm" x1="0" x2="1"><stop offset="0" stop-color="#5ea8ff" stop-opacity="0"/><stop offset=".5" stop-color="#5ef2e0"/><stop offset="1" stop-color="#a78bfa" stop-opacity="0"/></linearGradient><radialGradient id="dotg"><stop offset="0" stop-color="#e8fffb"/><stop offset=".45" stop-color="#5ef2e0"/><stop offset="1" stop-color="#5ef2e0" stop-opacity="0"/></radialGradient></defs>
+<path d="M70,95 C155,95 155,185 240,185" fill="none" stroke="rgba(148,170,210,.18)" stroke-width="2"/>
+<path class="beam" d="M70,95 C155,95 155,185 240,185" fill="none" stroke="url(#bm)" stroke-width="3" style="animation-delay:0.00s"/>
+<circle r="4" fill="url(#dotg)"><animateMotion dur="2.4s" begin="0.00s" repeatCount="indefinite" path="M70,95 C155,95 155,185 240,185"/></circle>
+<path d="M240,185 C325,185 325,95 410,95" fill="none" stroke="rgba(148,170,210,.18)" stroke-width="2"/>
+<path class="beam" d="M240,185 C325,185 325,95 410,95" fill="none" stroke="url(#bm)" stroke-width="3" style="animation-delay:0.35s"/>
+<circle r="4" fill="url(#dotg)"><animateMotion dur="2.4s" begin="0.35s" repeatCount="indefinite" path="M240,185 C325,185 325,95 410,95"/></circle>
+<path d="M410,95 C495,95 495,185 580,185" fill="none" stroke="rgba(148,170,210,.18)" stroke-width="2"/>
+<path class="beam" d="M410,95 C495,95 495,185 580,185" fill="none" stroke="url(#bm)" stroke-width="3" style="animation-delay:0.70s"/>
+<circle r="4" fill="url(#dotg)"><animateMotion dur="2.4s" begin="0.70s" repeatCount="indefinite" path="M410,95 C495,95 495,185 580,185"/></circle>
+<path d="M580,185 C665,185 665,95 750,95" fill="none" stroke="rgba(148,170,210,.18)" stroke-width="2"/>
+<path class="beam" d="M580,185 C665,185 665,95 750,95" fill="none" stroke="url(#bm)" stroke-width="3" style="animation-delay:1.05s"/>
+<circle r="4" fill="url(#dotg)"><animateMotion dur="2.4s" begin="1.05s" repeatCount="indefinite" path="M580,185 C665,185 665,95 750,95"/></circle>
+<path d="M750,95 C835,95 835,185 920,185" fill="none" stroke="rgba(148,170,210,.18)" stroke-width="2"/>
+<path class="beam" d="M750,95 C835,95 835,185 920,185" fill="none" stroke="url(#bm)" stroke-width="3" style="animation-delay:1.40s"/>
+<circle r="4" fill="url(#dotg)"><animateMotion dur="2.4s" begin="1.40s" repeatCount="indefinite" path="M750,95 C835,95 835,185 920,185"/></circle>
+<path d="M920,185 C1005,185 1005,95 1090,95" fill="none" stroke="rgba(148,170,210,.18)" stroke-width="2"/>
+<path class="beam" d="M920,185 C1005,185 1005,95 1090,95" fill="none" stroke="url(#bm)" stroke-width="3" style="animation-delay:1.75s"/>
+<circle r="4" fill="url(#dotg)"><animateMotion dur="2.4s" begin="1.75s" repeatCount="indefinite" path="M920,185 C1005,185 1005,95 1090,95"/></circle>
+<a href="https://github.com/Normansrule/quantum-link-research/tree/main/qll/constants"><g class="node"><rect x="8" y="65" width="124" height="60" rx="14"/><text x="70" y="91" class="n1">constants</text><text x="70" y="111" class="n2">n̄(ω,T)</text></g></a>
+<a href="https://github.com/Normansrule/quantum-link-research/tree/main/qll/channels"><g class="node"><rect x="178" y="155" width="124" height="60" rx="14"/><text x="240" y="181" class="n1">channels</text><text x="240" y="201" class="n2">η, τ</text></g></a>
+<a href="https://github.com/Normansrule/quantum-link-research/tree/main/qll/circuits"><g class="node"><rect x="348" y="65" width="124" height="60" rx="14"/><text x="410" y="91" class="n1">circuits</text><text x="410" y="111" class="n2">F, S</text></g></a>
+<a href="https://github.com/Normansrule/quantum-link-research/tree/main/qll/qkd"><g class="node"><rect x="518" y="155" width="124" height="60" rx="14"/><text x="580" y="181" class="n1">QKD</text><text x="580" y="201" class="n2">r ≤ PLOB</text></g></a>
+<a href="https://github.com/Normansrule/quantum-link-research/tree/main/qll/network"><g class="node"><rect x="688" y="65" width="124" height="60" rx="14"/><text x="750" y="91" class="n1">network</text><text x="750" y="111" class="n2">memories</text></g></a>
+<a href="https://github.com/Normansrule/quantum-link-research/tree/main/qll/space"><g class="node"><rect x="858" y="155" width="124" height="60" rx="14"/><text x="920" y="181" class="n1">space</text><text x="920" y="201" class="n2">ephemeris</text></g></a>
+<a href="https://github.com/Normansrule/quantum-link-research/tree/main/qll/app"><g class="node"><rect x="1028" y="65" width="124" height="60" rx="14"/><text x="1090" y="91" class="n1">messenger</text><text x="1090" y="111" class="n2">fail closed</text></g></a>
+<text x="580.0" y="268" class="n2" text-anchor="middle">every node is a package with analytic tests · the beams are the imports · 560+ tests run on every commit</text></svg></div>
+  <div class="marquee" aria-label="Landmark experiments recreated in the repository"><div class="mq-track"><span class="mq-item">Stern–Gerlach 1922</span><span class="mq-item">Aspect 1982</span><span class="mq-item">Hong–Ou–Mandel 1987</span><span class="mq-item">Grangier 1986</span><span class="mq-item">Bennett et al. BB84 1992</span><span class="mq-item">Bouwmeester teleportation 1997</span><span class="mq-item">Furusawa CV teleportation 1998</span><span class="mq-item">Gruber ODMR 1997</span><span class="mq-item">Hensen loophole-free 2015</span><span class="mq-item">Micius 2017</span><span class="mq-item">Bhaskar memory-enhanced 2020</span><span class="mq-item">Pompili three-node network 2021</span><span class="mq-item">Bluvstein 48 logical qubits 2024</span><span class="mq-item">Knaut 35 km SiV link 2024</span><span class="mq-item">Jinan-1 microsatellite 2025</span><span class="mq-item">Google below threshold 2025</span><span class="mq-item">Stern–Gerlach 1922</span><span class="mq-item">Aspect 1982</span><span class="mq-item">Hong–Ou–Mandel 1987</span><span class="mq-item">Grangier 1986</span><span class="mq-item">Bennett et al. BB84 1992</span><span class="mq-item">Bouwmeester teleportation 1997</span><span class="mq-item">Furusawa CV teleportation 1998</span><span class="mq-item">Gruber ODMR 1997</span><span class="mq-item">Hensen loophole-free 2015</span><span class="mq-item">Micius 2017</span><span class="mq-item">Bhaskar memory-enhanced 2020</span><span class="mq-item">Pompili three-node network 2021</span><span class="mq-item">Bluvstein 48 logical qubits 2024</span><span class="mq-item">Knaut 35 km SiV link 2024</span><span class="mq-item">Jinan-1 microsatellite 2025</span><span class="mq-item">Google below threshold 2025</span></div></div>
 </section>
 
-<section id="flagships" class="band alt">
-  <h2>Three experiments, one physics</h2>
-  <div class="cards three">
-    <a class="card" href="https://github.com/Normansrule/quantum-link-research/blob/main/experiments/flagship/F1_earth_to_earth.md"><span class="tag">F1</span><h3>Two computers, one city</h3><p>Heralded entanglement and teleportation over 25 km of deployed fiber. Round trip 0.25 ms. Done in the field in 2024; our version starts on a $5k bench.</p><em>pass: herald &gt; 1 Hz · S &gt; 2.2 · F &gt; 0.7</em></a>
-    <a class="card" href="https://github.com/Normansrule/quantum-link-research/blob/main/experiments/flagship/F2_earth_to_satellite.md"><span class="tag">F2</span><h3>Earth to satellite</h3><p>A single-photon downlink from low Earth orbit; loss 10⁻⁶ per pass. Micius did it in 2017, a 23 kg microsatellite in 2025; our version reproduces their budgets, then a rooftop link.</p><em>pass: budget within ±3 dB · QBER &lt; 5% at 10° sun angle</em></a>
-    <a class="card" href="https://github.com/Normansrule/quantum-link-research/blob/main/experiments/flagship/F3_earth_to_mars.md"><span class="tag warm">F3</span><h3>Earth to Mars</h3><p>The same protocol with a 6–45 minute classical round trip and 10⁻⁹ loss. Done nowhere. Our version: delayed-bits bench, relay scheduling on real pass data, a messenger that fails closed.</p><em>pass: F &gt; 2/3 after a stored 22-minute delay</em></a>
-  </div>
-  <img class="wide" src="figures/flagship_overview.svg" alt="Flagship overview">
+<section id="interference" class="band">
+  <div class="kicker reveal">Interference lab · WebGL</div>
+  <h2 class="reveal">Which-path information erases the fringes</h2>
+  <p class="sub reveal">Each pixel sums the two waves from the slits exactly. Move the pointer across the field to shift their relative phase; tick <em>which-path</em> and the cross term vanishes, the same physics as protocol P06, the quantum eraser.</p>
+  <canvas id="slit-canvas" class="stage wide reveal" style="aspect-ratio:21/9;cursor:ew-resize" aria-label="Two-slit interference simulation"></canvas>
+  <div class="ctrl reveal"><label>wavelength <input id="slit-lambda" type="range" min="0.012" max="0.06" step="0.001" value="0.025"></label>
+    <label>slit separation <input id="slit-d" type="range" min="0.05" max="0.4" step="0.005" value="0.16"></label>
+    <label><input id="slit-which" type="checkbox"> which-path marker</label></div>
+  <div class="readout reveal" id="slit-info"></div>
 </section>
 
-<section id="learn" class="band">
-  <h2>Learn</h2>
-  <p class="lead">Settled physics only, every file with definitions, equations, a figure, references, the repo module, and exercises. Three paths: physics first, engineer building a qubit, the Mars-link track.</p>
-  <div class="cards four">
-    <a class="card" href="https://github.com/Normansrule/quantum-link-research/tree/main/learn/00_foundations"><h3>Foundations</h3><p>Why quantum · postulates · Bloch sphere · Rabi/Ramsey/echo · entanglement · open systems · wave mechanics · spin · identical particles · quantum optics · decoherence · math toolkit</p></a>
-    <a class="card" href="https://github.com/Normansrule/quantum-link-research/tree/main/learn/01_quantum_computing_core"><h3>Computing core</h3><p>Gates · algorithms · error correction · benchmarking · complexity · sensing · simulation · software stack</p></a>
-    <a class="card" href="https://github.com/Normansrule/quantum-link-research/blob/main/learn/02_qubit_modalities/README.md"><h3>Qubit modalities</h3><p>Transmon and SQUID · silicon spins · diamond NV/SiV · ions · Rydberg atoms · photons · Majorana · bosonic · control electronics · cryogenics · fabrication</p></a>
-    <a class="card" href="https://github.com/Normansrule/quantum-link-research/tree/main/learn/03_quantum_communication"><h3>Communication</h3><p>QKD · teleportation · repeaters and memories · satellite and deep space · transduction · Micius budget · clocks · DSOC</p></a>
+<section id="explore" class="band">
+  <div class="kicker reveal">Interactive</div>
+  <h2 class="reveal">Four ways in</h2>
+  <div class="grid">
+    <a class="card reveal" href="mars/"><span class="tag warm">simulator</span><h3>Mars link simulator</h3><p>Orbits, conjunction, L4/L5 relays, and which memories survive today's round trip.</p></a>
+    <a class="card reveal" href="teleport/"><span class="tag green">explainer</span><h3>Teleportation, step by step</h3><p>Scroll through the protocol with the exact eight-amplitude state, the no-signalling average, and the bits in flight.</p></a>
+    <a class="card reveal" href="monitor/"><span class="tag">dashboard</span><h3>Link monitor</h3><p>Two synodic periods of light time, blackouts, and a fail-closed messenger's key buffer, live.</p></a>
+    <a class="card reveal" href="apps/"><span class="tag">explorers</span><h3>Physics explorers</h3><p>Thermal occupation, beam loss, light time, key rates, Bloch gates — parameters under your hands.</p></a>
   </div>
+</section>
+
+<section id="library" class="band">
+  <div class="kicker reveal">Everything in the repository</div>
+  <h2 class="reveal">A library, a lab manual, a course, and a thesis</h2>
+  <div class="grid">
+    <a class="card reveal" href="https://github.com/Normansrule/quantum-link-research/tree/main/learn"><span class="count"><span data-status="learn_files">120</span> files</span><h3>Learn</h3><p>Foundations, computing core, eight qubit platforms, communication — each with equations, a figure, references, and exercises.</p></a>
+    <a class="card reveal" href="https://github.com/Normansrule/quantum-link-research/tree/main/experiments"><span class="count"><span data-status="experiment_files">55</span> files</span><h3>Experiments</h3><p>Flagships, protocols, fifteen landmark experiments with cheap recreations, fifteen proposals, lessons from the field.</p></a>
+    <a class="card reveal" href="https://github.com/Normansrule/quantum-link-research/tree/main/research"><span class="count"><span data-status="research_files">40</span> files</span><h3>Research</h3><p>Timeline, open problems, watchlist, fifteen frontier theories, the design process, and the thesis chapters.</p></a>
+    <a class="card reveal" href="https://github.com/Normansrule/quantum-link-research/blob/main/learn/COURSE_SYLLABUS.md"><h3>Course</h3><p>Fifteen weeks with readings, computations, labs, and four problem sets graded by machine.</p></a>
+    <a class="card reveal" href="https://github.com/Normansrule/quantum-link-research/blob/main/docs/references.md"><span class="count"><span data-status="references">300+</span> refs</span><h3>References</h3><p>Every citation in code must exist in the bibliography; a test enforces it.</p></a>
+    <a class="card reveal" href="https://github.com/Normansrule/quantum-link-research/blob/main/youtube/README.md"><h3>Youtube</h3><p>Verified videos in English, one row per topic, mapped to the file they accompany.</p></a>
+  </div>
+</section>
+
+<section class="band">
+  <div class="kicker reveal">Figures</div>
+  <h2 class="reveal">Drawn by functions under test</h2>
   <div class="gallery">
-    <figure><img src="figures/bloch_sphere.svg" alt=""><figcaption>The qubit and its decay</figcaption></figure>
-    <figure><img src="figures/rabi_ramsey.svg" alt=""><figcaption>The three calibration experiments</figcaption></figure>
-    <figure><img src="figures/transmon_levels.svg" alt=""><figcaption>Why the transmon works</figcaption></figure>
-    <figure><img src="figures/modality_radar.svg" alt=""><figcaption>Eight platforms, seven axes</figcaption></figure>
+    <figure class="reveal"><img loading="lazy" src="figures/memory_crossover.svg" alt=""><figcaption>Which memory outlives which round trip</figcaption></figure>
+    <figure class="reveal"><img loading="lazy" src="figures/relay_constellation_explorer.svg" alt=""><figcaption>Relays through solar conjunction</figcaption></figure>
+    <figure class="reveal"><img loading="lazy" src="figures/qkd_protocols_explorer.svg" alt=""><figcaption>Which key-distribution protocol wins at which loss</figcaption></figure>
+    <figure class="reveal"><img loading="lazy" src="figures/sim_teleport_delay.svg" alt=""><figcaption>Teleportation with the bits delayed by a light time</figcaption></figure>
+    <figure class="reveal"><img loading="lazy" src="figures/purification_recurrence.svg" alt=""><figcaption>Purification as a map, and what it costs</figcaption></figure>
+    <figure class="reveal"><img loading="lazy" src="figures/cat_state_wigner.svg" alt=""><figcaption>Wigner functions: where non-classicality lives</figcaption></figure>
   </div>
-</section>
-
-<section id="experiments" class="band alt">
-  <h2>Experiments</h2>
-  <p class="lead">Everything with a cost, a procedure, or a proposal. Protocols you can follow line by line, landmark experiments with cheap recreations, and what nobody has run yet.</p>
-  <div class="cards four">
-    <a class="card" href="https://github.com/Normansrule/quantum-link-research/blob/main/experiments/protocols/README.md"><h3>Protocols</h3><p>P01 ODMR on a $100 bench · P02 pulsed NV control · P03 SPDC source, HOM, CHSH, BB84 · P04 rooftop free-space link</p></a>
-    <a class="card" href="https://github.com/Normansrule/quantum-link-research/blob/main/experiments/done/README.md"><h3>Landmarks</h3><p>Stern–Gerlach → single photons → Bell → ODMR → Rabi → HOM → teleportation → NV networks → satellites → below-threshold QEC</p></a>
-    <a class="card" href="https://github.com/Normansrule/quantum-link-research/blob/main/experiments/proposed/README.md"><h3>Proposed</h3><p>E1–E10: delayed classical channel, memory vs temperature, constellation scheduling, sun-angle background, fail-closed messaging, QRNG bases, transduction-free link, Mars memory trade, multiplexing, DI certification</p></a>
-    <a class="card" href="https://github.com/Normansrule/quantum-link-research/blob/main/experiments/bench/hardware_guide.md"><h3>Bench</h3><p>Every part with a vendor link; three budget tiers from a $100 weekend to turnkey kits; how the NV and satellite experiments were actually run</p></a>
-  </div>
-</section>
-
-<section id="simulations" class="band">
-  <h2>Simulations</h2>
-  <p class="lead">Run these before building. Each predicts the number the bench must reproduce, using only the pinned simulators (Qiskit Aer, Stim) and the tested functions. Each has a test.</p>
-  <div class="gallery">
-    <figure><img src="figures/sim_chsh_noise.svg" alt=""><figcaption>S01 · CHSH vs noise (Aer)</figcaption></figure>
-    <figure><img src="figures/sim_teleport_delay.svg" alt=""><figcaption>S02 · teleportation with the bits delayed by a light time</figcaption></figure>
-    <figure><img src="figures/sim_link_budget.svg" alt=""><figcaption>S03 · photons per second vs distance</figcaption></figure>
-    <figure><img src="figures/sim_repetition_code.svg" alt=""><figcaption>S04 · below threshold, more qubits = fewer errors (Stim)</figcaption></figure>
-    <figure><img src="figures/sim_bb84_pass.svg" alt=""><figcaption>S05 · key per satellite pass vs daylight</figcaption></figure>
-    <figure><img src="figures/repeater_rate_explorer.svg" alt=""><figcaption>Where a repeater chain beats direct transmission</figcaption></figure>
-  </div>
-  <p><a class="btn" href="https://github.com/Normansrule/quantum-link-research/tree/main/simulations">Open the simulations folder</a></p>
-</section>
-
-<section id="status" class="band alt">
-  <h2>Status</h2>
-  <p class="lead">All six phases are implemented and tested. The requirements matrix, the thesis draft, and the generated results tables live in the repository and are regenerated from the code.</p>
-  <div class="cards three">
-    <a class="card" href="https://github.com/Normansrule/quantum-link-research/blob/main/docs/status.md"><h3>Requirements</h3><p>Every requirement with the test that verifies it; two await bench data.</p></a>
-    <a class="card" href="https://github.com/Normansrule/quantum-link-research/blob/main/research/thesis/results/tables.md"><h3>Results tables</h3><p>Generated from the tested functions: memory capability matrix, link budgets, crossovers, light times.</p></a>
-    <a class="card" href="https://github.com/Normansrule/quantum-link-research/blob/main/research/thesis/THESIS_DRAFT.md"><h3>Thesis draft</h3><p>Seven chapters assembled by script; chapter 5 waits for the first bench spectrum.</p></a>
-  </div>
-</section>
-
-<section id="research" class="band alt">
-  <h2>Research</h2>
-  <div class="cards three">
-    <a class="card" href="https://github.com/Normansrule/quantum-link-research/blob/main/research/theories/README.md"><h3>Ten frontier theories</h3><p>Network stack · all-photonic repeaters · GKP repeaters · device-independent QKD · entangled clocks and relativity · quantum-limited receivers · blind computing · entanglement routing · CV-QKD · certified randomness — each ending with what it would change for a Mars link</p></a>
-    <a class="card" href="https://github.com/Normansrule/quantum-link-research/blob/main/research/cutting_edge/01_state_of_the_art_timeline.md"><h3>Timeline and watchlist</h3><p>1982 → 2026, a row per milestone, and a 2026 watchlist of claims with "what it would change" and "verify by"</p></a>
-    <a class="card" href="https://github.com/Normansrule/quantum-link-research/blob/main/research/thesis/BACKLOG.md"><h3>What to work on</h3><p>The design process (a systems-engineering V with decision record), the backlog by workstream, and the next hundred additions</p></a>
-  </div>
-  <img class="wide" src="figures/mars_light_time_cycle.svg" alt="Mars light time">
-</section>
-
-<section id="videos" class="band">
-  <h2>Youtube</h2>
-  <p class="lead">Verified links, one row per topic, each mapped to the file it accompanies: 3Blue1Brown, MinutePhysics, Veritasium, Qiskit, QuTech, Monroe, Lukin, Microsoft, Google, and hands-on builds.</p>
-  <p><a class="btn" href="https://github.com/Normansrule/quantum-link-research/blob/main/youtube/README.md">Open the video list</a></p>
-</section>
-
-<section id="references" class="band alt">
-  <h2>References</h2>
-  <p class="lead"><span id="n-ref2">281</span> entries in a topic-grouped index generated from the BibTeX files, each marked verified, confident, or TODO. Nothing is cited from code until it is verified.</p>
-  <p><a class="btn" href="https://github.com/Normansrule/quantum-link-research/blob/main/docs/references.md">Open the reference index</a></p>
 </section>
 
 <footer>
-  <p>MIT license · <a href="https://github.com/Normansrule/quantum-link-research/blob/main/CITATION.cff">cite</a> · <a href="https://github.com/Normansrule/quantum-link-research/blob/main/CONTRIBUTING.md">six rules</a> · figures regenerated by <code>scripts/make_figures.py</code>, this page by hand.</p>
+  Quantum Link Research · Aleksander Norman · MIT license · every number on this page is generated by <code>scripts/build_site_data.py</code> from tested code ·
+  visual techniques inspired by open-source work credited in <a href="https://github.com/Normansrule/quantum-link-research/blob/main/CREDITS.md">CREDITS.md</a>.
 </footer>
 
-<script>
-const AU=149597870700, C=299792458;
-const d=document.getElementById('d'), dv=document.getElementById('dv'), ltmin=document.getElementById('ltmin'), lt=document.getElementById('lt');
-function upd(){ const au=+d.value; const m=au*AU/C/60; dv.textContent=au.toFixed(2); ltmin.textContent=m.toFixed(1); lt.textContent=`${m.toFixed(1)} minutes`; }
-d.addEventListener('input',upd); upd();
-</script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.18.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.18.9/dist/contrib/auto-render.min.js"></script>
+<script src="js/ephemeris.js"></script>
+<script type="module" src="js/hero.js"></script>
+<script type="module" src="js/bloch.js"></script>
+<script defer src="js/interference.js"></script>
+<script defer src="js/site.js"></script>
 </body>
 </html>

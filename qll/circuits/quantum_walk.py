@@ -37,6 +37,10 @@ def classical_walk_distribution(t: int) -> np.ndarray:
 
 
 def std(dist: np.ndarray) -> float:
+    """Standard deviation of a probability distribution over positions -t..t (must be real and non-negative)."""
+    dist = np.asarray(dist)
+    if np.iscomplexobj(dist) or (dist < -1e-12).any():
+        raise ValueError("std expects a real, non-negative probability distribution")
     x = np.arange(len(dist)) - (len(dist) - 1) / 2
     mean = float((x * dist).sum())
     return float(np.sqrt(((x - mean) ** 2 * dist).sum()))

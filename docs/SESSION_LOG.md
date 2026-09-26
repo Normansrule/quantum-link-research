@@ -39,3 +39,5 @@
 - 2026-09-25 0.26.0: theories T11-T15; learn 02/20-21.
 - 2026-09-25 0.27.0: landmarks 11-15, lessons 03-05, P08.
 - 2026-09-25 0.28.0: decompositions, MBQC, filter functions, walks, Landauer, Wigner figure; learn 01/13-14, 00/18.
+- 2026-09-25 0.29.0: website, Mars simulator, README banner and generated numbers, E11-E15.
+- 2026-09-25 0.30.0: teleportation explainer, link monitor, interference lab, stack beams, marquee, README gallery, CREDITS per feature.

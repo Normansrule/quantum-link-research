@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Link monitor · Quantum Link Research</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📡</text></svg>">
+<link rel="stylesheet" href="../space.css">
+<style>
+  .dash { max-width: 1320px; margin: 0 auto; padding: 5.2rem 3vw 2rem; display: grid; gap: 1rem; grid-template-columns: repeat(12, 1fr) }
+  .dash > * { min-width: 0 }
+  .p { border: 1px solid var(--line); border-radius: 14px; background: var(--glass); padding: .9rem 1rem; position: relative }
+  .p h4 { margin: 0 0 .5rem; font-size: .74rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); font-weight: 700 }
+  .kpi { grid-column: span 2 } .kpi .v { font: 700 1.5rem/1.2 "JetBrains Mono", monospace; font-variant-numeric: tabular-nums } .kpi .s { font-size: .78rem; color: var(--faint) }
+  .wide { grid-column: span 8 } .side { grid-column: span 4 } .full { grid-column: span 12 }
+  @media (max-width: 1000px) { .kpi { grid-column: span 4 } .wide, .side { grid-column: span 12 } }
+  canvas.chart { width: 100%; height: 220px; display: block }
+  .feed { font: .8rem/1.7 "JetBrains Mono", monospace; color: var(--muted); max-height: 318px; overflow: auto }
+  .feed .ev { border-bottom: 1px dashed var(--line); padding: .25rem 0 } .feed .ev b { color: var(--ink) }
+  .pulse { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: .4rem; background: var(--green); box-shadow: 0 0 0 0 rgba(69,224,160,.7); animation: pulse 1.6s infinite }
+  .pulse.bad { background: var(--mars); animation-name: pulseb } .pulse.relay { background: var(--cyan) }
+  @keyframes pulse { 70% { box-shadow: 0 0 0 10px rgba(69,224,160,0) } 100% { box-shadow: 0 0 0 0 rgba(69,224,160,0) } }
+  @keyframes pulseb { 70% { box-shadow: 0 0 0 10px rgba(255,107,74,0) } 100% { box-shadow: 0 0 0 0 rgba(255,107,74,0) } }
+  .ok { color: var(--green) } .bad { color: var(--mars) } .warn { color: var(--warm) }
+</style>
+</head>
+<body>
+<div class="aurora"></div>
+<header class="top">
+  <a class="brand" href="../"><span class="dot"></span>Quantum Link Research</a>
+  <nav><a href="../mars/">Mars simulator</a><a href="../teleport/">Teleportation explainer</a><a class="gh" href="https://github.com/Normansrule/quantum-link-research">GitHub ↗</a></nav>
+</header>
+<main class="dash">
+  <div class="p kpi"><h4>date</h4><div class="v" id="k-date">—</div><div class="s" id="k-day"></div></div>
+  <div class="p kpi"><h4>range</h4><div class="v" id="k-range">—</div><div class="s">Earth–Mars</div></div>
+  <div class="p kpi"><h4>one-way light</h4><div class="v" id="k-lt">—</div><div class="s" id="k-rt"></div></div>
+  <div class="p kpi"><h4>Sun–Earth–Mars</h4><div class="v" id="k-sep">—</div><div class="s">blackout below 3°</div></div>
+  <div class="p kpi"><h4>link</h4><div class="v" id="k-link">—</div><div class="s" id="k-link-s"></div></div>
+  <div class="p kpi"><h4>key buffer</h4><div class="v" id="k-buf">—</div><div class="s" id="k-msg"></div></div>
+  <div class="p wide"><h4>one-way light time · two synodic periods · shaded = conjunction blackout</h4><canvas class="chart" id="c-lt"></canvas></div>
+  <div class="p side"><h4>event feed</h4><div class="feed" id="feed"></div></div>
+  <div class="p wide"><h4>key buffer (bytes) · fail-closed messenger: no key, no message</h4><canvas class="chart" id="c-buf"></canvas></div>
+  <div class="p side"><h4>controls</h4>
+    <div class="ctrl" style="margin:0 0 .6rem"><button id="play">▶ play</button><select id="speed"><option value="5">5 d/s</option><option value="20" selected>20 d/s</option><option value="80">80 d/s</option></select><label><input type="checkbox" id="relay"> L4/L5 relays</label></div>
+    <div class="readout">
+      <label>QKD key rate <b id="rate-v"></b><br><input id="rate" type="range" min="0" max="3" step="0.05" value="0.5" style="width:100%"></label><br>
+      <label>messages per day <b id="mpd-v"></b><br><input id="mpd" type="range" min="1" max="2000" step="1" value="200" style="width:100%"></label><br>
+      <label>secure key storage <b id="cap-v"></b><br><input id="cap" type="range" min="3.5" max="7" step="0.05" value="4.8" style="width:100%"></label><br>
+      <span style="color:var(--faint)">32-byte keys per message (AES-256-GCM); key rate is log₁₀ bit/s while the link is up. Starting buffer from <code>required_buffer_bytes</code> at today's range. With the defaults, a two-week conjunction drains the capped buffer and the messenger refuses to send; switch on the relays and the refusals stop.</span>
+    </div></div>
+</main>
+<footer style="max-width:1320px">Dashboard pattern inspired by <a href="https://github.com/koala73/worldmonitor">worldmonitor</a> and <a href="https://github.com/bilawalsidhu/gods-eye-view">gods-eye-view</a>: live state tiles, a timeline, and an event feed, here driven by the tested ephemeris and the messenger's buffer rule. See CREDITS.md.</footer>
+<script src="../js/ephemeris.js"></script>
+<script src="../js/linkmodel.js"></script>
+<script>
+(async function () {
+  document.documentElement.classList.remove("no-js");
+  const E = window.QLLEphemeris, L = window.QLLLink, $ = (id) => document.getElementById(id);
+  try { E.configure(await (await fetch("../site_data.json")).json()); } catch (e) {}
+  const SPAN = 2 * 779.93, SEP = 3.0;
+  let t = 0, playing = true, last = performance.now();
+  const hist = [], events = [];
+  let st = null, prevBlocked = null;
+  const rate = () => Math.pow(10, +$("rate").value), mpd = () => +$("mpd").value, cap = () => Math.pow(10, +$("cap").value);
+  const date = (d) => { const x = new Date(Date.UTC(2000, 0, 1, 12) + d * 86400000); return x.toISOString().slice(0, 10); };
+  const human = (s) => s < 120 ? s.toFixed(1) + " s" : (s / 60).toFixed(1) + " min";
+  const avail = (d) => E.sepDeg(d) >= SEP || $("relay").checked;
+  function reset() {
+    st = { buffer: L.requiredBufferBytes(0, E.rangeM(t), 32, 1, mpd() / 86400) + 0, sent: 0, refused: 0, lastRefused: 0 };
+    hist.length = 0; events.length = 0; prevBlocked = null; log(`simulation start · buffer seeded with <b>${st.buffer.toFixed(0)} B</b>`);
+  }
+  function log(html) { events.unshift(`<div class="ev">${date(t)} · ${html}</div>`); if (events.length > 60) events.pop(); $("feed").innerHTML = events.join(""); }
+  function chart(cv, xs, ys, opts) {
+    const g = cv.getContext("2d"), dpr = Math.min(devicePixelRatio, 2), W = cv.clientWidth, H = cv.clientHeight;
+    if (cv.width !== W * dpr) { cv.width = W * dpr; cv.height = H * dpr; } g.setTransform(dpr, 0, 0, dpr, 0, 0); g.clearRect(0, 0, W, H);
+    const pad = 36, x0 = xs[0], x1 = xs[xs.length - 1] || x0 + 1, ymax = opts.ymax || Math.max(1, ...ys) * 1.1;
+    const X = (x) => pad + (W - pad - 8) * (x - x0) / (x1 - x0 || 1), Y = (y) => H - 22 - (H - 34) * y / ymax;
+    (opts.bands || []).forEach(([a, b]) => { g.fillStyle = "rgba(255,107,74,.12)"; g.fillRect(X(a), 8, Math.max(1, X(b) - X(a)), H - 30); });
+    g.strokeStyle = "rgba(148,170,210,.15)"; g.fillStyle = "#5b6780"; g.font = "11px JetBrains Mono, monospace";
+    for (let k = 0; k <= 4; k++) { const y = ymax * k / 4; g.beginPath(); g.moveTo(pad, Y(y)); g.lineTo(W - 8, Y(y)); g.stroke(); g.fillText(opts.fmt(y), 2, Y(y) + 4); }
+    const grd = g.createLinearGradient(0, 0, W, 0); grd.addColorStop(0, opts.c1); grd.addColorStop(1, opts.c2);
+    g.strokeStyle = grd; g.lineWidth = 2; g.beginPath(); xs.forEach((x, i) => (i ? g.lineTo(X(x), Y(ys[i])) : g.moveTo(X(x), Y(ys[i])))); g.stroke();
+    if (opts.cursor !== undefined) { g.strokeStyle = "rgba(94,242,224,.8)"; g.setLineDash([3, 3]); g.beginPath(); g.moveTo(X(opts.cursor), 8); g.lineTo(X(opts.cursor), H - 22); g.stroke(); g.setLineDash([]); }
+  }
+  const ltX = [], ltY = [], bands = []; let inB = null;
+  for (let d = 0; d <= SPAN; d += 2) { ltX.push(d); ltY.push(E.oneWaySeconds(d) / 60); const b = E.sepDeg(d) < SEP; if (b && inB === null) inB = d; if (!b && inB !== null) { bands.push([inB, d]); inB = null; } }
+  function tick(days) {
+    for (let k = 0; k < days; k++) {
+      const up = avail(t);
+      st = L.stepDay(st, { keyRateBps: rate(), available: up, messagesPerDay: mpd(), capBytes: cap() });
+      const blocked = E.sepDeg(t) < SEP;
+      if (prevBlocked !== null && blocked !== prevBlocked) log(blocked ? `<b class="warn">solar conjunction begins</b>${$("relay").checked ? " · routing via L4/L5" : " · direct link lost"}` : `<b class="ok">conjunction ends</b> · direct link restored`);
+      if (st.lastRefused > 0 && (hist.length === 0 || hist[hist.length - 1].refusedToday === 0)) log(`<b class="bad">key exhausted</b> · messenger refuses to send (fail closed)`);
+      prevBlocked = blocked; hist.push({ t, b: st.buffer, refusedToday: st.lastRefused }); if (hist.length > 1600) hist.shift();
+      t += 1;
+    }
+  }
+  function draw() {
+    const sep = E.sepDeg(t), lt = E.oneWaySeconds(t), blocked = sep < SEP, relay = $("relay").checked;
+    $("k-date").textContent = date(t); $("k-day").textContent = "J2000 + " + Math.floor(t) + " d";
+    $("k-range").textContent = (E.rangeM(t) / E.AU).toFixed(3) + " au"; $("k-lt").textContent = human(lt); $("k-rt").textContent = "round trip " + human(2 * lt);
+    $("k-sep").innerHTML = `<span class="${blocked ? "bad" : "ok"}">${sep.toFixed(1)}°</span>`;
+    $("k-link").innerHTML = blocked ? (relay ? '<span class="pulse relay"></span>relay' : '<span class="pulse bad"></span>down') : '<span class="pulse"></span>direct';
+    $("k-link-s").textContent = blocked ? (relay ? "via Sun–Earth L4/L5" : "conjunction blackout") : "line of sight clear";
+    $("k-buf").textContent = (st.buffer / 1024).toFixed(1) + " kB"; $("k-msg").textContent = `sent ${st.sent.toLocaleString()} · refused ${st.refused.toLocaleString()}`;
+    $("rate-v").textContent = rate().toFixed(rate() < 10 ? 2 : 0) + " bit/s"; $("mpd-v").textContent = mpd(); $("cap-v").textContent = (cap() / 1024).toFixed(0) + " kB";
+    chart($("c-lt"), ltX, ltY, { bands, cursor: t % SPAN, c1: "#5ea8ff", c2: "#ff8a4c", ymax: 25, fmt: (y) => y.toFixed(0) + "m" });
+    chart($("c-buf"), hist.map((h) => h.t), hist.map((h) => h.b), { c1: "#45e0a0", c2: "#5ef2e0", fmt: (y) => y >= 1024 ? (y / 1024).toFixed(0) + "k" : y.toFixed(0) });
+  }
+  function loop(now) { const dt = Math.max(0, Math.min(0.1, (now - last) / 1000)); last = now; if (playing) { acc += dt * +$("speed").value; const n = Math.floor(acc); acc -= n; tick(n); } draw(); requestAnimationFrame(loop); }
+  let acc = 0;
+  $("play").onclick = () => { playing = !playing; $("play").textContent = playing ? "❚❚ pause" : "▶ play"; }; $("play").textContent = "❚❚ pause";
+  ["rate", "mpd", "relay", "cap"].forEach((id) => $(id).addEventListener("input", () => { reset(); }));
+  reset(); requestAnimationFrame(loop);
+})();
+</script>
+</body>
+</html>

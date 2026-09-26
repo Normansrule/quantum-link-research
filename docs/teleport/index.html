@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Teleportation, step by step · Quantum Link Research</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚛️</text></svg>">
+<link rel="stylesheet" href="../space.css">
+<style>
+  .story { display: grid; grid-template-columns: 1.15fr 1fr; gap: 2rem; max-width: var(--maxw); margin: 0 auto; padding: 0 5vw 20vh }
+  @media (max-width: 960px) { .story { grid-template-columns: 1fr } .stage-col { position: relative !important; top: 0 !important } }
+  .stage-col { position: sticky; top: 76px; align-self: start; height: calc(100vh - 96px); display: flex; flex-direction: column; gap: .9rem }
+  .panel { border: 1px solid var(--line); border-radius: var(--radius); background: var(--glass); padding: 1rem 1.1rem }
+  .steps .step { min-height: 72vh; display: flex; align-items: center }
+  .steps .step .card { width: 100%; opacity: .35; transition: opacity .4s, border-color .4s }
+  .steps .step.active .card { opacity: 1; border-color: rgba(94,242,224,.45) }
+  svg.circuit { width: 100%; height: auto }
+  .gate { fill: #0f1a30; stroke: #5b6780; stroke-width: 1.4 } .gate-t { fill: #e8eef8; font: 600 15px "JetBrains Mono", monospace; text-anchor: middle; dominant-baseline: central }
+  .wire { stroke: #5b6780; stroke-width: 1.4 } .cwire { stroke: #ff8a4c; stroke-width: 1.2; stroke-dasharray: 5 4 }
+  .grp { transition: opacity .4s } .grp.dim { opacity: .22 } .grp.on .gate { stroke: #5ef2e0; filter: drop-shadow(0 0 6px rgba(94,242,224,.6)) }
+  .amps { display: grid; grid-template-columns: 4.2rem 1fr 3.4rem; gap: .28rem .6rem; align-items: center; font: 500 .82rem "JetBrains Mono", monospace; color: var(--muted) }
+  .amps .track { height: 12px; border-radius: 99px; background: var(--bg2); border: 1px solid var(--line); overflow: hidden }
+  .amps .fill { height: 100%; width: 0; border-radius: 99px; transition: width .55s cubic-bezier(.2,.8,.2,1), background .55s }
+  .inputs { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; font-size: .86rem; color: var(--muted) }
+  .inputs input[type=range] { width: 140px; accent-color: #22d3ee }
+  .flight { height: 10px; border-radius: 99px; background: var(--bg2); border: 1px solid var(--line); overflow: hidden; margin-top: .4rem }
+  .flight > span { display: block; height: 100%; width: 0; background: linear-gradient(90deg, #ff8a4c, #ffd08a) }
+</style>
+</head>
+<body>
+<div class="aurora"></div>
+<header class="top">
+  <a class="brand" href="../"><span class="dot"></span>Quantum Link Research</a>
+  <nav><a href="../#equations">Equations</a><a href="../mars/">Mars simulator</a><a href="../monitor/">Link monitor</a><a class="gh" href="https://github.com/Normansrule/quantum-link-research">GitHub ↗</a></nav>
+</header>
+<section class="band" style="padding-top:6.5rem;padding-bottom:1rem">
+  <div class="kicker">Explainer · exact state vector</div>
+  <h2>Teleportation, one step at a time</h2>
+  <p class="sub">Scroll. The panel on the left is the actual eight-amplitude state of three qubits, computed exactly (<code>docs/js/teleport_core.js</code>, checked against Qiskit to 10⁻¹⁶). Bar length is probability, colour is phase. Choose the state Alice sends and the outcome she measures.</p>
+</section>
+<div class="story">
+  <div class="stage-col">
+    <div class="panel">
+      <svg class="circuit" viewBox="0 0 620 210" aria-label="Teleportation circuit">
+        <text x="8" y="44" fill="#93a1b8" font-size="13" font-family="JetBrains Mono">q0 |ψ⟩</text>
+        <text x="8" y="104" fill="#93a1b8" font-size="13" font-family="JetBrains Mono">q1 |0⟩</text>
+        <text x="8" y="164" fill="#93a1b8" font-size="13" font-family="JetBrains Mono">q2 |0⟩</text>
+        <line class="wire" x1="72" y1="40" x2="400" y2="40"/><line class="wire" x1="72" y1="100" x2="400" y2="100"/><line class="wire" x1="72" y1="160" x2="600" y2="160"/>
+        <g class="grp" data-g="1"><rect class="gate" x="92" y="84" width="32" height="32" rx="6"/><text class="gate-t" x="108" y="100">H</text>
+          <line class="wire" x1="160" y1="100" x2="160" y2="160"/><circle cx="160" cy="100" r="5" fill="#e8eef8"/><circle cx="160" cy="160" r="11" fill="none" stroke="#e8eef8" stroke-width="1.6"/><line x1="160" y1="149" x2="160" y2="171" stroke="#e8eef8" stroke-width="1.6"/></g>
+        <g class="grp" data-g="2"><line class="wire" x1="220" y1="40" x2="220" y2="100"/><circle cx="220" cy="40" r="5" fill="#e8eef8"/><circle cx="220" cy="100" r="11" fill="none" stroke="#e8eef8" stroke-width="1.6"/><line x1="220" y1="89" x2="220" y2="111" stroke="#e8eef8" stroke-width="1.6"/>
+          <rect class="gate" x="256" y="24" width="32" height="32" rx="6"/><text class="gate-t" x="272" y="40">H</text></g>
+        <g class="grp" data-g="3"><rect class="gate" x="330" y="24" width="36" height="32" rx="6"/><text class="gate-t" x="348" y="40">M</text><rect class="gate" x="330" y="84" width="36" height="32" rx="6"/><text class="gate-t" x="348" y="100">M</text></g>
+        <g class="grp" data-g="4"><line class="cwire" x1="366" y1="44" x2="545" y2="44"/><line class="cwire" x1="545" y1="44" x2="545" y2="144"/><line class="cwire" x1="366" y1="104" x2="485" y2="104"/><line class="cwire" x1="485" y1="104" x2="485" y2="144"/>
+          <text x="410" y="30" fill="#ff8a4c" font-size="12" font-family="JetBrains Mono">m0</text><text x="410" y="90" fill="#ff8a4c" font-size="12" font-family="JetBrains Mono">m1</text></g>
+        <g class="grp" data-g="5"><rect class="gate" x="469" y="144" width="32" height="32" rx="6"/><text class="gate-t" x="485" y="160">X</text><rect class="gate" x="529" y="144" width="32" height="32" rx="6"/><text class="gate-t" x="545" y="160">Z</text></g>
+      </svg>
+    </div>
+    <div class="panel"><div class="amps" id="amps"></div></div>
+    <div class="panel readout" id="bob"></div>
+  </div>
+  <div class="steps">
+    <div class="step" data-step="0"><div class="card"><span class="tag">step 0</span><h3>Alice holds a state she does not know</h3>
+      <p>q0 carries |ψ⟩ = cos(θ/2)|0⟩ + e^{iφ} sin(θ/2)|1⟩. Choose it; Alice never learns θ or φ, and no measurement could tell her.</p>
+      <div class="inputs" style="margin-top:1rem"><label>θ <input id="theta" type="range" min="0" max="3.1416" step="0.01" value="1.287"></label><label>φ <input id="phi" type="range" min="0" max="6.2832" step="0.01" value="1.571"></label></div></div></div>
+    <div class="step" data-step="1"><div class="card"><span class="tag">step 1</span><h3>A Bell pair is shared</h3>
+      <p>H then CNOT makes (|00⟩ + |11⟩)/√2 between q1 (Alice) and q2 (Bob). In the real link this pair is made at a relay and its halves travel as photons; it carries no information about |ψ⟩.</p></div></div>
+    <div class="step" data-step="2"><div class="card"><span class="tag">step 2</span><h3>Alice rotates into the Bell basis</h3>
+      <p>CNOT from q0 to q1, then H on q0. Look at the bars: all eight amplitudes are now non-zero, and every one of Bob's four possible states already contains |ψ⟩, up to a Pauli.</p></div></div>
+    <div class="step" data-step="3"><div class="card"><span class="tag">step 3</span><h3>Alice measures: two classical bits</h3>
+      <p>Each outcome has probability exactly ¼ whatever |ψ⟩ is, which is why the bits reveal nothing about it. Pick the outcome:</p>
+      <div class="gates" id="outcomes"><button data-m="00">00</button><button data-m="01">01</button><button data-m="10">10</button><button data-m="11">11</button></div></div></div>
+    <div class="step" data-step="4"><div class="card"><span class="tag warm">step 4</span><h3>The bits travel at the speed of light</h3>
+      <p>Until they arrive, Bob's qubit, averaged over Alice's four equally likely outcomes, is the maximally mixed state: its Bloch vector is zero. That is the no-signalling theorem in one line, and it is why nothing can go faster than the classical channel.</p>
+      <div class="inputs" style="margin-top:.8rem"><label>destination <select id="dest"><option value="moon">Moon</option><option value="marsmin">Mars (closest)</option><option value="marsmax" selected>Mars (farthest)</option></select></label></div>
+      <div class="flight"><span id="flight"></span></div><p class="mono" id="flight-t" style="margin-top:.4rem;color:var(--warm)"></p></div></div>
+    <div class="step" data-step="5"><div class="card"><span class="tag green">step 5</span><h3>Bob corrects and holds |ψ⟩</h3>
+      <p>X if m1 = 1, Z if m0 = 1. Fidelity with Alice's original state: 1. The original on q0 was destroyed by the measurement, so nothing was cloned. With a noisy pair of fraction f, the average fidelity would be (2f+1)/3 (<code>qll/circuits/teleportation.py</code>).</p></div></div>
+  </div>
+</div>
+<footer>Visual approach inspired by <a href="https://github.com/poloclub/transformer-explainer">transformer-explainer</a> and <a href="https://github.com/bbycroft/llm-viz">llm-viz</a> (let the reader drive, show the real numbers); scroll triggers by <a href="https://github.com/greensock/GSAP">GSAP</a>. See CREDITS.md.</footer>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script>
+<script src="../js/ephemeris.js"></script>
+<script src="../js/teleport_core.js"></script>
+<script>
+(async function () {
+  document.documentElement.classList.remove("no-js");
+  const T = window.QLLTeleport, E = window.QLLEphemeris, $ = (id) => document.getElementById(id);
+  let data = null; try { data = await (await fetch("../site_data.json")).json(); E.configure(data); } catch (e) {}
+  let step = 0, m = [1, 0], flightStart = 0;
+  const labels = ["000","001","010","011","100","101","110","111"];
+  $("amps").innerHTML = labels.map((l, i) => `<span>|${l}⟩</span><div class="track"><div class="fill" id="a${i}"></div></div><span id="p${i}">0</span>`).join("");
+  const psi = () => { const th = +$("theta").value, ph = +$("phi").value; return [[Math.cos(th / 2), 0], [Math.sin(th / 2) * Math.cos(ph), Math.sin(th / 2) * Math.sin(ph)]]; };
+  const hue = (a) => ((Math.atan2(a[1], a[0]) * 180 / Math.PI) + 360) % 360;
+  const lightTime = () => { const d = $("dest").value; const h = data ? data.headline : null;
+    return d === "moon" ? 1.28 : d === "marsmin" ? (h ? h.one_way_min_min * 60 : 186) : (h ? h.one_way_max_min * 60 : 1337); };
+  const human = (s) => s < 120 ? s.toFixed(2) + " s" : (s / 60).toFixed(1) + " min";
+  function render() {
+    const [a, b] = psi(), r = T.steps(a, b, m[0], m[1]);
+    const st = [r.s0, r.s1, r.s2, r.s3, r.s3, r.s4][step];
+    st.forEach((amp, i) => { const p = T.prob(amp); const el = $("a" + i);
+      el.style.width = (100 * p).toFixed(1) + "%"; el.style.background = p > 1e-9 ? `hsl(${hue(amp)}, 85%, 62%)` : "transparent"; $("p" + i).textContent = p.toFixed(3); });
+    document.querySelectorAll(".grp").forEach((g) => { const k = +g.dataset.g; g.classList.toggle("dim", k > step); g.classList.toggle("on", k === step); });
+    let avg = [0, 0, 0];
+    for (const mm of [[0,0],[0,1],[1,0],[1,1]]) { const s = T.steps(a, b, mm[0], mm[1]); const base = 4 * mm[0] + 2 * mm[1]; const v = T.blochOf([s.s3[base], s.s3[base + 1]]); avg = avg.map((x, i) => x + v[i] / 4); }
+    const bobBefore = T.blochOf([r.s3[4 * m[0] + 2 * m[1]], r.s3[4 * m[0] + 2 * m[1] + 1]]);
+    const target = T.blochOf([a, b]);
+    const f = (v) => `(${v.map((x) => x.toFixed(2)).join(", ")})`;
+    $("bob").innerHTML = `Alice's |ψ⟩ Bloch vector <b>${f(target)}</b><br>` +
+      (step >= 3 ? `outcome <b>${m[0]}${m[1]}</b> (p = <b>${r.p.toFixed(3)}</b>) · Bob before correction <b>${f(bobBefore)}</b><br>Bob averaged over outcomes <b>${f(avg)}</b> <span style="color:var(--faint)">← no signal</span><br>` : "") +
+      (step >= 5 ? `Bob after correction <b>${f(T.blochOf(r.bob))}</b> · fidelity <b class="ok">${T.fidelity(r.bob, a, b).toFixed(6)}</b>` : "");
+    if (step === 4) { flightStart = performance.now(); }
+  }
+  (function fly(now) {
+    const lt = lightTime(), el = $("flight"), txt = $("flight-t");
+    if (step === 4) { const shown = Math.min(1, (now - flightStart) / 4000); el.style.width = (100 * shown).toFixed(1) + "%";
+      txt.textContent = `bits in flight: ${human(shown * lt)} of ${human(lt)} (animation compressed to 4 s)`; }
+    requestAnimationFrame(fly);
+  })(performance.now());
+  const setStep = (k) => { step = k; document.querySelectorAll(".step").forEach((s) => s.classList.toggle("active", +s.dataset.step === k)); render(); };
+  document.querySelectorAll("#outcomes button").forEach((bt) => bt.onclick = () => { m = bt.dataset.m.split("").map(Number); render(); });
+  ["theta", "phi", "dest"].forEach((id) => $(id).addEventListener("input", render));
+  if (window.gsap && window.ScrollTrigger) {
+    gsap.registerPlugin(ScrollTrigger);
+    document.querySelectorAll(".step").forEach((s) => ScrollTrigger.create({ trigger: s, start: "top center", end: "bottom center", onToggle: (self) => self.isActive && setStep(+s.dataset.step) }));
+  } else {
+    const io = new IntersectionObserver((es) => es.forEach((e) => e.isIntersecting && setStep(+e.target.dataset.step)), { rootMargin: "-45% 0px -45% 0px" });
+    document.querySelectorAll(".step").forEach((s) => io.observe(s));
+  }
+  setStep(0);
+})();
+</script>
+</body>
+</html>

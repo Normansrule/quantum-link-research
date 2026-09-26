@@ -10,7 +10,7 @@ repos:
         always_run: true
       - id: references-index
         name: regenerate references index and status
-        entry: bash -c "python scripts/build_reference_index.py && python scripts/build_status.py && git add docs/references.md docs/status.md docs/status.json"
+        entry: bash -c "python scripts/build_reference_index.py && python scripts/build_status.py && python scripts/build_site_data.py && python scripts/make_banner.py && git add docs/references.md docs/status.md docs/status.json docs/site_data.json docs/figures/hero_banner.svg README.md"
         language: system
         pass_filenames: false
         always_run: true

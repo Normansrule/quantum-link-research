@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mars Link Simulator · Quantum Link Research</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔴</text></svg>">
+<link rel="stylesheet" href="../space.css">
+</head>
+<body>
+<div class="aurora"></div>
+<header class="top">
+  <a class="brand" href="../"><span class="dot"></span>Quantum Link Research</a>
+  <nav><a href="../#numbers">Numbers</a><a href="../#memories">Memories</a><a href="../apps/">Explorers</a><a class="gh" href="https://github.com/Normansrule/quantum-link-research">GitHub ↗</a></nav>
+</header>
+<section class="band" style="padding-top:6.5rem">
+  <div class="kicker">Mars link simulator</div>
+  <h2>The Earth–Mars link, day by day</h2>
+  <p class="sub">Kepler mean-element orbits (the same model as <code>qll/space/ephemeris.py</code>, ported line by line and checked to 10⁻¹⁵), solar-conjunction blackout at a Sun–Earth–Mars angle below the threshold, optional relays at Sun–Earth L4/L5, and the demonstrated memories that would outlive today's round trip. Drag the date or press play.</p>
+  <canvas id="orbit" class="stage wide" aria-label="Top-down view of Earth, Mars, the Sun, and relays"></canvas>
+  <div class="ctrl">
+    <button id="play">▶ play</button>
+    <label>date <input id="date" type="range" min="0" max="5840" step="1" value="0"></label>
+    <label><input id="relays" type="checkbox" checked> L4/L5 relays</label>
+    <label>blackout below <select id="sep"><option>2</option><option selected>3</option><option>5</option><option>10</option></select>°</label>
+    <label>speed <select id="speed"><option value="2">2 d/s</option><option value="10" selected>10 d/s</option><option value="40">40 d/s</option></select></label>
+  </div>
+  <div class="split" style="align-items:start">
+    <div class="card readout" id="state"></div>
+    <div class="card readout" id="mems"></div>
+  </div>
+</section>
+<footer>Model limits: coplanar mean elements (range good to ~1 %), a geometric blackout criterion for the direct path (relay legs are drawn but not checked against the Sun here; <code>qll.space.relay_constellation</code> checks them), and memory lifetimes from the repository's table at f₀ = 0.95. See <a href="https://github.com/Normansrule/quantum-link-research/blob/main/qll/space">qll/space</a>.</footer>
+<script src="../js/ephemeris.js"></script>
+<script>
+(async function () {
+  document.documentElement.classList.remove("no-js");
+  const E = window.QLLEphemeris;
+  let data = null;
+  try { data = await (await fetch("../site_data.json", { cache: "no-cache" })).json(); E.configure(data); } catch (e) { console.warn(e); }
+  const cv = document.getElementById("orbit"), g = cv.getContext("2d");
+  const $ = (id) => document.getElementById(id);
+  let t = 0, playing = false, last = performance.now();
+  const photons = Array.from({ length: 60 }, () => Math.random());
+  function resize() { const r = cv.getBoundingClientRect(), d = Math.min(devicePixelRatio, 2); cv.width = r.width * d; cv.height = r.height * d; g.setTransform(d, 0, 0, d, 0, 0); }
+  addEventListener("resize", resize); resize();
+  const human = (s) => s < 120 ? s.toFixed(1) + " s" : s < 7200 ? (s / 60).toFixed(1) + " min" : (s / 3600).toFixed(2) + " h";
+  function draw(dt) {
+    const W = cv.clientWidth, H = cv.clientHeight, cx = W / 2, cy = H / 2, k = Math.min(W, H) / 3.6;
+    const P = ([x, y]) => [cx + x * k, cy - y * k];
+    g.clearRect(0, 0, W, H);
+    const sun = g.createRadialGradient(cx, cy, 0, cx, cy, 40); sun.addColorStop(0, "rgba(255,236,190,1)"); sun.addColorStop(1, "rgba(255,150,60,0)");
+    g.fillStyle = sun; g.beginPath(); g.arc(cx, cy, 40, 0, 7); g.fill();
+    for (const [fn, per, col] of [[E.earth, 365.256, "rgba(94,168,255,.35)"], [E.mars, 686.98, "rgba(255,107,74,.35)"]]) {
+      g.strokeStyle = col; g.lineWidth = 1; g.beginPath();
+      for (let i = 0; i <= 256; i++) { const [x, y] = P(fn((per * i) / 256)); i ? g.lineTo(x, y) : g.moveTo(x, y); } g.stroke();
+    }
+    const pe = P(E.earth(t)), pm = P(E.mars(t)), sep = E.sepDeg(t), thr = +$("sep").value, blocked = sep < thr;
+    const relays = $("relays").checked ? [P(E.l4(t)), P(E.l5(t))] : [];
+    const lineTo = (a, b, col, dash) => { g.strokeStyle = col; g.setLineDash(dash || []); g.lineWidth = 1.5; g.beginPath(); g.moveTo(...a); g.lineTo(...b); g.stroke(); g.setLineDash([]); };
+    lineTo(pe, pm, blocked ? "rgba(91,103,128,.6)" : "rgba(255,138,76,.8)", [6, 5]);
+    relays.forEach((r) => { lineTo(r, pe, "rgba(69,224,160,.45)"); lineTo(r, pm, "rgba(69,224,160,.45)"); });
+    const src = relays.length ? relays[0] : pe;
+    photons.forEach((p, i) => {
+      photons[i] = (p + dt * 0.4) % 1; const to = i % 2 ? pm : pe;
+      if (!relays.length && to === pe) return;
+      if (blocked && !relays.length) return;
+      const x = src[0] + (to[0] - src[0]) * photons[i], y = src[1] + (to[1] - src[1]) * photons[i];
+      g.fillStyle = "rgba(94,242,224,.9)"; g.beginPath(); g.arc(x, y, 1.8, 0, 7); g.fill();
+    });
+    const dot = (p, r, c, glow) => { const q = g.createRadialGradient(p[0], p[1], 0, p[0], p[1], r * 4); q.addColorStop(0, glow); q.addColorStop(1, "rgba(0,0,0,0)"); g.fillStyle = q; g.beginPath(); g.arc(p[0], p[1], r * 4, 0, 7); g.fill(); g.fillStyle = c; g.beginPath(); g.arc(p[0], p[1], r, 0, 7); g.fill(); };
+    dot(pe, 6, "#4f8cff", "rgba(94,168,255,.6)"); dot(pm, 5, "#ff6b4a", "rgba(255,107,74,.6)"); relays.forEach((r) => dot(r, 4, "#45e0a0", "rgba(69,224,160,.6)"));
+    g.fillStyle = "#93a1b8"; g.font = "12px JetBrains Mono, monospace"; g.fillText("Earth", pe[0] + 10, pe[1] - 8); g.fillText("Mars", pm[0] + 10, pm[1] - 8);
+    relays.forEach((r, i) => g.fillText(i ? "L5" : "L4", r[0] + 8, r[1] - 6));
+    const d = E.rangeM(t), lt = d / E.C, rt = 2 * lt, avail = !blocked || relays.length > 0;
+    $("state").innerHTML = `date <b>J2000 + ${Math.floor(t)} d</b> (${(2000 + t / 365.25).toFixed(2)})<br>range <b>${(d / E.AU).toFixed(3)} au</b><br>one-way light time <b>${human(lt)}</b><br>round trip <b>${human(rt)}</b><br>Sun–Earth–Mars angle <b>${sep.toFixed(1)}°</b><br>direct line of sight ${blocked ? '<b class="bad">blocked (conjunction)</b>' : '<b class="ok">clear</b>'}<br>link available ${avail ? '<b class="ok">yes</b>' : '<b class="bad">no</b>'}${blocked && relays.length ? " (via L4/L5)" : ""}`;
+    if (data) {
+      $("mems").innerHTML = "<b>Memories that outlive this round trip</b> (f₀ = 0.95)<br>" + data.memories.map((m) =>
+        `${m.crossover_s >= rt ? '<span class="ok">✓</span>' : '<span class="bad">✗</span>'} ${m.name} <span style="color:var(--faint)">useful ${human(m.crossover_s)}, eff. ${(100 * m.efficiency).toFixed(1)} %</span>`).join("<br>");
+    }
+    $("date").value = Math.floor(t) % 5840;
+  }
+  function loop(now) { const dt = Math.min(0.05, (now - last) / 1000); last = now; if (playing) t = (t + dt * +$("speed").value) % 5840; draw(dt); requestAnimationFrame(loop); }
+  $("play").onclick = () => { playing = !playing; $("play").textContent = playing ? "❚❚ pause" : "▶ play"; };
+  $("date").oninput = (e) => { t = +e.target.value; };
+  requestAnimationFrame(loop);
+})();
+</script>
+</body>
+</html>

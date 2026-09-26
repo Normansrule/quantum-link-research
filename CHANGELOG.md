@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.30.0 — 2026-09-25 (teleportation explainer, link monitor, interference lab, stack diagram)
+*Includes all of 0.29.0, which was not applied on the owner's machine (the overlay was not in Downloads).*
+- **Teleportation explainer** (`docs/teleport/`): scroll-driven steps with the exact eight-amplitude state (`docs/js/teleport_core.js`, checked against Qiskit to 10⁻¹²), each outcome at probability ¼, Bob's outcome-averaged Bloch vector at zero (no signalling), the bits' flight at the chosen light time, and fidelity 1 after correction. After llm-viz and transformer-explainer; steps driven by GSAP ScrollTrigger.
+- **Link monitor** (`docs/monitor/`): status tiles, a two-synodic-period light-time timeline with blackouts, an event feed, and a fail-closed messenger with finite key storage; with the defaults a conjunction refuses 4 258 messages and the L4/L5 relays refuse none. Buffer rule ported from `qll.app.messenger` and checked against it. After worldmonitor and gods-eye-view.
+- **Interference lab** on the landing page: a WebGL fragment shader sums the two slit waves exactly, pointer sets the relative phase, which-path marking removes the cross term (P06). After WebGL-Fluid-Simulation.
+- **Stack diagram** with animated beams and a **landmark marquee** (after Magic UI's AnimatedBeam and Marquee); an Explore section linking the four interactive pages.
+- README gains a website gallery (screenshots from headless Chromium) and names every inspiring project; CREDITS.md maps each project to the feature it shaped.
+- Fix: `quantum_walk.std` rejects complex input instead of casting it (the owner's run showed two ComplexWarnings from the no-cloning scan).
+
+## 0.29.0 — 2026-09-25 (the front door: website, Mars simulator, README, proposals E11–E15)
+- **Website rebuilt** (`docs/index.html`, `docs/space.css`, `docs/js/`): a three.js hero of the inner Solar System driven by the Kepler ephemeris, with entangled photons from an L4 relay and the classical bits at c, and a live range / light-time / Sun-angle panel; GSAP scroll reveals and number tickers; nine KaTeX equation cards each showing the tested module's output; bento flagships; the memory capability matrix rendered from data; an interactive three.js Bloch sphere. Techniques inspired by react-bits, Magic UI, Animate UI, motion-primitives and others, re-implemented without copying (CREDITS.md). Verified by headless-Chromium screenshots with no console errors.
+- **Mars link simulator** (`docs/mars/`): orbits, conjunction blackout, L4/L5 relays, live light time and round trip, and which memories outlive the current round trip.
+- **One source of truth**: `scripts/build_site_data.py` computes every displayed number from `qll` into `docs/site_data.json` and regenerates the README's answer table; `docs/js/ephemeris.js` is a port of the Python ephemeris that agrees to 10⁻¹⁵; `tests/test_site.py` enforces data freshness, JS/Python agreement, script syntax, local links, and the banner.
+- **README** redesigned around an animated SVG banner (`scripts/make_banner.py`, numbers from the site data), the computed-answer table, five equations, the flagships, a contents grid, and a figure gallery.
+- Proposals E11 (blind computation under latency), E12 (erasure-aware atom repeater), E13 (frequency-multiplexed heralding), E14 (relativistic timing sanity test), E15 (radiation screening).
+
 ## 0.28.0 — 2026-09-25 (decompositions, MBQC, filter functions, walks, Landauer, Wigner)
 - `qll/circuits/decompositions.py`: ZYZ angles reconstruct random unitaries exactly; KAK CNOT counts (0/1/3/3 for I, CNOT, SWAP, generic); one-bit teleportation on a cluster state matches X^m H Rz(φ).
 - `qll/circuits/noise/filter_functions.py`: filter functions for arbitrary pulse sequences (FID and echo closed forms verified), CPMG times, decay exponent against a spectrum (more pulses → more coherence for 1/f noise), passband frequency.

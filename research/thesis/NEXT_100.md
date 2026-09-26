@@ -91,11 +91,11 @@ Grouped by door. Each is one file, one module, one figure, one experiment, or on
 ~~80. done/15: Bluvstein 2024 logical atom processor~~ done in 0.27.0
 
 ## experiments/ — proposals and lessons (81–88)
-81. E11: Delegated (blind) computation under 20-minute latency, batched rounds
-82. E12: Erasure-conversion-aware repeater with neutral-atom nodes
-83. E13: Frequency-multiplexed heralding on the SPDC bench with fiber Bragg gratings
-84. E14: Relativistic timing test with two GPS-disciplined nodes and a fiber link (Sagnac/redshift-scale sanity)
-85. E15: Radiation-hardness screening of NV and SPDC components (gamma source at a university facility)
+~~81. E11: Delegated (blind) computation under 20-minute latency, batched rounds~~ written in 0.29.0
+~~82. E12: Erasure-conversion-aware repeater with neutral-atom nodes~~ written in 0.29.0
+~~83. E13: Frequency-multiplexed heralding on the SPDC bench with fiber Bragg gratings~~ written in 0.29.0
+~~84. E14: Relativistic timing test with two GPS-disciplined nodes and a fiber link (Sagnac/redshift-scale sanity)~~ written in 0.29.0
+~~85. E15: Radiation-hardness screening of NV and SPDC components (gamma source at a university facility)~~ written in 0.29.0
 ~~86. lessons/03: History of over-optimistic timelines (1990s "10 years away")~~ done in 0.27.0
 ~~87. lessons/04: Reproducibility checklist for quantum experiments (data, code, calibration logs)~~ done in 0.27.0
 ~~88. lessons/05: Case study of the QKD hacking–countermeasure cycle~~ done in 0.27.0
