@@ -42,3 +42,4 @@
 - 2026-09-25 0.29.0: website, Mars simulator, README banner and generated numbers, E11-E15.
 - 2026-09-25 0.30.0: teleportation explainer, link monitor, interference lab, stack beams, marquee, README gallery, CREDITS per feature.
 - 2026-09-26 0.31.0: vendored libraries, headless page tests + CI job, README GIFs, social card.
+- 2026-09-26 0.32.0: decoders/threshold, quantum volume, Bloch-Redfield, qLDPC, Clifford group; five learn files.

@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.32.0 — 2026-09-26 (decoders, quantum volume, Bloch–Redfield, qLDPC, Clifford group)
+- `qll/circuits/decoders.py`: circuit-level repetition-code memory in Stim decoded by minimum-weight perfect matching (PyMatching, now pinned in environment.yml); the d = 3, 5, 7 curves cross near p ≈ 0.08 (`decoder_threshold` figure); matching beats undecoded readout fivefold at p = 0.03.
+- `qll/circuits/quantum_volume.py`: heavy-output test in Aer (ideal limit (1 + ln 2)/2; n = 4 passes ideal, fails at 15 % CNOT depolarization).
+- `qll/circuits/bloch_redfield.py`: QuTiP Bloch–Redfield with an ohmic thermal bath reproduces T₁(T) = T₁(0)/(2n̄+1) to 10⁻³, an independent derivation of the Phase 1 thermal law.
+- `qll/circuits/qldpc.py`: hypergraph products with GF(2) ranks; surface codes (13,1), (41,1), (85,1) and the Hamming product (58,16).
+- `qll/circuits/groups.py`: 24 single-qubit and 11 520 two-qubit Cliffords.
+- learn: 01/15 decoders and thresholds, 01/16 quantum volume and benchmarks, 01/17 qLDPC codes, 00/19 open quantum systems, 00/20 group theory (NEXT_100 #12, #20, #22, #25, #30).
+
 ## 0.31.0 — 2026-09-26 (offline site, page tests, README animations, social card)
 - **Vendored libraries** (`docs/vendor/`): three.js 0.186.1 (minified with esbuild), GSAP 3.15.0 with ScrollTrigger, KaTeX 0.18.9 with its fonts, each with its licence; no page loads anything from a CDN (enforced by `tests/test_site.py`).
 - **Headless page tests** (`tests/test_pages_headless.py`, marker `browser`) in Chromium: every page loads with no JavaScript error; the landing page typesets all equations, renders the capability matrix, and ticks the round trip to 44.6 min; the explainer reaches fidelity 1.000000 with a zero outcome-averaged Bloch vector; the monitor refuses messages through the first conjunction without relays and none through the second with them; the simulator reports light time. A new CI job runs them on every push.
