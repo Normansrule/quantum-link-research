@@ -16,7 +16,11 @@ import numpy as np
 
 
 def gf2_rank(M: np.ndarray) -> int:
-    A = (np.asarray(M, dtype=np.uint8) % 2).copy()
+    """Rank over GF(2) of a binary matrix; refuses anything that is not a real 2-D array (a state vector is not a code)."""
+    M = np.asarray(M)
+    if M.ndim != 2 or np.iscomplexobj(M):
+        raise TypeError("gf2_rank expects a real 2-D binary matrix")
+    A = (M.astype(np.uint8) % 2).copy()
     rows, cols = A.shape
     r = 0
     for c in range(cols):

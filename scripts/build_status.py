@@ -17,6 +17,23 @@ def count_md(d: str) -> int:
     return len(list((ROOT / d).rglob("*.md")))
 
 
+def write_badges(status: dict) -> None:
+    """Shields.io endpoint badges (https://shields.io/badges/endpoint-badge), so the README's badges read the same
+    numbers as status.json instead of hand-edited text."""
+    d = ROOT / "docs" / "badges"
+    d.mkdir(exist_ok=True)
+    badges = {
+        "version": ("version", f"v{status['version']}", "0b1224"),
+        "tests": ("tests", f"{status['tests']:,} collected", "2ea44f"),
+        "requirements": ("requirements", f"{status['requirements_verified']}/{status['requirements']} verified", "8A2BE2"),
+        "references": ("references", f"{status['references']:,} cited", "1f6feb"),
+        "learn": ("learn", f"{status['learn_files']} lessons", "ff8a4c"),
+    }
+    for name, (label, message, color) in badges.items():
+        (d / f"{name}.json").write_text(json.dumps({"schemaVersion": 1, "label": label, "message": message, "color": color,
+                                                     "labelColor": "0b1224"}) + "\n")
+
+
 def main() -> None:
     from qll.systems.traceability import load_matrix
     rows = load_matrix()
@@ -39,6 +56,7 @@ def main() -> None:
         "phases_done": 6,
     }
     (ROOT / "docs" / "status.json").write_text(json.dumps(status, indent=1) + "\n")
+    write_badges(status)
     md = ["# Status", "", f"Version {version} · {n_tests} tests · {verified}/{len(rows)} requirements verified · {len(refs)} references ({n_verified_refs} verified) · {status['learn_files']} learn files · {status['simulations']} simulations · {status['figures']} figures", "",
           "| Requirement | Statement | Phase | Status |", "|---|---|---|---|"]
     for r in rows:

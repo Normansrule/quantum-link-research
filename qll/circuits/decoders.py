@@ -15,8 +15,13 @@ import numpy as np
 
 
 def repetition_memory(distance: int, rounds: int, p: float):
+    """Stim's circuit-level repetition-code memory; refuses non-integer sizes and non-real probabilities."""
     import stim
 
+    if not isinstance(distance, (int, np.integer)) or not isinstance(rounds, (int, np.integer)):
+        raise TypeError("distance and rounds must be integers")
+    if isinstance(p, (complex, np.complexfloating)) or not 0.0 <= float(p) <= 1.0:
+        raise ValueError("p must be a real probability in [0, 1]")
     return stim.Circuit.generated("repetition_code:memory", distance=distance, rounds=rounds,
                                   after_clifford_depolarization=p, before_measure_flip_probability=p,
                                   after_reset_flip_probability=p)

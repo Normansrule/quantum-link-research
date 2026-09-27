@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.33.0 — 2026-09-26 (a visual README, tunable couplers, no silent complex casts)
+- **README redesigned around generated, animated images** (`scripts/make_readme_art.py`), every number taken from `docs/site_data.json` and `docs/status.json`: a numbers card with counting tickers and shine borders (after Magic UI NumberTicker/BentoGrid and react-bits), a log-time chart of which memory outlasts which round trip (after llm-viz and transformer-explainer), the `qll` stack with animated beams (Magic UI AnimatedBeam), a marquee of the fifteen landmark experiments (Magic UI Marquee), and the five equations typeset by matplotlib. Animations are SMIL, which GitHub renders; each starts from the finished picture, so static renderers show the true values.
+- Call-to-action buttons, **shields.io endpoint badges** written by `scripts/build_status.py` to `docs/badges/` (version, tests, requirements, references, lessons), a library strip, a two-by-two website gallery with a new **link-monitor recording** (`anim_monitor.gif`, the dashboard through two conjunctions), collapsible detail sections, and a table crediting all twelve inspiring projects. CREDITS.md now says which README image each project shaped.
+- `tests/test_readme_art.py`: the art is valid SVG, shows the tested values in its static frame, marks exactly the Mars-capable memories, has one marquee pill per landmark file, every local README link resolves, and the badges follow the endpoint schema. The art regenerates in the pre-commit hook and in CI.
+- `qll/hardware/tunable_coupler.py`: static ZZ between transmons by exact diagonalisation of coupled Duffing oscillators, the second-order formula held to it (0.2 % at J = 3 MHz), and a qubit–coupler–qubit model whose ZZ vanishes at the idle point ω_c = 5.221 GHz; `zz_coupler` figure; learn 02/22 (NEXT_100 #32).
+- Fix: `gf2_rank` and `repetition_memory` reject complex input (the owner's run showed two ComplexWarnings from the no-cloning scan), and `pyproject.toml` now turns any `ComplexWarning` into a test failure, so this class of bug cannot return silently.
+- `experiments/README.md` diagram said ten landmark experiments; there are fifteen.
+
 ## 0.32.0 — 2026-09-26 (decoders, quantum volume, Bloch–Redfield, qLDPC, Clifford group)
 - `qll/circuits/decoders.py`: circuit-level repetition-code memory in Stim decoded by minimum-weight perfect matching (PyMatching, now pinned in environment.yml); the d = 3, 5, 7 curves cross near p ≈ 0.08 (`decoder_threshold` figure); matching beats undecoded readout fivefold at p = 0.03.
 - `qll/circuits/quantum_volume.py`: heavy-output test in Aer (ideal limit (1 + ln 2)/2; n = 4 passes ideal, fails at 15 % CNOT depolarization).

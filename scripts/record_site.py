@@ -1,6 +1,6 @@
 """Record animated GIFs of the website for the README (GitHub cannot run the pages' JavaScript).
 Needs:  pip install playwright pillow && python -m playwright install chromium
-Usage:  python scripts/record_site.py [anim_mars ...]   # writes docs/figures/anim_*.gif (all four by default)
+Usage:  python scripts/record_site.py [anim_mars ...]   # writes docs/figures/anim_*.gif (all five by default)
 Frames are captured from a local server in headless Chromium, so the animation is the real page, not a mock-up."""
 from __future__ import annotations
 
@@ -21,6 +21,9 @@ SHOTS = {
     "anim_teleport": ("/teleport/", None, None, 0, 0),   # handled specially: one frame per step
     "anim_interference": ("/", "document.documentElement.style.scrollBehavior='auto'; document.querySelector('#slit-canvas').scrollIntoView({block:'center'})",
                           "#slit-canvas", 20, 130),
+    # worldmonitor-style dashboard: two years of light time, blackouts, and the key buffer at 80 days per second
+    "anim_monitor": ("/monitor/", "document.getElementById('speed').value='80'",   # the page auto-plays
+                     None, 28, 150),
 }
 
 

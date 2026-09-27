@@ -27,6 +27,7 @@ The radar is generated from [`modalities.json`](modalities.json); change the sco
 | 19 | [Quantum-dot sources and integrated photonics](19_quantum_dot_sources_and_integrated_photonics.md) | deterministic photons; waveguides, modulators, on-chip analysers |
 | 20 | [Silicon spins in depth](20_silicon_spins_in_depth.md) | valleys, isotopic purification, reflectometry readout, hot operation |
 | 21 | [NV charge state and group-IV centres](21_nv_charge_state_and_group_iv_table.md) | why NV needs a re-pump; SiV/GeV/SnV/PbV compared |
+| 22 | [Tunable couplers and ZZ crosstalk](22_tunable_couplers_and_zz_crosstalk.md) | the always-on ZZ computed exactly; the coupler's idle point at 5.221 GHz |
 | 14 | [Detectors and radiation](14_detectors_and_radiation.md) | SPAD, InGaAs, SNSPD, TES; TID, displacement, single-event effects |
 
 ## How to read the modality files

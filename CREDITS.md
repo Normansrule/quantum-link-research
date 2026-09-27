@@ -18,6 +18,13 @@ The website is plain HTML, CSS, and JavaScript with no build step, so GitHub Pag
 | [worldmonitor](https://github.com/koala73/worldmonitor) (koala73) | see repository | a dashboard of status tiles, timelines, and an event feed | the **link monitor** (`docs/monitor/`) |
 | [Remotion](https://github.com/remotion-dev/remotion) | Remotion licence (company licence above a size threshold) | the idea of rendering the product itself into video for the README; realised instead with Playwright frame capture (`scripts/record_site.py`), which needs no licence review | the animated GIFs in the README |
 
+## README images
+GitHub cannot run a page's JavaScript, so the README moves in two other ways, both generated from the tested code:
+- **Animated SVG** (`scripts/make_readme_art.py`, SMIL animation, which GitHub renders in `<img>`): the numbers card re-implements Magic UI's **NumberTicker** and **BentoGrid** with react-bits-style rotating "shine" borders; the stack diagram re-implements Magic UI's **AnimatedBeam**; the landmark strip re-implements Magic UI's **Marquee**; the memory-versus-round-trip chart follows llm-viz and transformer-explainer in putting the model's real internal numbers on screen. Every animation starts from the finished picture as its static default, so a renderer without animation (or a reader with reduced motion) still sees the true values, and `tests/test_readme_art.py` checks those values against `docs/site_data.json`.
+- **Recorded GIFs** (`scripts/record_site.py`): the landing page, Mars simulator, teleportation explainer, interference lab, and link monitor, captured frame by frame in headless Chromium. This is the Remotion idea (render the product itself into video) done with Playwright; the monitor recording is the worldmonitor-style dashboard running at 80 days per second through two conjunctions.
+- **Typeset equations**: `readme_equations.svg` is drawn by matplotlib's mathtext with glyphs as paths, so it looks the same in every viewer; the LaTeX source stays in the README under a disclosure.
+- **Badges**: `scripts/build_status.py` writes shields.io endpoint JSON to `docs/badges/`, so the test, requirement, and reference counts in the badges are the ones in `docs/status.json`.
+
 ## Libraries used by the website (vendored in `docs/vendor/`, pinned)
 - [three.js](https://threejs.org) 0.186.1 (MIT): the hero scene and the Bloch sphere.
 - [GSAP](https://gsap.com) 3.15.0 with ScrollTrigger: scroll reveals, tickers, and explainer steps.
