@@ -88,3 +88,19 @@ def test_mars_simulator_reports_light_time(browser, server):
     page.wait_for_function("document.getElementById('state').textContent.includes('au')", timeout=30000)
     assert "one-way light time" in page.locator("#state").inner_text()
     assert errors == []
+
+
+def test_coupler_lab_parks_at_zero_zz_and_plays_a_cz(browser, server):
+    page, errors = open_page(browser, server + "/coupler/")
+    page.wait_for_function("document.body.dataset.ready === '1'", timeout=30000)
+    assert float(page.locator("#k-zz").inner_text()) == pytest.approx(86.2, abs=0.5)      # CoupledPair().zz(6.0), in kHz
+    # the idle point (the "park" button glides there with GSAP; set it directly so the test does not depend on frame rate)
+    page.evaluate("const s = document.getElementById('wc'); s.value = window.QLLCoupler.idle_ghz; s.dispatchEvent(new Event('input'))")
+    assert page.locator("#k-zz").inner_text() == "≈ 0"
+    page.evaluate("const s = document.getElementById('tt'); s.value = 1; s.dispatchEvent(new Event('input'))")
+    assert page.locator("#k-phi").inner_text() == "1.00"
+    assert page.locator("#k-fid").inner_text() == "0.99998" and page.locator("#k-leak").inner_text() == "8e-5"
+    page.click("#s-freq")
+    assert page.locator("#k-leak").inner_text().endswith("%")                               # leakage of a few percent
+    assert errors == []
+    page.close()

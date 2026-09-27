@@ -7,6 +7,7 @@
   <a href="https://Normansrule.github.io/quantum-link-research/mars/"><img src="https://img.shields.io/badge/Mars_link_simulator-ff6b4a?style=for-the-badge&logo=threedotjs&logoColor=white" alt="Mars link simulator"></a>
   <a href="https://Normansrule.github.io/quantum-link-research/teleport/"><img src="https://img.shields.io/badge/Teleportation,_step_by_step-a78bfa?style=for-the-badge&logo=qiskit&logoColor=white" alt="Teleportation explainer"></a>
   <a href="https://Normansrule.github.io/quantum-link-research/monitor/"><img src="https://img.shields.io/badge/Link_monitor-5ea8ff?style=for-the-badge" alt="Link monitor"></a>
+  <a href="https://Normansrule.github.io/quantum-link-research/coupler/"><img src="https://img.shields.io/badge/Coupler_lab-ff8a4c?style=for-the-badge" alt="Coupler lab"></a>
   <a href="research/thesis/THESIS_DRAFT.md"><img src="https://img.shields.io/badge/Read_the_thesis-45e0a0?style=for-the-badge" alt="Thesis draft"></a>
 </p>
 
@@ -74,7 +75,7 @@ This is the thesis question in one picture. A stored Bell pair decays toward the
 
 ## The website
 
-Five interactive pages, all driven by the same tested numbers and tested themselves in headless Chromium on every push. The animations are recordings of the real pages ([`scripts/record_site.py`](scripts/record_site.py)); click one to open it.
+Six interactive pages, all driven by the same tested numbers and tested themselves in headless Chromium on every push. The animations are recordings of the real pages ([`scripts/record_site.py`](scripts/record_site.py)); click one to open it.
 
 <table>
 <tr>
@@ -84,6 +85,9 @@ Five interactive pages, all driven by the same tested numbers and tested themsel
 <tr>
 <td width="50%" valign="top"><a href="https://Normansrule.github.io/quantum-link-research/teleport/"><img src="docs/figures/anim_teleport.gif" alt="Teleportation explainer" width="100%"></a><br><b>Teleportation, step by step</b><br><sub>Scroll through the protocol with the exact eight-amplitude state (checked against Qiskit to 10⁻¹²), the no-signalling average, and the bits in flight.</sub></td>
 <td width="50%" valign="top"><a href="https://Normansrule.github.io/quantum-link-research/#interference"><img src="docs/figures/anim_interference.gif" alt="Interference lab" width="100%"></a><br><b>Interference lab</b><br><sub>A WebGL shader sums the two slit waves exactly; which-path information erases the fringes (protocol P06).</sub></td>
+</tr>
+<tr>
+<td colspan="2" valign="top"><a href="https://Normansrule.github.io/quantum-link-research/coupler/"><img src="docs/figures/anim_coupler.gif" alt="Coupler lab: a simulated CZ gate between two transmons" width="100%"></a><br><b>Coupler lab</b> <sup>new</sup><br><sub>Park a tunable coupler at the idle point where the always-on ZZ vanishes, watch the conditional Ramsey fringes that measure it (proposal E16), and play a simulated controlled-Z gate: the flux pulse, the |11⟩–|20⟩ avoided crossing, the population swinging out and back, and the conditional phase reaching π with fidelity 0.99998.</sub></td>
 </tr>
 </table>
 
@@ -129,7 +133,7 @@ Each line is a module in [`qll/`](qll) with a test that checks it against its cl
 
 | | | |
 |---|---|---|
-| 📚 **[Learn](learn/README.md)**<br>foundations, computing core, eight qubit platforms, communication; every file with equations, a figure, references, and exercises | 🧪 **[Experiments](experiments/README.md)**<br>three flagships, eight bench protocols, fifteen landmark experiments with cheap recreations, fifteen proposals, lessons | 🔭 **[Research](research/README.md)**<br>timeline, open problems, fifteen frontier theories, design process, thesis chapters |
+| 📚 **[Learn](learn/README.md)**<br>foundations, computing core, eight qubit platforms, communication; every file with equations, a figure, references, and exercises | 🧪 **[Experiments](experiments/README.md)**<br>three flagships, eight bench protocols, fifteen landmark experiments with cheap recreations, sixteen proposals, lessons | 🔭 **[Research](research/README.md)**<br>timeline, open problems, fifteen frontier theories, design process, thesis chapters |
 | 💻 **[`qll/`](qll)**<br>tested physics from thermal occupation to a fail-closed Mars messenger, with Qiskit Aer, Stim, QuTiP, SeQUeNCe, and Perceval adapters | 🎛️ **[Simulations](simulations/README.md)**<br>eight scripts that predict what each bench must reproduce | 🎓 **[Course](learn/COURSE_SYLLABUS.md)**<br>15 weeks, four machine-graded problem sets |
 | 📈 **[Data](data/README.md)**<br>tested analysis pipelines waiting for the first ODMR (optically detected magnetic resonance) and T₁(T) measurements | 🎬 **[YouTube](youtube/README.md)**<br>verified English videos per topic | 📖 **[References](docs/references.md)**<br>a bibliography that every code citation is checked against |
 
@@ -145,6 +149,9 @@ Every figure is drawn by a function under test; `python scripts/make_figures.py`
 <tr>
 <td width="50%"><img src="docs/figures/decoder_threshold.svg" alt="Surface-code decoder threshold with Stim and PyMatching" width="100%"></td>
 <td width="50%"><img src="docs/figures/zz_coupler.svg" alt="Static ZZ versus tunable-coupler frequency" width="100%"></td>
+</tr>
+<tr>
+<td colspan="2"><img src="docs/figures/cz_pulse.svg" alt="A simulated CZ gate: flux pulse shapes, populations, and conditional phase" width="100%"></td>
 </tr>
 </table>
 
@@ -167,6 +174,9 @@ Every figure is drawn by a function under test; `python scripts/make_figures.py`
 <tr>
 <td width="50%"><img src="docs/figures/repeater_generations.svg" alt="Repeater generations" width="100%"></td>
 <td width="50%"><img src="docs/figures/mars_light_time_cycle.svg" alt="Mars light-time cycle" width="100%"></td>
+</tr>
+<tr>
+<td colspan="2"><img src="docs/figures/zz_ramsey.svg" alt="Conditional Ramsey fringes and the recovered ZZ" width="100%"></td>
 </tr>
 </table>
 
@@ -224,7 +234,7 @@ The website and these README images re-implement ideas from twelve open-source p
 | [**Magic UI**](https://github.com/magicuidesign/magicui) | number tickers and bento grid (the numbers card above), AnimatedBeam (the stack diagram), Marquee (the landmark strip) |
 | [**react-bits**](https://github.com/DavidHDev/react-bits) | gradient text, blur-in reveals, and spotlight cards on the website; the rotating "shine" borders on the README cards |
 | [**Animate UI**](https://animate-ui.com/) · [**motion-primitives**](https://github.com/ibelick/motion-primitives) | staggered entrances and easing curves; restrained glass panels |
-| [**llm-viz**](https://github.com/bbycroft/llm-viz) · [**transformer-explainer**](https://github.com/poloclub/transformer-explainer) | step-through explainers that show the real internal state: the teleportation page and the memory-versus-round-trip chart |
+| [**llm-viz**](https://github.com/bbycroft/llm-viz) · [**transformer-explainer**](https://github.com/poloclub/transformer-explainer) | step-through explainers that show the real internal state: the teleportation page, the coupler lab's CZ player, and the memory-versus-round-trip chart |
 | [**WebGL-Fluid-Simulation**](https://github.com/PavelDoGreat/WebGL-Fluid-Simulation) | a full-canvas fragment shader driven by the pointer: the interference lab |
 | [**folio-2019**](https://github.com/brunosimon/folio-2019) | the landing page as a 3-D scene to explore: the three.js Solar System |
 | [**gods-eye-view**](https://github.com/bilawalsidhu/gods-eye-view) · [**worldmonitor**](https://github.com/koala73/worldmonitor) | a live situation view and a dashboard of tiles, timelines, and an event feed: the hero's live strip and the link monitor |

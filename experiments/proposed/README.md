@@ -19,3 +19,4 @@ Each proposal answers the same five questions: the gap in the literature, the ch
 | [E13](E13_frequency_multiplexed_heralding.md) | Frequency-multiplexed heralding on the SPDC bench | bench |
 | [E14](E14_relativistic_timing_sanity_test.md) | Relativistic timing sanity test with two GPS-disciplined nodes | bench |
 | [E15](E15_radiation_screening.md) | Radiation screening of diamond, crystal, detectors | bench + facility |
+| [E16](E16_zz_crosstalk_on_a_cloud_processor.md) | ZZ crosstalk measured on a free cloud quantum processor | software + cloud |

@@ -11,6 +11,48 @@ import numpy as np
 ROOT = Path(__file__).resolve().parents[1]
 
 
+def coupler_data() -> dict:
+    """Curves and trajectories for the coupler lab page (docs/coupler/), all from the tested hardware models."""
+    from dataclasses import replace
+
+    from qll.hardware.cz_gate import FREQUENCY_SHAPED_FLAT_NS, CZPulse, _hamiltonian
+    from qll.hardware.tunable_coupler import CoupledPair, static_zz_exact
+
+    pair = CoupledPair()
+    idle = pair.zz_free_frequency(5.0, 5.5)
+    wc = np.unique(np.concatenate([np.linspace(4.60, 7.60, 151), np.linspace(5.10, 5.70, 121), [idle]]))   # dense near the zeros
+    good = CZPulse()
+    pulses = {"angle": good, "frequency": replace(good, shape="frequency", t_flat=FREQUENCY_SHAPED_FLAT_NS)}
+    cz = {}
+    for name, p in pulses.items():
+        ts, p11, p20 = p.populations_from_11(dt=0.02, every=10)
+        zeta = np.array([static_zz_exact(float(w), p.w2, p.alpha, p.alpha, p.g, levels=3) for w in p.w1(ts)])
+        phase = -2 * np.pi * np.concatenate([[0.0], np.cumsum(0.5 * (zeta[1:] + zeta[:-1]) * np.diff(ts))])
+        cz[name] = {"t_ns": ts.round(4).tolist(), "w1_ghz": p.w1(ts).round(6).tolist(), "p11": p11.round(5).tolist(),
+                    "p20": p20.round(5).tolist(), "phase_rad": phase.round(5).tolist(), "zz_mhz": (1e3 * zeta).round(4).tolist(),
+                    "duration_ns": p.duration, "leakage": p.leakage(0.02), "fidelity": p.average_fidelity(0.02),
+                    "conditional_phase_rad": float(np.mod(p.conditional_phase(0.02), 2 * np.pi))}
+    # the two levels of the {|11>, |20>} pair as qubit 1 is tuned: bare (they cross) and dressed (they avoid)
+    w1 = np.linspace(5.05, 6.05, 121)
+    lo, hi = [], []
+    for w in w1:
+        E, V = np.linalg.eigh(_hamiltonian(float(w), good.w2, good.alpha, good.g))
+        weight = V[4, :] ** 2 + V[6, :] ** 2                      # rows 4, 6 = bare |11>, |20>
+        pair_e = np.sort(E[np.argsort(weight)[-2:]]) - (w + good.w2)
+        lo.append(pair_e[0]); hi.append(pair_e[1])
+    return {
+        "wc_ghz": [round(float(x), 6) for x in wc], "zz_khz": [round(1e6 * pair.zz(float(w)), 4) for w in wc],
+        "geff_mhz": [round(1e3 * pair.effective_coupling(float(w)), 4) for w in wc],
+        "idle_ghz": idle,
+        "pair": {"w1": pair.w1, "w2": pair.w2, "alpha": pair.alpha, "g1c": pair.g1c, "g2c": pair.g2c, "g12": pair.g12},
+        "cz": cz, "gate": {"w2": good.w2, "alpha": good.alpha, "g": good.g, "w1_idle": good.w1_idle, "w1_int": good.w1_int},
+        "levels": {"w1_ghz": w1.round(4).tolist(), "lower_mhz": (1e3 * np.array(lo)).round(3).tolist(),
+                   "upper_mhz": (1e3 * np.array(hi)).round(3).tolist(),
+                   "bare20_mhz": (1e3 * (w1 - good.w2 + good.alpha)).round(3).tolist()},
+        "ramsey": {"detuning_mhz": 0.5, "t2_us": 40.0},
+    }
+
+
 def compute_data() -> dict:
     from qll.app.messenger import required_buffer_bytes
     from qll.channels.fiber_loss import attenuation_length_km
@@ -64,6 +106,11 @@ def compute_data() -> dict:
         "au_m": AU_METERS,
         "ephemeris_check": {"t_days": sample_t, "range_m": [float(earth_mars_range_m(t)) for t in sample_t]},
     }
+    cp = coupler_data()
+    data["coupler"] = cp
+    data["headline"].update({"zz_idle_ghz": cp["idle_ghz"], "cz_duration_ns": cp["cz"]["angle"]["duration_ns"],
+                             "cz_fidelity": cp["cz"]["angle"]["fidelity"], "cz_leakage": cp["cz"]["angle"]["leakage"],
+                             "cz_leakage_frequency_shaped": cp["cz"]["frequency"]["leakage"]})
     return data
 
 

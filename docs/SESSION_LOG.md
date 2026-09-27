@@ -44,3 +44,4 @@
 - 2026-09-26 0.31.0: vendored libraries, headless page tests + CI job, README GIFs, social card.
 - 2026-09-26 0.32.0: decoders/threshold, quantum volume, Bloch-Redfield, qLDPC, Clifford group; five learn files.
 - 2026-09-26 0.33.0: visual README (animated SVG tickers, timescales, beams, marquee, typeset equations, endpoint badges, monitor GIF), tunable coupler and ZZ, ComplexWarning guard.
+- 2026-09-26 0.34.0: simulated CZ gate (leakage 8e-5, F 0.99998), conditional-Ramsey ZZ experiment + E16, coupler lab page, smaller GIFs.

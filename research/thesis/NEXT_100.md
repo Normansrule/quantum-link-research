@@ -36,7 +36,7 @@ Grouped by door. Each is one file, one module, one figure, one experiment, or on
 
 ## learn/ — modalities and engineering (31–50)
 ~~31. Fluxonium in depth: circuit, spectrum, why it may replace the transmon~~ done in 0.22.0
-~~32. Tunable couplers and the CZ gate on Google-class hardware~~ ZZ and the idle point computed in 0.33.0 (a CZ pulse figure remains)
+~~32. Tunable couplers and the CZ gate on Google-class hardware~~ ZZ and the idle point (0.33.0); a simulated CZ gate and the ZZ Ramsey experiment E16 (0.34.0)
 33. Cross-resonance gate (IBM) derivation
 ~~34. Readout physics: dispersive shift derivation, JPA/TWPA, single-shot fidelity budget~~ done in 0.22.0
 ~~35. Silicon spin: valley physics, micromagnets, gate-based reflectometry readout~~ done in 0.26.0

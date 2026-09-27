@@ -8,7 +8,7 @@ Everything here involves hardware, a budget, a procedure, or a proposal. Theory 
 flowchart LR
   B["bench/<br/>parts, vendors, budget tiers"] --> P["protocols/<br/>step-by-step procedures with safety and checklists"]
   P --> D["done/<br/>15 landmark experiments, each with a cheap recreation"]
-  D --> X["proposed/<br/>E1–E10: what nobody has run yet"]
+  D --> X["proposed/<br/>E1–E16: what nobody has run yet"]
   L["lessons/<br/>what failed, what scaled"] -.-> X
   X --> R["../research/thesis/BACKLOG.md — pick a task"]
 ```
@@ -19,7 +19,7 @@ flowchart LR
 | [`bench/`](bench/hardware_guide.md) | the hardware guide and the [P01 bill of materials](bench/P01_bill_of_materials.md): every part with a vendor link, three budget tiers ($500 weekend, $5–15k semester, turnkey), step-by-step accounts of how the NV and satellite experiments were run | [`bench/hardware_guide.md`](bench/hardware_guide.md) §5 |
 | [`protocols/`](protocols/README.md) | lab procedures you can follow line by line: ODMR on a $100 bench, pulsed NV control, SPDC Bell test, rooftop free-space link | [`protocols/P01_odmr_nv_bench.md`](protocols/P01_odmr_nv_bench.md) |
 | [`done/`](done/README.md) | ten experiments that made the field, each with Original · Physics · Simple recreation · What went wrong · Repo hook | [`done/04_odmr_nv.md`](done/04_odmr_nv.md) |
-| [`proposed/`](proposed/README.md) | E1–E10, each with gap · cheapest version · research version · requirement verified | [`proposed/E01…`](proposed/E01_delayed_classical_channel_teleportation.md) |
+| [`proposed/`](proposed/README.md) | E1–E16, each with gap · cheapest version · research version · requirement verified | [`proposed/E01…`](proposed/E01_delayed_classical_channel_teleportation.md) |
 | [`lessons/`](lessons/01_contested_claims.md) | contested and retracted claims; what scaled and why; timelines that slipped; a reproducibility checklist; the QKD hacking cycle | [`lessons/02_what_scaled_and_why.md`](lessons/02_what_scaled_and_why.md) |
 
 ## The recommended order on a student budget

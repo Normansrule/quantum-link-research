@@ -1,6 +1,6 @@
 """Record animated GIFs of the website for the README (GitHub cannot run the pages' JavaScript).
 Needs:  pip install playwright pillow && python -m playwright install chromium
-Usage:  python scripts/record_site.py [anim_mars ...]   # writes docs/figures/anim_*.gif (all five by default)
+Usage:  python scripts/record_site.py [anim_mars ...]   # writes docs/figures/anim_*.gif (all six by default)
 Frames are captured from a local server in headless Chromium, so the animation is the real page, not a mock-up."""
 from __future__ import annotations
 
@@ -24,6 +24,8 @@ SHOTS = {
     # worldmonitor-style dashboard: two years of light time, blackouts, and the key buffer at 80 days per second
     "anim_monitor": ("/monitor/", "document.getElementById('speed').value='80'",   # the page auto-plays
                      None, 28, 150),
+    # the coupler lab's CZ player, scrubbed frame by frame so the recording does not depend on the frame rate
+    "anim_coupler": ("/coupler/", None, "#cz", 36, 110),
 }
 
 
@@ -40,15 +42,31 @@ def serve():
 
 def save_gif(frames, path, ms, width=640):
     from PIL import Image
+    import numpy as np
     rgb = []
     for f in frames:
         f.seek(0)
         im = Image.open(f).convert("RGB")
         rgb.append(im.resize((width, round(im.height * width / im.width)), Image.LANCZOS))
-    # one shared palette for every frame, so unchanged pixels stay identical and Pillow stores only the changed box
-    pal = rgb[len(rgb) // 2].quantize(colors=96, method=Image.Quantize.MEDIANCUT)
-    ims = [im.quantize(palette=pal, dither=Image.Dither.NONE) for im in rgb]
-    ims[0].save(path, save_all=True, append_images=ims[1:], duration=ms, loop=0, optimize=True, disposal=2)
+    # one shared palette for every frame, so unchanged pixels stay identical; then every pixel that did not change since
+    # the previous frame is written as a transparent index, which LZW compresses to almost nothing
+    # palette from first, middle, and last frames together, by octree, so small saturated curves keep their colour
+    sheet = Image.new("RGB", (rgb[0].width, 3 * rgb[0].height))
+    for j, im in enumerate((rgb[0], rgb[len(rgb) // 2], rgb[-1])):
+        sheet.paste(im, (0, j * rgb[0].height))
+    pal = sheet.quantize(colors=160, method=Image.Quantize.FASTOCTREE)
+    idx = [np.array(im.quantize(palette=pal, dither=Image.Dither.NONE)) for im in rgb]
+    TRANSPARENT = 255
+    ims = []
+    for k, a in enumerate(idx):
+        b = a.copy()
+        if k:
+            b[a == idx[k - 1]] = TRANSPARENT
+        im = Image.fromarray(b.astype(np.uint8), mode="P")
+        im.putpalette(pal.getpalette())
+        ims.append(im)
+    ims[0].save(path, save_all=True, append_images=ims[1:], duration=ms, loop=0, disposal=1, transparency=TRANSPARENT,
+                optimize=False)
     print(f"wrote {path.relative_to(ROOT)}  {path.stat().st_size / 1e6:.2f} MB")
 
 
@@ -79,6 +97,17 @@ def main() -> None:
                     page.wait_for_timeout(1400 if k != 4 else 4300)
                     frames += [io.BytesIO(page.screenshot(timeout=120000))] * 4
                 save_gif(frames, OUT / f"{name}.gif", 400)
+                page.close(); continue
+            if name == "anim_coupler":
+                page.add_style_tag(content=".p::before{animation:none!important}.aurora{animation:none!important}")   # static borders: a smaller GIF
+                page.evaluate("document.documentElement.style.scrollBehavior='auto'; window.scrollTo(0, document.querySelector('#cz').offsetTop - 70)")
+                page.wait_for_timeout(800)
+                for k in range(n):
+                    page.evaluate(f"const s = document.getElementById('tt'); s.value = {k / (n - 1)}; s.dispatchEvent(new Event('input'))")
+                    page.wait_for_timeout(60)
+                    frames.append(io.BytesIO(page.locator(clip).screenshot(timeout=120000)))
+                frames += [frames[-1]] * 8                                   # hold on the finished gate
+                save_gif(frames, OUT / f"{name}.gif", ms)
                 page.close(); continue
             if js:
                 page.evaluate(js); page.wait_for_timeout(1200)

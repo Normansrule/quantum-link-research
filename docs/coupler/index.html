@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Coupler lab · Quantum Link Research</title>
+<meta name="description" content="Switch the always-on ZZ interaction between two superconducting qubits off with a tunable coupler, measure it with a Ramsey experiment, and watch a simulated CZ gate use it.">
+<meta property="og:title" content="Coupler lab · Quantum Link Research">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://normansrule.github.io/quantum-link-research/coupler/">
+<meta property="og:image" content="https://normansrule.github.io/quantum-link-research/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://normansrule.github.io/quantum-link-research/og.png">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧲</text></svg>">
+<link rel="stylesheet" href="../space.css">
+<style>
+  .lab { max-width: 1320px; margin: 0 auto; padding: 5.4rem 3vw 2rem }
+  .intro { max-width: 900px; margin: 0 0 1.4rem }
+  .intro h1 { font-size: clamp(1.9rem, 3.6vw, 3rem); line-height: 1.08; margin: .5rem 0 .7rem; letter-spacing: -.02em }
+  .grid { display: grid; gap: 1rem; grid-template-columns: repeat(12, 1fr); margin-bottom: 1rem }
+  .grid > * { min-width: 0 }
+  .p { border: 1px solid var(--line); border-radius: 16px; background: var(--glass); padding: .95rem 1.05rem; position: relative; overflow: hidden }
+  .p::before { content: ""; position: absolute; inset: -1px; border-radius: 16px; padding: 1px; pointer-events: none; opacity: .55;
+    background: conic-gradient(from var(--a, 0deg), transparent 0 70%, rgba(94,242,224,.9) 80%, rgba(167,139,250,.9) 88%, transparent 96%);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude;
+    animation: spin 7s linear infinite }
+  @property --a { syntax: "<angle>"; initial-value: 0deg; inherits: false }
+  @keyframes spin { to { --a: 360deg } }
+  .p h4 { margin: 0 0 .55rem; font-size: .74rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); font-weight: 700 }
+  .w8 { grid-column: span 8 } .w4 { grid-column: span 4 } .w6 { grid-column: span 6 } .w12 { grid-column: span 12 }
+  @media (max-width: 1000px) { .w8, .w4, .w6 { grid-column: span 12 } }
+  canvas.chart { width: 100%; height: 250px; display: block }
+  canvas.small { height: 200px }
+  .kpis { display: grid; grid-template-columns: 1fr 1fr; gap: .7rem }
+  .k { border: 1px solid var(--line); border-radius: 12px; padding: .6rem .7rem; background: rgba(10,15,28,.55) }
+  .k .v { font: 700 1.45rem/1.15 "JetBrains Mono", monospace; font-variant-numeric: tabular-nums }
+  .k .u { font-size: .8rem; color: var(--muted); margin-left: .2rem } .k .s { font-size: .74rem; color: var(--faint) }
+  .ctrl { margin: .8rem 0 .2rem } .ctrl input[type=range] { width: 100% }
+  .row { display: flex; gap: .5rem; flex-wrap: wrap; align-items: center }
+  .lab button { font: 600 .86rem/1 "JetBrains Mono", ui-monospace, monospace; padding: .55rem .8rem; border-radius: 10px; border: 1px solid var(--line); background: var(--bg2); color: var(--ink); cursor: pointer; transition: box-shadow .2s, border-color .2s }
+  .lab button:hover { border-color: var(--cyan); box-shadow: 0 0 16px rgba(94,242,224,.25) }
+  .seg button.on { border-color: var(--cyan); box-shadow: 0 0 14px rgba(94,242,224,.3) }
+  .pbars { display: grid; gap: .7rem; margin-top: .4rem }
+  .pbar { font: .8rem/1.4 "JetBrains Mono", monospace; color: var(--muted) }
+  .pbar .track { height: 12px; border-radius: 6px; background: rgba(148,170,210,.12); overflow: hidden; margin-top: .3rem }
+  .pbar .fill { height: 100%; width: 0; border-radius: 6px; transition: width .05s linear }
+  .dial { display: grid; place-items: center }
+  .note { color: var(--muted); font-size: .88rem; margin: .5rem 0 0 }
+  .ok { color: var(--green) } .bad { color: var(--mars) } .warm { color: var(--warm) } .cyan { color: var(--cyan) }
+</style>
+</head>
+<body>
+<div class="aurora"></div>
+<header class="top">
+  <a class="brand" href="../"><span class="dot"></span>Quantum Link Research</a>
+  <nav><a href="../mars/">Mars simulator</a><a href="../teleport/">Teleportation explainer</a><a href="../monitor/">Link monitor</a><a class="gh" href="https://github.com/Normansrule/quantum-link-research">GitHub ↗</a></nav>
+</header>
+<main class="lab">
+  <div class="intro">
+    <div class="kicker">Coupler lab · learn 02/22 · proposal E16</div>
+    <h1>Switch an interaction <span class="gradient-text">off</span>. Then use it for a gate.</h1>
+    <p class="sub" style="margin:0">Two superconducting qubits never fully stop talking: a residual <b>ZZ</b> makes one qubit's frequency depend on the other's state. A tunable coupler cancels it at one frequency, the <i>idle point</i>; a flux pulse turns it up for a controlled-Z (CZ) gate. Every curve here is computed by the tested Python models (<code>qll/hardware/tunable_coupler.py</code>, <code>cz_gate.py</code>, <code>qll/circuits/zz_ramsey.py</code>) and written to <code>site_data.json</code>.</p>
+  </div>
+
+  <section class="grid" id="zz">
+    <div class="p w8"><h4>|static ZZ| vs coupler frequency · exact diagonalisation of qubit–coupler–qubit</h4><canvas class="chart" id="c-zz"></canvas>
+      <div class="ctrl"><input type="range" id="wc" min="4.6" max="7.6" step="any" value="6.0" aria-label="coupler frequency"></div>
+      <div class="row"><button id="park">⏚ park at idle point</button><button id="near">⇢ near the qubits (4.8 GHz)</button><button id="far">⇠ far away (7.2 GHz)</button></div>
+    </div>
+    <div class="p w4"><h4>at this coupler frequency</h4>
+      <div class="kpis">
+        <div class="k"><div class="s">coupler ω<sub>c</sub>/2π</div><div class="v"><span id="k-wc">—</span><span class="u">GHz</span></div></div>
+        <div class="k"><div class="s">static ZZ</div><div class="v"><span id="k-zz">—</span><span class="u">kHz</span></div></div>
+        <div class="k"><div class="s">effective coupling</div><div class="v"><span id="k-g">—</span><span class="u">MHz</span></div></div>
+        <div class="k"><div class="s">idle phase error per µs</div><div class="v"><span id="k-ph">—</span><span class="u">°</span></div></div>
+      </div>
+      <p class="note">Idle point from the model: <b class="cyan" id="k-idle">—</b> GHz. Qubits at <span id="k-q">—</span>, α = −200 MHz, g<sub>qc</sub> = 100 MHz.</p>
+    </div>
+    <div class="p w12"><h4>conditional Ramsey on qubit 0 · neighbour in |0⟩ (blue) and |1⟩ (red) · the fringe frequencies differ by exactly ZZ</h4><canvas class="chart small" id="c-ram"></canvas>
+      <p class="note">P₁(τ) = ½ − ½e<sup>−τ/T₂</sup>cos(2πf<sub>s</sub>τ), with f<sub>0</sub> = δ + ZZ/2 and f<sub>1</sub> = δ − ZZ/2 (virtual detuning δ = 0.5 MHz, T₂ = 40 µs). <span id="k-ram"></span> This is experiment <a href="https://github.com/Normansrule/quantum-link-research/blob/main/experiments/proposed/E16_zz_crosstalk_on_a_cloud_processor.md">E16</a>: the same circuits run on a free cloud processor.</p>
+    </div>
+  </section>
+
+  <section class="grid" id="cz">
+    <div class="p w12"><h4>a CZ gate, simulated with three levels per transmon · qubit 1 tuned from 6.00 to 5.25 GHz and back</h4>
+      <div class="row">
+        <button id="play">▶ play the gate</button>
+        <span class="seg row"><button id="s-angle" class="on">shaped in mixing angle</button><button id="s-freq">shaped in frequency</button></span>
+        <input type="range" id="tt" min="0" max="1" step="0.001" value="0" style="flex:1;min-width:220px" aria-label="time">
+        <span class="mono" id="k-t" style="min-width:8ch;text-align:right">0.0 ns</span>
+      </div>
+    </div>
+    <div class="p w4"><h4>flux pulse ω₁(t)</h4><canvas class="chart small" id="c-pulse"></canvas></div>
+    <div class="p w4"><h4>|11⟩ and |20⟩ levels · they avoid each other by 2√2 g</h4><canvas class="chart small" id="c-lev"></canvas></div>
+    <div class="p w4"><h4>where the |11⟩ population is</h4>
+      <div class="pbars">
+        <div class="pbar">bare |11⟩ <b id="b11">—</b><div class="track"><div class="fill" id="f11" style="background:linear-gradient(90deg,#22d3ee,#45e0a0)"></div></div></div>
+        <div class="pbar">bare |20⟩ (hybridization while the pulse is on) <b id="b20">—</b><div class="track"><div class="fill" id="f20" style="background:linear-gradient(90deg,#ff8a4c,#ff6b4a)"></div></div></div>
+      </div>
+      <div class="kpis" style="margin-top:.8rem">
+        <div class="k"><div class="s">left in |20⟩ afterwards</div><div class="v" id="k-leak">—</div></div>
+        <div class="k"><div class="s">CZ gate fidelity</div><div class="v" id="k-fid">—</div></div>
+      </div>
+    </div>
+    <div class="p w6"><h4>conditional phase · the running value is −2π∫ZZ dt, the final one the full simulation · a CZ needs π</h4>
+      <div class="row" style="align-items:center;gap:1.2rem">
+        <svg class="dial" id="dial" viewBox="-110 -110 220 220" width="190" height="190" aria-label="conditional phase dial">
+          <circle r="92" fill="none" stroke="rgba(148,170,210,.2)" stroke-width="10"/>
+          <path id="arc" fill="none" stroke="url(#dg)" stroke-width="10" stroke-linecap="round" d=""/>
+          <defs><linearGradient id="dg" x1="0" x2="1"><stop offset="0" stop-color="#5ea8ff"/><stop offset="1" stop-color="#45e0a0"/></linearGradient></defs>
+          <line x1="-100" y1="0" x2="-80" y2="0" stroke="#45e0a0" stroke-width="2"/><text x="-104" y="-8" fill="#45e0a0" font-size="12" text-anchor="middle">π</text>
+          <line id="needle" x1="0" y1="0" x2="80" y2="0" stroke="#e8eef8" stroke-width="3" stroke-linecap="round"/><circle r="5" fill="#e8eef8"/>
+        </svg>
+        <div><div class="v mono" style="font-size:2.2rem;font-weight:800"><span id="k-phi">0.00</span> π</div>
+          <p class="note">ZZ right now: <b id="k-zznow">—</b> MHz. Near the crossing it is about 11 MHz, so π takes a few tens of nanoseconds; with qubit 1 back at 6.00 GHz it falls to a few hundred kHz, which a tunable coupler parked at its idle point (above) would remove. Single-qubit phases are removed in software.</p></div>
+      </div>
+    </div>
+    <div class="p w6"><h4>why the shape matters</h4>
+      <p class="note" style="margin-top:0">Shaped smoothly in the |11⟩–|20⟩ mixing angle (after Martinis and Geller), the pulse slows down exactly where the two levels are closest, and the population swinging into |20⟩ all comes back: <b class="ok" id="k-good">—</b> left behind. With the same 15 ns ramps shaped linearly in frequency and recalibrated to π, <b class="bad" id="k-bad">—</b> is stranded in |20⟩: leakage, the error that fast adiabatic pulses are designed to avoid.</p>
+      <p class="note">Hybridization is not leakage: at the interaction point the dressed |11⟩ is 17 % bare |20⟩, and the bar returns to zero when the pulse ends. What counts is what is left at the end. Idealized: coherent evolution only, no T₁ or T₂.</p>
+    </div>
+  </section>
+</main>
+<footer>Coupler lab. Physics from <code>qll/hardware/tunable_coupler.py</code>, <code>qll/hardware/cz_gate.py</code>, and <code>qll/circuits/zz_ramsey.py</code>, tested against exact diagonalisation, the adiabatic limit, and injected ZZ. Design after Magic UI (number tickers, animated borders), react-bits (glow cards), and llm-viz / transformer-explainer (step through the real internal state); animation with GSAP. See <a href="https://github.com/Normansrule/quantum-link-research/blob/main/CREDITS.md">CREDITS.md</a>.</footer>
+<script src="../vendor/gsap/gsap.min.js"></script>
+<script>
+(async function () {
+  document.documentElement.classList.remove("no-js");
+  const $ = (id) => document.getElementById(id);
+  const D = (await (await fetch("../site_data.json")).json()).coupler;
+  window.QLLCoupler = D;
+  const lerp = (xs, ys, x) => { if (x <= xs[0]) return ys[0]; const n = xs.length - 1; if (x >= xs[n]) return ys[n];
+    let lo = 0, hi = n; while (hi - lo > 1) { const m = (lo + hi) >> 1; if (xs[m] <= x) lo = m; else hi = m; }
+    const f = (x - xs[lo]) / (xs[hi] - xs[lo]); return ys[lo] + f * (ys[hi] - ys[lo]); };
+  function ctx(cv) { const g = cv.getContext("2d"), dpr = Math.min(devicePixelRatio || 1, 2), W = cv.clientWidth, H = cv.clientHeight;
+    if (cv.width !== Math.round(W * dpr)) { cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); }
+    g.setTransform(dpr, 0, 0, dpr, 0, 0); g.clearRect(0, 0, W, H); return [g, W, H]; }
+  function axes(g, W, H, X, Y, xt, yt, fx, fy) {
+    g.strokeStyle = "rgba(148,170,210,.13)"; g.fillStyle = "#5b6780"; g.font = "11px JetBrains Mono, monospace"; g.lineWidth = 1;
+    yt.forEach((y) => { g.beginPath(); g.moveTo(X.lo, Y(y)); g.lineTo(W - 8, Y(y)); g.stroke(); g.fillText(fy(y), 2, Y(y) + 4); });
+    xt.forEach((x) => { g.fillText(fx(x), X(x) - 14, H - 4); });
+  }
+  function line(g, X, Y, xs, ys, style, w, dash) { g.strokeStyle = style; g.lineWidth = w || 2; g.setLineDash(dash || []); g.beginPath();
+    xs.forEach((x, i) => (i ? g.lineTo(X(x), Y(ys[i])) : g.moveTo(X(x), Y(ys[i])))); g.stroke(); g.setLineDash([]); }
+  const grad = (g, W, a, b) => { const q = g.createLinearGradient(0, 0, W, 0); q.addColorStop(0, a); q.addColorStop(1, b); return q; };
+
+  // ---------------- ZZ vs coupler frequency, and the Ramsey fringes ----------------
+  const wcS = $("wc"), P = D.pair;
+  $("k-idle").textContent = D.idle_ghz.toFixed(3); $("k-q").textContent = `${P.w1.toFixed(2)} and ${P.w2.toFixed(2)} GHz`;
+  const zzAt = (w) => lerp(D.wc_ghz, D.zz_khz, w), gAt = (w) => lerp(D.wc_ghz, D.geff_mhz, w);
+  function drawZZ() {
+    const w = +wcS.value, [g, W, H] = ctx($("c-zz")), pad = 50;
+    const X = (x) => pad + (W - pad - 10) * (x - 4.6) / 3.0; X.lo = pad;
+    const L = (v) => Math.log10(Math.max(Math.abs(v), 1e-2)), Y = (v) => H - 20 - (H - 32) * (L(v) + 2) / 5.2;
+    axes(g, W, H, X, (y) => Y(y), [5, 5.5, 6, 6.5, 7, 7.5], [0.01, 0.1, 1, 10, 100, 1000], (x) => x.toFixed(1) + " GHz", (y) => (y >= 1 ? y.toFixed(0) : y) + "");
+    g.strokeStyle = "rgba(69,224,160,.8)"; g.setLineDash([5, 5]); g.beginPath(); g.moveTo(X(D.idle_ghz), 8); g.lineTo(X(D.idle_ghz), H - 20); g.stroke(); g.setLineDash([]);
+    g.fillStyle = "#45e0a0"; g.fillText("idle point", X(D.idle_ghz) + 6, 20);
+    line(g, X, Y, D.wc_ghz, D.zz_khz, grad(g, W, "#5ea8ff", "#a78bfa"), 2.4);
+    const z = zzAt(w); g.fillStyle = "#e8fffb"; g.shadowColor = "#5ef2e0"; g.shadowBlur = 14; g.beginPath(); g.arc(X(w), Y(z), 6, 0, 7); g.fill(); g.shadowBlur = 0;
+    g.fillStyle = "#93a1b8"; g.fillText("|ZZ| (kHz, log)", pad + 4, 18);
+    $("k-wc").textContent = w.toFixed(3); $("k-zz").textContent = (Math.abs(z) < 0.05 ? "≈ 0" : z.toFixed(z < 10 && z > -10 ? 2 : 0));
+    $("k-g").textContent = gAt(w).toFixed(2); $("k-ph").textContent = (360 * Math.abs(z) * 1e3 * 1e-6).toFixed(Math.abs(z) < 1 ? 3 : 1);
+    drawRamsey(z / 1e3);
+  }
+  function drawRamsey(zzMHz) {
+    const [g, W, H] = ctx($("c-ram")), pad = 40, T = 12, d = D.ramsey.detuning_mhz, T2 = D.ramsey.t2_us;
+    const X = (x) => pad + (W - pad - 10) * x / T; X.lo = pad; const Y = (y) => H - 20 - (H - 30) * y;
+    axes(g, W, H, X, Y, [0, 2, 4, 6, 8, 10, 12], [0, 0.5, 1], (x) => x + " µs", (y) => y.toFixed(1));
+    const ts = Array.from({ length: 600 }, (_, i) => T * i / 599);
+    [[0, "#5ea8ff", d + zzMHz / 2], [1, "#ff6b4a", d - zzMHz / 2]].forEach(([s, c, f]) =>
+      line(g, X, Y, ts, ts.map((t) => 0.5 - 0.5 * Math.exp(-t / T2) * Math.cos(2 * Math.PI * f * t)), c, 1.8));
+    $("k-ram").innerHTML = `Here f<sub>0</sub> = ${(1e3 * (d + zzMHz / 2)).toFixed(1)} kHz and f<sub>1</sub> = ${(1e3 * (d - zzMHz / 2)).toFixed(1)} kHz.`;
+  }
+  wcS.addEventListener("input", drawZZ);
+  const glide = (to) => { const o = { w: +wcS.value }; gsap.to(o, { w: to, duration: 1.4, ease: "power3.inOut", onUpdate: () => { wcS.value = o.w; drawZZ(); } }); };
+  $("park").onclick = () => glide(D.idle_ghz); $("near").onclick = () => glide(4.8); $("far").onclick = () => glide(7.2);
+
+  // ---------------- the CZ gate player ----------------
+  let shape = "angle", playing = false, frac = 0;
+  const G = D.gate, cross = G.w2 - G.alpha;
+  $("k-good").textContent = D.cz.angle.leakage.toExponential(0); $("k-bad").textContent = (100 * D.cz.frequency.leakage).toFixed(1) + " %";
+  function drawGate() {
+    const C = D.cz[shape], T = C.duration_ns, t = frac * T, at = (arr) => lerp(C.t_ns, arr, t);
+    $("k-t").textContent = t.toFixed(1) + " ns";
+    // pulse
+    let [g, W, H] = ctx($("c-pulse")); const pad = 44;
+    let X = (x) => pad + (W - pad - 10) * x / 70; X.lo = pad; let Y = (y) => H - 20 - (H - 30) * (y - 5.15) / 0.9;
+    axes(g, W, H, X, Y, [0, 20, 40, 60], [5.2, 5.5, 5.8], (x) => x + " ns", (y) => y.toFixed(1));
+    g.strokeStyle = "rgba(147,161,184,.6)"; g.setLineDash([2, 4]); g.beginPath(); g.moveTo(pad, Y(cross)); g.lineTo(W - 8, Y(cross)); g.stroke(); g.setLineDash([]);
+    ["angle", "frequency"].forEach((s) => line(g, X, Y, D.cz[s].t_ns, D.cz[s].w1_ghz, s === "angle" ? "#45e0a0" : "#ff6b4a", s === shape ? 2.4 : 1, s === shape ? [] : [4, 4]));
+    g.fillStyle = "#e8fffb"; g.beginPath(); g.arc(X(t), Y(at(C.w1_ghz)), 5, 0, 7); g.fill();
+    // levels
+    [g, W, H] = ctx($("c-lev")); const Lv = D.levels;
+    X = (x) => pad + (W - pad - 10) * (x - 5.05) / 1.0; X.lo = pad; Y = (y) => H - 20 - (H - 30) * (y + 170) / 400;
+    axes(g, W, H, X, Y, [5.2, 5.5, 5.8], [-100, 0, 100, 200], (x) => x.toFixed(1), (y) => y + "");
+    line(g, X, Y, Lv.w1_ghz, Lv.w1_ghz.map(() => 0), "rgba(147,161,184,.55)", 1, [4, 4]);
+    line(g, X, Y, Lv.w1_ghz, Lv.bare20_mhz, "rgba(147,161,184,.55)", 1, [4, 4]);
+    line(g, X, Y, Lv.w1_ghz, Lv.lower_mhz, "#5ef2e0", 2.2); line(g, X, Y, Lv.w1_ghz, Lv.upper_mhz, "#ff8a4c", 2.2);
+    const w1 = at(C.w1_ghz); g.fillStyle = "#e8fffb"; g.shadowColor = "#5ef2e0"; g.shadowBlur = 12;
+    g.beginPath(); g.arc(X(Math.max(5.05, Math.min(6.05, w1))), Y(lerp(Lv.w1_ghz, Lv.lower_mhz, w1)), 5.5, 0, 7); g.fill(); g.shadowBlur = 0;
+    g.fillStyle = "#93a1b8"; g.fillText("MHz, relative to bare |11⟩ · x: ω₁ (GHz)", pad + 4, 16);
+    // populations, phase
+    const p11 = at(C.p11), p20 = at(C.p20), done = frac >= 0.999, phi = done ? C.conditional_phase_rad : at(C.phase_rad);
+    $("b11").textContent = (100 * p11).toFixed(1) + " %"; $("f11").style.width = (100 * p11) + "%";
+    $("b20").textContent = (100 * p20).toFixed(1) + " %"; $("f20").style.width = (100 * p20) + "%";
+    $("k-leak").innerHTML = done ? `<span class="${C.leakage < 1e-3 ? "ok" : "bad"}">${C.leakage < 1e-3 ? C.leakage.toExponential(0) : (100 * C.leakage).toFixed(1) + " %"}</span>` : "…";
+    $("k-fid").innerHTML = done ? `<span class="${C.fidelity > 0.999 ? "ok" : "bad"}">${C.fidelity.toFixed(5)}</span>` : "…";
+    $("k-phi").textContent = (phi / Math.PI).toFixed(2); $("k-zznow").textContent = Math.abs(at(C.zz_mhz)).toFixed(2);
+    const a = Math.min(phi, Math.PI), r = 92;
+    $("needle").setAttribute("x2", (80 * Math.cos(-a)).toFixed(2)); $("needle").setAttribute("y2", (80 * Math.sin(-a)).toFixed(2));
+    $("arc").setAttribute("d", a > 1e-3 ? `M ${r} 0 A ${r} ${r} 0 0 0 ${(r * Math.cos(-a)).toFixed(2)} ${(r * Math.sin(-a)).toFixed(2)}` : "");
+    $("tt").value = frac;
+  }
+  let last = 0;
+  function loop(now) { const dt = Math.min(0.05, (now - last) / 1000 || 0); last = now;
+    if (playing) { frac = Math.min(1, frac + dt / 3.2); if (frac >= 1) { playing = false; $("play").textContent = "↺ replay"; } drawGate(); }
+    requestAnimationFrame(loop); }
+  $("play").onclick = () => { if (frac >= 1) frac = 0; playing = !playing; $("play").textContent = playing ? "❚❚ pause" : "▶ play the gate"; };
+  $("tt").addEventListener("input", () => { frac = +$("tt").value; playing = false; $("play").textContent = "▶ play the gate"; drawGate(); });
+  const setShape = (s) => { shape = s; $("s-angle").classList.toggle("on", s === "angle"); $("s-freq").classList.toggle("on", s === "frequency"); drawGate(); };
+  $("s-angle").onclick = () => setShape("angle"); $("s-freq").onclick = () => setShape("frequency");
+  addEventListener("resize", () => { drawZZ(); drawGate(); });
+  drawZZ(); drawGate(); requestAnimationFrame(loop);
+  const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting && frac === 0 && !playing) { playing = true; $("play").textContent = "❚❚ pause"; io.disconnect(); } }), { threshold: 0.4 });
+  io.observe($("cz"));
+  document.body.dataset.ready = "1";
+})();
+</script>
+</body>
+</html>
