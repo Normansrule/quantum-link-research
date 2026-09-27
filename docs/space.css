@@ -106,7 +106,7 @@ h2 { font-size: clamp(1.8rem, 3.4vw, 2.6rem); line-height: 1.15; margin: .4rem 0
 .no-js .reveal { opacity: 1; transform: none; filter: none }
 @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; filter: none } .aurora, .gradient-text { animation: none } }
 footer { max-width: var(--maxw); margin: 4rem auto 0; padding: 2rem 5vw 3rem; color: var(--faint); font-size: .85rem; border-top: 1px solid var(--line) }
-@media (max-width: 1260px) { .top nav a.opt { display: none } }
+@media (max-width: 1380px) { .top nav a.opt { display: none } }
 @media (max-width: 860px) { .top nav a:not(.gh) { display: none } .live { font-size: .72rem; gap: .7rem; flex-wrap: wrap; white-space: normal; width: 92vw; justify-content: center } }
 
 /* animated beams (after Magic UI AnimatedBeam) */

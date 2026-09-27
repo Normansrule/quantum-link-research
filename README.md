@@ -7,6 +7,7 @@
   <a href="https://Normansrule.github.io/quantum-link-research/mars/"><img src="https://img.shields.io/badge/Mars_link_simulator-ff6b4a?style=for-the-badge&logo=threedotjs&logoColor=white" alt="Mars link simulator"></a>
   <a href="https://Normansrule.github.io/quantum-link-research/teleport/"><img src="https://img.shields.io/badge/Teleportation,_step_by_step-a78bfa?style=for-the-badge&logo=qiskit&logoColor=white" alt="Teleportation explainer"></a>
   <a href="https://Normansrule.github.io/quantum-link-research/monitor/"><img src="https://img.shields.io/badge/Link_monitor-5ea8ff?style=for-the-badge" alt="Link monitor"></a>
+  <a href="https://Normansrule.github.io/quantum-link-research/repeater/"><img src="https://img.shields.io/badge/Repeater_lab-45e0a0?style=for-the-badge" alt="Repeater lab"></a>
   <a href="https://Normansrule.github.io/quantum-link-research/coupler/"><img src="https://img.shields.io/badge/Coupler_lab-ff8a4c?style=for-the-badge" alt="Coupler lab"></a>
   <a href="research/thesis/THESIS_DRAFT.md"><img src="https://img.shields.io/badge/Read_the_thesis-45e0a0?style=for-the-badge" alt="Thesis draft"></a>
 </p>
@@ -60,6 +61,7 @@ Every number above is written by [`scripts/make_readme_art.py`](scripts/make_rea
 | Thermal photons a 5 GHz qubit sees | **1250 at 300 K, 1.1e-07 at 15 mK** | `qll/circuits/noise/thermal.py` |
 | BB84 error threshold | **11.00 %** | `qll/qkd/key_rate.py` |
 | Where a repeater chain (1 s memories) beats direct fiber | **393 km** | `qll/network/repeater_chain.py` |
+| Teleportation fidelity of the pairs it delivers there, without purification | **0.58 (below 2/3: rate is not enough)** | `qll/network/repeater_chain.py` |
 | Purification 0.80 → 0.99 | **BBPSSW 10 rounds / 2917 pairs; DEJMPS 4 / 32** | `qll/network/purification.py` |
 | Rounds for a device-independent key at S = 0.95·2√2 | **2,535** | `qll/qkd/e91.py` |
 | Key buffer to message once a minute through a Mars round trip | **1.43 kB** | `qll/app/messenger.py` |
@@ -75,7 +77,7 @@ This is the thesis question in one picture. A stored Bell pair decays toward the
 
 ## The website
 
-Six interactive pages, all driven by the same tested numbers and tested themselves in headless Chromium on every push. The animations are recordings of the real pages ([`scripts/record_site.py`](scripts/record_site.py)); click one to open it.
+Seven interactive pages, all driven by the same tested numbers and tested themselves in headless Chromium on every push. The animations are recordings of the real pages ([`scripts/record_site.py`](scripts/record_site.py)); click one to open it.
 
 <table>
 <tr>
@@ -87,7 +89,8 @@ Six interactive pages, all driven by the same tested numbers and tested themselv
 <td width="50%" valign="top"><a href="https://Normansrule.github.io/quantum-link-research/#interference"><img src="docs/figures/anim_interference.gif" alt="Interference lab" width="100%"></a><br><b>Interference lab</b><br><sub>A WebGL shader sums the two slit waves exactly; which-path information erases the fringes (protocol P06).</sub></td>
 </tr>
 <tr>
-<td colspan="2" valign="top"><a href="https://Normansrule.github.io/quantum-link-research/coupler/"><img src="docs/figures/anim_coupler.gif" alt="Coupler lab: a simulated CZ gate between two transmons" width="100%"></a><br><b>Coupler lab</b> <sup>new</sup><br><sub>Park a tunable coupler at the idle point where the always-on ZZ vanishes, watch the conditional Ramsey fringes that measure it (proposal E16), and play a simulated controlled-Z gate: the flux pulse, the |11⟩–|20⟩ avoided crossing, the population swinging out and back, and the conditional phase reaching π with fidelity 0.99998.</sub></td>
+<td width="50%" valign="top"><a href="https://Normansrule.github.io/quantum-link-research/repeater/"><img src="docs/figures/anim_repeater.gif" alt="Repeater lab: one sampled run of a 16-segment chain" width="100%"></a><br><b>Repeater lab</b> <sup>new</sup><br><sub>One random run of a nested repeater chain: segments herald, stored pairs fade as they decay, swaps join them, failed swaps in red; beside it the average rate against direct fiber and the repeaterless bound, and the fidelity check that rate alone misses.</sub></td>
+<td width="50%" valign="top"><a href="https://Normansrule.github.io/quantum-link-research/coupler/"><img src="docs/figures/anim_coupler.gif" alt="Coupler lab: a simulated CZ gate between two transmons" width="100%"></a><br><b>Coupler lab</b><br><sub>Park a tunable coupler where the always-on ZZ vanishes, watch the Ramsey fringes that measure it (E16), and play a simulated CZ gate reaching π with fidelity 0.99998.</sub></td>
 </tr>
 </table>
 
@@ -178,6 +181,9 @@ Every figure is drawn by a function under test; `python scripts/make_figures.py`
 <tr>
 <td colspan="2"><img src="docs/figures/zz_ramsey.svg" alt="Conditional Ramsey fringes and the recovered ZZ" width="100%"></td>
 </tr>
+<tr>
+<td colspan="2"><img src="docs/figures/repeater_sampled.svg" alt="Sampled repeater waiting times against the closed form" width="100%"></td>
+</tr>
 </table>
 
 </details>
@@ -231,10 +237,10 @@ The website and these README images re-implement ideas from twelve open-source p
 
 | Project | What it inspired here |
 |---|---|
-| [**Magic UI**](https://github.com/magicuidesign/magicui) | number tickers and bento grid (the numbers card above), AnimatedBeam (the stack diagram), Marquee (the landmark strip) |
+| [**Magic UI**](https://github.com/magicuidesign/magicui) | number tickers and bento grid (the numbers card above), AnimatedBeam (the stack diagram and the repeater lab's links), Marquee (the landmark strip) |
 | [**react-bits**](https://github.com/DavidHDev/react-bits) | gradient text, blur-in reveals, and spotlight cards on the website; the rotating "shine" borders on the README cards |
 | [**Animate UI**](https://animate-ui.com/) · [**motion-primitives**](https://github.com/ibelick/motion-primitives) | staggered entrances and easing curves; restrained glass panels |
-| [**llm-viz**](https://github.com/bbycroft/llm-viz) · [**transformer-explainer**](https://github.com/poloclub/transformer-explainer) | step-through explainers that show the real internal state: the teleportation page, the coupler lab's CZ player, and the memory-versus-round-trip chart |
+| [**llm-viz**](https://github.com/bbycroft/llm-viz) · [**transformer-explainer**](https://github.com/poloclub/transformer-explainer) | step-through explainers that show the real internal state: the teleportation page, the coupler lab's CZ player, the repeater lab's sampled run, and the memory-versus-round-trip chart |
 | [**WebGL-Fluid-Simulation**](https://github.com/PavelDoGreat/WebGL-Fluid-Simulation) | a full-canvas fragment shader driven by the pointer: the interference lab |
 | [**folio-2019**](https://github.com/brunosimon/folio-2019) | the landing page as a 3-D scene to explore: the three.js Solar System |
 | [**gods-eye-view**](https://github.com/bilawalsidhu/gods-eye-view) · [**worldmonitor**](https://github.com/koala73/worldmonitor) | a live situation view and a dashboard of tiles, timelines, and an event feed: the hero's live strip and the link monitor |

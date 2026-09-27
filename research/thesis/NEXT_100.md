@@ -112,6 +112,6 @@ Grouped by door. Each is one file, one module, one figure, one experiment, or on
 ## visuals and apps (96–100)
 96. Interactive Bloch-sphere gate explorer in the browser app
 97. Surface-code lattice animation (syndromes lighting up) in the browser app
-98. Repeater-chain rate explorer with sliders for p, q, T₂, and distance
+~~98. Repeater-chain rate explorer with sliders for p, q, T₂, and distance~~ the repeater lab (0.35.0), with a sampled run and the closed form checked by Monte Carlo
 99. Earth–Mars orbit and light-time animation with ephemeris data
 100. Modality comparison radar chart generated from a data file (so it updates with the table)

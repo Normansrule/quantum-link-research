@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Repeater lab · Quantum Link Research</title>
+<meta name="description" content="Watch a quantum repeater chain build one end-to-end entangled pair, segment by segment and swap by swap, and see when it beats sending photons straight through fiber.">
+<meta property="og:title" content="Repeater lab · Quantum Link Research">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://normansrule.github.io/quantum-link-research/repeater/">
+<meta property="og:image" content="https://normansrule.github.io/quantum-link-research/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://normansrule.github.io/quantum-link-research/og.png">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔗</text></svg>">
+<link rel="stylesheet" href="../space.css">
+<style>
+  .lab { max-width: 1320px; margin: 0 auto; padding: 5.4rem 3vw 2rem }
+  .intro { max-width: 940px; margin: 0 0 1.4rem }
+  .intro h1 { font-size: clamp(1.9rem, 3.6vw, 3rem); line-height: 1.08; margin: .5rem 0 .7rem; letter-spacing: -.02em }
+  .grid { display: grid; gap: 1rem; grid-template-columns: repeat(12, 1fr); margin-bottom: 1rem }
+  .grid > * { min-width: 0 }
+  .p { border: 1px solid var(--line); border-radius: 16px; background: var(--glass); padding: .95rem 1.05rem; position: relative; overflow: hidden }
+  .p::before { content: ""; position: absolute; inset: -1px; border-radius: 16px; padding: 1px; pointer-events: none; opacity: .5;
+    background: conic-gradient(from var(--a, 0deg), transparent 0 70%, rgba(94,242,224,.9) 80%, rgba(255,138,76,.9) 88%, transparent 96%);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude;
+    animation: spin 8s linear infinite }
+  @property --a { syntax: "<angle>"; initial-value: 0deg; inherits: false }
+  @keyframes spin { to { --a: 360deg } }
+  .p h4 { margin: 0 0 .55rem; font-size: .74rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); font-weight: 700 }
+  .w8 { grid-column: span 8 } .w4 { grid-column: span 4 } .w12 { grid-column: span 12 }
+  @media (max-width: 1000px) { .w8, .w4 { grid-column: span 12 } }
+  canvas#chain { width: 100%; height: 250px; display: block }
+  canvas#rate { width: 100%; height: 300px; display: block }
+  .lab button { font: 600 .86rem/1 "JetBrains Mono", ui-monospace, monospace; padding: .55rem .8rem; border-radius: 10px; border: 1px solid var(--line); background: var(--bg2); color: var(--ink); cursor: pointer; transition: box-shadow .2s, border-color .2s }
+  .lab button:hover { border-color: var(--cyan); box-shadow: 0 0 16px rgba(94,242,224,.25) }
+  .row { display: flex; gap: .6rem; flex-wrap: wrap; align-items: center }
+  .sl { display: grid; grid-template-columns: 1fr auto; gap: .15rem .6rem; align-items: center; font-size: .86rem; color: var(--muted); margin: .45rem 0 }
+  .sl b { color: var(--ink); font: 600 .86rem "JetBrains Mono", monospace; text-align: right }
+  .sl input { grid-column: 1 / -1; width: 100%; accent-color: #22d3ee }
+  .kpis { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: .7rem }
+  .k { border: 1px solid var(--line); border-radius: 12px; padding: .6rem .7rem; background: rgba(10,15,28,.55) }
+  .k .v { font: 700 1.35rem/1.15 "JetBrains Mono", monospace; font-variant-numeric: tabular-nums } .k .s { font-size: .74rem; color: var(--faint) }
+  .note { color: var(--muted); font-size: .88rem; margin: .5rem 0 0 }
+  .legend { display: flex; gap: 1rem; flex-wrap: wrap; font-size: .8rem; color: var(--muted); margin-top: .4rem }
+  .legend i { display: inline-block; width: 18px; height: 3px; border-radius: 2px; margin-right: .35rem; vertical-align: middle }
+  .ok { color: var(--green) } .bad { color: var(--mars) } .warm { color: var(--warm) } .cyan { color: var(--cyan) }
+</style>
+</head>
+<body>
+<div class="aurora"></div>
+<header class="top">
+  <a class="brand" href="../"><span class="dot"></span>Quantum Link Research</a>
+  <nav><a href="../mars/">Mars simulator</a><a href="../teleport/">Teleportation explainer</a><a href="../monitor/">Link monitor</a><a href="../coupler/">Coupler lab</a><a class="gh" href="https://github.com/Normansrule/quantum-link-research">GitHub ↗</a></nav>
+</header>
+<main class="lab">
+  <div class="intro">
+    <div class="kicker">Repeater lab · REQ-NET-001 · learn 03</div>
+    <h1>Beat the exponential, <span class="gradient-text">if your memory can wait</span>.</h1>
+    <p class="sub" style="margin:0">Photons in fiber are lost exponentially: at 0.2 dB/km, 1000 km leaves one in 10²⁰. A repeater chain cuts the distance into short segments, entangles each one by trial and error, stores the pairs in quantum memories, and joins them with entanglement swapping until one pair spans the whole link. Below, one random run of that protocol plays out; the chart shows the average rate from the tested model (<code>qll/network/repeater_chain.py</code>, ported line by line to <code>docs/js/repeater_core.js</code> and checked against it to 10⁻¹²).</p>
+  </div>
+
+  <section class="grid">
+    <div class="p w12"><h4>one run of the nested protocol · segments herald, memories wait (colour fades as the pair decays), neighbours swap</h4>
+      <canvas id="chain"></canvas>
+      <div class="row" style="margin-top:.5rem">
+        <button id="run">↻ new random run</button><button id="play">❚❚ pause</button>
+        <input type="range" id="tt" min="0" max="1" step="0.001" value="0" style="flex:1;min-width:220px" aria-label="time in this run">
+        <span class="mono" id="k-clock" style="min-width:16ch;text-align:right">—</span>
+      </div>
+      <p class="note" id="k-story">—</p>
+    </div>
+  </section>
+
+  <section class="grid">
+    <div class="p w4"><h4>the link</h4>
+      <div class="sl"><span>distance</span><b id="v-L"></b><input type="range" id="L" min="1" max="3.3" step="0.001" value="2.6"></div>
+      <div class="sl"><span>nesting levels (segments)</span><b id="v-n"></b><input type="range" id="n" min="0" max="4" step="1" value="3"></div>
+      <div class="sl"><span>memory coherence T</span><b id="v-T"></b><input type="range" id="T" min="-3" max="2" step="0.01" value="0"></div>
+      <div class="sl"><span>swap success P<sub>s</sub></span><b id="v-ps"></b><input type="range" id="ps" min="0.2" max="1" step="0.01" value="0.5"></div>
+      <div class="sl"><span>source + detection p<sub>src</sub></span><b id="v-psrc"></b><input type="range" id="psrc" min="0.01" max="0.5" step="0.01" value="0.05"></div>
+      <div class="sl"><span>elementary pair fraction f₀</span><b id="v-f0"></b><input type="range" id="f0" min="0.8" max="1" step="0.005" value="0.95"></div>
+      <div class="row" style="margin-top:.6rem"><button id="preset-mars">1 s memories (the headline)</button><button id="preset-good">1000 km, 100 s memories</button></div>
+    </div>
+    <div class="p w8"><h4>average rate vs distance · the chain against direct transmission and the repeaterless bound</h4>
+      <canvas id="rate"></canvas>
+      <div class="legend"><span><i style="background:#ff8a4c"></i>direct (10⁹ pulses/s × p<sub>src</sub> × η)</span><span><i style="background:#e8eef8;opacity:.7"></i>PLOB bound, no repeater can beat without memories</span><span><i style="background:#5ef2e0"></i>memory chain (these settings; gap = memories expire)</span><span><i style="background:#a78bfa"></i>all-photonic chain, 8 photons per arm</span></div>
+    </div>
+    <div class="p w12"><h4>at this distance</h4>
+      <div class="kpis">
+        <div class="k"><div class="s">segments × length</div><div class="v" id="k-seg">—</div></div>
+        <div class="k"><div class="s">elementary success per attempt</div><div class="v" id="k-p0">—</div></div>
+        <div class="k"><div class="s">mean time to a pair</div><div class="v" id="k-time">—</div></div>
+        <div class="k"><div class="s">chain rate</div><div class="v" id="k-rate">—</div></div>
+        <div class="k"><div class="s">direct rate</div><div class="v" id="k-direct">—</div></div>
+        <div class="k"><div class="s">teleportation fidelity</div><div class="v" id="k-fid">—</div></div>
+        <div class="k"><div class="s">chain beats direct beyond</div><div class="v" id="k-cross">—</div></div>
+      </div>
+      <p class="note" id="k-verdict">—</p>
+      <p class="note">Model and its limits: elementary pairs heralded at segment midpoints, one attempt per herald round trip (or per microsecond), nested swapping with classical heralds over each new span, Werner pairs that decay toward the useless mixture with the memory time T; the chain is declared stalled when the expected waiting time exceeds 3T. Sampling the protocol exactly (<code>qll/network/repeater_montecarlo.py</code>) shows this closed form overestimates the waiting time by about 4 % with two levels and 8 % with three at P<sub>s</sub> = 0.5 (more when swaps are reliable), so it is slightly conservative; see learn 03/19. For Earth to Mars there is no fiber: this is why the thesis routes the link through free-space relays instead (see the <a href="../mars/">Mars simulator</a>).</p>
+    </div>
+  </section>
+</main>
+<footer>Repeater lab. Physics from <code>qll/network/repeater_chain.py</code>, <code>swapping_scheduler.py</code>, <code>repeater_montecarlo.py</code>, and <code>qll/qkd/plob_bound.py</code> [briegel1998, sangouard2011, azuma2015, pirandola2017]. Design after llm-viz and transformer-explainer (the protocol's real state at every step), Magic UI (AnimatedBeam links, border beams), and react-bits (glow); see <a href="https://github.com/Normansrule/quantum-link-research/blob/main/CREDITS.md">CREDITS.md</a>.</footer>
+<script src="../js/repeater_core.js"></script>
+<script>
+(function () {
+  document.documentElement.classList.remove("no-js");
+  const R = window.QLLRepeater, $ = (id) => document.getElementById(id);
+  const fmtT = (s) => !isFinite(s) ? "∞" : s < 1e-3 ? (s * 1e6).toFixed(0) + " µs" : s < 1 ? (s * 1e3).toFixed(s < 0.01 ? 2 : 0) + " ms" : s < 120 ? s.toFixed(s < 10 ? 2 : 0) + " s" : s < 7200 ? (s / 60).toFixed(0) + " min" : s < 172800 ? (s / 3600).toFixed(1) + " h" : s < 3.2e8 ? (s / 86400).toFixed(0) + " d" : (s / 3.156e7).toExponential(1) + " yr";
+  const fmtR = (r) => r <= 0 ? "stalled" : r >= 1e3 ? (r / 1e3).toFixed(1) + " kHz" : r >= 1 ? r.toFixed(r < 10 ? 2 : 0) + " Hz" : r >= 1e-3 ? (r * 1e3).toFixed(1) + " mHz" : r.toExponential(1) + " Hz";
+  const P = () => ({ L: Math.pow(10, +$("L").value), n: +$("n").value, T: Math.pow(10, +$("T").value), p_swap: +$("ps").value, p_src: +$("psrc").value, f0: +$("f0").value });
+  function ctx(cv) { const g = cv.getContext("2d"), dpr = Math.min(devicePixelRatio || 1, 2), W = cv.clientWidth, H = cv.clientHeight;
+    if (cv.width !== Math.round(W * dpr)) { cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); }
+    g.setTransform(dpr, 0, 0, dpr, 0, 0); g.clearRect(0, 0, W, H); return [g, W, H]; }
+
+  // ---------------- rate chart ----------------
+  function drawRate(p) {
+    const [g, W, H] = ctx($("rate")), pad = 56, xs = Array.from({ length: 240 }, (_, i) => Math.pow(10, 1 + 2.3 * i / 239));
+    const X = (L) => pad + (W - pad - 12) * (Math.log10(L) - 1) / 2.3, lo = -6, hi = 9;
+    const Y = (r) => H - 24 - (H - 36) * (Math.log10(Math.max(r, Math.pow(10, lo))) - lo) / (hi - lo);
+    g.font = "11px JetBrains Mono, monospace"; g.fillStyle = "#5b6780"; g.strokeStyle = "rgba(148,170,210,.12)";
+    for (let e = lo; e <= hi; e += 3) { g.beginPath(); g.moveTo(pad, Y(Math.pow(10, e))); g.lineTo(W - 10, Y(Math.pow(10, e))); g.stroke(); g.fillText(e === 0 ? "1 Hz" : "1e" + e, 4, Y(Math.pow(10, e)) + 4); }
+    [10, 30, 100, 300, 1000].forEach((L) => g.fillText(L + " km", X(L) - 16, H - 6));
+    const o = { p_swap: p.p_swap, p_src: p.p_src, f0: p.f0 };
+    const curve = (f, style, w, dash) => { g.strokeStyle = style; g.lineWidth = w; g.setLineDash(dash || []); g.beginPath(); let pen = false;
+      xs.forEach((L) => { const r = f(L); if (r > Math.pow(10, lo)) { pen ? g.lineTo(X(L), Y(r)) : g.moveTo(X(L), Y(r)); pen = true; } else pen = false; }); g.stroke(); g.setLineDash([]); };
+    curve((L) => R.plobRate(L), "rgba(232,238,248,.7)", 1.3, [5, 5]);
+    curve((L) => R.directRate(L, 1e9, p.p_src), "#ff8a4c", 2);
+    curve((L) => R.allPhotonic(L, Math.max(2, Math.pow(2, p.n))), "#a78bfa", 1.6);
+    curve((L) => R.memoryChain(L, p.n, p.T, o).rate_hz, "#5ef2e0", 2.6);
+    g.strokeStyle = "rgba(94,242,224,.5)"; g.setLineDash([3, 4]); g.beginPath(); g.moveTo(X(p.L), 8); g.lineTo(X(p.L), H - 24); g.stroke(); g.setLineDash([]);
+    const m = R.memoryChain(p.L, p.n, p.T, o);
+    if (m.rate_hz > 0) { g.fillStyle = "#e8fffb"; g.shadowColor = "#5ef2e0"; g.shadowBlur = 14; g.beginPath(); g.arc(X(p.L), Y(m.rate_hz), 6, 0, 7); g.fill(); g.shadowBlur = 0; }
+    g.fillStyle = "#93a1b8"; g.textAlign = "right"; g.fillText("end-to-end pairs per second (log)", W - 14, 16); g.textAlign = "left";
+  }
+
+  // ---------------- KPIs ----------------
+  function update() {
+    const p = P(), o = { p_swap: p.p_swap, p_src: p.p_src, f0: p.f0 }, m = R.memoryChain(p.L, p.n, p.T, o), d = R.directRate(p.L, 1e9, p.p_src);
+    $("v-L").textContent = p.L.toFixed(0) + " km"; $("v-n").textContent = `${p.n} (${Math.pow(2, p.n)})`; $("v-T").textContent = fmtT(p.T);
+    $("v-ps").textContent = p.p_swap.toFixed(2); $("v-psrc").textContent = p.p_src.toFixed(2); $("v-f0").textContent = p.f0.toFixed(3);
+    $("k-seg").textContent = `${m.n_segments} × ${(p.L / m.n_segments).toFixed(0)} km`; $("k-p0").textContent = m.p0 < 1e-3 ? m.p0.toExponential(1) : m.p0.toFixed(4);
+    $("k-time").textContent = fmtT(m.hold_time_s); $("k-rate").innerHTML = `<span class="${m.rate_hz > d ? "ok" : m.rate_hz > 0 ? "warm" : "bad"}">${fmtR(m.rate_hz)}</span>`;
+    $("k-direct").textContent = fmtR(d);
+    const F = (2 * m.fidelity_fraction + 1) / 3; $("k-fid").innerHTML = `<span class="${F > 2 / 3 ? "ok" : "bad"}">${F.toFixed(3)}</span>`;
+    const x = R.crossover(p.n, p.T, o); $("k-cross").textContent = x === null ? "never" : x.toFixed(0) + " km";
+    $("k-verdict").innerHTML = m.stalled ? `<b class="bad">Stalled.</b> A pair takes ${fmtT(m.hold_time_s)} on average but memories only keep it for about ${fmtT(p.T)}: the chain never finishes. Add levels, or better memories.`
+      : m.rate_hz > d && F <= 2 / 3 ? `<b class="warm">Faster than direct, but the pairs are too noisy to use.</b> Each swap multiplies the errors and the memories decay while they wait: F = ${F.toFixed(3)} ≤ 2/3, no better than a classical guess. Real chains purify between levels (learn 03, <code>qll/network/purification.py</code>) or need better sources and memories: try the 1000 km preset.`
+      : m.rate_hz > d ? `<b class="ok">The chain wins</b> by a factor of ${(() => { const q = m.rate_hz / d; return q < 100 ? q.toFixed(1) : q < 1e4 ? q.toFixed(0) : q.toExponential(1).replace("e+", " × 10^"); })()} and delivers pairs good for teleportation (F = ${F.toFixed(3)} > 2/3).`
+      : `<b class="warm">Direct transmission still wins here.</b> Repeaters pay a fixed overhead (swaps fail half the time, heralds take round trips); they only win once fiber loss is large enough.`;
+    drawRate(p);
+  }
+  ["L", "n", "T", "ps", "psrc", "f0"].forEach((id) => $(id).addEventListener("input", () => { update(); newRun(); }));
+  $("preset-mars").onclick = () => { $("L").value = Math.log10(393); $("n").value = 3; $("T").value = 0; $("ps").value = 0.5; $("psrc").value = 0.05; $("f0").value = 0.95; update(); newRun(); };
+  $("preset-good").onclick = () => { $("L").value = 3; $("n").value = 4; $("T").value = 2; $("ps").value = 0.5; $("psrc").value = 0.05; $("f0").value = 0.99; update(); newRun(); };
+
+  // ---------------- one sampled run, animated ----------------
+  let run = null, frac = 0, playing = true, seed = 1;
+  function newRun() {
+    const p = P(); seed += 1;
+    run = R.sampleRun(p.L, p.n, { p_swap: p.p_swap, p_src: p.p_src }, seed); run.params = p; frac = 0; playing = true; $("play").textContent = "❚❚ pause";
+    const m = R.memoryChain(p.L, p.n, p.T, { p_swap: p.p_swap, p_src: p.p_src, f0: p.f0 });
+    const fails = run.events.filter((e) => e.kind === "fail").length, pairs = run.events.filter((e) => e.kind === "pair").length;
+    $("k-story").innerHTML = `This run: <b>${pairs.toLocaleString()}</b> elementary pairs heralded, <b>${fails}</b> failed swaps, first end-to-end pair after <b class="cyan">${fmtT(run.end)}</b> (the model's average: ${fmtT(m.hold_time_s)}).` +
+      (run.end > 3 * p.T ? ` <span class="bad">Longer than the memories last (3T = ${fmtT(3 * p.T)}): in a real chain the early pairs would have expired.</span>` : "");
+  }
+  function stateAt(t) {
+    // replay events up to time t: active pairs keyed "k:i" with their creation time
+    const act = new Map(), flashes = [];
+    for (const e of run.events) {
+      if (e.t > t) break;
+      const half = e.span / 2;
+      if (e.kind === "pair") act.set(`0:${e.i}`, { k: 0, i: e.i, span: 1, t: e.t });
+      else { act.delete(`${e.k - 1}:${e.i}`); act.delete(`${e.k - 1}:${e.i + half}`);
+        if (e.kind === "swap") act.set(`${e.k}:${e.i}`, { k: e.k, i: e.i, span: e.span, t: e.t });
+        if (t - e.t < run.end * 0.04) flashes.push(e); }
+    }
+    return { act, flashes };
+  }
+  function drawChain() {
+    const [g, W, H] = ctx($("chain")), p = run.params, n = run.nSeg, padx = 80, base = H - 50;
+    const X = (i) => padx + (W - 2 * padx) * i / n, t = frac * run.end, { act, flashes } = stateAt(t);
+    const f0 = p.f0; let fk = [f0]; for (let k = 1; k <= p.n; k++) fk.push(R.swapped(fk[k - 1]));
+    g.font = "10px JetBrains Mono, monospace"; g.fillStyle = "rgba(147,161,184,.55)";
+    for (let k = 0; k <= p.n; k++) g.fillText(k === 0 ? "segments" : `level ${k}`, 4, base - (28 + 34 * k) + 4);
+    g.strokeStyle = "rgba(148,170,210,.25)"; g.lineWidth = 2; g.beginPath(); g.moveTo(X(0), base); g.lineTo(X(n), base); g.stroke();
+    // attempts: photons flying from each node toward the segment midpoints (shimmer when attempts are faster than frames)
+    const phase = (performance.now() / 700) % 1;
+    for (let i = 0; i < n; i++) {
+      if ([...act.values()].some((a) => i >= a.i && i < a.i + a.span)) continue;
+      const mid = (X(i) + X(i + 1)) / 2, dx = (X(i + 1) - X(i)) / 2 * phase;
+      g.fillStyle = "rgba(94,168,255,.9)"; g.beginPath(); g.arc(X(i) + dx, base, 2.6, 0, 7); g.arc(X(i + 1) - dx, base, 2.6, 0, 7); g.fill();
+      g.fillStyle = "rgba(147,161,184,.5)"; g.fillRect(mid - 1, base - 6, 2, 12);
+    }
+    // stored pairs: arcs whose height is the nesting level, colour from the stored fraction
+    for (const a of act.values()) {
+      const f = R.stored(fk[a.k], t - a.t, p.T), q = Math.max(0, Math.min(1, (f - 0.25) / 0.75));
+      const x0 = X(a.i), x1 = X(a.i + a.span), h = 28 + 34 * a.k;
+      const col = `rgba(${Math.round(94 + (147 - 94) * (1 - q))},${Math.round(242 - (242 - 161) * (1 - q))},${Math.round(160 + (184 - 160) * (1 - q))},${0.35 + 0.6 * q})`;
+      g.strokeStyle = col; g.lineWidth = 3; g.shadowColor = col; g.shadowBlur = 10 * q; g.beginPath(); g.moveTo(x0, base);
+      g.bezierCurveTo(x0, base - h * 1.3, x1, base - h * 1.3, x1, base); g.stroke(); g.shadowBlur = 0;
+    }
+    for (const e of flashes) { if (e.kind !== "fail") continue; const x0 = X(e.i), x1 = X(e.i + e.span), h = 28 + 34 * e.k;
+      g.strokeStyle = "rgba(255,107,74,.85)"; g.lineWidth = 2; g.setLineDash([4, 4]); g.beginPath(); g.moveTo(x0, base); g.bezierCurveTo(x0, base - h * 1.3, x1, base - h * 1.3, x1, base); g.stroke(); g.setLineDash([]); }
+    for (let i = 0; i <= n; i++) {
+      const end = i === 0 || i === n; g.fillStyle = end ? "#e8eef8" : "#111a2e"; g.strokeStyle = end ? "#5ef2e0" : "rgba(148,170,210,.6)"; g.lineWidth = 2;
+      g.beginPath(); g.arc(X(i), base, end ? 9 : 7, 0, 7); g.fill(); g.stroke();
+    }
+    g.fillStyle = "#93a1b8"; g.font = "12px JetBrains Mono, monospace";
+    g.fillText("Alice", X(0) - 18, base + 30); g.fillText("Bob", X(n) - 12, base + 30);
+    g.fillText(`${n} segment${n > 1 ? "s" : ""} of ${(p.L / n).toFixed(0)} km · ${n - 1} repeater${n === 2 ? "" : "s"}`, W / 2 - 110, base + 30);
+    const done = frac >= 1;
+    if (done) { g.fillStyle = "#45e0a0"; g.font = "600 14px Inter, sans-serif"; g.fillText("✓ end-to-end pair", W / 2 - 60, 22); }
+    $("k-clock").textContent = `${fmtT(t)} / ${fmtT(run.end)}`; $("tt").value = frac;
+  }
+  let last = 0;
+  function loop(now) { const dt = Math.min(0.05, (now - last) / 1000 || 0); last = now;
+    if (playing && run) { frac = Math.min(1, frac + dt / 8); if (frac >= 1) { playing = false; $("play").textContent = "↺ replay"; } }
+    if (run) drawChain(); requestAnimationFrame(loop); }
+  $("run").onclick = newRun;
+  $("play").onclick = () => { if (frac >= 1) frac = 0; playing = !playing; $("play").textContent = playing ? "❚❚ pause" : "▶ play"; };
+  $("tt").addEventListener("input", () => { frac = +$("tt").value; playing = false; $("play").textContent = "▶ play"; drawChain(); });
+  addEventListener("resize", update);
+  update(); newRun(); requestAnimationFrame(loop);
+  window.QLLRepeaterLab = { get run() { return run; } };
+  document.body.dataset.ready = "1";
+})();
+</script>
+</body>
+</html>

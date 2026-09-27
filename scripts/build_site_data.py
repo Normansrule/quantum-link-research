@@ -63,7 +63,7 @@ def compute_data() -> dict:
     from qll.constants.astro import AU_METERS, EARTH_MARS_MAX_M, EARTH_MARS_MIN_M
     from qll.network.memory_decoherence import BASELINES, MEMORY_TABLE, capability_matrix, crossover_time_s
     from qll.network.purification import bbpssw_rounds_to_target, bell_diagonal_weights, dejmps_rounds_to_target
-    from qll.network.repeater_chain import crossover_distance_km
+    from qll.network.repeater_chain import crossover_distance_km, memory_chain
     from qll.qkd.e91 import rounds_for_positive_di_key
     from qll.qkd.key_rate import bb84_qber_threshold
     from qll.space.ephemeris import EARTH, MARS, SYNODIC_PERIOD_DAYS, earth_mars_range_m, range_envelope_m
@@ -90,6 +90,7 @@ def compute_data() -> dict:
             "nbar_5ghz_300K": bose_einstein_occupation(2 * math.pi * 5e9, 300.0),
             "nbar_5ghz_15mK": bose_einstein_occupation(2 * math.pi * 5e9, 0.015),
             "chain_crossover_km_1s_memory": crossover_distance_km(3, 1.0),
+            "chain_teleport_fidelity_at_crossover": (2 * memory_chain(crossover_distance_km(3, 1.0), 3, 1.0).fidelity_fraction + 1) / 3,
             "bbpssw_rounds_08_to_099": rb, "bbpssw_pairs": pb,
             "dejmps_rounds_08_to_099": rd, "dejmps_pairs": pd,
             "di_rounds_095": rounds_for_positive_di_key(0.95 * 2 * math.sqrt(2), 0.01),
@@ -132,6 +133,7 @@ def write_readme_numbers(data: dict) -> None:
         ("Thermal photons a 5 GHz qubit sees", f"{h['nbar_5ghz_300K']:.0f} at 300 K, {h['nbar_5ghz_15mK']:.1e} at 15 mK", "`qll/circuits/noise/thermal.py`"),
         ("BB84 error threshold", f"{h['bb84_threshold_pct']:.2f} %", "`qll/qkd/key_rate.py`"),
         ("Where a repeater chain (1 s memories) beats direct fiber", f"{h['chain_crossover_km_1s_memory']:.0f} km", "`qll/network/repeater_chain.py`"),
+        ("Teleportation fidelity of the pairs it delivers there, without purification", (lambda x: f"{x:.2f} (below 2/3: rate is not enough)" if x < 2 / 3 else f"{x:.2f} (above 2/3)")(h['chain_teleport_fidelity_at_crossover']), "`qll/network/repeater_chain.py`"),
         ("Purification 0.80 → 0.99", f"BBPSSW {h['bbpssw_rounds_08_to_099']} rounds / {h['bbpssw_pairs']:.0f} pairs; DEJMPS {h['dejmps_rounds_08_to_099']} / {h['dejmps_pairs']:.0f}", "`qll/network/purification.py`"),
         ("Rounds for a device-independent key at S = 0.95·2√2", f"{h['di_rounds_095']:,}", "`qll/qkd/e91.py`"),
         ("Key buffer to message once a minute through a Mars round trip", f"{h['messenger_buffer_kB_mars_max']:.2f} kB", "`qll/app/messenger.py`"),

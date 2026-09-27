@@ -1,6 +1,6 @@
 """Record animated GIFs of the website for the README (GitHub cannot run the pages' JavaScript).
 Needs:  pip install playwright pillow && python -m playwright install chromium
-Usage:  python scripts/record_site.py [anim_mars ...]   # writes docs/figures/anim_*.gif (all six by default)
+Usage:  python scripts/record_site.py [anim_mars ...]   # writes docs/figures/anim_*.gif (all seven by default)
 Frames are captured from a local server in headless Chromium, so the animation is the real page, not a mock-up."""
 from __future__ import annotations
 
@@ -26,6 +26,8 @@ SHOTS = {
                      None, 28, 150),
     # the coupler lab's CZ player, scrubbed frame by frame so the recording does not depend on the frame rate
     "anim_coupler": ("/coupler/", None, "#cz", 36, 110),
+    # the repeater lab's chain: one sampled run of a 16-segment, 1000 km chain, scrubbed frame by frame
+    "anim_repeater": ("/repeater/", "document.getElementById('preset-good').click()", "section.grid >> nth=0", 40, 110),
 }
 
 
@@ -97,6 +99,17 @@ def main() -> None:
                     page.wait_for_timeout(1400 if k != 4 else 4300)
                     frames += [io.BytesIO(page.screenshot(timeout=120000))] * 4
                 save_gif(frames, OUT / f"{name}.gif", 400)
+                page.close(); continue
+            if name == "anim_repeater":
+                page.add_style_tag(content=".p::before{animation:none!important}.aurora{animation:none!important}")
+                page.evaluate(js); page.wait_for_timeout(400)
+                page.evaluate("document.documentElement.style.scrollBehavior='auto'; document.querySelector('#chain').scrollIntoView({block:'start'}); window.scrollBy(0, -90)")
+                for k in range(n):
+                    page.evaluate(f"const s = document.getElementById('tt'); s.value = {k / (n - 1)}; s.dispatchEvent(new Event('input'))")
+                    page.wait_for_timeout(40)
+                    frames.append(io.BytesIO(page.locator(clip).screenshot(timeout=120000)))
+                frames += [frames[-1]] * 10
+                save_gif(frames, OUT / f"{name}.gif", ms)
                 page.close(); continue
             if name == "anim_coupler":
                 page.add_style_tag(content=".p::before{animation:none!important}.aurora{animation:none!important}")   # static borders: a smaller GIF

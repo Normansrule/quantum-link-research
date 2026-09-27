@@ -104,3 +104,18 @@ def test_coupler_lab_parks_at_zero_zz_and_plays_a_cz(browser, server):
     assert page.locator("#k-leak").inner_text().endswith("%")                               # leakage of a few percent
     assert errors == []
     page.close()
+
+
+def test_repeater_lab_shows_the_crossover_and_a_useful_long_chain(browser, server):
+    page, errors = open_page(browser, server + "/repeater/")
+    page.wait_for_function("document.body.dataset.ready === '1'", timeout=30000)
+    page.click("#preset-mars")
+    assert page.locator("#k-cross").inner_text() == "393 km"                               # crossover_distance_km(3, 1.0)
+    assert "too noisy" in page.locator("#k-verdict").inner_text()                           # faster than direct, F <= 2/3
+    page.click("#preset-good")
+    assert page.locator("#k-fid").inner_text() == "0.869" and "chain wins" in page.locator("#k-verdict").inner_text()
+    page.evaluate("const s = document.getElementById('tt'); s.value = 1; s.dispatchEvent(new Event('input'))")
+    run = page.evaluate("({ end: QLLRepeaterLab.run.end, last: QLLRepeaterLab.run.events.at(-1) })")
+    assert run["last"]["kind"] == "swap" and run["last"]["span"] == 16 and run["last"]["t"] == run["end"]
+    assert errors == []
+    page.close()

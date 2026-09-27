@@ -118,3 +118,33 @@ def test_pages_need_no_cdn_and_vendored_files_exist():
               "gsap/ScrollTrigger.min.js", "katex/katex.min.js", "katex/katex.min.css", "katex/contrib/auto-render.min.js", "three/LICENSE", "katex/LICENSE"):
         assert (DOCS / "vendor" / f).exists(), f
     assert len(list((DOCS / "vendor" / "katex" / "fonts").glob("*.woff2"))) >= 10
+
+
+@pytest.mark.skipif(node is None, reason="node not installed")
+def test_js_repeater_model_matches_python(tmp_path):
+    from qll.network.repeater_chain import all_photonic_chain, crossover_distance_km, direct_rate_hz, memory_chain
+    from qll.network.repeater_montecarlo import mean_chain_time_s
+    from qll.qkd.plob_bound import plob_bits_per_use
+    from qll.channels.fiber_loss import transmittance
+
+    grid = [(L, n, T) for L in (50.0, 200.0, 393.0, 800.0, 1600.0) for n in (0, 1, 2, 3) for T in (0.01, 1.0, 10.0)]
+    script = tmp_path / "rep.js"
+    script.write_text(
+        "const R=require(process.argv[2]);const g=JSON.parse(process.argv[3]);"
+        "console.log(JSON.stringify({chain:g.map(([L,n,T])=>R.memoryChain(L,n,T)),direct:g.map(([L])=>R.directRate(L)),"
+        "plob:g.map(([L])=>R.plobRate(L)),ap:g.map(([L,n])=>R.allPhotonic(L,Math.pow(2,n))),x:R.crossover(3,1.0),"
+        "mc:R.meanRunTime(800,3,{},8000,3)}))")
+    out = json.loads(subprocess.run([node, str(script), str(DOCS / "js" / "repeater_core.js"), json.dumps(grid)],
+                                    capture_output=True, text=True, check=True).stdout)
+    for k, (L, n, T) in enumerate(grid):
+        py = memory_chain(L, n, T)
+        js = out["chain"][k]
+        assert js["rate_hz"] == pytest.approx(py.rate_hz, rel=1e-12, abs=0)
+        assert js["fidelity_fraction"] == pytest.approx(py.fidelity_fraction, rel=1e-12)
+        assert js["hold_time_s"] == pytest.approx(py.hold_time_s, rel=1e-12)
+        assert out["direct"][k] == pytest.approx(direct_rate_hz(L), rel=1e-12)
+        assert out["plob"][k] == pytest.approx(1e9 * plob_bits_per_use(transmittance(L)), rel=1e-12)
+        assert out["ap"][k] == pytest.approx(all_photonic_chain(L, 2**n), rel=1e-12)
+    assert out["x"] == pytest.approx(crossover_distance_km(3, 1.0), rel=1e-12)
+    # the page's animation samples the same process as the tested Python Monte Carlo
+    assert out["mc"] == pytest.approx(mean_chain_time_s(800.0, 3, 20000, seed=5)[0], rel=0.03)
