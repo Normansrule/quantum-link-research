@@ -124,3 +124,24 @@ def test_repeater_lab_shows_the_crossover_and_a_useful_long_chain(browser, serve
     assert run["last"]["kind"] == "swap" and run["last"]["span"] == 16 and run["last"]["t"] == run["end"]
     assert errors == []
     page.close()
+
+
+
+def test_qec_lab_steps_through_a_decoded_shot_and_checks_itself(browser, server):
+    import json as _json
+    page, errors = open_page(browser, server + "/qec/")
+    page.wait_for_function("document.body.dataset.ready === '1'", timeout=30000)
+    data = _json.loads((DOCS / "site_data.json").read_text(encoding="utf-8"))["qec"]
+    shots = data["codes"]["5"]["shots"]["0.08"]
+    k = next(i for i, s in enumerate(shots) if s["logical_error"])
+    page.evaluate(f"QLLQecLab.set(5, '0.08', {k}, 3)")
+    assert "Logical error" in page.locator("#banner").inner_text()
+    assert "consistent" in page.locator("#k-check").inner_text()
+    assert page.locator("#k-fails").inner_text() == str(sum(s["logical_error"] for s in shots))
+    j = next(i for i, s in enumerate(shots) if s["errors"] and not s["logical_error"])
+    page.evaluate(f"QLLQecLab.set(5, '0.08', {j}, 3)")
+    assert "intact" in page.locator("#banner").inner_text()
+    page.click("[data-d='7']")
+    assert page.locator("#k-n").inner_text() == "49"
+    assert errors == []
+    page.close()

@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.37.0 — 2026-09-28 (the QEC lab; the surface code under bit flips; the repeater findings in the thesis)
+- `qll/circuits/surface_code_capacity.py`: the distance-d rotated surface code's Z checks, independent bit flips, and minimum-weight matching with PyMatching, keeping every shot's errors, syndrome, matched pairs, and correction. Tested: (d²−1)/2 checks of weight 2 and 4, every correction clears its syndrome, ⌊(d−1)/2⌋ errors are always corrected, the curves cross between 8.5 % and 10.5 % (about 9.7 % for d = 9–21, near the 10.3 % asymptotic threshold), and the failure rate falls about eightfold when p halves at d = 5. `surface_code_capacity` figure.
+- **QEC lab** (`docs/qec/`): a distance-3, 5, or 7 lattice at five error rates; each of 16 stored shots per setting steps through errors, lit parity checks, the decoder's pairing, and the correction, ending in "intact" or a red string across the lattice; the logical-error curves beside it. `docs/js/qec_core.js` recomputes each syndrome and residual on the page and agrees with the Python on all 240 shots (tested in Node and in headless Chromium). After llm-viz and transformer-explainer, Magic UI, and react-bits. Completes NEXT_100 #97.
+- **Thesis** chapter 4.4 now carries the repeater findings of 0.35–0.36: the 0.58 crossover fidelity, the minimum memory times, and the architecture-dependent ranking of memories (a relay rewards coherence, a nested chain rewards retrieval).
+- learn 01/15 gains "The surface code, one shot at a time".
+- README: an eighth interactive page with its recording (`anim_qec.gif`, 0.26 MB) and button; the landing page's "Seven ways in"; every page links the lab. `record_site.py` pads frames of elements that change height and can record tall panels.
+- Bibliography: Wang, Harrington, and Preskill (2003).
+
 ## 0.36.0 — 2026-09-26 (purification between levels; where a fiber repeater is worth building)
 *Includes all of 0.35.0, which had not reached GitHub when this was built; one overlay applies both.*
 - `qll/network/purified_chain.py`: BBPSSW rounds at any nesting level, added to the same closed-form bookkeeping as the plain chain (two pairs per round, success p(f), a classical round trip per round); with no rounds it reproduces `memory_chain` to machine precision. `best_useful_chain` searches up to 16 segments and 0–2 rounds per level for the fastest configuration with teleportation fidelity above 2/3; `minimum_useful_memory_s` and `useful_distance_range_km` answer the design questions.

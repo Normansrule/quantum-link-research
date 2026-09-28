@@ -53,6 +53,23 @@ def coupler_data() -> dict:
     }
 
 
+def qec_data() -> dict:
+    """Lattices, sampled shots, and failure curves for the QEC lab page (docs/qec/), from the tested surface-code model."""
+    from qll.circuits.surface_code_capacity import logical_failure_rate, rotated_code, sample_shots
+
+    ps = [0.02, 0.05, 0.08, 0.11, 0.14]
+    grid = [round(x, 3) for x in np.linspace(0.01, 0.16, 16)]
+    out = {"ps": ps, "p_grid": grid, "codes": {}}
+    for d in (3, 5, 7):
+        code = rotated_code(d)
+        out["codes"][str(d)] = {
+            "plaquettes": [[list(c) for c in pl] for pl in code.plaquettes],
+            "shots": {str(p): sample_shots(d, p, 16, seed=100 * d + int(1000 * p)) for p in ps},
+            "failure": [logical_failure_rate(d, p, 20000, seed=d) for p in grid],
+        }
+    return out
+
+
 def compute_data() -> dict:
     from qll.app.messenger import required_buffer_bytes
     from qll.channels.fiber_loss import attenuation_length_km
@@ -113,6 +130,7 @@ def compute_data() -> dict:
     }
     cp = coupler_data()
     data["coupler"] = cp
+    data["qec"] = qec_data()
     data["headline"].update({"zz_idle_ghz": cp["idle_ghz"], "cz_duration_ns": cp["cz"]["angle"]["duration_ns"],
                              "cz_fidelity": cp["cz"]["angle"]["fidelity"], "cz_leakage": cp["cz"]["angle"]["leakage"],
                              "cz_leakage_frequency_shaped": cp["cz"]["frequency"]["leakage"]})

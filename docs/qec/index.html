@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>QEC lab · Quantum Link Research</title>
+<meta name="description" content="Watch a surface code catch bit flips: errors appear, stabilizers light up, a matching decoder pairs the defects, and the correction either saves the logical qubit or does not.">
+<meta property="og:title" content="QEC lab · Quantum Link Research">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://normansrule.github.io/quantum-link-research/qec/">
+<meta property="og:image" content="https://normansrule.github.io/quantum-link-research/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://normansrule.github.io/quantum-link-research/og.png">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛡️</text></svg>">
+<link rel="stylesheet" href="../space.css">
+<style>
+  .lab { max-width: 1320px; margin: 0 auto; padding: 5.4rem 3vw 2rem }
+  .intro { max-width: 940px; margin: 0 0 1.4rem }
+  .intro h1 { font-size: clamp(1.9rem, 3.6vw, 3rem); line-height: 1.08; margin: .5rem 0 .7rem; letter-spacing: -.02em }
+  .grid { display: grid; gap: 1rem; grid-template-columns: repeat(12, 1fr); margin-bottom: 1rem }
+  .grid > * { min-width: 0 }
+  .p { border: 1px solid var(--line); border-radius: 16px; background: var(--glass); padding: .95rem 1.05rem; position: relative; overflow: hidden }
+  .p::before { content: ""; position: absolute; inset: -1px; border-radius: 16px; padding: 1px; pointer-events: none; opacity: .5;
+    background: conic-gradient(from var(--a, 0deg), transparent 0 70%, rgba(255,209,102,.9) 80%, rgba(94,242,224,.9) 88%, transparent 96%);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude;
+    animation: spin 8s linear infinite }
+  @property --a { syntax: "<angle>"; initial-value: 0deg; inherits: false }
+  @keyframes spin { to { --a: 360deg } }
+  .p h4 { margin: 0 0 .55rem; font-size: .74rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); font-weight: 700 }
+  .w7 { grid-column: span 7 } .w5 { grid-column: span 5 } .w12 { grid-column: span 12 }
+  @media (max-width: 1000px) { .w7, .w5 { grid-column: span 12 } }
+  canvas#lat { width: 100%; height: 470px; display: block }
+  canvas#curve { width: 100%; height: 300px; display: block }
+  .lab button { font: 600 .86rem/1 "JetBrains Mono", ui-monospace, monospace; padding: .55rem .8rem; border-radius: 10px; border: 1px solid var(--line); background: var(--bg2); color: var(--ink); cursor: pointer; transition: box-shadow .2s, border-color .2s }
+  .lab button:hover { border-color: var(--cyan); box-shadow: 0 0 16px rgba(94,242,224,.25) }
+  .lab button.on { border-color: var(--cyan); box-shadow: 0 0 14px rgba(94,242,224,.3) }
+  .row { display: flex; gap: .5rem; flex-wrap: wrap; align-items: center; margin: .35rem 0 }
+  .row .lbl { color: var(--muted); font-size: .84rem; min-width: 7.5rem }
+  .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: .5rem; margin: .6rem 0 }
+  .step { border: 1px solid var(--line); border-radius: 10px; padding: .45rem .6rem; font-size: .8rem; color: var(--faint); transition: all .25s }
+  .step b { display: block; color: var(--muted); font-size: .74rem; letter-spacing: .08em; text-transform: uppercase }
+  .step.on { border-color: var(--cyan); color: var(--ink); background: rgba(94,242,224,.06) } .step.on b { color: var(--cyan) }
+  .banner { font: 700 1.05rem/1.3 Inter, sans-serif; margin: .4rem 0; min-height: 2.7em }
+  .kpis { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: .6rem; margin-top: .6rem }
+  .k { border: 1px solid var(--line); border-radius: 12px; padding: .55rem .7rem; background: rgba(10,15,28,.55) }
+  .k .v { font: 700 1.25rem/1.15 "JetBrains Mono", monospace; font-variant-numeric: tabular-nums } .k .s { font-size: .74rem; color: var(--faint) }
+  .note { color: var(--muted); font-size: .88rem; margin: .5rem 0 0 }
+  .ok { color: var(--green) } .bad { color: var(--mars) } .warm { color: var(--warm) } .cyan { color: var(--cyan) }
+</style>
+</head>
+<body>
+<div class="aurora"></div>
+<header class="top">
+  <a class="brand" href="../"><span class="dot"></span>Quantum Link Research</a>
+  <nav><a href="../mars/">Mars simulator</a><a href="../teleport/">Teleportation explainer</a><a href="../repeater/">Repeater lab</a><a href="../coupler/">Coupler lab</a><a class="gh" href="https://github.com/Normansrule/quantum-link-research">GitHub ↗</a></nav>
+</header>
+<main class="lab">
+  <div class="intro">
+    <div class="kicker">QEC lab · learn 01/15 · the surface code</div>
+    <h1>Catch the errors <span class="gradient-text">without looking at the data</span>.</h1>
+    <p class="sub" style="margin:0">A surface code spreads one logical qubit over a grid of physical ones and measures only parities of neighbours. Bit flips light up the parity checks around them; a decoder pairs the lit checks along the shortest paths and flips those qubits back. If the pairing guesses wrong in a way that crosses the whole grid, the logical qubit is lost. Every shot below was sampled and decoded by PyMatching in the tested Python (<code>qll/circuits/surface_code_capacity.py</code>); the page re-checks each one.</p>
+  </div>
+
+  <section class="grid">
+    <div class="p w7"><h4>the lattice · data qubits (dots), Z checks (amber, they catch bit flips), X checks (violet, idle in this model)</h4>
+      <canvas id="lat"></canvas>
+      <div class="steps">
+        <div class="step" id="st0"><b>1 · errors</b>bit flips hit random qubits</div>
+        <div class="step" id="st1"><b>2 · syndrome</b>checks with odd parity light up</div>
+        <div class="step" id="st2"><b>3 · matching</b>pair the lit checks, shortest total path</div>
+        <div class="step" id="st3"><b>4 · correction</b>flip the qubits on those paths</div>
+      </div>
+      <div class="banner" id="banner">—</div>
+    </div>
+    <div class="p w5"><h4>controls</h4>
+      <div class="row"><span class="lbl">code distance</span><button data-d="3">d = 3</button><button data-d="5" class="on">d = 5</button><button data-d="7">d = 7</button></div>
+      <div class="row"><span class="lbl">bit-flip probability</span><button data-p="0.02">2 %</button><button data-p="0.05" class="on">5 %</button><button data-p="0.08">8 %</button><button data-p="0.11">11 %</button><button data-p="0.14">14 %</button></div>
+      <div class="row"><span class="lbl">shot</span><button id="prev">◀</button><span class="mono" id="k-shot" style="min-width:6ch;text-align:center">—</span><button id="next">▶</button><button id="play">❚❚ pause</button><button id="stepbtn">step ▸</button></div>
+      <div class="kpis">
+        <div class="k"><div class="s">physical qubits</div><div class="v" id="k-n">—</div></div>
+        <div class="k"><div class="s">errors this shot</div><div class="v" id="k-err">—</div></div>
+        <div class="k"><div class="s">lit checks</div><div class="v" id="k-def">—</div></div>
+        <div class="k"><div class="s">logical errors, these 16 shots</div><div class="v" id="k-fails">—</div></div>
+        <div class="k"><div class="s">logical error rate (20 000 shots)</div><div class="v" id="k-rate">—</div></div>
+        <div class="k"><div class="s">page's own check</div><div class="v" id="k-check">—</div></div>
+      </div>
+      <p class="note">Corrects any ⌊(d−1)/2⌋ errors: 1 for d = 3, 2 for d = 5, 3 for d = 7. More errors may still be caught, or may form a string the decoder closes the wrong way, which is a logical error.</p>
+    </div>
+    <div class="p w12"><h4>logical error rate vs physical bit-flip rate · below the threshold, bigger codes win</h4>
+      <canvas id="curve"></canvas>
+      <p class="note">Code capacity: independent bit flips, perfect parity measurements, minimum-weight perfect matching. The curves cross near 10 %, the threshold (about 10.3 % for very large codes; small planar codes cross a little lower). With noisy measurements the threshold drops to about 1 % (learn 01/15, <code>qll/circuits/decoders.py</code>), which is why the hardware race is to get physical errors well below it: Google's 2024 processors did, and each step from d = 3 to 5 to 7 halved the logical error.</p>
+    </div>
+  </section>
+</main>
+<footer>QEC lab. Physics from <code>qll/circuits/surface_code_capacity.py</code> [fowler2012, dennis2002, wang2003, higgott2023pymatching]; the page's parity checks in <code>docs/js/qec_core.js</code> agree with every stored shot (tested). Design after llm-viz and transformer-explainer (step through the real state), Magic UI (border beams), react-bits (glow); animation in plain canvas. See <a href="https://github.com/Normansrule/quantum-link-research/blob/main/CREDITS.md">CREDITS.md</a>.</footer>
+<script src="../js/qec_core.js"></script>
+<script>
+(async function () {
+  document.documentElement.classList.remove("no-js");
+  const Q = window.QLLQec, $ = (id) => document.getElementById(id);
+  const DATA = (await (await fetch("../site_data.json")).json()).qec;
+  let d = 5, p = "0.05", shot = 0, stage = 0, playing = true, lastStep = 0;
+  const code = () => DATA.codes[String(d)], shots = () => code().shots[p];
+  function ctx(cv) { const g = cv.getContext("2d"), dpr = Math.min(devicePixelRatio || 1, 2), W = cv.clientWidth, H = cv.clientHeight;
+    if (cv.width !== Math.round(W * dpr)) { cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); }
+    g.setTransform(dpr, 0, 0, dpr, 0, 0); g.clearRect(0, 0, W, H); return [g, W, H]; }
+  function xPlaquettes(d) { const out = []; for (let a = -1; a < d; a++) for (let b = -1; b < d; b++) {
+      if ((a + b) % 2 === 0) continue;
+      const interior = a >= 0 && a <= d - 2 && b >= 0 && b <= d - 2, lr = (b === -1 || b === d - 1) && a >= 0 && a <= d - 2;
+      if (!interior && !lr) continue;
+      const cs = []; for (const r of [a, a + 1]) for (const c of [b, b + 1]) if (r >= 0 && r < d && c >= 0 && c < d) cs.push([r, c]);
+      out.push({ cs, a, b }); } return out; }
+  function geom(W, H) { const s = Math.min((W - 80) / d, (H - 80) / d), x0 = (W - s * (d - 1)) / 2, y0 = (H - s * (d - 1)) / 2;
+    return { s, X: (c) => x0 + c * s, Y: (r) => y0 + r * s, x0, y0 }; }
+  function center(G, pl) { let x = 0, y = 0; for (const [r, c] of pl) { x += G.X(c); y += G.Y(r); } x /= pl.length; y /= pl.length;
+    if (pl.length === 2) { const r0 = pl[0][0]; y += r0 === 0 ? -G.s * 0.28 : G.s * 0.28; } return [x, y]; }
+  function face(g, G, cs, a, b, fill, stroke) {
+    g.beginPath();
+    if (cs.length === 4) { g.rect(G.X(b), G.Y(a), G.s, G.s); }
+    else { const [r1, c1] = cs[0], [r2, c2] = cs[1], mx = (G.X(c1) + G.X(c2)) / 2, my = (G.Y(r1) + G.Y(r2)) / 2;
+      if (r1 === r2) { const up = r1 === 0; g.ellipse(mx, my, G.s / 2, G.s / 2, 0, up ? Math.PI : 0, up ? 2 * Math.PI : Math.PI); }
+      else { const left = c1 === 0; g.ellipse(mx, my, G.s / 2, G.s / 2, 0, left ? Math.PI / 2 : -Math.PI / 2, left ? 1.5 * Math.PI : Math.PI / 2); } }
+    g.closePath(); g.fillStyle = fill; g.fill(); if (stroke) { g.strokeStyle = stroke; g.lineWidth = 1; g.stroke(); } }
+  function draw() {
+    const [g, W, H] = ctx($("lat")), G = geom(W, H), C = code(), S = shots()[shot], chk = Q.checkShot(d, C.plaquettes, S);
+    const zFaces = C.plaquettes.map((pl) => { const rs = pl.map((q) => q[0]), cs_ = pl.map((q) => q[1]);
+      return { cs: pl, a: pl.length === 4 ? Math.min(...rs) : (rs[0] === 0 ? -1 : d - 1), b: Math.min(...cs_) }; });
+    xPlaquettes(d).forEach((f) => face(g, G, f.cs, f.a, f.b, "rgba(167,139,250,.10)", "rgba(167,139,250,.25)"));
+    const lit = new Set(stage >= 1 ? S.defects : []);
+    zFaces.forEach((f, k) => { const on = lit.has(k);
+      if (on && stage < 3) { g.shadowColor = "#ffd166"; g.shadowBlur = 22; }
+      face(g, G, f.cs, f.a, f.b, on ? (stage < 3 ? "rgba(255,209,102,.78)" : "rgba(255,209,102,.32)") : "rgba(255,209,102,.13)", "rgba(255,209,102,.35)"); g.shadowBlur = 0; });
+    // matching
+    if (stage >= 2) { g.strokeStyle = "#5ef2e0"; g.lineWidth = 3; g.setLineDash([7, 5]); g.lineCap = "round";
+      for (const [a, b] of S.pairs) { const [x1, y1] = center(G, C.plaquettes[a]); g.beginPath(); g.moveTo(x1, y1);
+        if (b === -1) { const left = x1 < G.X((d - 1) / 2); g.lineTo(left ? G.X(0) - G.s * 0.55 : G.X(d - 1) + G.s * 0.55, y1); }
+        else { const [x2, y2] = center(G, C.plaquettes[b]); g.lineTo(x2, y2); } g.stroke(); }
+      g.setLineDash([]); }
+    // qubits
+    const err = new Set(S.errors), cor = new Set(S.correction), res = new Set(chk.residual);
+    for (let r = 0; r < d; r++) for (let c = 0; c < d; c++) { const q = r * d + c, x = G.X(c), y = G.Y(r);
+      g.fillStyle = "#0b1224"; g.strokeStyle = "rgba(232,238,248,.75)"; g.lineWidth = 2; g.beginPath(); g.arc(x, y, G.s * 0.14, 0, 7); g.fill(); g.stroke();
+      const showErr = stage < 3 ? err.has(q) : res.has(q);
+      if (showErr) { g.strokeStyle = "#ff6b4a"; g.lineWidth = 3.2; const k = G.s * 0.13; g.beginPath(); g.moveTo(x - k, y - k); g.lineTo(x + k, y + k); g.moveTo(x + k, y - k); g.lineTo(x - k, y + k); g.stroke(); }
+      if (stage >= 3 && cor.has(q)) { g.strokeStyle = "#5ef2e0"; g.lineWidth = 2.5; g.beginPath(); g.arc(x, y, G.s * 0.24, 0, 7); g.stroke(); } }
+    if (stage >= 3 && S.logical_error) {           // the residual flips: a string from the left edge to the right
+      const pts = chk.residual.map((q) => [q % d, Math.floor(q / d)]).sort((u, v) => u[0] - v[0] || u[1] - v[1]);
+      g.strokeStyle = "rgba(255,107,74,.55)"; g.lineWidth = 7; g.lineJoin = "round"; g.beginPath();
+      g.moveTo(G.X(0) - G.s * 0.5, G.Y(pts[0][1])); pts.forEach(([c, r]) => g.lineTo(G.X(c), G.Y(r)));
+      g.lineTo(G.X(d - 1) + G.s * 0.5, G.Y(pts[pts.length - 1][1])); g.stroke(); }
+    g.fillStyle = "#5b6780"; g.font = "11px JetBrains Mono, monospace"; g.fillText("left and right edges: where bit-flip strings can end unseen", 12, H - 10);
+    for (let k = 0; k < 4; k++) $("st" + k).classList.toggle("on", k === stage);
+    $("banner").innerHTML = stage < 3 ? `<span class="warm">${["Errors happen; nobody can see them directly.", "Only the parity checks are measured: the lit ones bracket the errors.", "The decoder pairs lit checks (or sends one to an edge) along the shortest total path.", ""][stage]}</span>`
+      : S.errors.length === 0 ? `<span class="ok">✓ No errors this time: nothing to fix.</span>`
+      : S.logical_error ? `<span class="bad">✗ Logical error: the errors and the correction (ringed) together form a string from edge to edge. The encoded qubit flipped.</span>`
+      : `<span class="ok">✓ Logical qubit intact: every error is cancelled or closed into a harmless loop.</span>`;
+    $("k-n").textContent = d * d; $("k-err").textContent = S.errors.length; $("k-def").textContent = S.defects.length;
+    $("k-shot").textContent = `${shot + 1} / ${shots().length}`;
+    const fails = shots().filter((s) => s.logical_error).length; $("k-fails").innerHTML = `<span class="${fails ? "bad" : "ok"}">${fails}</span>`;
+    const rate = C.failure[DATA.p_grid.findIndex((x) => Math.abs(x - +p) < 1e-9)]; $("k-rate").textContent = rate === undefined ? "—" : (100 * rate).toFixed(2) + " %";
+    $("k-check").innerHTML = chk.syndromeMatches && chk.residualClean && chk.logicalError === S.logical_error ? `<span class="ok">✓ consistent</span>` : `<span class="bad">✗ mismatch</span>`;
+  }
+  function drawCurve() {
+    const [g, W, H] = ctx($("curve")), pad = 56, lo = -4, hi = Math.log10(0.5), px = DATA.p_grid;
+    const X = (x) => pad + (W - pad - 14) * (x - 0.01) / 0.15, Y = (y) => H - 26 - (H - 38) * (Math.log10(Math.max(y, 1e-4)) - lo) / (hi - lo);
+    g.font = "11px JetBrains Mono, monospace"; g.fillStyle = "#5b6780"; g.strokeStyle = "rgba(148,170,210,.12)";
+    [1e-4, 1e-3, 1e-2, 1e-1].forEach((y) => { g.beginPath(); g.moveTo(pad, Y(y)); g.lineTo(W - 10, Y(y)); g.stroke(); g.fillText(y >= 0.01 ? (100 * y) + " %" : y.toExponential(0), 6, Y(y) + 4); });
+    [0.02, 0.05, 0.08, 0.11, 0.14].forEach((x) => g.fillText((100 * x).toFixed(0) + " %", X(x) - 10, H - 8));
+    g.fillStyle = "rgba(94,242,224,.07)"; g.fillRect(X(0.095), 8, X(0.103) - X(0.095), H - 34);
+    g.fillStyle = "#93a1b8"; g.fillText("threshold", X(0.095) + 2, 20);
+    [["3", "#ff8a4c"], ["5", "#5ef2e0"], ["7", "#a78bfa"]].forEach(([dd, col]) => { const ys = DATA.codes[dd].failure;
+      g.strokeStyle = col; g.lineWidth = dd === String(d) ? 3 : 1.6; g.beginPath(); let pen = false;
+      px.forEach((x, i) => { if (ys[i] > 0) { pen ? g.lineTo(X(x), Y(ys[i])) : g.moveTo(X(x), Y(ys[i])); pen = true; } }); g.stroke();
+      g.fillStyle = col; const i = px.length - 1; g.fillText("d = " + dd, X(px[i]) - 44, Y(ys[i]) - 6); });
+    g.strokeStyle = "rgba(232,238,248,.5)"; g.setLineDash([3, 4]); g.beginPath(); g.moveTo(X(+p), 8); g.lineTo(X(+p), H - 26); g.stroke(); g.setLineDash([]);
+    g.strokeStyle = "rgba(232,238,248,.35)"; g.beginPath(); g.moveTo(X(0.01), Y(0.01)); g.lineTo(X(0.16), Y(0.16)); g.stroke();
+    g.fillStyle = "#93a1b8"; g.fillText("unencoded qubit (logical = physical)", X(0.03), Y(0.03) - 8);
+  }
+  document.querySelectorAll("[data-d]").forEach((b) => b.onclick = () => { d = +b.dataset.d; shot = 0; stage = 0; document.querySelectorAll("[data-d]").forEach((x) => x.classList.toggle("on", x === b)); draw(); drawCurve(); });
+  document.querySelectorAll("[data-p]").forEach((b) => b.onclick = () => { p = b.dataset.p; shot = 0; stage = 0; document.querySelectorAll("[data-p]").forEach((x) => x.classList.toggle("on", x === b)); draw(); drawCurve(); });
+  $("prev").onclick = () => { shot = (shot + shots().length - 1) % shots().length; stage = 0; draw(); };
+  $("next").onclick = () => { shot = (shot + 1) % shots().length; stage = 0; draw(); };
+  $("stepbtn").onclick = () => { playing = false; $("play").textContent = "▶ play"; if (stage < 3) stage++; else { shot = (shot + 1) % shots().length; stage = 0; } draw(); };
+  $("play").onclick = () => { playing = !playing; $("play").textContent = playing ? "❚❚ pause" : "▶ play"; };
+  function loop(now) { if (playing && now - lastStep > (stage === 3 ? 2200 : 1100)) { lastStep = now; if (stage < 3) stage++; else { shot = (shot + 1) % shots().length; stage = 0; } draw(); } requestAnimationFrame(loop); }
+  addEventListener("resize", () => { draw(); drawCurve(); });
+  draw(); drawCurve(); requestAnimationFrame(loop);
+  window.QLLQecLab = { set(dd, pp, s, st) { d = dd; p = pp; shot = s; stage = st; playing = false; $("play").textContent = "▶ play";
+      document.querySelectorAll("[data-d]").forEach((x) => x.classList.toggle("on", +x.dataset.d === d));
+      document.querySelectorAll("[data-p]").forEach((x) => x.classList.toggle("on", x.dataset.p === p)); draw(); drawCurve(); }, data: DATA };
+  document.body.dataset.ready = "1";
+})();
+</script>
+</body>
+</html>

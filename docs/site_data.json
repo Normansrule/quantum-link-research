@@ -1,16 +1,16 @@
 {
  "status": {
-  "version": "0.36.0",
-  "tests": 637,
+  "version": "0.37.0",
+  "tests": 646,
   "requirements": 25,
   "requirements_verified": 24,
-  "references": 401,
+  "references": 402,
   "references_verified": 21,
   "learn_files": 91,
   "experiment_files": 55,
   "research_files": 35,
   "simulations": 8,
-  "figures": 43,
+  "figures": 44,
   "phases_done": 6
  },
  "headline": {
@@ -5380,6 +5380,6490 @@
   "ramsey": {
    "detuning_mhz": 0.5,
    "t2_us": 40.0
+  }
+ },
+ "qec": {
+  "ps": [
+   0.02,
+   0.05,
+   0.08,
+   0.11,
+   0.14
+  ],
+  "p_grid": [
+   0.01,
+   0.02,
+   0.03,
+   0.04,
+   0.05,
+   0.06,
+   0.07,
+   0.08,
+   0.09,
+   0.1,
+   0.11,
+   0.12,
+   0.13,
+   0.14,
+   0.15,
+   0.16
+  ],
+  "codes": {
+   "3": {
+    "plaquettes": [
+     [
+      [
+       0,
+       1
+      ],
+      [
+       0,
+       2
+      ]
+     ],
+     [
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       1
+      ],
+      [
+       1,
+       0
+      ],
+      [
+       1,
+       1
+      ]
+     ],
+     [
+      [
+       1,
+       1
+      ],
+      [
+       1,
+       2
+      ],
+      [
+       2,
+       1
+      ],
+      [
+       2,
+       2
+      ]
+     ],
+     [
+      [
+       2,
+       0
+      ],
+      [
+       2,
+       1
+      ]
+     ]
+    ],
+    "shots": {
+     "0.02": [
+      {
+       "errors": [],
+       "defects": [],
+       "pairs": [],
+       "correction": [],
+       "logical_error": false
+      },
+      {
+       "errors": [],
+       "defects": [],
+       "pairs": [],
+       "correction": [],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        6
+       ],
+       "defects": [
+        3
+       ],
+       "pairs": [
+        [
+         3,
+         -1
+        ]
+       ],
+       "correction": [
+        6
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [],
+       "defects": [],
+       "pairs": [],
+       "correction": [],
+       "logical_error": false
+      },
+      {
+       "errors": [],
+       "defects": [],
+       "pairs": [],
+       "correction": [],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        5
+       ],
+       "defects": [
+        2
+       ],
+       "pairs": [
+        [
+         2,
+         -1
+        ]
+       ],
+       "correction": [
+        5
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        5
+       ],
+       "defects": [
+        2
+       ],
+       "pairs": [
+        [
+         2,
+         -1
+        ]
+       ],
+       "correction": [
+        5
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [],
+       "defects": [],
+       "pairs": [],
+       "correction": [],
+       "logical_error": false
+      },
+      {
+       "errors": [],
+       "defects": [],
+       "pairs": [],
+       "correction": [],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        3
+       ],
+       "defects": [
+        1
+       ],
+       "pairs": [
+        [
+         1,
+         -1
+        ]
+       ],
+       "correction": [
+        0
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        0
+       ],
+       "defects": [
+        1
+       ],
+       "pairs": [
+        [
+         1,
+         -1
+        ]
+       ],
+       "correction": [
+        0
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [],
+       "defects": [],
+       "pairs": [],
+       "correction": [],
+       "logical_error": false
+      },
+      {
+       "errors": [],
+       "defects": [],
+       "pairs": [],
+       "correction": [],
+       "logical_error": false
+      },
+      {
+       "errors": [],
+       "defects": [],
+       "pairs": [],
+       "correction": [],
+       "logical_error": false
+      },
+      {
+       "errors": [],
+       "defects": [],
+       "pairs": [],
+       "correction": [],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        0
+       ],
+       "defects": [
+        1
+       ],
+       "pairs": [
+        [
+         1,
+         -1
+        ]
+       ],
+       "correction": [
+        0
+       ],
+       "logical_error": false
+      }
+     ],
+     "0.05": [
+      {
+       "errors": [
+        7
+       ],
+       "defects": [
+        2,
+        3
+       ],
+       "pairs": [
+        [
+         2,
+         3
+        ]
+       ],
+       "correction": [
+        7
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        1
+       ],
+       "defects": [
+        0,
+        1
+       ],
+       "pairs": [
+        [
+         0,
+         1
+        ]
+       ],
+       "correction": [
+        1
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [],
+       "defects": [],
+       "pairs": [],
+       "correction": [],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        1,
+        5
+       ],
+       "defects": [
+        0,
+        1,
+        2
+       ],
+       "pairs": [
+        [
+         0,
+         1
+        ],
+        [
+         2,
+         -1
+        ]
+       ],
+       "correction": [
+        1,
+        5
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        4,
+        6
+       ],
+       "defects": [
+        1,
+        2,
+        3
+       ],
+       "pairs": [
+        [
+         1,
+         2
+        ],
+        [
+         3,
+         -1
+        ]
+       ],
+       "correction": [
+        4,
+        6
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        8
+       ],
+       "defects": [
+        2
+       ],
+       "pairs": [
+        [
+         2,
+         -1
+        ]
+       ],
+       "correction": [
+        5
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        1
+       ],
+       "defects": [
+        0,
+        1
+       ],
+       "pairs": [
+        [
+         0,
+         1
+        ]
+       ],
+       "correction": [
+        1
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        7
+       ],
+       "defects": [
+        2,
+        3
+       ],
+       "pairs": [
+        [
+         2,
+         3
+        ]
+       ],
+       "correction": [
+        7
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        3
+       ],
+       "defects": [
+        1
+       ],
+       "pairs": [
+        [
+         1,
+         -1
+        ]
+       ],
+       "correction": [
+        0
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        7
+       ],
+       "defects": [
+        2,
+        3
+       ],
+       "pairs": [
+        [
+         2,
+         3
+        ]
+       ],
+       "correction": [
+        7
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [],
+       "defects": [],
+       "pairs": [],
+       "correction": [],
+       "logical_error": false
+      },
+      {
+       "errors": [],
+       "defects": [],
+       "pairs": [],
+       "correction": [],
+       "logical_error": false
+      },
+      {
+       "errors": [],
+       "defects": [],
+       "pairs": [],
+       "correction": [],
+       "logical_error": false
+      },
+      {
+       "errors": [],
+       "defects": [],
+       "pairs": [],
+       "correction": [],
+       "logical_error": false
+      },
+      {
+       "errors": [],
+       "defects": [],
+       "pairs": [],
+       "correction": [],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        2
+       ],
+       "defects": [
+        0
+       ],
+       "pairs": [
+        [
+         0,
+         -1
+        ]
+       ],
+       "correction": [
+        2
+       ],
+       "logical_error": false
+      }
+     ],
+     "0.08": [
+      {
+       "errors": [
+        1,
+        7
+       ],
+       "defects": [
+        0,
+        1,
+        2,
+        3
+       ],
+       "pairs": [
+        [
+         0,
+         1
+        ],
+        [
+         2,
+         3
+        ]
+       ],
+       "correction": [
+        1,
+        7
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [],
+       "defects": [],
+       "pairs": [],
+       "correction": [],
+       "logical_error": false
+      },
+      {
+       "errors": [],
+       "defects": [],
+       "pairs": [],
+       "correction": [],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        1
+       ],
+       "defects": [
+        0,
+        1
+       ],
+       "pairs": [
+        [
+         0,
+         1
+        ]
+       ],
+       "correction": [
+        1
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [],
+       "defects": [],
+       "pairs": [],
+       "correction": [],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        6
+       ],
+       "defects": [
+        3
+       ],
+       "pairs": [
+        [
+         3,
+         -1
+        ]
+       ],
+       "correction": [
+        6
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        1,
+        2,
+        7
+       ],
+       "defects": [
+        1,
+        2,
+        3
+       ],
+       "pairs": [
+        [
+         1,
+         2
+        ],
+        [
+         3,
+         -1
+        ]
+       ],
+       "correction": [
+        4,
+        6
+       ],
+       "logical_error": true
+      },
+      {
+       "errors": [],
+       "defects": [],
+       "pairs": [],
+       "correction": [],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        3
+       ],
+       "defects": [
+        1
+       ],
+       "pairs": [
+        [
+         1,
+         -1
+        ]
+       ],
+       "correction": [
+        0
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        4
+       ],
+       "defects": [
+        1,
+        2
+       ],
+       "pairs": [
+        [
+         1,
+         2
+        ]
+       ],
+       "correction": [
+        4
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        1,
+        5,
+        7
+       ],
+       "defects": [
+        0,
+        1,
+        3
+       ],
+       "pairs": [
+        [
+         0,
+         1
+        ],
+        [
+         3,
+         -1
+        ]
+       ],
+       "correction": [
+        1,
+        6
+       ],
+       "logical_error": true
+      },
+      {
+       "errors": [],
+       "defects": [],
+       "pairs": [],
+       "correction": [],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        0,
+        1,
+        3
+       ],
+       "defects": [
+        0,
+        1
+       ],
+       "pairs": [
+        [
+         0,
+         1
+        ]
+       ],
+       "correction": [
+        1
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        4,
+        8
+       ],
+       "defects": [
+        1
+       ],
+       "pairs": [
+        [
+         1,
+         -1
+        ]
+       ],
+       "correction": [
+        0
+       ],
+       "logical_error": true
+      },
+      {
+       "errors": [],
+       "defects": [],
+       "pairs": [],
+       "correction": [],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        3
+       ],
+       "defects": [
+        1
+       ],
+       "pairs": [
+        [
+         1,
+         -1
+        ]
+       ],
+       "correction": [
+        0
+       ],
+       "logical_error": false
+      }
+     ],
+     "0.11": [
+      {
+       "errors": [],
+       "defects": [],
+       "pairs": [],
+       "correction": [],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        3
+       ],
+       "defects": [
+        1
+       ],
+       "pairs": [
+        [
+         1,
+         -1
+        ]
+       ],
+       "correction": [
+        0
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [],
+       "defects": [],
+       "pairs": [],
+       "correction": [],
+       "logical_error": false
+      },
+      {
+       "errors": [],
+       "defects": [],
+       "pairs": [],
+       "correction": [],
+       "logical_error": false
+      },
+      {
+       "errors": [],
+       "defects": [],
+       "pairs": [],
+       "correction": [],
+       "logical_error": false
+      },
+      {
+       "errors": [],
+       "defects": [],
+       "pairs": [],
+       "correction": [],
+       "logical_error": false
+      },
+      {
+       "errors": [],
+       "defects": [],
+       "pairs": [],
+       "correction": [],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        6
+       ],
+       "defects": [
+        3
+       ],
+       "pairs": [
+        [
+         3,
+         -1
+        ]
+       ],
+       "correction": [
+        6
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [],
+       "defects": [],
+       "pairs": [],
+       "correction": [],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        4
+       ],
+       "defects": [
+        1,
+        2
+       ],
+       "pairs": [
+        [
+         1,
+         2
+        ]
+       ],
+       "correction": [
+        4
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [],
+       "defects": [],
+       "pairs": [],
+       "correction": [],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        2,
+        3,
+        6
+       ],
+       "defects": [
+        0,
+        1,
+        3
+       ],
+       "pairs": [
+        [
+         0,
+         1
+        ],
+        [
+         3,
+         -1
+        ]
+       ],
+       "correction": [
+        1,
+        6
+       ],
+       "logical_error": true
+      },
+      {
+       "errors": [],
+       "defects": [],
+       "pairs": [],
+       "correction": [],
+       "logical_error": false
+      },
+      {
+       "errors": [],
+       "defects": [],
+       "pairs": [],
+       "correction": [],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        1
+       ],
+       "defects": [
+        0,
+        1
+       ],
+       "pairs": [
+        [
+         0,
+         1
+        ]
+       ],
+       "correction": [
+        1
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [],
+       "defects": [],
+       "pairs": [],
+       "correction": [],
+       "logical_error": false
+      }
+     ],
+     "0.14": [
+      {
+       "errors": [
+        1
+       ],
+       "defects": [
+        0,
+        1
+       ],
+       "pairs": [
+        [
+         0,
+         1
+        ]
+       ],
+       "correction": [
+        1
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        2,
+        5,
+        8
+       ],
+       "defects": [
+        0
+       ],
+       "pairs": [
+        [
+         0,
+         -1
+        ]
+       ],
+       "correction": [
+        2
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        3
+       ],
+       "defects": [
+        1
+       ],
+       "pairs": [
+        [
+         1,
+         -1
+        ]
+       ],
+       "correction": [
+        0
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        1,
+        2,
+        3
+       ],
+       "defects": [],
+       "pairs": [],
+       "correction": [],
+       "logical_error": true
+      },
+      {
+       "errors": [
+        1
+       ],
+       "defects": [
+        0,
+        1
+       ],
+       "pairs": [
+        [
+         0,
+         1
+        ]
+       ],
+       "correction": [
+        1
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        2,
+        4,
+        6
+       ],
+       "defects": [
+        0,
+        1,
+        2,
+        3
+       ],
+       "pairs": [
+        [
+         0,
+         1
+        ],
+        [
+         2,
+         3
+        ]
+       ],
+       "correction": [
+        1,
+        7
+       ],
+       "logical_error": true
+      },
+      {
+       "errors": [
+        6
+       ],
+       "defects": [
+        3
+       ],
+       "pairs": [
+        [
+         3,
+         -1
+        ]
+       ],
+       "correction": [
+        6
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        5
+       ],
+       "defects": [
+        2
+       ],
+       "pairs": [
+        [
+         2,
+         -1
+        ]
+       ],
+       "correction": [
+        5
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        0,
+        2,
+        6
+       ],
+       "defects": [
+        0,
+        1,
+        3
+       ],
+       "pairs": [
+        [
+         0,
+         1
+        ],
+        [
+         3,
+         -1
+        ]
+       ],
+       "correction": [
+        1,
+        6
+       ],
+       "logical_error": true
+      },
+      {
+       "errors": [
+        7
+       ],
+       "defects": [
+        2,
+        3
+       ],
+       "pairs": [
+        [
+         2,
+         3
+        ]
+       ],
+       "correction": [
+        7
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [],
+       "defects": [],
+       "pairs": [],
+       "correction": [],
+       "logical_error": false
+      },
+      {
+       "errors": [],
+       "defects": [],
+       "pairs": [],
+       "correction": [],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        1,
+        3,
+        5
+       ],
+       "defects": [
+        0,
+        2
+       ],
+       "pairs": [
+        [
+         0,
+         -1
+        ],
+        [
+         2,
+         -1
+        ]
+       ],
+       "correction": [
+        2,
+        5
+       ],
+       "logical_error": true
+      },
+      {
+       "errors": [
+        1,
+        2,
+        6
+       ],
+       "defects": [
+        1,
+        3
+       ],
+       "pairs": [
+        [
+         1,
+         -1
+        ],
+        [
+         3,
+         -1
+        ]
+       ],
+       "correction": [
+        0,
+        6
+       ],
+       "logical_error": true
+      },
+      {
+       "errors": [
+        2,
+        5,
+        7
+       ],
+       "defects": [
+        0,
+        3
+       ],
+       "pairs": [
+        [
+         0,
+         -1
+        ],
+        [
+         3,
+         -1
+        ]
+       ],
+       "correction": [
+        2,
+        6
+       ],
+       "logical_error": true
+      },
+      {
+       "errors": [
+        1
+       ],
+       "defects": [
+        0,
+        1
+       ],
+       "pairs": [
+        [
+         0,
+         1
+        ]
+       ],
+       "correction": [
+        1
+       ],
+       "logical_error": false
+      }
+     ]
+    },
+    "failure": [
+     0.0018,
+     0.007,
+     0.015,
+     0.02575,
+     0.0379,
+     0.05005,
+     0.0674,
+     0.08555,
+     0.1031,
+     0.12125,
+     0.1413,
+     0.1605,
+     0.179,
+     0.19755,
+     0.21595,
+     0.23515
+    ]
+   },
+   "5": {
+    "plaquettes": [
+     [
+      [
+       0,
+       1
+      ],
+      [
+       0,
+       2
+      ]
+     ],
+     [
+      [
+       0,
+       3
+      ],
+      [
+       0,
+       4
+      ]
+     ],
+     [
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       1
+      ],
+      [
+       1,
+       0
+      ],
+      [
+       1,
+       1
+      ]
+     ],
+     [
+      [
+       0,
+       2
+      ],
+      [
+       0,
+       3
+      ],
+      [
+       1,
+       2
+      ],
+      [
+       1,
+       3
+      ]
+     ],
+     [
+      [
+       1,
+       1
+      ],
+      [
+       1,
+       2
+      ],
+      [
+       2,
+       1
+      ],
+      [
+       2,
+       2
+      ]
+     ],
+     [
+      [
+       1,
+       3
+      ],
+      [
+       1,
+       4
+      ],
+      [
+       2,
+       3
+      ],
+      [
+       2,
+       4
+      ]
+     ],
+     [
+      [
+       2,
+       0
+      ],
+      [
+       2,
+       1
+      ],
+      [
+       3,
+       0
+      ],
+      [
+       3,
+       1
+      ]
+     ],
+     [
+      [
+       2,
+       2
+      ],
+      [
+       2,
+       3
+      ],
+      [
+       3,
+       2
+      ],
+      [
+       3,
+       3
+      ]
+     ],
+     [
+      [
+       3,
+       1
+      ],
+      [
+       3,
+       2
+      ],
+      [
+       4,
+       1
+      ],
+      [
+       4,
+       2
+      ]
+     ],
+     [
+      [
+       3,
+       3
+      ],
+      [
+       3,
+       4
+      ],
+      [
+       4,
+       3
+      ],
+      [
+       4,
+       4
+      ]
+     ],
+     [
+      [
+       4,
+       0
+      ],
+      [
+       4,
+       1
+      ]
+     ],
+     [
+      [
+       4,
+       2
+      ],
+      [
+       4,
+       3
+      ]
+     ]
+    ],
+    "shots": {
+     "0.02": [
+      {
+       "errors": [
+        10
+       ],
+       "defects": [
+        6
+       ],
+       "pairs": [
+        [
+         6,
+         -1
+        ]
+       ],
+       "correction": [
+        10
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        18
+       ],
+       "defects": [
+        7,
+        9
+       ],
+       "pairs": [
+        [
+         7,
+         9
+        ]
+       ],
+       "correction": [
+        18
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [],
+       "defects": [],
+       "pairs": [],
+       "correction": [],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        24
+       ],
+       "defects": [
+        9
+       ],
+       "pairs": [
+        [
+         9,
+         -1
+        ]
+       ],
+       "correction": [
+        19
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [],
+       "defects": [],
+       "pairs": [],
+       "correction": [],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        3,
+        4,
+        15
+       ],
+       "defects": [
+        3,
+        6
+       ],
+       "pairs": [
+        [
+         3,
+         6
+        ]
+       ],
+       "correction": [
+        7,
+        11
+       ],
+       "logical_error": true
+      },
+      {
+       "errors": [],
+       "defects": [],
+       "pairs": [],
+       "correction": [],
+       "logical_error": false
+      },
+      {
+       "errors": [],
+       "defects": [],
+       "pairs": [],
+       "correction": [],
+       "logical_error": false
+      },
+      {
+       "errors": [],
+       "defects": [],
+       "pairs": [],
+       "correction": [],
+       "logical_error": false
+      },
+      {
+       "errors": [],
+       "defects": [],
+       "pairs": [],
+       "correction": [],
+       "logical_error": false
+      },
+      {
+       "errors": [],
+       "defects": [],
+       "pairs": [],
+       "correction": [],
+       "logical_error": false
+      },
+      {
+       "errors": [],
+       "defects": [],
+       "pairs": [],
+       "correction": [],
+       "logical_error": false
+      },
+      {
+       "errors": [],
+       "defects": [],
+       "pairs": [],
+       "correction": [],
+       "logical_error": false
+      },
+      {
+       "errors": [],
+       "defects": [],
+       "pairs": [],
+       "correction": [],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        4
+       ],
+       "defects": [
+        1
+       ],
+       "pairs": [
+        [
+         1,
+         -1
+        ]
+       ],
+       "correction": [
+        4
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [],
+       "defects": [],
+       "pairs": [],
+       "correction": [],
+       "logical_error": false
+      }
+     ],
+     "0.05": [
+      {
+       "errors": [
+        13
+       ],
+       "defects": [
+        5,
+        7
+       ],
+       "pairs": [
+        [
+         5,
+         7
+        ]
+       ],
+       "correction": [
+        13
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        17
+       ],
+       "defects": [
+        7,
+        8
+       ],
+       "pairs": [
+        [
+         7,
+         8
+        ]
+       ],
+       "correction": [
+        17
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        5
+       ],
+       "defects": [
+        2
+       ],
+       "pairs": [
+        [
+         2,
+         -1
+        ]
+       ],
+       "correction": [
+        0
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        18
+       ],
+       "defects": [
+        7,
+        9
+       ],
+       "pairs": [
+        [
+         7,
+         9
+        ]
+       ],
+       "correction": [
+        18
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        2,
+        19
+       ],
+       "defects": [
+        0,
+        3,
+        9
+       ],
+       "pairs": [
+        [
+         0,
+         3
+        ],
+        [
+         9,
+         -1
+        ]
+       ],
+       "correction": [
+        2,
+        19
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        8,
+        10
+       ],
+       "defects": [
+        3,
+        5,
+        6
+       ],
+       "pairs": [
+        [
+         3,
+         5
+        ],
+        [
+         6,
+         -1
+        ]
+       ],
+       "correction": [
+        8,
+        10
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        3
+       ],
+       "defects": [
+        1,
+        3
+       ],
+       "pairs": [
+        [
+         1,
+         3
+        ]
+       ],
+       "correction": [
+        3
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [],
+       "defects": [],
+       "pairs": [],
+       "correction": [],
+       "logical_error": false
+      },
+      {
+       "errors": [],
+       "defects": [],
+       "pairs": [],
+       "correction": [],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        15,
+        24
+       ],
+       "defects": [
+        6,
+        9
+       ],
+       "pairs": [
+        [
+         6,
+         -1
+        ],
+        [
+         9,
+         -1
+        ]
+       ],
+       "correction": [
+        10,
+        19
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        22
+       ],
+       "defects": [
+        8,
+        11
+       ],
+       "pairs": [
+        [
+         8,
+         11
+        ]
+       ],
+       "correction": [
+        22
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        4,
+        18,
+        19
+       ],
+       "defects": [
+        1,
+        7
+       ],
+       "pairs": [
+        [
+         1,
+         -1
+        ],
+        [
+         7,
+         -1
+        ]
+       ],
+       "correction": [
+        4,
+        18,
+        19
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        24
+       ],
+       "defects": [
+        9
+       ],
+       "pairs": [
+        [
+         9,
+         -1
+        ]
+       ],
+       "correction": [
+        19
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        17
+       ],
+       "defects": [
+        7,
+        8
+       ],
+       "pairs": [
+        [
+         7,
+         8
+        ]
+       ],
+       "correction": [
+        17
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        9
+       ],
+       "defects": [
+        5
+       ],
+       "pairs": [
+        [
+         5,
+         -1
+        ]
+       ],
+       "correction": [
+        9
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [],
+       "defects": [],
+       "pairs": [],
+       "correction": [],
+       "logical_error": false
+      }
+     ],
+     "0.08": [
+      {
+       "errors": [
+        0,
+        2,
+        5
+       ],
+       "defects": [
+        0,
+        3
+       ],
+       "pairs": [
+        [
+         0,
+         3
+        ]
+       ],
+       "correction": [
+        2
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        7,
+        11,
+        21
+       ],
+       "defects": [
+        3,
+        6,
+        8,
+        10
+       ],
+       "pairs": [
+        [
+         3,
+         6
+        ],
+        [
+         8,
+         10
+        ]
+       ],
+       "correction": [
+        7,
+        11,
+        21
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        15,
+        22
+       ],
+       "defects": [
+        6,
+        8,
+        11
+       ],
+       "pairs": [
+        [
+         11,
+         8
+        ],
+        [
+         6,
+         -1
+        ]
+       ],
+       "correction": [
+        10,
+        22
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        6,
+        19,
+        22
+       ],
+       "defects": [
+        2,
+        4,
+        8,
+        9,
+        11
+       ],
+       "pairs": [
+        [
+         2,
+         4
+        ],
+        [
+         8,
+         11
+        ],
+        [
+         9,
+         -1
+        ]
+       ],
+       "correction": [
+        6,
+        19,
+        22
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        16
+       ],
+       "defects": [
+        6,
+        8
+       ],
+       "pairs": [
+        [
+         6,
+         8
+        ]
+       ],
+       "correction": [
+        16
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        1,
+        3,
+        7
+       ],
+       "defects": [
+        0,
+        1,
+        2,
+        4
+       ],
+       "pairs": [
+        [
+         0,
+         2
+        ],
+        [
+         4,
+         1
+        ]
+       ],
+       "correction": [
+        1,
+        3,
+        7
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        4
+       ],
+       "defects": [
+        1
+       ],
+       "pairs": [
+        [
+         1,
+         -1
+        ]
+       ],
+       "correction": [
+        4
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        15
+       ],
+       "defects": [
+        6
+       ],
+       "pairs": [
+        [
+         6,
+         -1
+        ]
+       ],
+       "correction": [
+        10
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        1,
+        2,
+        5
+       ],
+       "defects": [
+        3
+       ],
+       "pairs": [
+        [
+         3,
+         -1
+        ]
+       ],
+       "correction": [
+        8,
+        9
+       ],
+       "logical_error": true
+      },
+      {
+       "errors": [
+        0,
+        17
+       ],
+       "defects": [
+        2,
+        7,
+        8
+       ],
+       "pairs": [
+        [
+         2,
+         -1
+        ],
+        [
+         7,
+         8
+        ]
+       ],
+       "correction": [
+        0,
+        17
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        12,
+        14,
+        15,
+        17
+       ],
+       "defects": [
+        4,
+        5,
+        6,
+        8
+       ],
+       "pairs": [
+        [
+         4,
+         6
+        ],
+        [
+         8,
+         5
+        ]
+       ],
+       "correction": [
+        11,
+        13,
+        17
+       ],
+       "logical_error": true
+      },
+      {
+       "errors": [],
+       "defects": [],
+       "pairs": [],
+       "correction": [],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        24
+       ],
+       "defects": [
+        9
+       ],
+       "pairs": [
+        [
+         9,
+         -1
+        ]
+       ],
+       "correction": [
+        19
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        14
+       ],
+       "defects": [
+        5
+       ],
+       "pairs": [
+        [
+         5,
+         -1
+        ]
+       ],
+       "correction": [
+        9
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        7,
+        19
+       ],
+       "defects": [
+        3,
+        4,
+        9
+       ],
+       "pairs": [
+        [
+         3,
+         4
+        ],
+        [
+         9,
+         -1
+        ]
+       ],
+       "correction": [
+        7,
+        19
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        15,
+        22
+       ],
+       "defects": [
+        6,
+        8,
+        11
+       ],
+       "pairs": [
+        [
+         11,
+         8
+        ],
+        [
+         6,
+         -1
+        ]
+       ],
+       "correction": [
+        10,
+        22
+       ],
+       "logical_error": false
+      }
+     ],
+     "0.11": [
+      {
+       "errors": [
+        2,
+        3,
+        6,
+        9,
+        24
+       ],
+       "defects": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        9
+       ],
+       "pairs": [
+        [
+         2,
+         0
+        ],
+        [
+         1,
+         5
+        ],
+        [
+         4,
+         9
+        ]
+       ],
+       "correction": [
+        1,
+        3,
+        8,
+        12,
+        18
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        2,
+        3,
+        9,
+        14,
+        19,
+        22
+       ],
+       "defects": [
+        0,
+        1,
+        8,
+        9,
+        11
+       ],
+       "pairs": [
+        [
+         0,
+         1
+        ],
+        [
+         8,
+         11
+        ],
+        [
+         9,
+         -1
+        ]
+       ],
+       "correction": [
+        2,
+        3,
+        19,
+        22
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [],
+       "defects": [],
+       "pairs": [],
+       "correction": [],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        1
+       ],
+       "defects": [
+        0,
+        2
+       ],
+       "pairs": [
+        [
+         0,
+         2
+        ]
+       ],
+       "correction": [
+        1
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        5,
+        6,
+        15,
+        16,
+        23
+       ],
+       "defects": [
+        4,
+        8,
+        9,
+        11
+       ],
+       "pairs": [
+        [
+         11,
+         9
+        ],
+        [
+         4,
+         8
+        ]
+       ],
+       "correction": [
+        11,
+        16,
+        23
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        7,
+        8,
+        13
+       ],
+       "defects": [
+        4,
+        7
+       ],
+       "pairs": [
+        [
+         4,
+         7
+        ]
+       ],
+       "correction": [
+        12
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        1,
+        10,
+        12,
+        15,
+        22
+       ],
+       "defects": [
+        0,
+        2,
+        4,
+        7,
+        8,
+        11
+       ],
+       "pairs": [
+        [
+         0,
+         2
+        ],
+        [
+         4,
+         7
+        ],
+        [
+         8,
+         11
+        ]
+       ],
+       "correction": [
+        1,
+        12,
+        22
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        0
+       ],
+       "defects": [
+        2
+       ],
+       "pairs": [
+        [
+         2,
+         -1
+        ]
+       ],
+       "correction": [
+        0
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        0,
+        12
+       ],
+       "defects": [
+        2,
+        4,
+        7
+       ],
+       "pairs": [
+        [
+         7,
+         4
+        ],
+        [
+         2,
+         -1
+        ]
+       ],
+       "correction": [
+        0,
+        12
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        1,
+        7,
+        11
+       ],
+       "defects": [
+        0,
+        2,
+        3,
+        6
+       ],
+       "pairs": [
+        [
+         0,
+         3
+        ],
+        [
+         2,
+         -1
+        ],
+        [
+         6,
+         -1
+        ]
+       ],
+       "correction": [
+        0,
+        2,
+        10
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        1,
+        2,
+        19,
+        22
+       ],
+       "defects": [
+        2,
+        3,
+        8,
+        9,
+        11
+       ],
+       "pairs": [
+        [
+         2,
+         3
+        ],
+        [
+         8,
+         11
+        ],
+        [
+         9,
+         -1
+        ]
+       ],
+       "correction": [
+        1,
+        2,
+        19,
+        22
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        12
+       ],
+       "defects": [
+        4,
+        7
+       ],
+       "pairs": [
+        [
+         4,
+         7
+        ]
+       ],
+       "correction": [
+        12
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        1,
+        6,
+        19,
+        20,
+        21,
+        22,
+        24
+       ],
+       "defects": [
+        0,
+        4,
+        11
+       ],
+       "pairs": [
+        [
+         0,
+         4
+        ],
+        [
+         11,
+         -1
+        ]
+       ],
+       "correction": [
+        1,
+        6,
+        19,
+        23
+       ],
+       "logical_error": true
+      },
+      {
+       "errors": [
+        12,
+        13,
+        15
+       ],
+       "defects": [
+        4,
+        5,
+        6
+       ],
+       "pairs": [
+        [
+         4,
+         6
+        ],
+        [
+         5,
+         -1
+        ]
+       ],
+       "correction": [
+        9,
+        11
+       ],
+       "logical_error": true
+      },
+      {
+       "errors": [
+        1,
+        8,
+        13,
+        20
+       ],
+       "defects": [
+        0,
+        2,
+        3,
+        7,
+        10
+       ],
+       "pairs": [
+        [
+         0,
+         3
+        ],
+        [
+         2,
+         7
+        ],
+        [
+         10,
+         -1
+        ]
+       ],
+       "correction": [
+        2,
+        6,
+        12,
+        20
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        0,
+        5,
+        7,
+        22
+       ],
+       "defects": [
+        3,
+        4,
+        8,
+        11
+       ],
+       "pairs": [
+        [
+         3,
+         4
+        ],
+        [
+         8,
+         11
+        ]
+       ],
+       "correction": [
+        7,
+        22
+       ],
+       "logical_error": false
+      }
+     ],
+     "0.14": [
+      {
+       "errors": [
+        12,
+        15,
+        22
+       ],
+       "defects": [
+        4,
+        6,
+        7,
+        8,
+        11
+       ],
+       "pairs": [
+        [
+         4,
+         7
+        ],
+        [
+         6,
+         -1
+        ],
+        [
+         8,
+         11
+        ]
+       ],
+       "correction": [
+        10,
+        12,
+        22
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        2,
+        4,
+        7
+       ],
+       "defects": [
+        0,
+        1,
+        4
+       ],
+       "pairs": [
+        [
+         0,
+         4
+        ],
+        [
+         1,
+         -1
+        ]
+       ],
+       "correction": [
+        1,
+        4,
+        6
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        3,
+        19,
+        21,
+        23
+       ],
+       "defects": [
+        1,
+        3,
+        8,
+        10,
+        11
+       ],
+       "pairs": [
+        [
+         1,
+         3
+        ],
+        [
+         8,
+         11
+        ],
+        [
+         10,
+         -1
+        ]
+       ],
+       "correction": [
+        3,
+        20,
+        22
+       ],
+       "logical_error": true
+      },
+      {
+       "errors": [
+        5,
+        9,
+        10,
+        15,
+        20
+       ],
+       "defects": [
+        2,
+        5,
+        10
+       ],
+       "pairs": [
+        [
+         2,
+         -1
+        ],
+        [
+         5,
+         -1
+        ],
+        [
+         10,
+         -1
+        ]
+       ],
+       "correction": [
+        0,
+        9,
+        20
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        12,
+        20,
+        21
+       ],
+       "defects": [
+        4,
+        7,
+        8
+       ],
+       "pairs": [
+        [
+         7,
+         8
+        ],
+        [
+         4,
+         -1
+        ]
+       ],
+       "correction": [
+        0,
+        6,
+        17
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        2,
+        6,
+        9,
+        16
+       ],
+       "defects": [
+        0,
+        2,
+        3,
+        4,
+        5,
+        6,
+        8
+       ],
+       "pairs": [
+        [
+         8,
+         6
+        ],
+        [
+         3,
+         0
+        ],
+        [
+         2,
+         4
+        ],
+        [
+         5,
+         -1
+        ]
+       ],
+       "correction": [
+        2,
+        6,
+        9,
+        16
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        4,
+        6,
+        15,
+        16,
+        21,
+        23
+       ],
+       "defects": [
+        1,
+        2,
+        4,
+        9,
+        10,
+        11
+       ],
+       "pairs": [
+        [
+         1,
+         -1
+        ],
+        [
+         2,
+         4
+        ],
+        [
+         9,
+         11
+        ],
+        [
+         10,
+         -1
+        ]
+       ],
+       "correction": [
+        4,
+        6,
+        20,
+        23
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        3,
+        7,
+        19
+       ],
+       "defects": [
+        1,
+        4,
+        9
+       ],
+       "pairs": [
+        [
+         1,
+         4
+        ],
+        [
+         9,
+         -1
+        ]
+       ],
+       "correction": [
+        3,
+        7,
+        19
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        13,
+        16
+       ],
+       "defects": [
+        5,
+        6,
+        7,
+        8
+       ],
+       "pairs": [
+        [
+         5,
+         7
+        ],
+        [
+         6,
+         8
+        ]
+       ],
+       "correction": [
+        13,
+        16
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [],
+       "defects": [],
+       "pairs": [],
+       "correction": [],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        13,
+        14,
+        16,
+        17,
+        22
+       ],
+       "defects": [
+        6,
+        8,
+        11
+       ],
+       "pairs": [
+        [
+         11,
+         8
+        ],
+        [
+         6,
+         -1
+        ]
+       ],
+       "correction": [
+        10,
+        22
+       ],
+       "logical_error": true
+      },
+      {
+       "errors": [
+        14
+       ],
+       "defects": [
+        5
+       ],
+       "pairs": [
+        [
+         5,
+         -1
+        ]
+       ],
+       "correction": [
+        9
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        0
+       ],
+       "defects": [
+        2
+       ],
+       "pairs": [
+        [
+         2,
+         -1
+        ]
+       ],
+       "correction": [
+        0
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        14
+       ],
+       "defects": [
+        5
+       ],
+       "pairs": [
+        [
+         5,
+         -1
+        ]
+       ],
+       "correction": [
+        9
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        7,
+        9,
+        12
+       ],
+       "defects": [
+        3,
+        5,
+        7
+       ],
+       "pairs": [
+        [
+         5,
+         7
+        ],
+        [
+         3,
+         -1
+        ]
+       ],
+       "correction": [
+        3,
+        4,
+        13
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        9,
+        15,
+        23
+       ],
+       "defects": [
+        5,
+        6,
+        9,
+        11
+       ],
+       "pairs": [
+        [
+         5,
+         -1
+        ],
+        [
+         6,
+         -1
+        ],
+        [
+         9,
+         11
+        ]
+       ],
+       "correction": [
+        9,
+        10,
+        23
+       ],
+       "logical_error": false
+      }
+     ]
+    },
+    "failure": [
+     0.0004,
+     0.0016,
+     0.00695,
+     0.015,
+     0.02565,
+     0.03995,
+     0.0572,
+     0.0786,
+     0.09975,
+     0.1249,
+     0.1515,
+     0.18045,
+     0.20835,
+     0.23545,
+     0.26185,
+     0.28375
+    ]
+   },
+   "7": {
+    "plaquettes": [
+     [
+      [
+       0,
+       1
+      ],
+      [
+       0,
+       2
+      ]
+     ],
+     [
+      [
+       0,
+       3
+      ],
+      [
+       0,
+       4
+      ]
+     ],
+     [
+      [
+       0,
+       5
+      ],
+      [
+       0,
+       6
+      ]
+     ],
+     [
+      [
+       0,
+       0
+      ],
+      [
+       0,
+       1
+      ],
+      [
+       1,
+       0
+      ],
+      [
+       1,
+       1
+      ]
+     ],
+     [
+      [
+       0,
+       2
+      ],
+      [
+       0,
+       3
+      ],
+      [
+       1,
+       2
+      ],
+      [
+       1,
+       3
+      ]
+     ],
+     [
+      [
+       0,
+       4
+      ],
+      [
+       0,
+       5
+      ],
+      [
+       1,
+       4
+      ],
+      [
+       1,
+       5
+      ]
+     ],
+     [
+      [
+       1,
+       1
+      ],
+      [
+       1,
+       2
+      ],
+      [
+       2,
+       1
+      ],
+      [
+       2,
+       2
+      ]
+     ],
+     [
+      [
+       1,
+       3
+      ],
+      [
+       1,
+       4
+      ],
+      [
+       2,
+       3
+      ],
+      [
+       2,
+       4
+      ]
+     ],
+     [
+      [
+       1,
+       5
+      ],
+      [
+       1,
+       6
+      ],
+      [
+       2,
+       5
+      ],
+      [
+       2,
+       6
+      ]
+     ],
+     [
+      [
+       2,
+       0
+      ],
+      [
+       2,
+       1
+      ],
+      [
+       3,
+       0
+      ],
+      [
+       3,
+       1
+      ]
+     ],
+     [
+      [
+       2,
+       2
+      ],
+      [
+       2,
+       3
+      ],
+      [
+       3,
+       2
+      ],
+      [
+       3,
+       3
+      ]
+     ],
+     [
+      [
+       2,
+       4
+      ],
+      [
+       2,
+       5
+      ],
+      [
+       3,
+       4
+      ],
+      [
+       3,
+       5
+      ]
+     ],
+     [
+      [
+       3,
+       1
+      ],
+      [
+       3,
+       2
+      ],
+      [
+       4,
+       1
+      ],
+      [
+       4,
+       2
+      ]
+     ],
+     [
+      [
+       3,
+       3
+      ],
+      [
+       3,
+       4
+      ],
+      [
+       4,
+       3
+      ],
+      [
+       4,
+       4
+      ]
+     ],
+     [
+      [
+       3,
+       5
+      ],
+      [
+       3,
+       6
+      ],
+      [
+       4,
+       5
+      ],
+      [
+       4,
+       6
+      ]
+     ],
+     [
+      [
+       4,
+       0
+      ],
+      [
+       4,
+       1
+      ],
+      [
+       5,
+       0
+      ],
+      [
+       5,
+       1
+      ]
+     ],
+     [
+      [
+       4,
+       2
+      ],
+      [
+       4,
+       3
+      ],
+      [
+       5,
+       2
+      ],
+      [
+       5,
+       3
+      ]
+     ],
+     [
+      [
+       4,
+       4
+      ],
+      [
+       4,
+       5
+      ],
+      [
+       5,
+       4
+      ],
+      [
+       5,
+       5
+      ]
+     ],
+     [
+      [
+       5,
+       1
+      ],
+      [
+       5,
+       2
+      ],
+      [
+       6,
+       1
+      ],
+      [
+       6,
+       2
+      ]
+     ],
+     [
+      [
+       5,
+       3
+      ],
+      [
+       5,
+       4
+      ],
+      [
+       6,
+       3
+      ],
+      [
+       6,
+       4
+      ]
+     ],
+     [
+      [
+       5,
+       5
+      ],
+      [
+       5,
+       6
+      ],
+      [
+       6,
+       5
+      ],
+      [
+       6,
+       6
+      ]
+     ],
+     [
+      [
+       6,
+       0
+      ],
+      [
+       6,
+       1
+      ]
+     ],
+     [
+      [
+       6,
+       2
+      ],
+      [
+       6,
+       3
+      ]
+     ],
+     [
+      [
+       6,
+       4
+      ],
+      [
+       6,
+       5
+      ]
+     ]
+    ],
+    "shots": {
+     "0.02": [
+      {
+       "errors": [],
+       "defects": [],
+       "pairs": [],
+       "correction": [],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        9
+       ],
+       "defects": [
+        4,
+        6
+       ],
+       "pairs": [
+        [
+         4,
+         6
+        ]
+       ],
+       "correction": [
+        9
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        8
+       ],
+       "defects": [
+        3,
+        6
+       ],
+       "pairs": [
+        [
+         3,
+         6
+        ]
+       ],
+       "correction": [
+        8
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        16
+       ],
+       "defects": [
+        6,
+        10
+       ],
+       "pairs": [
+        [
+         6,
+         10
+        ]
+       ],
+       "correction": [
+        16
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [],
+       "defects": [],
+       "pairs": [],
+       "correction": [],
+       "logical_error": false
+      },
+      {
+       "errors": [],
+       "defects": [],
+       "pairs": [],
+       "correction": [],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        29
+       ],
+       "defects": [
+        12,
+        15
+       ],
+       "pairs": [
+        [
+         12,
+         15
+        ]
+       ],
+       "correction": [
+        29
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        3,
+        40
+       ],
+       "defects": [
+        1,
+        4,
+        17,
+        20
+       ],
+       "pairs": [
+        [
+         1,
+         4
+        ],
+        [
+         17,
+         20
+        ]
+       ],
+       "correction": [
+        3,
+        40
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [],
+       "defects": [],
+       "pairs": [],
+       "correction": [],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        16
+       ],
+       "defects": [
+        6,
+        10
+       ],
+       "pairs": [
+        [
+         6,
+         10
+        ]
+       ],
+       "correction": [
+        16
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        2,
+        41,
+        46
+       ],
+       "defects": [
+        0,
+        4,
+        19,
+        20,
+        23
+       ],
+       "pairs": [
+        [
+         0,
+         4
+        ],
+        [
+         19,
+         23
+        ],
+        [
+         20,
+         -1
+        ]
+       ],
+       "correction": [
+        2,
+        41,
+        46
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [],
+       "defects": [],
+       "pairs": [],
+       "correction": [],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        45
+       ],
+       "defects": [
+        19,
+        22
+       ],
+       "pairs": [
+        [
+         19,
+         22
+        ]
+       ],
+       "correction": [
+        45
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [],
+       "defects": [],
+       "pairs": [],
+       "correction": [],
+       "logical_error": false
+      },
+      {
+       "errors": [],
+       "defects": [],
+       "pairs": [],
+       "correction": [],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        17,
+        22
+       ],
+       "defects": [
+        7,
+        9,
+        10,
+        12
+       ],
+       "pairs": [
+        [
+         7,
+         10
+        ],
+        [
+         9,
+         12
+        ]
+       ],
+       "correction": [
+        17,
+        22
+       ],
+       "logical_error": false
+      }
+     ],
+     "0.05": [
+      {
+       "errors": [
+        4,
+        16,
+        18,
+        38
+       ],
+       "defects": [
+        1,
+        5,
+        6,
+        7,
+        10,
+        11,
+        16,
+        19
+       ],
+       "pairs": [
+        [
+         1,
+         5
+        ],
+        [
+         6,
+         10
+        ],
+        [
+         7,
+         11
+        ],
+        [
+         16,
+         19
+        ]
+       ],
+       "correction": [
+        4,
+        16,
+        18,
+        38
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        17,
+        18,
+        23
+       ],
+       "defects": [
+        11,
+        12
+       ],
+       "pairs": [
+        [
+         11,
+         12
+        ]
+       ],
+       "correction": [
+        23,
+        24,
+        25
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [],
+       "defects": [],
+       "pairs": [],
+       "correction": [],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        1,
+        36,
+        42
+       ],
+       "defects": [
+        0,
+        3,
+        15,
+        18,
+        21
+       ],
+       "pairs": [
+        [
+         0,
+         3
+        ],
+        [
+         15,
+         18
+        ],
+        [
+         21,
+         -1
+        ]
+       ],
+       "correction": [
+        1,
+        36,
+        42
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [],
+       "defects": [],
+       "pairs": [],
+       "correction": [],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        36,
+        39
+       ],
+       "defects": [
+        15,
+        17,
+        18,
+        19
+       ],
+       "pairs": [
+        [
+         15,
+         18
+        ],
+        [
+         17,
+         19
+        ]
+       ],
+       "correction": [
+        36,
+        39
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        9,
+        27,
+        29,
+        38
+       ],
+       "defects": [
+        4,
+        6,
+        12,
+        14,
+        15,
+        16,
+        19
+       ],
+       "pairs": [
+        [
+         4,
+         6
+        ],
+        [
+         12,
+         15
+        ],
+        [
+         14,
+         -1
+        ],
+        [
+         16,
+         19
+        ]
+       ],
+       "correction": [
+        9,
+        27,
+        29,
+        38
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        12,
+        13,
+        25
+       ],
+       "defects": [
+        5,
+        11,
+        13
+       ],
+       "pairs": [
+        [
+         13,
+         11
+        ],
+        [
+         5,
+         -1
+        ]
+       ],
+       "correction": [
+        12,
+        13,
+        25
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        3
+       ],
+       "defects": [
+        1,
+        4
+       ],
+       "pairs": [
+        [
+         1,
+         4
+        ]
+       ],
+       "correction": [
+        3
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        36,
+        47
+       ],
+       "defects": [
+        15,
+        18,
+        20,
+        23
+       ],
+       "pairs": [
+        [
+         15,
+         18
+        ],
+        [
+         20,
+         23
+        ]
+       ],
+       "correction": [
+        36,
+        47
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        7,
+        37
+       ],
+       "defects": [
+        3,
+        16,
+        18
+       ],
+       "pairs": [
+        [
+         3,
+         -1
+        ],
+        [
+         16,
+         18
+        ]
+       ],
+       "correction": [
+        0,
+        37
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        9,
+        24,
+        47
+       ],
+       "defects": [
+        4,
+        6,
+        10,
+        13,
+        20,
+        23
+       ],
+       "pairs": [
+        [
+         4,
+         6
+        ],
+        [
+         10,
+         13
+        ],
+        [
+         20,
+         23
+        ]
+       ],
+       "correction": [
+        9,
+        24,
+        47
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        12,
+        19,
+        31,
+        35
+       ],
+       "defects": [
+        5,
+        11,
+        13,
+        15,
+        16
+       ],
+       "pairs": [
+        [
+         5,
+         11
+        ],
+        [
+         13,
+         16
+        ],
+        [
+         15,
+         -1
+        ]
+       ],
+       "correction": [
+        11,
+        18,
+        28,
+        31
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        22
+       ],
+       "defects": [
+        9,
+        12
+       ],
+       "pairs": [
+        [
+         9,
+         12
+        ]
+       ],
+       "correction": [
+        22
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        12,
+        23,
+        38
+       ],
+       "defects": [
+        5,
+        8,
+        10,
+        12,
+        16,
+        19
+       ],
+       "pairs": [
+        [
+         5,
+         8
+        ],
+        [
+         10,
+         12
+        ],
+        [
+         16,
+         19
+        ]
+       ],
+       "correction": [
+        12,
+        23,
+        38
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [],
+       "defects": [],
+       "pairs": [],
+       "correction": [],
+       "logical_error": false
+      }
+     ],
+     "0.08": [
+      {
+       "errors": [
+        6,
+        16,
+        17,
+        24,
+        34,
+        45
+       ],
+       "defects": [
+        2,
+        6,
+        7,
+        10,
+        13,
+        14,
+        19,
+        22
+       ],
+       "pairs": [
+        [
+         2,
+         -1
+        ],
+        [
+         6,
+         10
+        ],
+        [
+         13,
+         7
+        ],
+        [
+         14,
+         -1
+        ],
+        [
+         19,
+         22
+        ]
+       ],
+       "correction": [
+        6,
+        16,
+        18,
+        25,
+        27,
+        45
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        0,
+        2,
+        3,
+        5,
+        8,
+        9,
+        29,
+        38,
+        48
+       ],
+       "defects": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        12,
+        15,
+        16,
+        19,
+        20
+       ],
+       "pairs": [
+        [
+         4,
+         0
+        ],
+        [
+         5,
+         1
+        ],
+        [
+         2,
+         -1
+        ],
+        [
+         12,
+         15
+        ],
+        [
+         16,
+         19
+        ],
+        [
+         20,
+         -1
+        ]
+       ],
+       "correction": [
+        2,
+        4,
+        6,
+        29,
+        38,
+        41
+       ],
+       "logical_error": true
+      },
+      {
+       "errors": [
+        2,
+        5,
+        12,
+        31,
+        41,
+        47
+       ],
+       "defects": [
+        0,
+        2,
+        4,
+        8,
+        13,
+        16,
+        23
+       ],
+       "pairs": [
+        [
+         0,
+         4
+        ],
+        [
+         2,
+         -1
+        ],
+        [
+         16,
+         23
+        ],
+        [
+         8,
+         13
+        ]
+       ],
+       "correction": [
+        2,
+        6,
+        19,
+        25,
+        38,
+        46
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        16,
+        28,
+        37,
+        40,
+        44,
+        46
+       ],
+       "defects": [
+        6,
+        10,
+        15,
+        16,
+        17,
+        19,
+        20,
+        22,
+        23
+       ],
+       "pairs": [
+        [
+         6,
+         10
+        ],
+        [
+         17,
+         20
+        ],
+        [
+         23,
+         19
+        ],
+        [
+         16,
+         22
+        ],
+        [
+         15,
+         -1
+        ]
+       ],
+       "correction": [
+        16,
+        28,
+        37,
+        40,
+        44,
+        46
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        9,
+        15
+       ],
+       "defects": [
+        4,
+        9
+       ],
+       "pairs": [
+        [
+         4,
+         9
+        ]
+       ],
+       "correction": [
+        9,
+        15
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        6,
+        22
+       ],
+       "defects": [
+        2,
+        9,
+        12
+       ],
+       "pairs": [
+        [
+         2,
+         -1
+        ],
+        [
+         9,
+         12
+        ]
+       ],
+       "correction": [
+        6,
+        22
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        7,
+        10,
+        21,
+        22,
+        25,
+        35
+       ],
+       "defects": [
+        3,
+        4,
+        7,
+        11,
+        12,
+        13,
+        15
+       ],
+       "pairs": [
+        [
+         3,
+         -1
+        ],
+        [
+         4,
+         7
+        ],
+        [
+         11,
+         13
+        ],
+        [
+         12,
+         15
+        ]
+       ],
+       "correction": [
+        0,
+        10,
+        25,
+        29
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        6,
+        10,
+        15,
+        24,
+        25
+       ],
+       "defects": [
+        2,
+        4,
+        6,
+        7,
+        9,
+        10,
+        11
+       ],
+       "pairs": [
+        [
+         2,
+         -1
+        ],
+        [
+         4,
+         6
+        ],
+        [
+         7,
+         11
+        ],
+        [
+         9,
+         10
+        ]
+       ],
+       "correction": [
+        6,
+        9,
+        18,
+        22,
+        23
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        4,
+        13,
+        14,
+        30
+       ],
+       "defects": [
+        1,
+        5,
+        8,
+        9,
+        12,
+        16
+       ],
+       "pairs": [
+        [
+         1,
+         5
+        ],
+        [
+         8,
+         -1
+        ],
+        [
+         16,
+         12
+        ],
+        [
+         9,
+         -1
+        ]
+       ],
+       "correction": [
+        4,
+        13,
+        14,
+        30
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        23,
+        30,
+        41
+       ],
+       "defects": [
+        10,
+        16,
+        20
+       ],
+       "pairs": [
+        [
+         10,
+         16
+        ],
+        [
+         20,
+         -1
+        ]
+       ],
+       "correction": [
+        23,
+        30,
+        41
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        1,
+        3,
+        13,
+        21,
+        25,
+        43
+       ],
+       "defects": [
+        0,
+        1,
+        3,
+        4,
+        8,
+        9,
+        11,
+        13,
+        18,
+        21
+       ],
+       "pairs": [
+        [
+         0,
+         3
+        ],
+        [
+         1,
+         4
+        ],
+        [
+         13,
+         11
+        ],
+        [
+         8,
+         -1
+        ],
+        [
+         9,
+         -1
+        ],
+        [
+         18,
+         21
+        ]
+       ],
+       "correction": [
+        1,
+        3,
+        13,
+        14,
+        25,
+        43
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        37,
+        41
+       ],
+       "defects": [
+        16,
+        18,
+        20
+       ],
+       "pairs": [
+        [
+         16,
+         18
+        ],
+        [
+         20,
+         -1
+        ]
+       ],
+       "correction": [
+        37,
+        41
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        4,
+        24,
+        31,
+        44
+       ],
+       "defects": [
+        1,
+        5,
+        10,
+        16,
+        18,
+        22
+       ],
+       "pairs": [
+        [
+         1,
+         5
+        ],
+        [
+         18,
+         22
+        ],
+        [
+         10,
+         16
+        ]
+       ],
+       "correction": [
+        4,
+        23,
+        30,
+        44
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        4,
+        10,
+        11,
+        28,
+        29,
+        37,
+        38,
+        47
+       ],
+       "defects": [
+        1,
+        4,
+        12,
+        18,
+        19,
+        20,
+        23
+       ],
+       "pairs": [
+        [
+         1,
+         4
+        ],
+        [
+         12,
+         18
+        ],
+        [
+         19,
+         23
+        ],
+        [
+         20,
+         -1
+        ]
+       ],
+       "correction": [
+        3,
+        29,
+        36,
+        41,
+        46
+       ],
+       "logical_error": true
+      },
+      {
+       "errors": [
+        37
+       ],
+       "defects": [
+        16,
+        18
+       ],
+       "pairs": [
+        [
+         16,
+         18
+        ]
+       ],
+       "correction": [
+        37
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        5,
+        25,
+        31,
+        37
+       ],
+       "defects": [
+        2,
+        5,
+        11,
+        18
+       ],
+       "pairs": [
+        [
+         2,
+         5
+        ],
+        [
+         11,
+         18
+        ]
+       ],
+       "correction": [
+        5,
+        25,
+        31,
+        37
+       ],
+       "logical_error": false
+      }
+     ],
+     "0.11": [
+      {
+       "errors": [
+        3,
+        7,
+        11,
+        15,
+        38
+       ],
+       "defects": [
+        1,
+        3,
+        4,
+        5,
+        6,
+        7,
+        9,
+        16,
+        19
+       ],
+       "pairs": [
+        [
+         1,
+         5
+        ],
+        [
+         3,
+         6
+        ],
+        [
+         4,
+         7
+        ],
+        [
+         9,
+         -1
+        ],
+        [
+         16,
+         19
+        ]
+       ],
+       "correction": [
+        4,
+        8,
+        10,
+        14,
+        38
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        1,
+        18,
+        22,
+        26
+       ],
+       "defects": [
+        0,
+        3,
+        7,
+        9,
+        12,
+        14
+       ],
+       "pairs": [
+        [
+         0,
+         3
+        ],
+        [
+         7,
+         14
+        ],
+        [
+         9,
+         12
+        ]
+       ],
+       "correction": [
+        1,
+        18,
+        22,
+        26
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        0,
+        11,
+        15,
+        25,
+        28,
+        45
+       ],
+       "defects": [
+        3,
+        5,
+        6,
+        7,
+        9,
+        11,
+        13,
+        15,
+        19,
+        22
+       ],
+       "pairs": [
+        [
+         3,
+         6
+        ],
+        [
+         5,
+         7
+        ],
+        [
+         9,
+         -1
+        ],
+        [
+         11,
+         13
+        ],
+        [
+         15,
+         -1
+        ],
+        [
+         19,
+         22
+        ]
+       ],
+       "correction": [
+        8,
+        11,
+        14,
+        25,
+        28,
+        45
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        2,
+        7,
+        14
+       ],
+       "defects": [
+        0,
+        3,
+        4,
+        9
+       ],
+       "pairs": [
+        [
+         0,
+         4
+        ],
+        [
+         3,
+         -1
+        ],
+        [
+         9,
+         -1
+        ]
+       ],
+       "correction": [
+        0,
+        2,
+        14
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        7,
+        23,
+        30,
+        34,
+        36,
+        48
+       ],
+       "defects": [
+        3,
+        10,
+        14,
+        15,
+        16,
+        18,
+        20
+       ],
+       "pairs": [
+        [
+         3,
+         -1
+        ],
+        [
+         15,
+         18
+        ],
+        [
+         10,
+         16
+        ],
+        [
+         14,
+         -1
+        ],
+        [
+         20,
+         -1
+        ]
+       ],
+       "correction": [
+        0,
+        23,
+        27,
+        30,
+        36,
+        41
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        10,
+        34,
+        35
+       ],
+       "defects": [
+        4,
+        7,
+        14,
+        15
+       ],
+       "pairs": [
+        [
+         4,
+         7
+        ],
+        [
+         14,
+         -1
+        ],
+        [
+         15,
+         -1
+        ]
+       ],
+       "correction": [
+        10,
+        27,
+        28
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        1,
+        4,
+        12,
+        25,
+        26,
+        40
+       ],
+       "defects": [
+        0,
+        1,
+        3,
+        8,
+        13,
+        14,
+        17,
+        20
+       ],
+       "pairs": [
+        [
+         0,
+         3
+        ],
+        [
+         1,
+         8
+        ],
+        [
+         14,
+         13
+        ],
+        [
+         17,
+         20
+        ]
+       ],
+       "correction": [
+        1,
+        4,
+        12,
+        32,
+        33,
+        40
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        1,
+        4,
+        10,
+        24,
+        36
+       ],
+       "defects": [
+        0,
+        1,
+        3,
+        4,
+        5,
+        7,
+        10,
+        13,
+        15,
+        18
+       ],
+       "pairs": [
+        [
+         0,
+         3
+        ],
+        [
+         1,
+         5
+        ],
+        [
+         4,
+         7
+        ],
+        [
+         10,
+         13
+        ],
+        [
+         15,
+         18
+        ]
+       ],
+       "correction": [
+        1,
+        4,
+        10,
+        24,
+        36
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        6,
+        7,
+        17,
+        20,
+        26,
+        37
+       ],
+       "defects": [
+        2,
+        3,
+        7,
+        8,
+        10,
+        11,
+        14,
+        16,
+        18
+       ],
+       "pairs": [
+        [
+         2,
+         -1
+        ],
+        [
+         3,
+         -1
+        ],
+        [
+         7,
+         10
+        ],
+        [
+         8,
+         11
+        ],
+        [
+         14,
+         -1
+        ],
+        [
+         16,
+         18
+        ]
+       ],
+       "correction": [
+        0,
+        6,
+        17,
+        19,
+        27,
+        37
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        4,
+        12,
+        15,
+        23,
+        35,
+        39,
+        45
+       ],
+       "defects": [
+        1,
+        6,
+        8,
+        9,
+        10,
+        12,
+        15,
+        17,
+        22
+       ],
+       "pairs": [
+        [
+         1,
+         8
+        ],
+        [
+         6,
+         10
+        ],
+        [
+         9,
+         12
+        ],
+        [
+         15,
+         -1
+        ],
+        [
+         17,
+         22
+        ]
+       ],
+       "correction": [
+        4,
+        12,
+        16,
+        22,
+        28,
+        39,
+        45
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        16,
+        19,
+        25,
+        28,
+        30
+       ],
+       "defects": [
+        6,
+        8,
+        10,
+        12,
+        13,
+        15,
+        16
+       ],
+       "pairs": [
+        [
+         6,
+         10
+        ],
+        [
+         8,
+         -1
+        ],
+        [
+         12,
+         15
+        ],
+        [
+         13,
+         16
+        ]
+       ],
+       "correction": [
+        13,
+        16,
+        29,
+        31
+       ],
+       "logical_error": true
+      },
+      {
+       "errors": [
+        8,
+        18,
+        21,
+        23,
+        29,
+        45,
+        46,
+        48
+       ],
+       "defects": [
+        3,
+        6,
+        7,
+        9,
+        10,
+        11,
+        15,
+        20,
+        22,
+        23
+       ],
+       "pairs": [
+        [
+         10,
+         3
+        ],
+        [
+         6,
+         9
+        ],
+        [
+         7,
+         11
+        ],
+        [
+         15,
+         22
+        ],
+        [
+         20,
+         23
+        ]
+       ],
+       "correction": [
+        8,
+        15,
+        16,
+        18,
+        36,
+        44,
+        47
+       ],
+       "logical_error": true
+      },
+      {
+       "errors": [
+        33,
+        42
+       ],
+       "defects": [
+        14,
+        17,
+        21
+       ],
+       "pairs": [
+        [
+         14,
+         17
+        ],
+        [
+         21,
+         -1
+        ]
+       ],
+       "correction": [
+        33,
+        42
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        24
+       ],
+       "defects": [
+        10,
+        13
+       ],
+       "pairs": [
+        [
+         10,
+         13
+        ]
+       ],
+       "correction": [
+        24
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        0,
+        3,
+        8,
+        12,
+        13,
+        34,
+        47
+       ],
+       "defects": [
+        1,
+        4,
+        5,
+        6,
+        14,
+        20,
+        23
+       ],
+       "pairs": [
+        [
+         1,
+         5
+        ],
+        [
+         4,
+         6
+        ],
+        [
+         14,
+         -1
+        ],
+        [
+         20,
+         23
+        ]
+       ],
+       "correction": [
+        4,
+        9,
+        27,
+        47
+       ],
+       "logical_error": true
+      },
+      {
+       "errors": [
+        0,
+        3,
+        13,
+        19,
+        24,
+        30,
+        48
+       ],
+       "defects": [
+        1,
+        3,
+        4,
+        10,
+        11,
+        12,
+        13,
+        16,
+        20
+       ],
+       "pairs": [
+        [
+         1,
+         4
+        ],
+        [
+         3,
+         10
+        ],
+        [
+         11,
+         13
+        ],
+        [
+         12,
+         16
+        ],
+        [
+         20,
+         -1
+        ]
+       ],
+       "correction": [
+        3,
+        8,
+        16,
+        25,
+        30,
+        41
+       ],
+       "logical_error": true
+      }
+     ],
+     "0.14": [
+      {
+       "errors": [
+        5,
+        9,
+        12,
+        18,
+        31,
+        44,
+        47,
+        48
+       ],
+       "defects": [
+        2,
+        4,
+        6,
+        7,
+        8,
+        11,
+        13,
+        16,
+        18,
+        22,
+        23
+       ],
+       "pairs": [
+        [
+         2,
+         -1
+        ],
+        [
+         7,
+         4
+        ],
+        [
+         6,
+         13
+        ],
+        [
+         8,
+         11
+        ],
+        [
+         16,
+         23
+        ],
+        [
+         18,
+         22
+        ]
+       ],
+       "correction": [
+        6,
+        10,
+        16,
+        19,
+        24,
+        38,
+        44,
+        46
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        2,
+        9,
+        10,
+        14,
+        20,
+        33,
+        39,
+        41,
+        43
+       ],
+       "defects": [
+        0,
+        4,
+        6,
+        7,
+        8,
+        9,
+        14,
+        18,
+        19,
+        20,
+        21
+       ],
+       "pairs": [
+        [
+         0,
+         4
+        ],
+        [
+         6,
+         9
+        ],
+        [
+         7,
+         8
+        ],
+        [
+         14,
+         19
+        ],
+        [
+         18,
+         21
+        ],
+        [
+         20,
+         -1
+        ]
+       ],
+       "correction": [
+        2,
+        11,
+        12,
+        15,
+        33,
+        39,
+        41,
+        43
+       ],
+       "logical_error": true
+      },
+      {
+       "errors": [
+        19,
+        22,
+        24,
+        34,
+        47
+       ],
+       "defects": [
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        20,
+        23
+       ],
+       "pairs": [
+        [
+         8,
+         11
+        ],
+        [
+         9,
+         12
+        ],
+        [
+         10,
+         13
+        ],
+        [
+         14,
+         -1
+        ],
+        [
+         20,
+         23
+        ]
+       ],
+       "correction": [
+        19,
+        22,
+        24,
+        27,
+        47
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        0,
+        5,
+        10,
+        14,
+        15,
+        19,
+        25,
+        35,
+        37,
+        39,
+        40
+       ],
+       "defects": [
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        13,
+        15,
+        16,
+        18,
+        19,
+        20
+       ],
+       "pairs": [
+        [
+         2,
+         5
+        ],
+        [
+         3,
+         6
+        ],
+        [
+         4,
+         7
+        ],
+        [
+         8,
+         -1
+        ],
+        [
+         13,
+         16
+        ],
+        [
+         19,
+         20
+        ],
+        [
+         15,
+         18
+        ]
+       ],
+       "correction": [
+        5,
+        8,
+        10,
+        13,
+        31,
+        36,
+        39,
+        40
+       ],
+       "logical_error": true
+      },
+      {
+       "errors": [
+        7,
+        16,
+        18,
+        20,
+        26,
+        27,
+        28,
+        34,
+        46
+       ],
+       "defects": [
+        3,
+        6,
+        7,
+        8,
+        10,
+        14,
+        15,
+        19,
+        23
+       ],
+       "pairs": [
+        [
+         3,
+         6
+        ],
+        [
+         7,
+         10
+        ],
+        [
+         8,
+         -1
+        ],
+        [
+         14,
+         -1
+        ],
+        [
+         15,
+         -1
+        ],
+        [
+         19,
+         23
+        ]
+       ],
+       "correction": [
+        8,
+        13,
+        17,
+        27,
+        28,
+        46
+       ],
+       "logical_error": true
+      },
+      {
+       "errors": [
+        8,
+        31,
+        34,
+        46,
+        47,
+        48
+       ],
+       "defects": [
+        3,
+        6,
+        13,
+        14,
+        16,
+        19
+       ],
+       "pairs": [
+        [
+         3,
+         6
+        ],
+        [
+         13,
+         16
+        ],
+        [
+         19,
+         14
+        ]
+       ],
+       "correction": [
+        8,
+        31,
+        33,
+        39
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        3,
+        17,
+        28,
+        44
+       ],
+       "defects": [
+        1,
+        4,
+        7,
+        10,
+        15,
+        18,
+        22
+       ],
+       "pairs": [
+        [
+         1,
+         4
+        ],
+        [
+         7,
+         10
+        ],
+        [
+         22,
+         18
+        ],
+        [
+         15,
+         -1
+        ]
+       ],
+       "correction": [
+        3,
+        17,
+        28,
+        44
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        15,
+        18,
+        30,
+        38,
+        44
+       ],
+       "defects": [
+        6,
+        7,
+        9,
+        11,
+        12,
+        18,
+        19,
+        22
+       ],
+       "pairs": [
+        [
+         6,
+         9
+        ],
+        [
+         12,
+         18
+        ],
+        [
+         7,
+         11
+        ],
+        [
+         19,
+         22
+        ]
+       ],
+       "correction": [
+        15,
+        18,
+        29,
+        36,
+        45
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        5,
+        10,
+        12,
+        14,
+        17,
+        21,
+        27,
+        29,
+        34
+       ],
+       "defects": [
+        2,
+        4,
+        8,
+        10,
+        12,
+        15
+       ],
+       "pairs": [
+        [
+         2,
+         -1
+        ],
+        [
+         4,
+         10
+        ],
+        [
+         8,
+         -1
+        ],
+        [
+         12,
+         15
+        ]
+       ],
+       "correction": [
+        6,
+        9,
+        13,
+        16,
+        29
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        9,
+        16,
+        26,
+        29,
+        30,
+        34,
+        39,
+        46,
+        48
+       ],
+       "defects": [
+        4,
+        10,
+        11,
+        15,
+        16,
+        17,
+        20,
+        23
+       ],
+       "pairs": [
+        [
+         23,
+         20
+        ],
+        [
+         4,
+         10
+        ],
+        [
+         17,
+         11
+        ],
+        [
+         16,
+         15
+        ]
+       ],
+       "correction": [
+        10,
+        17,
+        25,
+        29,
+        30,
+        32,
+        47
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        0,
+        3,
+        5,
+        14,
+        15,
+        31,
+        35,
+        40,
+        44
+       ],
+       "defects": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        13,
+        15,
+        16,
+        17,
+        18,
+        20,
+        22
+       ],
+       "pairs": [
+        [
+         1,
+         4
+        ],
+        [
+         2,
+         5
+        ],
+        [
+         3,
+         6
+        ],
+        [
+         13,
+         16
+        ],
+        [
+         22,
+         18
+        ],
+        [
+         15,
+         -1
+        ],
+        [
+         17,
+         20
+        ]
+       ],
+       "correction": [
+        3,
+        5,
+        8,
+        28,
+        31,
+        40,
+        44
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        3,
+        6,
+        8,
+        14,
+        18,
+        22,
+        34,
+        42
+       ],
+       "defects": [
+        1,
+        2,
+        3,
+        4,
+        6,
+        7,
+        11,
+        12,
+        14,
+        21
+       ],
+       "pairs": [
+        [
+         1,
+         4
+        ],
+        [
+         2,
+         -1
+        ],
+        [
+         3,
+         6
+        ],
+        [
+         7,
+         12
+        ],
+        [
+         11,
+         14
+        ],
+        [
+         21,
+         -1
+        ]
+       ],
+       "correction": [
+        3,
+        6,
+        8,
+        17,
+        23,
+        26,
+        42
+       ],
+       "logical_error": true
+      },
+      {
+       "errors": [
+        14,
+        17,
+        21,
+        42
+       ],
+       "defects": [
+        7,
+        10,
+        21
+       ],
+       "pairs": [
+        [
+         7,
+         10
+        ],
+        [
+         21,
+         -1
+        ]
+       ],
+       "correction": [
+        17,
+        42
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        13,
+        14,
+        19,
+        20,
+        21,
+        25,
+        34,
+        46
+       ],
+       "defects": [
+        8,
+        13,
+        14,
+        19,
+        23
+       ],
+       "pairs": [
+        [
+         8,
+         13
+        ],
+        [
+         14,
+         -1
+        ],
+        [
+         19,
+         23
+        ]
+       ],
+       "correction": [
+        19,
+        25,
+        27,
+        46
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        2,
+        13,
+        14,
+        15,
+        16,
+        20,
+        22,
+        25,
+        31
+       ],
+       "defects": [
+        0,
+        4,
+        9,
+        10,
+        11,
+        12,
+        16
+       ],
+       "pairs": [
+        [
+         0,
+         4
+        ],
+        [
+         10,
+         11
+        ],
+        [
+         12,
+         16
+        ],
+        [
+         9,
+         -1
+        ]
+       ],
+       "correction": [
+        2,
+        14,
+        24,
+        25,
+        30
+       ],
+       "logical_error": false
+      },
+      {
+       "errors": [
+        5,
+        12,
+        29,
+        32,
+        34,
+        36,
+        46
+       ],
+       "defects": [
+        2,
+        8,
+        12,
+        13,
+        14,
+        17,
+        18,
+        19,
+        23
+       ],
+       "pairs": [
+        [
+         2,
+         -1
+        ],
+        [
+         8,
+         -1
+        ],
+        [
+         12,
+         18
+        ],
+        [
+         13,
+         17
+        ],
+        [
+         14,
+         -1
+        ],
+        [
+         19,
+         23
+        ]
+       ],
+       "correction": [
+        6,
+        13,
+        27,
+        29,
+        32,
+        36,
+        46
+       ],
+       "logical_error": false
+      }
+     ]
+    },
+    "failure": [
+     5e-05,
+     0.00065,
+     0.00285,
+     0.0072,
+     0.0157,
+     0.0295,
+     0.04625,
+     0.0697,
+     0.09655,
+     0.12305,
+     0.15795,
+     0.19155,
+     0.2255,
+     0.26245,
+     0.2931,
+     0.32325
+    ]
+   }
   }
  }
 }

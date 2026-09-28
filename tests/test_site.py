@@ -176,3 +176,16 @@ def test_js_purified_chain_matches_python(tmp_path):
             assert js[0] == pytest.approx(py.rate_hz, rel=1e-12) and js[2] == py.n_segments and tuple(js[3]) == py.rounds
     for L, js in zip((500.0, 1000.0, 2000.0), out["tmin"]):
         assert js == pytest.approx(minimum_useful_memory_s(L), rel=1e-12)
+
+
+@pytest.mark.skipif(node is None, reason="node not installed")
+def test_js_qec_checks_agree_with_every_decoded_shot(tmp_path):
+    script = tmp_path / "qec.js"
+    script.write_text(
+        "const Q=require(process.argv[2]);const D=JSON.parse(require('fs').readFileSync(process.argv[3],'utf8')).qec;let n=0,bad=[];"
+        "for(const [d,c] of Object.entries(D.codes))for(const [p,shots] of Object.entries(c.shots))shots.forEach((s,i)=>{n++;"
+        "const r=Q.checkShot(+d,c.plaquettes,s);if(!r.syndromeMatches||!r.residualClean||r.logicalError!==s.logical_error)bad.push([d,p,i]);});"
+        "console.log(JSON.stringify({n,bad}))")
+    out = json.loads(subprocess.run([node, str(script), str(DOCS / "js" / "qec_core.js"), str(DOCS / "site_data.json")],
+                                    capture_output=True, text=True, check=True).stdout)
+    assert out["n"] == 3 * 5 * 16 and out["bad"] == []

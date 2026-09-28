@@ -64,7 +64,7 @@ h2 { font-size: clamp(1.8rem, 3.4vw, 2.6rem); line-height: 1.15; margin: .4rem 0
 .card:hover::before { opacity: 1 } .card:hover { border-color: rgba(94,242,224,.35); text-decoration: none; transform: translateY(-2px) }
 .card h3 { margin: .2rem 0 .5rem; font-size: 1.15rem } .card p { color: var(--muted); margin: 0; font-size: .95rem }
 .card .tag { display: inline-block; font-size: .72rem; font-weight: 800; letter-spacing: .08em; padding: .2rem .55rem; border-radius: 999px; background: rgba(94,168,255,.15); color: var(--blue) }
-.card .tag.warm { background: rgba(255,138,76,.15); color: var(--warm) } .card .tag.green { background: rgba(69,224,160,.15); color: var(--green) }
+.card .tag.warm { background: rgba(255,138,76,.15); color: var(--warm) } .card .tag.green { background: rgba(69,224,160,.15); color: var(--green) } .card .tag.violet { background: rgba(167,139,250,.15); color: var(--violet) }
 .card .pass { margin-top: .8rem; font-size: .82rem; color: var(--green); font-weight: 600 }
 .card .count { float: right; color: var(--faint); font-size: .8rem; font-variant-numeric: tabular-nums }
 .bento { display: grid; gap: 1rem; grid-template-columns: repeat(6, 1fr) }

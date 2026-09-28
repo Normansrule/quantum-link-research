@@ -47,3 +47,4 @@
 - 2026-09-26 0.34.0: simulated CZ gate (leakage 8e-5, F 0.99998), conditional-Ramsey ZZ experiment + E16, coupler lab page, smaller GIFs.
 - 2026-09-26 0.35.0: repeater lab (JS port to 1e-12, sampled runs), repeater Monte Carlo vs closed form, crossover fidelity 0.58, learn 03/19.
 - 2026-09-26 0.36.0: purified repeater chain, design space (min memory 39 s at 1000 km; Yb+ and NV 13C qualify), lab purification controls, learn 03/20.
+- 2026-09-28 0.37.0: surface code under bit flips with PyMatching, QEC lab page (240 decoded shots, self-checking), thesis 4.4 repeater findings.
