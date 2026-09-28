@@ -72,13 +72,15 @@
 
   <section class="grid">
     <div class="p w4"><h4>the link</h4>
-      <div class="sl"><span>distance</span><b id="v-L"></b><input type="range" id="L" min="1" max="3.3" step="0.001" value="2.6"></div>
+      <div class="sl"><span>distance</span><b id="v-L"></b><input type="range" id="L" min="1" max="3.3" step="any" value="2.6"></div>
       <div class="sl"><span>nesting levels (segments)</span><b id="v-n"></b><input type="range" id="n" min="0" max="4" step="1" value="3"></div>
-      <div class="sl"><span>memory coherence T</span><b id="v-T"></b><input type="range" id="T" min="-3" max="2" step="0.01" value="0"></div>
+      <div class="sl"><span>memory coherence T</span><b id="v-T"></b><input type="range" id="T" min="-3" max="3" step="any" value="0"></div>
       <div class="sl"><span>swap success P<sub>s</sub></span><b id="v-ps"></b><input type="range" id="ps" min="0.2" max="1" step="0.01" value="0.5"></div>
       <div class="sl"><span>source + detection p<sub>src</sub></span><b id="v-psrc"></b><input type="range" id="psrc" min="0.01" max="0.5" step="0.01" value="0.05"></div>
       <div class="sl"><span>elementary pair fraction f₀</span><b id="v-f0"></b><input type="range" id="f0" min="0.8" max="1" step="0.005" value="0.95"></div>
-      <div class="row" style="margin-top:.6rem"><button id="preset-mars">1 s memories (the headline)</button><button id="preset-good">1000 km, 100 s memories</button></div>
+      <div class="sl"><span>BBPSSW purification rounds</span><b id="v-r"></b><input type="range" id="r" min="0" max="2" step="1" value="0"></div>
+      <div class="row" style="font-size:.84rem;color:var(--muted)"><label><input type="radio" name="where" id="w-elem" checked> on elementary pairs</label><label><input type="radio" name="where" id="w-all"> after every swap too</label></div>
+      <div class="row" style="margin-top:.6rem"><button id="preset-mars">1 s memories (the headline)</button><button id="preset-purify">600 km, 10 s, purify once</button><button id="preset-good">1000 km, 100 s memories</button></div>
     </div>
     <div class="p w8"><h4>average rate vs distance · the chain against direct transmission and the repeaterless bound</h4>
       <canvas id="rate"></canvas>
@@ -93,13 +95,16 @@
         <div class="k"><div class="s">direct rate</div><div class="v" id="k-direct">—</div></div>
         <div class="k"><div class="s">teleportation fidelity</div><div class="v" id="k-fid">—</div></div>
         <div class="k"><div class="s">chain beats direct beyond</div><div class="v" id="k-cross">—</div></div>
+        <div class="k"><div class="s">elementary pairs spent per delivered pair</div><div class="v" id="k-cost">—</div></div>
+        <div class="k"><div class="s">memory needed for a useful chain faster than direct</div><div class="v" id="k-tmin">—</div></div>
+        <div class="k" style="grid-column: span 2"><div class="s">best useful setup here (≤ 16 segments, ≤ 2 rounds)</div><div class="v" id="k-best" style="font-size:1.05rem">—</div></div>
       </div>
       <p class="note" id="k-verdict">—</p>
       <p class="note">Model and its limits: elementary pairs heralded at segment midpoints, one attempt per herald round trip (or per microsecond), nested swapping with classical heralds over each new span, Werner pairs that decay toward the useless mixture with the memory time T; the chain is declared stalled when the expected waiting time exceeds 3T. Sampling the protocol exactly (<code>qll/network/repeater_montecarlo.py</code>) shows this closed form overestimates the waiting time by about 4 % with two levels and 8 % with three at P<sub>s</sub> = 0.5 (more when swaps are reliable), so it is slightly conservative; see learn 03/19. For Earth to Mars there is no fiber: this is why the thesis routes the link through free-space relays instead (see the <a href="../mars/">Mars simulator</a>).</p>
     </div>
   </section>
 </main>
-<footer>Repeater lab. Physics from <code>qll/network/repeater_chain.py</code>, <code>swapping_scheduler.py</code>, <code>repeater_montecarlo.py</code>, and <code>qll/qkd/plob_bound.py</code> [briegel1998, sangouard2011, azuma2015, pirandola2017]. Design after llm-viz and transformer-explainer (the protocol's real state at every step), Magic UI (AnimatedBeam links, border beams), and react-bits (glow); see <a href="https://github.com/Normansrule/quantum-link-research/blob/main/CREDITS.md">CREDITS.md</a>.</footer>
+<footer>Repeater lab. Physics from <code>qll/network/repeater_chain.py</code>, <code>purified_chain.py</code>, <code>swapping_scheduler.py</code>, <code>repeater_montecarlo.py</code>, and <code>qll/qkd/plob_bound.py</code> [briegel1998, dur1999, bennett1996, sangouard2011, azuma2015, pirandola2017]. Design after llm-viz and transformer-explainer (the protocol's real state at every step), Magic UI (AnimatedBeam links, border beams), and react-bits (glow); see <a href="https://github.com/Normansrule/quantum-link-research/blob/main/CREDITS.md">CREDITS.md</a>.</footer>
 <script src="../js/repeater_core.js"></script>
 <script>
 (function () {
@@ -107,7 +112,12 @@
   const R = window.QLLRepeater, $ = (id) => document.getElementById(id);
   const fmtT = (s) => !isFinite(s) ? "∞" : s < 1e-3 ? (s * 1e6).toFixed(0) + " µs" : s < 1 ? (s * 1e3).toFixed(s < 0.01 ? 2 : 0) + " ms" : s < 120 ? s.toFixed(s < 10 ? 2 : 0) + " s" : s < 7200 ? (s / 60).toFixed(0) + " min" : s < 172800 ? (s / 3600).toFixed(1) + " h" : s < 3.2e8 ? (s / 86400).toFixed(0) + " d" : (s / 3.156e7).toExponential(1) + " yr";
   const fmtR = (r) => r <= 0 ? "stalled" : r >= 1e3 ? (r / 1e3).toFixed(1) + " kHz" : r >= 1 ? r.toFixed(r < 10 ? 2 : 0) + " Hz" : r >= 1e-3 ? (r * 1e3).toFixed(1) + " mHz" : r.toExponential(1) + " Hz";
-  const P = () => ({ L: Math.pow(10, +$("L").value), n: +$("n").value, T: Math.pow(10, +$("T").value), p_swap: +$("ps").value, p_src: +$("psrc").value, f0: +$("f0").value });
+  const P = () => ({ L: Math.pow(10, +$("L").value), n: +$("n").value, T: Math.pow(10, +$("T").value), p_swap: +$("ps").value, p_src: +$("psrc").value, f0: +$("f0").value,
+                     r: +$("r").value, all: $("w-all").checked });
+  const sched = (p) => Array.from({ length: p.n + 1 }, (_, k) => (k === 0 || p.all ? p.r : 0));
+  const opts = (p) => ({ p_swap: p.p_swap, p_src: p.p_src, f0: p.f0 });
+  const chainAt = (L, p) => R.purifiedChain(L, p.n, p.T, sched(p), opts(p));
+  function crossoverP(p) { for (let i = 0; i < 400; i++) { const L = Math.pow(10, 1 + 3 * i / 399); if (chainAt(L, p).rate_hz > R.directRate(L, 1e9, p.p_src)) return L; } return null; }
   function ctx(cv) { const g = cv.getContext("2d"), dpr = Math.min(devicePixelRatio || 1, 2), W = cv.clientWidth, H = cv.clientHeight;
     if (cv.width !== Math.round(W * dpr)) { cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); }
     g.setTransform(dpr, 0, 0, dpr, 0, 0); g.clearRect(0, 0, W, H); return [g, W, H]; }
@@ -126,41 +136,51 @@
     curve((L) => R.plobRate(L), "rgba(232,238,248,.7)", 1.3, [5, 5]);
     curve((L) => R.directRate(L, 1e9, p.p_src), "#ff8a4c", 2);
     curve((L) => R.allPhotonic(L, Math.max(2, Math.pow(2, p.n))), "#a78bfa", 1.6);
-    curve((L) => R.memoryChain(L, p.n, p.T, o).rate_hz, "#5ef2e0", 2.6);
+    curve((L) => chainAt(L, p).rate_hz, "#5ef2e0", 2.6);
     g.strokeStyle = "rgba(94,242,224,.5)"; g.setLineDash([3, 4]); g.beginPath(); g.moveTo(X(p.L), 8); g.lineTo(X(p.L), H - 24); g.stroke(); g.setLineDash([]);
-    const m = R.memoryChain(p.L, p.n, p.T, o);
+    const m = chainAt(p.L, p);
     if (m.rate_hz > 0) { g.fillStyle = "#e8fffb"; g.shadowColor = "#5ef2e0"; g.shadowBlur = 14; g.beginPath(); g.arc(X(p.L), Y(m.rate_hz), 6, 0, 7); g.fill(); g.shadowBlur = 0; }
     g.fillStyle = "#93a1b8"; g.textAlign = "right"; g.fillText("end-to-end pairs per second (log)", W - 14, 16); g.textAlign = "left";
   }
 
   // ---------------- KPIs ----------------
   function update() {
-    const p = P(), o = { p_swap: p.p_swap, p_src: p.p_src, f0: p.f0 }, m = R.memoryChain(p.L, p.n, p.T, o), d = R.directRate(p.L, 1e9, p.p_src);
+    const p = P(), o = opts(p), m = chainAt(p.L, p), d = R.directRate(p.L, 1e9, p.p_src);
     $("v-L").textContent = p.L.toFixed(0) + " km"; $("v-n").textContent = `${p.n} (${Math.pow(2, p.n)})`; $("v-T").textContent = fmtT(p.T);
     $("v-ps").textContent = p.p_swap.toFixed(2); $("v-psrc").textContent = p.p_src.toFixed(2); $("v-f0").textContent = p.f0.toFixed(3);
+    $("v-r").textContent = p.r === 0 ? "none" : `${p.r} (${sched(p).join("·")})`;
+    $("k-cost").textContent = m.pairs_per_output < 1e4 ? m.pairs_per_output.toFixed(0) : m.pairs_per_output.toExponential(1);
+    const best = R.bestUsefulChain(p.L, p.T, o);
+    $("k-best").innerHTML = best === null ? `<span class="bad">none: memories too short or pairs too noisy</span>`
+      : `<span class="ok">${best.n_segments} segment${best.n_segments > 1 ? "s" : ""}, rounds ${best.rounds.join("·")}</span> → ${fmtR(best.rate_hz)}, F = ${best.teleport_fidelity.toFixed(3)}`;
+    const tmin = R.minimumUsefulMemory(p.L, o); $("k-tmin").textContent = tmin === null ? "no memory is enough" : tmin <= 0.0101 ? "any" : fmtT(tmin);
     $("k-seg").textContent = `${m.n_segments} × ${(p.L / m.n_segments).toFixed(0)} km`; $("k-p0").textContent = m.p0 < 1e-3 ? m.p0.toExponential(1) : m.p0.toFixed(4);
     $("k-time").textContent = fmtT(m.hold_time_s); $("k-rate").innerHTML = `<span class="${m.rate_hz > d ? "ok" : m.rate_hz > 0 ? "warm" : "bad"}">${fmtR(m.rate_hz)}</span>`;
     $("k-direct").textContent = fmtR(d);
     const F = (2 * m.fidelity_fraction + 1) / 3; $("k-fid").innerHTML = `<span class="${F > 2 / 3 ? "ok" : "bad"}">${F.toFixed(3)}</span>`;
-    const x = R.crossover(p.n, p.T, o); $("k-cross").textContent = x === null ? "never" : x.toFixed(0) + " km";
+    const x = crossoverP(p); $("k-cross").textContent = x === null ? "never" : x.toFixed(0) + " km";
     $("k-verdict").innerHTML = m.stalled ? `<b class="bad">Stalled.</b> A pair takes ${fmtT(m.hold_time_s)} on average but memories only keep it for about ${fmtT(p.T)}: the chain never finishes. Add levels, or better memories.`
-      : m.rate_hz > d && F <= 2 / 3 ? `<b class="warm">Faster than direct, but the pairs are too noisy to use.</b> Each swap multiplies the errors and the memories decay while they wait: F = ${F.toFixed(3)} ≤ 2/3, no better than a classical guess. Real chains purify between levels (learn 03, <code>qll/network/purification.py</code>) or need better sources and memories: try the 1000 km preset.`
+      : m.rate_hz > d && F <= 2 / 3 ? `<b class="warm">Faster than direct, but the pairs are too noisy to use.</b> Each swap multiplies the errors and the memories decay while they wait: F = ${F.toFixed(3)} ≤ 2/3, no better than a classical guess. Add purification rounds (each round spends two pairs to make one better one), or better sources and memories: try the other presets.`
       : m.rate_hz > d ? `<b class="ok">The chain wins</b> by a factor of ${(() => { const q = m.rate_hz / d; return q < 100 ? q.toFixed(1) : q < 1e4 ? q.toFixed(0) : q.toExponential(1).replace("e+", " × 10^"); })()} and delivers pairs good for teleportation (F = ${F.toFixed(3)} > 2/3).`
       : `<b class="warm">Direct transmission still wins here.</b> Repeaters pay a fixed overhead (swaps fail half the time, heralds take round trips); they only win once fiber loss is large enough.`;
     drawRate(p);
   }
-  ["L", "n", "T", "ps", "psrc", "f0"].forEach((id) => $(id).addEventListener("input", () => { update(); newRun(); }));
-  $("preset-mars").onclick = () => { $("L").value = Math.log10(393); $("n").value = 3; $("T").value = 0; $("ps").value = 0.5; $("psrc").value = 0.05; $("f0").value = 0.95; update(); newRun(); };
-  $("preset-good").onclick = () => { $("L").value = 3; $("n").value = 4; $("T").value = 2; $("ps").value = 0.5; $("psrc").value = 0.05; $("f0").value = 0.99; update(); newRun(); };
+  ["L", "n", "T", "ps", "psrc", "f0", "r", "w-elem", "w-all"].forEach((id) => $(id).addEventListener("input", () => { update(); newRun(); }));
+  const preset = (L, n, T, f0, r) => { $("L").value = Math.log10(L); $("n").value = n; $("T").value = Math.log10(T); $("ps").value = 0.5; $("psrc").value = 0.05;
+    $("f0").value = f0; $("r").value = r; $("w-elem").checked = true; update(); newRun(); };
+  $("preset-mars").onclick = () => preset(393, 3, 1, 0.95, 0);
+  $("preset-purify").onclick = () => preset(600, 4, 10, 0.95, 1);
+  $("preset-good").onclick = () => preset(1000, 4, 100, 0.99, 0);
 
   // ---------------- one sampled run, animated ----------------
   let run = null, frac = 0, playing = true, seed = 1;
   function newRun() {
     const p = P(); seed += 1;
     run = R.sampleRun(p.L, p.n, { p_swap: p.p_swap, p_src: p.p_src }, seed); run.params = p; frac = 0; playing = true; $("play").textContent = "❚❚ pause";
-    const m = R.memoryChain(p.L, p.n, p.T, { p_swap: p.p_swap, p_src: p.p_src, f0: p.f0 });
+    const m = chainAt(p.L, p);
     const fails = run.events.filter((e) => e.kind === "fail").length, pairs = run.events.filter((e) => e.kind === "pair").length;
     $("k-story").innerHTML = `This run: <b>${pairs.toLocaleString()}</b> elementary pairs heralded, <b>${fails}</b> failed swaps, first end-to-end pair after <b class="cyan">${fmtT(run.end)}</b> (the model's average: ${fmtT(m.hold_time_s)}).` +
+      (p.r > 0 ? " The animation shows heralding and swapping; the purification rounds are counted in the average." : "") +
       (run.end > 3 * p.T ? ` <span class="bad">Longer than the memories last (3T = ${fmtT(3 * p.T)}): in a real chain the early pairs would have expired.</span>` : "");
   }
   function stateAt(t) {

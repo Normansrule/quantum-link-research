@@ -112,6 +112,11 @@ def test_repeater_lab_shows_the_crossover_and_a_useful_long_chain(browser, serve
     page.click("#preset-mars")
     assert page.locator("#k-cross").inner_text() == "393 km"                               # crossover_distance_km(3, 1.0)
     assert "too noisy" in page.locator("#k-verdict").inner_text()                           # faster than direct, F <= 2/3
+    assert page.locator("#k-best").inner_text().startswith("none")                         # best_useful_chain(393, 1) is None
+    assert page.locator("#k-tmin").inner_text() == "2.29 s"                                 # minimum_useful_memory_s(393)
+    page.click("#preset-purify")                                                            # 600 km, 10 s, one elementary round
+    assert page.locator("#k-fid").inner_text() == "0.678" and "chain wins" in page.locator("#k-verdict").inner_text()
+    assert page.locator("#k-cost").inner_text() == "547"
     page.click("#preset-good")
     assert page.locator("#k-fid").inner_text() == "0.869" and "chain wins" in page.locator("#k-verdict").inner_text()
     page.evaluate("const s = document.getElementById('tt'); s.value = 1; s.dispatchEvent(new Event('input'))")

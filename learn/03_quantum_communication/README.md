@@ -20,6 +20,7 @@
 | 17 | [Continuous-variable QKD](17_cv_qkd_derivation.md) | GG02 rate, the excess-noise threshold, why it suits daylight | `qll/qkd/cv_qkd.py` |
 | 18 | [Twin-field derivation](18_twin_field_derivation.md) | where √η comes from, what it costs, why it is not a repeater | `qll/qkd/twin_field.py` |
 | 19 | [Repeater chains, sampled](19_repeater_chains_sampled.md) | the closed-form waiting time checked by Monte Carlo (exact unnested, 4–8 % conservative nested); at the 393 km crossover the pairs have fidelity 0.58: rate is not enough | `qll/network/repeater_montecarlo.py`, `docs/repeater/` |
+| 20 | [Where a fiber repeater is worth building](20_where_a_fiber_repeater_is_worth_building.md) | purification between levels; the minimum memory for a useful chain that beats direct (4.6 s at 500 km, 39 s at 1000 km, 23 min at 2000 km); only Yb⁺ and NV ¹³C memories qualify once retrieval is counted | `qll/network/purified_chain.py` |
 | 10 | [Post-processing with code](10_post_processing_with_code.md) | sifting, Cascade vs LDPC at Mars latency, Toeplitz hashing, authentication | `qll/qkd/{sifting,error_correction,privacy_amplification}.py` |
 
 Figures: `docs/figures/link_loss_explorer.svg`, `light_time_explorer.svg`, `qkd_rate_explorer.svg`.

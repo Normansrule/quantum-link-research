@@ -1,6 +1,6 @@
 /* Repeater-chain model, a line-by-line port of qll/network/repeater_chain.py, swapping_scheduler.py, the swapping and
    storage recurrences, fiber_loss.transmittance, and qkd/plob_bound.py. Works in the browser (window.QLLRepeater) and
-   in Node (module.exports) so tests/test_site.py can hold it to the Python to 1e-12.
+   in Node (module.exports) so tests/test_site.py can hold it to the Python to 1e-12. Also ports purified_chain.py.
    It also samples one random run of the same nested protocol (sampleRun) for the repeater lab's animation: every
    segment retries until heralded, neighbouring pairs are swapped when both exist, a failed swap loses both pairs and
    their subtrees start again. The closed-form rate averages over such runs; tests compare the two. */
@@ -55,6 +55,48 @@
     return null;
   }
 
+  // ---- purification between levels: port of qll/network/purified_chain.py ----
+  function bbpssw(F) { const q = (1 - F) / 3, p = F * F + 2 * F * q + 5 * q * q; return [(F * F + q * q) / p, p]; }
+  const waitMax = (attempts) => attempts > 1 ? expectedMaxOfTwoGeometric(1 / attempts) : 1;
+  function purifiedChain(L_km, n, Tmem, rounds, o = {}) {
+    const Ratt = o.R_attempt ?? 1e6, pSrc = o.p_src ?? 0.05, pSwap = o.p_swap ?? 0.5, f0 = o.f0 ?? 0.95, alpha = o.alpha ?? 0.2;
+    const r = rounds || Array(n + 1).fill(0);
+    if (r.length !== n + 1) throw new Error("rounds needs one entry per level 0..n");
+    const nSeg = Math.pow(2, n), L0 = L_km / nSeg, p0 = pSrc * Math.pow(transmittance(L0 / 2, alpha), 2);
+    const t0 = roundTrip(L0 * 1e3 / 2 * FIBER_INDEX), spanRt = (k) => roundTrip(L0 * 1e3 * Math.pow(2, k) * FIBER_INDEX / 2);
+    let attempts = 1 / p0, f = f0, heralds = 0, pairs = 1;
+    for (let k = 0; k <= n; k++) {
+      for (let j = 0; j < r[k]; j++) { const [fn, pp] = bbpssw(f); attempts = waitMax(attempts) / pp; heralds += spanRt(k); pairs = 2 * pairs / pp; f = fn; }
+      if (k < n) { attempts = waitMax(attempts) / pSwap; heralds += spanRt(k); pairs = 2 * pairs / pSwap; f = swapped(f); }
+    }
+    const Tn = Math.max(attempts * t0 + heralds, 1 / (p0 * Ratt));
+    f = stored(f, Tn, Tmem);
+    const stalled = Tn > 3 * Tmem;
+    return { rate_hz: stalled ? 0 : 1 / Tn, fidelity_fraction: f, hold_time_s: Tn, n_segments: nSeg, rounds: r, pairs_per_output: pairs,
+             teleport_fidelity: (2 * f + 1) / 3, p0, stalled };
+  }
+  function schedules(n, maxRounds) {
+    const set = new Map();
+    for (let r = 0; r <= maxRounds; r++) { const a = Array(n + 1).fill(r), b = [r].concat(Array(n).fill(0)); set.set(a.join(","), a); set.set(b.join(","), b); }
+    return [...set.values()].sort((x, y) => { for (let i = 0; i < x.length; i++) if (x[i] !== y[i]) return x[i] - y[i]; return 0; });
+  }
+  function bestUsefulChain(L_km, Tmem, o = {}, maxLevels = 4, maxRounds = 2) {
+    let best = null;
+    for (let n = 0; n <= maxLevels; n++) for (const sch of schedules(n, maxRounds)) {
+      const r = purifiedChain(L_km, n, Tmem, sch, o);
+      if (r.rate_hz > 0 && r.teleport_fidelity > 2 / 3 && (best === null || r.rate_hz > best.rate_hz)) best = r;
+    }
+    return best;
+  }
+  function minimumUsefulMemory(L_km, o = {}, Tlo = 1e-2, Thi = 1e6) {
+    const ok = (T) => { const b = bestUsefulChain(L_km, T, o); return b !== null && b.rate_hz > directRate(L_km); };
+    if (!ok(Thi)) return null;
+    if (ok(Tlo)) return Tlo;
+    let lo = Math.log10(Tlo), hi = Math.log10(Thi);
+    while (hi - lo > 1e-3) { const mid = 0.5 * (lo + hi); if (ok(Math.pow(10, mid))) hi = mid; else lo = mid; }
+    return Math.pow(10, hi);
+  }
+
   // ---- one random run of the nested protocol, for the animation ----
   function rng(seed) { let a = seed >>> 0; return () => { a = (a + 0x6D2B79F5) >>> 0; let t = a;
     t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
@@ -84,5 +126,6 @@
   }
 
   return { transmittance, roundTrip, expectedMaxOfTwoGeometric, nestedExpectedTime, swapped, stored, directRate, plobRate,
-           memoryChain, allPhotonic, crossover, sampleRun, meanRunTime, FIBER_INDEX };
+           memoryChain, allPhotonic, crossover, sampleRun, meanRunTime, bbpssw, purifiedChain, bestUsefulChain, minimumUsefulMemory,
+           FIBER_INDEX };
 });

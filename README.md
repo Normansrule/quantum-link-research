@@ -62,6 +62,7 @@ Every number above is written by [`scripts/make_readme_art.py`](scripts/make_rea
 | BB84 error threshold | **11.00 %** | `qll/qkd/key_rate.py` |
 | Where a repeater chain (1 s memories) beats direct fiber | **393 km** | `qll/network/repeater_chain.py` |
 | Teleportation fidelity of the pairs it delivers there, without purification | **0.58 (below 2/3: rate is not enough)** | `qll/network/repeater_chain.py` |
+| Memory needed for a useful chain (F > 2/3) that beats direct fiber over 1000 km | **39 s (best: 16 segments, 2 purification rounds)** | `qll/network/purified_chain.py` |
 | Purification 0.80 → 0.99 | **BBPSSW 10 rounds / 2917 pairs; DEJMPS 4 / 32** | `qll/network/purification.py` |
 | Rounds for a device-independent key at S = 0.95·2√2 | **2,535** | `qll/qkd/e91.py` |
 | Key buffer to message once a minute through a Mars round trip | **1.43 kB** | `qll/app/messenger.py` |
@@ -152,6 +153,9 @@ Every figure is drawn by a function under test; `python scripts/make_figures.py`
 <tr>
 <td width="50%"><img src="docs/figures/decoder_threshold.svg" alt="Surface-code decoder threshold with Stim and PyMatching" width="100%"></td>
 <td width="50%"><img src="docs/figures/zz_coupler.svg" alt="Static ZZ versus tunable-coupler frequency" width="100%"></td>
+</tr>
+<tr>
+<td colspan="2"><img src="docs/figures/repeater_design_space.svg" alt="Where a useful fiber repeater chain beats direct transmission, and which demonstrated memories get there" width="100%"></td>
 </tr>
 <tr>
 <td colspan="2"><img src="docs/figures/cz_pulse.svg" alt="A simulated CZ gate: flux pulse shapes, populations, and conditional phase" width="100%"></td>

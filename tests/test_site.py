@@ -148,3 +148,31 @@ def test_js_repeater_model_matches_python(tmp_path):
     assert out["x"] == pytest.approx(crossover_distance_km(3, 1.0), rel=1e-12)
     # the page's animation samples the same process as the tested Python Monte Carlo
     assert out["mc"] == pytest.approx(mean_chain_time_s(800.0, 3, 20000, seed=5)[0], rel=0.03)
+
+
+@pytest.mark.skipif(node is None, reason="node not installed")
+def test_js_purified_chain_matches_python(tmp_path):
+    from qll.network.purified_chain import best_useful_chain, minimum_useful_memory_s, purified_chain
+
+    cases = [(L, n, T, r) for L in (200.0, 600.0, 1500.0) for n in (1, 3) for T in (1.0, 100.0)
+             for r in ([0] * (n + 1), [1] + [0] * n, [2] * (n + 1))]
+    best = [(L, T) for L in (393.0, 600.0, 1000.0, 2000.0) for T in (1.0, 10.0, 100.0, 3600.0)]
+    script = tmp_path / "pur.js"
+    script.write_text(
+        "const R=require(process.argv[2]);const c=JSON.parse(process.argv[3]);const b=JSON.parse(process.argv[4]);"
+        "console.log(JSON.stringify({pc:c.map(([L,n,T,r])=>R.purifiedChain(L,n,T,r)),"
+        "best:b.map(([L,T])=>{const x=R.bestUsefulChain(L,T);return x&&[x.rate_hz,x.teleport_fidelity,x.n_segments,x.rounds]}),"
+        "tmin:[500,1000,2000].map((L)=>R.minimumUsefulMemory(L))}))")
+    out = json.loads(subprocess.run([node, str(script), str(DOCS / "js" / "repeater_core.js"), json.dumps(cases), json.dumps(best)],
+                                    capture_output=True, text=True, check=True).stdout)
+    for (L, n, T, r), js in zip(cases, out["pc"]):
+        py = purified_chain(L, n, T, r)
+        for key in ("rate_hz", "fidelity_fraction", "hold_time_s", "pairs_per_output"):
+            assert js[key] == pytest.approx(getattr(py, key), rel=1e-12, abs=0), (L, n, T, r, key)
+    for (L, T), js in zip(best, out["best"]):
+        py = best_useful_chain(L, T)
+        assert (js is None) == (py is None)
+        if py is not None:
+            assert js[0] == pytest.approx(py.rate_hz, rel=1e-12) and js[2] == py.n_segments and tuple(js[3]) == py.rounds
+    for L, js in zip((500.0, 1000.0, 2000.0), out["tmin"]):
+        assert js == pytest.approx(minimum_useful_memory_s(L), rel=1e-12)

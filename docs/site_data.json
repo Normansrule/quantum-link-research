@@ -1,16 +1,16 @@
 {
  "status": {
-  "version": "0.35.0",
-  "tests": 624,
+  "version": "0.36.0",
+  "tests": 637,
   "requirements": 25,
   "requirements_verified": 24,
-  "references": 400,
+  "references": 401,
   "references_verified": 21,
-  "learn_files": 90,
+  "learn_files": 91,
   "experiment_files": 55,
   "research_files": 35,
   "simulations": 8,
-  "figures": 42,
+  "figures": 43,
   "phases_done": 6
  },
  "headline": {
@@ -27,6 +27,9 @@
   "nbar_5ghz_15mK": 1.128194821837113e-07,
   "chain_crossover_km_1s_memory": 392.6313401706839,
   "chain_teleport_fidelity_at_crossover": 0.5828465965902333,
+  "min_useful_memory_s_1000km": 38.803168306709914,
+  "min_useful_memory_segments_1000km": 16,
+  "min_useful_memory_rounds_1000km": 2,
   "bbpssw_rounds_08_to_099": 10,
   "bbpssw_pairs": 2916.8607931226716,
   "dejmps_rounds_08_to_099": 4,
