@@ -5,6 +5,7 @@
 <p align="center">
   <a href="https://Normansrule.github.io/quantum-link-research/"><img src="https://img.shields.io/badge/Open_the_website-5ef2e0?style=for-the-badge&logo=githubpages&logoColor=0b1224" alt="Open the website"></a>
   <a href="https://Normansrule.github.io/quantum-link-research/mars/"><img src="https://img.shields.io/badge/Mars_link_simulator-ff6b4a?style=for-the-badge&logo=threedotjs&logoColor=white" alt="Mars link simulator"></a>
+  <a href="https://Normansrule.github.io/quantum-link-research/budget/"><img src="https://img.shields.io/badge/Link_budget-5ea8ff?style=for-the-badge" alt="Earth–Mars link budget"></a>
   <a href="https://Normansrule.github.io/quantum-link-research/teleport/"><img src="https://img.shields.io/badge/Teleportation,_step_by_step-a78bfa?style=for-the-badge&logo=qiskit&logoColor=white" alt="Teleportation explainer"></a>
   <a href="https://Normansrule.github.io/quantum-link-research/monitor/"><img src="https://img.shields.io/badge/Link_monitor-5ea8ff?style=for-the-badge" alt="Link monitor"></a>
   <a href="https://Normansrule.github.io/quantum-link-research/repeater/"><img src="https://img.shields.io/badge/Repeater_lab-45e0a0?style=for-the-badge" alt="Repeater lab"></a>
@@ -64,6 +65,7 @@ Every number above is written by [`scripts/make_readme_art.py`](scripts/make_rea
 | Where a repeater chain (1 s memories) beats direct fiber | **393 km** | `qll/network/repeater_chain.py` |
 | Teleportation fidelity of the pairs it delivers there, without purification | **0.58 (below 2/3: rate is not enough)** | `qll/network/repeater_chain.py` |
 | Memory needed for a useful chain (F > 2/3) that beats direct fiber over 1000 km | **39 s (best: 16 segments, 2 purification rounds)** | `qll/network/purified_chain.py` |
+| Useful Earth–Mars pairs per day, source at Earth (beam waist 0.5 m, 4 m receiver, 1,000 modes) | **2.9e+07 at closest, 8.7e+05 at farthest (F = 0.73); 7e-04 through an L4 relay's two downlinks** | `qll/systems/mars_budget.py` |
 | Purification 0.80 → 0.99 | **BBPSSW 10 rounds / 2917 pairs; DEJMPS 4 / 32** | `qll/network/purification.py` |
 | Rounds for a device-independent key at S = 0.95·2√2 | **2,535** | `qll/qkd/e91.py` |
 | Key buffer to message once a minute through a Mars round trip | **1.43 kB** | `qll/app/messenger.py` |
@@ -79,7 +81,7 @@ This is the thesis question in one picture. A stored Bell pair decays toward the
 
 ## The website
 
-Eight interactive pages, all driven by the same tested numbers and tested themselves in headless Chromium on every push. The animations are recordings of the real pages ([`scripts/record_site.py`](scripts/record_site.py)); click one to open it.
+Nine interactive pages, all driven by the same tested numbers and tested themselves in headless Chromium on every push. The animations are recordings of the real pages ([`scripts/record_site.py`](scripts/record_site.py)); click one to open it.
 
 <table>
 <tr>
@@ -96,7 +98,7 @@ Eight interactive pages, all driven by the same tested numbers and tested themse
 </tr>
 <tr>
 <td width="50%" valign="top"><a href="https://Normansrule.github.io/quantum-link-research/qec/"><img src="docs/figures/anim_qec.gif" alt="QEC lab: a surface code catching bit flips" width="100%"></a><br><b>QEC lab</b> <sup>new</sup><br><sub>A distance-5 surface code under bit flips: errors appear, parity checks light up, PyMatching pairs them, and the correction either saves the logical qubit or closes a string across the lattice. Every shot is decoded in the tested Python and re-checked by the page.</sub></td>
-<td width="50%" valign="top"><b>Built so a student can see the machinery</b><br><sub>Each page steps through the real internal state of a tested model, the way llm-viz and transformer-explainer do for transformers: amplitudes in the teleportation explainer, heralds and swaps in the repeater lab, dressed levels in the coupler lab, and syndromes in the QEC lab. Nothing on them is drawn by hand.</sub></td>
+<td width="50%" valign="top"><a href="https://Normansrule.github.io/quantum-link-research/budget/"><img src="docs/figures/anim_budget.gif" alt="Earth–Mars link budget: the pair stream narrowing stage by stage" width="100%"></a><br><b>Earth–Mars link budget</b> <sup>new</sup><br><sub>A trillion pairs a second leave Earth; the stream narrows at every stage (87 dB of it at diffraction) as Mars recedes. Pick the architecture, the memory, the telescopes, and the day, and count the useful teleportations and secret bits that arrive.</sub></td>
 </tr>
 </table>
 
@@ -252,9 +254,9 @@ The website and these README images re-implement ideas from twelve open-source p
 | [**llm-viz**](https://github.com/bbycroft/llm-viz) · [**transformer-explainer**](https://github.com/poloclub/transformer-explainer) | step-through explainers that show the real internal state: the teleportation page, the coupler lab's CZ player, the repeater lab's sampled run, the QEC lab's decoding steps, and the memory-versus-round-trip chart |
 | [**WebGL-Fluid-Simulation**](https://github.com/PavelDoGreat/WebGL-Fluid-Simulation) | a full-canvas fragment shader driven by the pointer: the interference lab |
 | [**folio-2019**](https://github.com/brunosimon/folio-2019) | the landing page as a 3-D scene to explore: the three.js Solar System |
-| [**gods-eye-view**](https://github.com/bilawalsidhu/gods-eye-view) · [**worldmonitor**](https://github.com/koala73/worldmonitor) | a live situation view and a dashboard of tiles, timelines, and an event feed: the hero's live strip and the link monitor |
+| [**gods-eye-view**](https://github.com/bilawalsidhu/gods-eye-view) · [**worldmonitor**](https://github.com/koala73/worldmonitor) | a live situation view and a dashboard of tiles, timelines, and an event feed: the hero's live strip, the link monitor, and the link budget |
 | [**GSAP**](https://github.com/greensock/GSAP) | used directly for scroll reveals, tickers, and explainer steps |
-| [**Remotion**](https://github.com/remotion-dev/remotion) | rendering the product itself into the README's motion; done here with Playwright frame capture |
+| [**Remotion**](https://github.com/remotion-dev/remotion) | rendering the product itself into the README's motion, done here with Playwright frame capture; the link budget's flowing pair stream |
 
 ## Contributing and credits
 

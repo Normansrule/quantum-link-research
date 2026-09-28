@@ -88,6 +88,11 @@ def compute_data() -> dict:
     from qll.space.relativity import gravitational_redshift_earth_mars
 
     status = json.loads((ROOT / "docs" / "status.json").read_text()) if (ROOT / "docs" / "status.json").exists() else {}
+    from qll.systems.mars_budget import MarsLinkDesign
+    from qll.systems.mars_budget import budget as mars_budget
+    _days = np.arange(0.0, 800.0, 1.0)
+    _r = np.array([float(earth_mars_range_m(t)) for t in _days])
+    t_close, t_far = float(_days[np.argmin(_r)]), float(_days[np.argmax(_r)])
     lo, hi = range_envelope_m()
     cm = capability_matrix(0.95)
     micius30 = 2 * MICIUS_2017.loss_db(slant_range_m(500e3, 30), 30)
@@ -110,6 +115,10 @@ def compute_data() -> dict:
             "chain_crossover_km_1s_memory": crossover_distance_km(3, 1.0),
             "chain_teleport_fidelity_at_crossover": (2 * memory_chain(crossover_distance_km(3, 1.0), 3, 1.0).fidelity_fraction + 1) / 3,
             "min_useful_memory_s_1000km": minimum_useful_memory_s(1000.0),
+            "mars_pairs_per_day_closest": mars_budget(MarsLinkDesign(), t_close).pairs_per_day,
+            "mars_pairs_per_day_farthest": mars_budget(MarsLinkDesign(), t_far).pairs_per_day,
+            "mars_fidelity_farthest": mars_budget(MarsLinkDesign(), t_far).teleport_fidelity,
+            "mars_relay_pairs_per_day_closest": mars_budget(MarsLinkDesign(architecture="relay_dual"), t_close).pairs_per_day,
             "min_useful_memory_segments_1000km": best_useful_chain(1000.0, 1.001 * minimum_useful_memory_s(1000.0)).n_segments,
             "min_useful_memory_rounds_1000km": sum(best_useful_chain(1000.0, 1.001 * minimum_useful_memory_s(1000.0)).rounds),
             "bbpssw_rounds_08_to_099": rb, "bbpssw_pairs": pb,
@@ -146,6 +155,7 @@ def main() -> None:
 
 def write_readme_numbers(data: dict) -> None:
     """Regenerate the table between the numbers markers in README.md from the same data."""
+    from qll.systems.mars_budget import MarsLinkDesign
     h = data["headline"]
     rows = [
         ("One-way light time, Earth → Mars", f"{h['one_way_min_min']:.1f}–{h['one_way_max_min']:.1f} min", "`qll/space/ephemeris.py`"),
@@ -157,6 +167,7 @@ def write_readme_numbers(data: dict) -> None:
         ("Where a repeater chain (1 s memories) beats direct fiber", f"{h['chain_crossover_km_1s_memory']:.0f} km", "`qll/network/repeater_chain.py`"),
         ("Teleportation fidelity of the pairs it delivers there, without purification", (lambda x: f"{x:.2f} (below 2/3: rate is not enough)" if x < 2 / 3 else f"{x:.2f} (above 2/3)")(h['chain_teleport_fidelity_at_crossover']), "`qll/network/repeater_chain.py`"),
         ("Memory needed for a useful chain (F > 2/3) that beats direct fiber over 1000 km", f"{h['min_useful_memory_s_1000km']:.0f} s (best: {h['min_useful_memory_segments_1000km']} segments, {h['min_useful_memory_rounds_1000km']} purification round{'s' if h['min_useful_memory_rounds_1000km'] != 1 else ''})", "`qll/network/purified_chain.py`"),
+        (f"Useful Earth–Mars pairs per day, source at Earth (beam waist {MarsLinkDesign().tx_waist_m:g} m, {MarsLinkDesign().rx_diameter_mars_m:g} m receiver, {MarsLinkDesign().modes:,} modes)", f"{h['mars_pairs_per_day_closest']:.1e} at closest, {h['mars_pairs_per_day_farthest']:.1e} at farthest (F = {h['mars_fidelity_farthest']:.2f}); {h['mars_relay_pairs_per_day_closest']:.0e} through an L4 relay's two downlinks", "`qll/systems/mars_budget.py`"),
         ("Purification 0.80 → 0.99", f"BBPSSW {h['bbpssw_rounds_08_to_099']} rounds / {h['bbpssw_pairs']:.0f} pairs; DEJMPS {h['dejmps_rounds_08_to_099']} / {h['dejmps_pairs']:.0f}", "`qll/network/purification.py`"),
         ("Rounds for a device-independent key at S = 0.95·2√2", f"{h['di_rounds_095']:,}", "`qll/qkd/e91.py`"),
         ("Key buffer to message once a minute through a Mars round trip", f"{h['messenger_buffer_kB_mars_max']:.2f} kB", "`qll/app/messenger.py`"),

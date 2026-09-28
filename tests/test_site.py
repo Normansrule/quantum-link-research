@@ -189,3 +189,29 @@ def test_js_qec_checks_agree_with_every_decoded_shot(tmp_path):
     out = json.loads(subprocess.run([node, str(script), str(DOCS / "js" / "qec_core.js"), str(DOCS / "site_data.json")],
                                     capture_output=True, text=True, check=True).stdout)
     assert out["n"] == 3 * 5 * 16 and out["bad"] == []
+
+
+@pytest.mark.skipif(node is None, reason="node not installed")
+def test_js_mars_budget_matches_python(tmp_path):
+    from dataclasses import replace
+
+    from qll.systems.mars_budget import MarsLinkDesign, budget
+
+    designs = [{}, {"architecture": "relay_dual"}, {"tx_waist_m": 2.0, "rx_diameter_mars_m": 10.0, "pointing_rad": 3e-7},
+               {"memory": "Eu:YSO nuclear spin, 13.1 h", "modes": 1, "f0": 0.99}, {"wavelength_m": 810e-9, "earth_elevation_deg": 25.0}]
+    days = [0.0, 150.0, 400.0, 538.0, 700.0]
+    script = tmp_path / "budget.js"
+    script.write_text(
+        "const fs=require('fs');const E=require(process.argv[2]);const B=require(process.argv[3])(E);"
+        "const data=JSON.parse(fs.readFileSync(process.argv[4],'utf8'));E.configure(data);const ds=JSON.parse(process.argv[5]);const ts=JSON.parse(process.argv[6]);"
+        "console.log(JSON.stringify(ds.map(d=>ts.map(t=>{const b=B.budget(d,t,data.memories);"
+        "return [b.stages.map(s=>s.rate_per_s),b.teleport_fidelity,b.key_bits_per_pair,b.storage_s];}))))")
+    out = json.loads(subprocess.run([node, str(script), str(DOCS / "js" / "ephemeris.js"), str(DOCS / "js" / "budget_core.js"),
+                                     str(DOCS / "site_data.json"), json.dumps(designs), json.dumps(days)],
+                                    capture_output=True, text=True, check=True).stdout)
+    for d, rows in zip(designs, out):
+        for t, (rates, F, key, ts) in zip(days, rows):
+            b = budget(replace(MarsLinkDesign(), **d), t)
+            assert rates == pytest.approx([s.rate_per_s for s in b.stages], rel=1e-9, abs=1e-300), (d, t)
+            assert F == pytest.approx(b.teleport_fidelity, rel=1e-9) and ts == pytest.approx(b.storage_s, rel=1e-9)
+            assert key == pytest.approx(b.key_bits_per_pair, rel=1e-6, abs=1e-12)

@@ -145,3 +145,22 @@ def test_qec_lab_steps_through_a_decoded_shot_and_checks_itself(browser, server)
     assert page.locator("#k-n").inner_text() == "49"
     assert errors == []
     page.close()
+
+
+def test_link_budget_page_matches_the_python_budget(browser, server):
+    from qll.systems.mars_budget import MarsLinkDesign, budget
+    from dataclasses import replace
+    page, errors = open_page(browser, server + "/budget/")
+    page.wait_for_function("document.body.dataset.ready === '1'", timeout=30000)
+    page.evaluate("QLLBudgetPage.setDay(538)")
+    js = page.evaluate("QLLBudgetPage.current.pairs_per_day")
+    assert js == pytest.approx(budget(MarsLinkDesign(), 538.0).pairs_per_day, rel=1e-9)
+    assert "useful pairs a day" in page.locator("#k-verdict").inner_text()
+    page.click("#a-relay")
+    assert page.evaluate("QLLBudgetPage.current.pairs_per_day") == pytest.approx(
+        budget(replace(MarsLinkDesign(), architecture="relay_dual"), 538.0).pairs_per_day, rel=1e-8)   # two 1e-10 legs amplify rounding
+    page.click("#a-earth"); page.click("#t-conj")
+    assert "Sun is in the way" in page.locator("#k-verdict").inner_text()
+    assert page.locator("#mem-rows tr").count() == 6
+    assert errors == []
+    page.close()

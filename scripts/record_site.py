@@ -1,6 +1,6 @@
 """Record animated GIFs of the website for the README (GitHub cannot run the pages' JavaScript).
 Needs:  pip install playwright pillow && python -m playwright install chromium
-Usage:  python scripts/record_site.py [anim_mars ...]   # writes docs/figures/anim_*.gif (all eight by default)
+Usage:  python scripts/record_site.py [anim_mars ...]   # writes docs/figures/anim_*.gif (all nine by default)
 Frames are captured from a local server in headless Chromium, so the animation is the real page, not a mock-up."""
 from __future__ import annotations
 
@@ -30,6 +30,8 @@ SHOTS = {
     "anim_repeater": ("/repeater/", "document.getElementById('preset-good').click()", "section.grid >> nth=0", 40, 110),
     # the QEC lab: three decoded d = 5 shots at 8 % stepped through errors, syndrome, matching, correction
     "anim_qec": ("/qec/", None, ".p.w7", 0, 700),
+    # the link budget's stream as Mars recedes from closest approach toward conjunction
+    "anim_budget": ("/budget/", None, "section.grid >> nth=0", 36, 120),
 }
 
 
@@ -107,6 +109,17 @@ def main() -> None:
                     page.wait_for_timeout(1400 if k != 4 else 4300)
                     frames += [io.BytesIO(page.screenshot(timeout=120000))] * 4
                 save_gif(frames, OUT / f"{name}.gif", 400)
+                page.close(); continue
+            if name == "anim_budget":
+                page.add_style_tag(content=".p::before{animation:none!important}.aurora{animation:none!important}")
+                page.wait_for_function("document.body.dataset.ready === '1'", timeout=60000)
+                page.evaluate("document.documentElement.style.scrollBehavior='auto'; window.scrollTo(0, document.querySelector('#flow').getBoundingClientRect().top + scrollY - 120)")
+                page.wait_for_timeout(1500)                                       # let the particle stream fill
+                for k in range(n):
+                    page.evaluate(f"QLLBudgetPage.setDay({538 + round(k * 340 / (n - 1))})")
+                    page.wait_for_timeout(90)
+                    frames.append(io.BytesIO(page.locator(clip).screenshot(timeout=120000)))
+                save_gif(frames, OUT / f"{name}.gif", ms)
                 page.close(); continue
             if name == "anim_qec":
                 page.set_viewport_size({"width": 1280, "height": 1400})     # the lattice panel is taller than 720 px

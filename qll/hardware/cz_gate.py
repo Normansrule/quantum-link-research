@@ -95,25 +95,35 @@ class CZPulse:
         return cross + 2 * np.sqrt(2) * self.g / np.tan(2 * th)
 
     def propagator(self, dt: float = 0.01) -> np.ndarray:
-        """Full 9 x 9 propagator in the idle point's dressed basis (midpoint rule, exact exponential per step)."""
-        n = max(1, int(np.ceil(self.duration / dt)))
-        h = self.duration / n
-        U = np.eye(LEVELS**2, dtype=complex)
-        for k in range(n):
-            E, V = np.linalg.eigh(_hamiltonian(float(self.w1((k + 0.5) * h)), self.w2, self.alpha, self.g))
-            U = (V * np.exp(-2j * np.pi * E * h)) @ V.T @ U
+        """Full 9 x 9 propagator in the idle point's dressed basis (midpoint rule, exact exponential per step; the
+        time-ordered product is formed by pairwise reduction, later steps on the left)."""
+        U, _ = self._steps(dt)
+        while len(U) > 1:
+            if len(U) % 2:
+                U = np.concatenate([U, np.eye(LEVELS**2, dtype=complex)[None]])
+            U = U[1::2] @ U[0::2]
+        U = U[0]
         B = _dressed_basis(self.w1_idle, self.w2, self.alpha, self.g)
         return B.T @ U @ B
 
-    def populations_from_11(self, dt: float = 0.01, every: int = 10):
-        """Times and bare-state populations of |11> and |20> along the pulse, starting in the idle dressed |11>."""
+    def _steps(self, dt: float) -> tuple[np.ndarray, float]:
+        """Exact exponentials of the midpoint Hamiltonian for every step, all at once (H is linear in w1)."""
         n = max(1, int(np.ceil(self.duration / dt)))
         h = self.duration / n
+        H0 = _hamiltonian(0.0, self.w2, self.alpha, self.g)
+        N1 = _hamiltonian(1.0, self.w2, self.alpha, self.g) - H0
+        w = np.asarray(self.w1((np.arange(n) + 0.5) * h), dtype=float)
+        E, V = np.linalg.eigh(H0[None, :, :] + w[:, None, None] * N1[None, :, :])
+        return np.einsum("kij,kj,klj->kil", V, np.exp(-2j * np.pi * E * h), V), h
+
+    def populations_from_11(self, dt: float = 0.01, every: int = 10):
+        """Times and bare-state populations of |11> and |20> along the pulse, starting in the idle dressed |11>."""
+        steps, h = self._steps(dt)
         psi = _dressed_basis(self.w1_idle, self.w2, self.alpha, self.g)[:, _index((1, 1))].astype(complex)
         ts, p11, p20 = [0.0], [abs(psi[_index((1, 1))]) ** 2], [abs(psi[_index((2, 0))]) ** 2]
+        n = len(steps)
         for k in range(n):
-            E, V = np.linalg.eigh(_hamiltonian(float(self.w1((k + 0.5) * h)), self.w2, self.alpha, self.g))
-            psi = (V * np.exp(-2j * np.pi * E * h)) @ (V.T @ psi)
+            psi = steps[k] @ psi
             if (k + 1) % every == 0 or k == n - 1:
                 ts.append((k + 1) * h); p11.append(abs(psi[_index((1, 1))]) ** 2); p20.append(abs(psi[_index((2, 0))]) ** 2)
         return np.array(ts), np.array(p11), np.array(p20)

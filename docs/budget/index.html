@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Link budget · Quantum Link Research</title>
+<meta name="description" content="Follow a trillion entangled pairs per second from Earth to Mars, stage by stage, and see how many survive to become teleportations and secret key.">
+<meta property="og:title" content="Earth–Mars link budget · Quantum Link Research">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://normansrule.github.io/quantum-link-research/budget/">
+<meta property="og:image" content="https://normansrule.github.io/quantum-link-research/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://normansrule.github.io/quantum-link-research/og.png">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📉</text></svg>">
+<link rel="stylesheet" href="../space.css">
+<style>
+  .lab { max-width: 1320px; margin: 0 auto; padding: 5.4rem 3vw 2rem }
+  .intro { max-width: 960px; margin: 0 0 1.4rem }
+  .intro h1 { font-size: clamp(1.9rem, 3.6vw, 3rem); line-height: 1.08; margin: .5rem 0 .7rem; letter-spacing: -.02em }
+  .grid { display: grid; gap: 1rem; grid-template-columns: repeat(12, 1fr); margin-bottom: 1rem }
+  .grid > * { min-width: 0 }
+  .p { border: 1px solid var(--line); border-radius: 16px; background: var(--glass); padding: .95rem 1.05rem; position: relative; overflow: hidden }
+  .p::before { content: ""; position: absolute; inset: -1px; border-radius: 16px; padding: 1px; pointer-events: none; opacity: .5;
+    background: conic-gradient(from var(--a, 0deg), transparent 0 70%, rgba(94,168,255,.9) 80%, rgba(255,107,74,.9) 88%, transparent 96%);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude;
+    animation: spin 8s linear infinite }
+  @property --a { syntax: "<angle>"; initial-value: 0deg; inherits: false }
+  @keyframes spin { to { --a: 360deg } }
+  .p h4 { margin: 0 0 .55rem; font-size: .74rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); font-weight: 700 }
+  .w8 { grid-column: span 8 } .w4 { grid-column: span 4 } .w12 { grid-column: span 12 } .w6 { grid-column: span 6 }
+  @media (max-width: 1000px) { .w8, .w4, .w6 { grid-column: span 12 } }
+  canvas#flow { width: 100%; height: 360px; display: block }
+  canvas#dates { width: 100%; height: 120px; display: block }
+  .lab button { font: 600 .84rem/1 "JetBrains Mono", ui-monospace, monospace; padding: .5rem .75rem; border-radius: 10px; border: 1px solid var(--line); background: var(--bg2); color: var(--ink); cursor: pointer }
+  .lab button.on { border-color: var(--cyan); box-shadow: 0 0 14px rgba(94,242,224,.3) }
+  .lab select { font: 600 .84rem "JetBrains Mono", monospace; padding: .45rem; border-radius: 10px; background: var(--bg2); color: var(--ink); border: 1px solid var(--line); max-width: 100% }
+  .row { display: flex; gap: .5rem; flex-wrap: wrap; align-items: center; margin: .3rem 0 }
+  .sl { display: grid; grid-template-columns: 1fr auto; gap: .1rem .6rem; font-size: .84rem; color: var(--muted); margin: .4rem 0 }
+  .sl b { color: var(--ink); font: 600 .84rem "JetBrains Mono", monospace } .sl input { grid-column: 1 / -1; width: 100%; accent-color: #22d3ee }
+  .kpis { display: grid; grid-template-columns: repeat(auto-fill, minmax(165px, 1fr)); gap: .7rem }
+  .k { border: 1px solid var(--line); border-radius: 12px; padding: .6rem .7rem; background: rgba(10,15,28,.55) }
+  .k .v { font: 700 1.35rem/1.15 "JetBrains Mono", monospace; font-variant-numeric: tabular-nums } .k .s { font-size: .74rem; color: var(--faint) }
+  table.mem { width: 100%; border-collapse: collapse; font-size: .84rem } table.mem td, table.mem th { padding: .35rem .5rem; border-bottom: 1px solid var(--line); text-align: right }
+  table.mem td:first-child, table.mem th:first-child { text-align: left } table.mem th { color: var(--muted); font-weight: 600 }
+  table.mem tr.sel td { color: var(--cyan) }
+  .note { color: var(--muted); font-size: .88rem; margin: .5rem 0 0 }
+  .ok { color: var(--green) } .bad { color: var(--mars) } .warm { color: var(--warm) } .cyan { color: var(--cyan) }
+</style>
+</head>
+<body>
+<div class="aurora"></div>
+<header class="top">
+  <a class="brand" href="../"><span class="dot"></span>Quantum Link Research</a>
+  <nav><a href="../mars/">Mars simulator</a><a href="../repeater/">Repeater lab</a><a href="../coupler/">Coupler lab</a><a href="../qec/">QEC lab</a><a class="gh" href="https://github.com/Normansrule/quantum-link-research">GitHub ↗</a></nav>
+</header>
+<main class="lab">
+  <div class="intro">
+    <div class="kicker">Link budget · flagship F3 · REQ-CAP-001</div>
+    <h1>A trillion pairs a second leave Earth. <span class="gradient-text" id="h-survive">How many reach Mars?</span></h1>
+    <p class="sub" style="margin:0">Every stage of the link multiplies the rate by a factor from a tested model: optics, the atmosphere, the spreading of the beam over hundreds of millions of kilometres, pointing jitter, detectors, memories, and the Sun getting in the way. Then the pair must wait in a memory for Earth's two classical bits. The stream below is drawn from <code>qll/systems/mars_budget.py</code>, ported line by line to <code>docs/js/budget_core.js</code> and checked against it.</p>
+  </div>
+
+  <section class="grid">
+    <div class="p w12"><h4>the stream · band height is the logarithm of the pair rate after each stage; red stages are where it dies</h4>
+      <canvas id="flow"></canvas>
+    </div>
+  </section>
+
+  <section class="grid">
+    <div class="p w8"><h4>when · Earth–Mars range over two synodic periods, shaded where the Sun blocks the line of sight</h4>
+      <canvas id="dates"></canvas>
+      <div class="sl"><span>day after J2000</span><b id="v-t"></b><input type="range" id="t" min="0" max="1560" step="1" value="538"></div>
+      <div class="row"><button id="t-close">closest approach</button><button id="t-far">farthest</button><button id="t-conj">conjunction</button></div>
+    </div>
+    <div class="p w4"><h4>architecture</h4>
+      <div class="row"><button id="a-earth" class="on">source at Earth</button><button id="a-relay">relay at L4, two downlinks</button></div>
+      <p class="note" id="arch-note">—</p>
+      <div class="sl" style="margin-top:.6rem"><span>memory</span><b></b><select id="mem"></select></div>
+    </div>
+    <div class="p w6"><h4>hardware</h4>
+      <div class="sl"><span>transmit beam waist w₀</span><b id="v-w0"></b><input type="range" id="w0" min="-1" max="0.7" step="any" value="-0.30103"></div>
+      <div class="sl"><span>Mars receiver diameter</span><b id="v-D"></b><input type="range" id="D" min="0" max="1.5" step="any" value="0.60206"></div>
+      <div class="sl"><span>pointing jitter (per axis)</span><b id="v-pt"></b><input type="range" id="pt" min="-9" max="-5" step="any" value="-7"></div>
+    </div>
+    <div class="p w6"><h4>source and operations</h4>
+      <div class="sl"><span>pairs per second per mode</span><b id="v-R"></b><input type="range" id="R" min="6" max="10" step="any" value="9"></div>
+      <div class="sl"><span>multiplexed modes</span><b id="v-M"></b><input type="range" id="M" min="0" max="5" step="any" value="3"></div>
+      <div class="sl"><span>elementary pair fraction f₀</span><b id="v-f0"></b><input type="range" id="f0" min="0.8" max="1" step="0.005" value="0.95"></div>
+    </div>
+    <div class="p w12"><h4>what arrives</h4>
+      <div class="kpis">
+        <div class="k"><div class="s">Earth–Mars range</div><div class="v" id="k-range">—</div></div>
+        <div class="k"><div class="s">total loss after the source</div><div class="v" id="k-db">—</div></div>
+        <div class="k"><div class="s">heralded pairs per day</div><div class="v" id="k-pairs">—</div></div>
+        <div class="k"><div class="s">storage until Earth's bits arrive</div><div class="v" id="k-store">—</div></div>
+        <div class="k"><div class="s">teleportation fidelity after storage</div><div class="v" id="k-fid">—</div></div>
+        <div class="k"><div class="s">secret key (BBM92) per day</div><div class="v" id="k-key">—</div></div>
+      </div>
+      <p class="note" id="k-verdict">—</p>
+    </div>
+    <div class="p w12"><h4>the same link with each demonstrated memory</h4>
+      <table class="mem"><thead><tr><th>memory</th><th>coherence</th><th>retrieval</th><th>pairs / day</th><th>fidelity after storage</th><th>verdict</th></tr></thead><tbody id="mem-rows"></tbody></table>
+      <p class="note">A memory is paid for twice here: its retrieval efficiency at both ends multiplies the rate, and its coherence time sets the fidelity after the wait. Assumptions (all adjustable in <code>MarsLinkDesign</code>): 1550 nm, transmit optics 0.8, receive optics 0.7, detectors 0.9, Earth elevation 40°, weather and operations duty 0.5, storage for one round trip, depolarizing memories.</p>
+    </div>
+  </section>
+</main>
+<footer>Link budget. Physics from <code>qll/systems/mars_budget.py</code> and the channel, memory, and key-rate modules it composes [siegman1986, bourgoin2013, sinclair2014, yin2017, bennett1992bbm92, shor2000]. Design after Remotion and Magic UI (flowing streams and beams), llm-viz (the real numbers at every stage), and worldmonitor (a live dashboard). See <a href="https://github.com/Normansrule/quantum-link-research/blob/main/CREDITS.md">CREDITS.md</a>.</footer>
+<script src="../js/ephemeris.js"></script>
+<script src="../js/budget_core.js"></script>
+<script>
+(async function () {
+  document.documentElement.classList.remove("no-js");
+  const E = window.QLLEphemeris, B = window.QLLBudget, $ = (id) => document.getElementById(id);
+  const DATA = await (await fetch("../site_data.json")).json(); E.configure(DATA);
+  const MEMS = DATA.memories;
+  MEMS.forEach((m) => { const o = document.createElement("option"); o.value = o.textContent = m.name; $("mem").appendChild(o); });
+  $("mem").value = "171Yb+ hyperfine";
+  let arch = "earth_source";
+  const SUP = { "-": "⁻", "0": "⁰", "1": "¹", "2": "²", "3": "³", "4": "⁴", "5": "⁵", "6": "⁶", "7": "⁷", "8": "⁸", "9": "⁹" };
+  const sci = (x, dp) => { const [m, e] = x.toExponential(dp).split("e"); return `${m}×10${String(+e).split("").map((c) => SUP[c]).join("")}`; };
+  const fmtN = (x) => x === 0 ? "0" : x >= 1e6 ? sci(x, 2) : x >= 100 ? Math.round(x).toLocaleString() : x >= 1 ? x.toFixed(1) : sci(x, 1);
+  const fmtT = (s) => s < 120 ? s.toFixed(0) + " s" : s < 7200 ? (s / 60).toFixed(1) + " min" : (s / 3600).toFixed(1) + " h";
+  const design = () => ({ architecture: arch, tx_waist_m: Math.pow(10, +$("w0").value), rx_diameter_mars_m: Math.pow(10, +$("D").value), rx_diameter_earth_m: Math.pow(10, +$("D").value),
+    pointing_rad: Math.pow(10, +$("pt").value), source_rate_hz: Math.pow(10, +$("R").value), modes: Math.round(Math.pow(10, +$("M").value)), f0: +$("f0").value, memory: $("mem").value });
+  function ctx(cv) { const g = cv.getContext("2d"), dpr = Math.min(devicePixelRatio || 1, 2), W = cv.clientWidth, H = cv.clientHeight;
+    if (cv.width !== Math.round(W * dpr)) { cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); }
+    g.setTransform(dpr, 0, 0, dpr, 0, 0); g.clearRect(0, 0, W, H); return [g, W, H]; }
+
+  // date strip
+  const TS = Array.from({ length: 781 }, (_, i) => i * 2), RS = TS.map((t) => E.rangeM(t) / E.AU), BLOCK = TS.map((t) => E.sepDeg(t) < 3);
+  function drawDates(t) {
+    const [g, W, H] = ctx($("dates")), X = (x) => 40 + (W - 50) * x / 1560, Y = (r) => H - 16 - (H - 26) * (r - 0.3) / 2.5;
+    g.fillStyle = "rgba(255,107,74,.18)"; TS.forEach((x, i) => { if (BLOCK[i]) g.fillRect(X(x) - 1, 4, 3, H - 20); });
+    g.strokeStyle = "#5ea8ff"; g.lineWidth = 2; g.beginPath(); TS.forEach((x, i) => i ? g.lineTo(X(x), Y(RS[i])) : g.moveTo(X(x), Y(RS[i]))); g.stroke();
+    g.fillStyle = "#5b6780"; g.font = "11px JetBrains Mono, monospace"; [0.5, 1.5, 2.5].forEach((r) => g.fillText(r + " au", 2, Y(r) + 4));
+    g.strokeStyle = "#5ef2e0"; g.setLineDash([3, 3]); g.beginPath(); g.moveTo(X(t), 4); g.lineTo(X(t), H - 16); g.stroke(); g.setLineDash([]);
+    g.fillStyle = "#e8fffb"; g.beginPath(); g.arc(X(t), Y(E.rangeM(t) / E.AU), 5, 0, 7); g.fill();
+  }
+
+  // the stream
+  let cur = null; const parts = [];
+  function drawFlow(now) {
+    const [g, W, H] = ctx($("flow")); if (!cur) return;
+    const st = cur.stages, n = st.length, x0 = 64, x1 = W - 64, dx = (x1 - x0) / (n - 1), mid = H * 0.44, lo = -3, hi = Math.log10(st[0].rate_per_s) + 0.3;
+    const hgt = (r) => r > 0 ? Math.max(2, (H * 0.6) * (Math.log10(r) - lo) / (hi - lo)) : 0;
+    // band
+    g.beginPath(); for (let i = 0; i < n; i++) { const x = x0 + i * dx, h = hgt(st[i].rate_per_s) / 2; i ? g.lineTo(x, mid - h) : g.moveTo(x, mid - h); }
+    for (let i = n - 1; i >= 0; i--) { const x = x0 + i * dx, h = hgt(st[i].rate_per_s) / 2; g.lineTo(x, mid + h); } g.closePath();
+    const grd = g.createLinearGradient(x0, 0, x1, 0); grd.addColorStop(0, "rgba(94,168,255,.55)"); grd.addColorStop(0.5, "rgba(94,242,224,.35)"); grd.addColorStop(1, "rgba(69,224,160,.45)");
+    g.fillStyle = grd; g.fill();
+    // particles
+    const spawn = Math.min(6, Math.max(1, Math.round(Math.log10(st[0].rate_per_s) / 2)));
+    for (let k = 0; k < spawn; k++) parts.push({ x: x0, y: (Math.random() - 0.5) * hgt(st[0].rate_per_s) * 0.9, v: 1.6 + Math.random() * 1.2 });
+    for (let i = parts.length - 1; i >= 0; i--) { const p = parts[i]; const seg = Math.floor((p.x - x0) / dx); p.x += p.v;
+      const seg2 = Math.floor((p.x - x0) / dx);
+      if (seg2 > seg && seg2 < n) { const f = st[seg2].factor; const keep = f <= 0 ? 0 : Math.pow(f, 0.08); if (Math.random() > keep) { parts.splice(i, 1); continue; } }
+      if (p.x > x1) { parts.splice(i, 1); continue; }
+      const s = Math.min(n - 1, Math.max(0, Math.floor((p.x - x0) / dx))), s2 = Math.min(n - 1, s + 1), fr = (p.x - x0 - s * dx) / dx;
+      const h = (hgt(st[s].rate_per_s) * (1 - fr) + hgt(st[s2].rate_per_s) * fr) / 2, y = mid + Math.max(-h, Math.min(h, p.y * h / (hgt(st[0].rate_per_s) / 2)));
+      g.fillStyle = "rgba(232,255,251,.85)"; g.fillRect(p.x, y, 2, 2); }
+    if (parts.length > 900) parts.splice(0, parts.length - 900);
+    // stage labels
+    g.font = "11px JetBrains Mono, monospace"; g.textAlign = "center";
+    for (let i = 0; i < n; i++) { const x = x0 + i * dx, s = st[i], db = s.factor > 0 ? 10 * Math.log10(s.factor) : -Infinity;
+      g.strokeStyle = "rgba(148,170,210,.2)"; g.beginPath(); g.moveTo(x, 10); g.lineTo(x, H - 70); g.stroke();
+      if (i > 0) { g.fillStyle = db < -20 ? "#ff6b4a" : db < -3 ? "#ff8a4c" : "#93a1b8"; g.fillText(isFinite(db) ? db.toFixed(1) + " dB" : "blocked", x, H - 52); }
+      g.fillStyle = "#c9d4e6"; g.fillText(s.rate_per_s > 0 ? fmtN(s.rate_per_s) + "/s" : "0", x, H - 36);
+      const name = (i === 0 ? "source" : s.name.replace("Earth to Mars: ", "").replace("relay to ", "").replace("(write and read, both ends)", "").replace("availability (conjunction x duty)", "availability"));
+      g.fillStyle = "#5b6780"; wrap(g, name, x, H - 20, dx - 6); }
+    g.textAlign = "left";
+    requestAnimationFrame(drawFlow);
+  }
+  function wrap(g, text, x, y, w) { const words = text.split(" "); let line = "", yy = y; for (const wd of words) { const t = line ? line + " " + wd : wd;
+      if (g.measureText(t).width > w && line) { g.fillText(line, x, yy); line = wd; yy += 12; } else line = t; } g.fillText(line, x, yy); }
+
+  function update() {
+    const t = +$("t").value, d = design(); cur = B.budget(d, t, MEMS);
+    $("v-t").textContent = `${t} (${new Date(Date.UTC(2000, 0, 1, 12) + t * 864e5).toISOString().slice(0, 10)})`;
+    $("v-w0").textContent = d.tx_waist_m.toFixed(2) + " m"; $("v-D").textContent = d.rx_diameter_mars_m.toFixed(1) + " m";
+    $("v-pt").textContent = (d.pointing_rad * 1e9).toFixed(d.pointing_rad < 1e-8 ? 1 : 0) + " nrad"; $("v-R").textContent = sci(d.source_rate_hz, 1);
+    $("v-M").textContent = d.modes.toLocaleString(); $("v-f0").textContent = d.f0.toFixed(3);
+    $("k-range").textContent = (cur.range_m / E.AU).toFixed(2) + " au"; $("k-db").textContent = isFinite(cur.total_db) ? cur.total_db.toFixed(1) + " dB" : "blocked";
+    $("k-pairs").innerHTML = `<span class="${cur.pairs_per_day >= 1 ? "ok" : "bad"}">${fmtN(cur.pairs_per_day)}</span>`;
+    $("k-store").textContent = fmtT(cur.storage_s);
+    $("k-fid").innerHTML = `<span class="${cur.useful ? "ok" : "bad"}">${cur.teleport_fidelity.toFixed(3)}</span>`;
+    $("k-key").innerHTML = cur.key_bits_per_pair > 0 ? `<span class="ok">${fmtN(cur.key_bits_per_day)} bits</span>` : `<span class="bad">none (error rate ${(100 * 2 * (1 - cur.fraction) / 3).toFixed(1)} %)</span>`;
+    $("h-survive").textContent = cur.pairs_per_day > 0 ? `${fmtN(cur.pairs_per_day)} a day.` : "None, today.";
+    $("k-verdict").innerHTML = !cur.available ? `<b class="bad">The Sun is in the way.</b> Within 3° of the Sun no optical link closes; ${arch === "earth_source" ? "a relay off the Earth–Mars line (try the L4 architecture, or wait a few weeks)" : "this relay geometry is blocked too"}.`
+      : cur.pairs_per_day < 1 ? `<b class="bad">Less than one pair a day.</b> ${arch === "relay_dual" ? "Both photons cross astronomical distances, so the diffraction loss is paid twice: about 90 dB each way." : "Widen the transmit beam waist, the receiver, or the multiplexing."}`
+      : !cur.useful ? `<b class="warm">Pairs arrive but are useless for teleportation.</b> The ${fmtT(cur.storage_s)} wait outlasts the memory's coherence; see the table below.`
+      : `<b class="ok">${fmtN(cur.teleportations_per_day)} useful pairs a day</b> at teleportation fidelity ${cur.teleport_fidelity.toFixed(3)}${cur.key_bits_per_pair > 0 ? `, and ${fmtN(cur.key_bits_per_day)} secret bits` : "; too noisy for key (the error rate is above 11 %)"}.`;
+    $("arch-note").innerHTML = arch === "earth_source" ? "The pair is made at Earth; one photon is stored locally and the other crosses the Earth–Mars distance once." : "A source at Sun–Earth L4 sends one photon to each planet, like Micius's two downlinks. Both legs are astronomical, so the loss is paid twice; it keeps a line of sight during Earth–Mars conjunction.";
+    $("mem-rows").innerHTML = MEMS.map((m) => { const b = B.budget(Object.assign({}, d, { memory: m.name }), t, MEMS);
+      const v = b.pairs_per_day < 1 ? "<span class='bad'>too few pairs</span>" : !b.useful ? "<span class='warm'>decays before the bits arrive</span>" : "<span class='ok'>useful</span>";
+      return `<tr class="${m.name === d.memory ? "sel" : ""}"><td>${m.name}</td><td>${m.lifetime_s < 1 ? m.lifetime_s * 1e3 + " ms" : fmtT(m.lifetime_s)}</td><td>${(100 * m.efficiency).toFixed(1)} %</td><td>${fmtN(b.pairs_per_day)}</td><td>${b.teleport_fidelity.toFixed(3)}</td><td>${v}</td></tr>`; }).join("");
+    drawDates(t);
+  }
+  ["t", "w0", "D", "pt", "R", "M", "f0", "mem"].forEach((id) => $(id).addEventListener("input", update));
+  const setArch = (a) => { arch = a; $("a-earth").classList.toggle("on", a === "earth_source"); $("a-relay").classList.toggle("on", a === "relay_dual"); update(); };
+  $("a-earth").onclick = () => setArch("earth_source"); $("a-relay").onclick = () => setArch("relay_dual");
+  const iMin = RS.indexOf(Math.min(...RS)), iMax = RS.indexOf(Math.max(...RS)), iConj = BLOCK.indexOf(true);
+  $("t-close").onclick = () => { $("t").value = TS[iMin]; update(); }; $("t-far").onclick = () => { $("t").value = TS[iMax]; update(); };
+  $("t-conj").onclick = () => { $("t").value = TS[iConj + 3]; update(); };
+  addEventListener("resize", update);
+  update(); requestAnimationFrame(drawFlow);
+  window.QLLBudgetPage = { get current() { return cur; }, setDay(t) { $("t").value = t; update(); }, setArch };
+  document.body.dataset.ready = "1";
+})();
+</script>
+</body>
+</html>
