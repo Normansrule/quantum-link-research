@@ -35,6 +35,12 @@ SHOTS = {
 }
 
 
+# still screenshots (JPEG) of pages whose motion is too subtle for a GIF: name -> (path, clip selector, viewport height)
+STILLS = {
+    "site_systems": ("/systems/", "main.lab", 1500),
+}
+
+
 def serve():
     h = functools.partial(http.server.SimpleHTTPRequestHandler, directory=str(DOCS))
     class Quiet(http.server.SimpleHTTPRequestHandler):
@@ -164,6 +170,19 @@ def main() -> None:
                 frames.append(io.BytesIO(target.screenshot(timeout=120000)))
                 page.wait_for_timeout(ms)
             save_gif(frames, OUT / f"{name}.gif", ms)
+            page.close()
+        for name, (path, clip, height) in STILLS.items():
+            if only and name not in only:
+                continue
+            page = b.new_page(viewport={"width": 1280, "height": height})
+            page.goto(base + path, wait_until="commit")
+            page.wait_for_function("document.body.dataset.ready === '1'", timeout=60000)
+            page.wait_for_timeout(2500)
+            from PIL import Image
+            im = Image.open(io.BytesIO(page.screenshot(clip={"x": 0, "y": 0, "width": 1280, "height": height}))).convert("RGB")
+            im = im.resize((960, round(im.height * 960 / im.width)), Image.LANCZOS)
+            im.save(OUT / f"{name}.jpg", quality=82, optimize=True)
+            print(f"wrote {(OUT / f'{name}.jpg').relative_to(ROOT)}  {(OUT / f'{name}.jpg').stat().st_size / 1e6:.2f} MB")
             page.close()
         b.close()
     httpd.shutdown()

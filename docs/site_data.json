@@ -1,9 +1,9 @@
 {
  "status": {
-  "version": "0.38.0",
-  "tests": 656,
-  "requirements": 25,
-  "requirements_verified": 24,
+  "version": "0.39.0",
+  "tests": 659,
+  "requirements": 33,
+  "requirements_verified": 32,
   "references": 403,
   "references_verified": 21,
   "learn_files": 92,
@@ -11869,5 +11869,362 @@
     ]
    }
   }
+ },
+ "systems": {
+  "needs": {
+   "N-1": "Confidential Earth\u2013Mars messaging whose security does not rest on computational assumptions alone",
+   "N-2": "A quantitative account of what temperature, loss, and light time do to every link in the chain",
+   "N-3": "An honest separation of what is achievable today from what is open research",
+   "N-4": "Reproducible, citable models suitable for a master's thesis and for teaching",
+   "N-5": "An open-source artifact others can extend"
+  },
+  "requirements": [
+   {
+    "req_id": "REQ-PHY-001",
+    "statement": "Classical information latency is never below d/c",
+    "phase": "1",
+    "test_path": "tests/test_phase1_constants.py",
+    "status": "verified",
+    "method": "Test",
+    "need": "N-2"
+   },
+   {
+    "req_id": "REQ-PHY-002",
+    "statement": "Teleportation consumes exactly 2 classical bits per qubit",
+    "phase": "2",
+    "test_path": "tests/test_phase2_circuits.py::test_teleportation_costs_two_bits_and_one_pair_and_respects_light_time",
+    "status": "verified",
+    "method": "Test",
+    "need": "N-2"
+   },
+   {
+    "req_id": "REQ-PHY-003",
+    "statement": "No public function returns two copies of an unknown input state",
+    "phase": "2",
+    "test_path": "tests/test_phase2_no_cloning.py",
+    "status": "verified",
+    "method": "Test",
+    "need": "N-2"
+   },
+   {
+    "req_id": "REQ-THM-001",
+    "statement": "Thermal occupation obeys Bose-Einstein limits at T=0 and high T",
+    "phase": "1",
+    "test_path": "tests/test_phase1_thermal.py",
+    "status": "verified",
+    "method": "Analysis",
+    "need": "N-2"
+   },
+   {
+    "req_id": "REQ-THM-002",
+    "statement": "Generalized amplitude damping is trace preserving",
+    "phase": "1",
+    "test_path": "tests/test_phase2_noise.py",
+    "status": "verified",
+    "method": "Analysis",
+    "need": "N-2"
+   },
+   {
+    "req_id": "REQ-THM-003",
+    "statement": "Memory coherence time is modeled as a function of temperature",
+    "phase": "4",
+    "test_path": "TBD",
+    "status": "planned (bench E2; the memory table carries operating temperature)",
+    "method": "Test (bench)",
+    "need": "N-2"
+   },
+   {
+    "req_id": "REQ-CHN-001",
+    "statement": "Fiber transmittance follows 10^(-alpha L/10)",
+    "phase": "1",
+    "test_path": "tests/test_phase1_channels.py",
+    "status": "verified",
+    "method": "Analysis",
+    "need": "N-2"
+   },
+   {
+    "req_id": "REQ-CHN-002",
+    "statement": "Free-space geometric loss follows the exact Gaussian-over-aperture law with 1/L^2 far-field limit",
+    "phase": "3",
+    "test_path": "tests/test_phase3_links.py::test_exact_gaussian_reduces_to_far_field_and_near_field_limits",
+    "status": "verified",
+    "method": "Analysis",
+    "need": "N-2"
+   },
+   {
+    "req_id": "REQ-CIR-001",
+    "statement": "Ideal teleportation fidelity equals 1",
+    "phase": "2",
+    "test_path": "tests/test_phase2_circuits.py::test_teleportation_ideal_fidelity_is_one",
+    "status": "verified",
+    "method": "Analysis",
+    "need": "N-2"
+   },
+   {
+    "req_id": "REQ-CIR-002",
+    "statement": "Noisy teleportation fidelity is compared with the 2/3 classical limit",
+    "phase": "2",
+    "test_path": "tests/test_phase2_circuits.py::test_teleportation_werner_fidelity_matches_2f_plus_1_over_3",
+    "status": "verified",
+    "method": "Analysis",
+    "need": "N-2"
+   },
+   {
+    "req_id": "REQ-CIR-003",
+    "statement": "Ideal CHSH value equals 2*sqrt(2)",
+    "phase": "2",
+    "test_path": "tests/test_phase2_circuits.py::test_chsh_ideal_and_werner",
+    "status": "verified",
+    "method": "Analysis",
+    "need": "N-2"
+   },
+   {
+    "req_id": "REQ-QKD-001",
+    "statement": "BB84 secret-key rate reaches zero at QBER 11%",
+    "phase": "1",
+    "test_path": "tests/test_phase1_qkd_theory.py",
+    "status": "verified",
+    "method": "Analysis",
+    "need": "N-1"
+   },
+   {
+    "req_id": "REQ-QKD-002",
+    "statement": "All repeaterless QKD rates are bounded by the PLOB capacity",
+    "phase": "3",
+    "test_path": "tests/test_phase3_qkd.py::test_all_repeaterless_rates_below_plob",
+    "status": "verified",
+    "method": "Analysis",
+    "need": "N-1"
+   },
+   {
+    "req_id": "REQ-NET-001",
+    "statement": "A repeater chain beats direct transmission beyond a crossover distance that depends on memory time",
+    "phase": "4",
+    "test_path": "tests/test_phase4_network.py::test_repeater_chain_crossover_exists_and_depends_on_memory",
+    "status": "verified",
+    "method": "Analysis",
+    "need": "N-2"
+   },
+   {
+    "req_id": "REQ-CAP-001",
+    "statement": "Each demonstrated memory is compared against the classical round trip of each baseline (metro to Mars max)",
+    "phase": "4",
+    "test_path": "tests/test_phase4_network.py::test_capability_matrix_req_cap_001",
+    "status": "verified",
+    "method": "Analysis",
+    "need": "N-3"
+   },
+   {
+    "req_id": "REQ-APP-001",
+    "statement": "The messenger refuses to send when the QKD key buffer is empty (never downgrades) and cannot deliver before d/c",
+    "phase": "6",
+    "test_path": "tests/test_phase6_app.py::test_messenger_fails_closed_and_respects_light_time",
+    "status": "verified",
+    "method": "Test",
+    "need": "N-1"
+   },
+   {
+    "req_id": "REQ-SYS-001",
+    "statement": "No traceability row points at a non-existent test",
+    "phase": "1",
+    "test_path": "tests/test_phase1_systems.py",
+    "status": "verified",
+    "method": "Inspection",
+    "need": "N-4"
+   },
+   {
+    "req_id": "REQ-CAP-002",
+    "statement": "Teleportation completes after a light-time-delayed classical channel (bench analogue: simulation S02)",
+    "phase": "2",
+    "test_path": "tests/test_simulations.py",
+    "status": "verified",
+    "method": "Demonstration",
+    "need": "N-3"
+   },
+   {
+    "req_id": "REQ-SYS-002",
+    "statement": "No module imports upward in the physical stack (constants\u2192channels\u2192circuits\u2192qkd\u2192network\u2192space\u2192app)",
+    "phase": "2",
+    "test_path": "tests/test_phase2_dag.py",
+    "status": "verified",
+    "method": "Inspection",
+    "need": "N-4"
+   },
+   {
+    "req_id": "REQ-F2-001",
+    "statement": "Link-budget model reproduces the Micius two-downlink loss (64-82 dB) within 3 dB; Jinan-1 within 3 dB once exact figures are verified",
+    "phase": "3",
+    "test_path": "tests/test_phase3_links.py::test_micius_two_downlink_loss_within_3db_of_reported",
+    "status": "verified (Micius); Jinan-1 pending",
+    "method": "Analysis",
+    "need": "N-3"
+   },
+   {
+    "req_id": "REQ-SPC-001",
+    "statement": "Earth-Mars range envelope from the ephemeris matches the constants within 1 % and the light-time bounds 3.0-3.2 and 22.0-22.6 min",
+    "phase": "5",
+    "test_path": "tests/test_phase5_space.py::test_range_envelope_matches_constants",
+    "status": "verified",
+    "method": "Analysis",
+    "need": "N-2"
+   },
+   {
+    "req_id": "REQ-SPC-002",
+    "statement": "Solar-conjunction blackouts recur once per synodic period with 2-3 week duration at SEP < 3 deg and an L4/L5 relay keeps availability above 99.9 %",
+    "phase": "5",
+    "test_path": "tests/test_phase5_space.py::test_relays_raise_availability_and_l4_geometry",
+    "status": "verified",
+    "method": "Analysis",
+    "need": "N-2"
+   },
+   {
+    "req_id": "REQ-SPC-003",
+    "statement": "Memory operating temperature and heat load are checked against flown cooler classes",
+    "phase": "5",
+    "test_path": "tests/test_phase5_space.py::test_platform_thermal_table",
+    "status": "verified",
+    "method": "Analysis",
+    "need": "N-2"
+   },
+   {
+    "req_id": "REQ-APP-002",
+    "statement": "Hybrid ML-KEM + QKD session keys agree on both ends and depend on both inputs",
+    "phase": "6",
+    "test_path": "tests/test_phase6_app.py::test_hybrid_kem_both_sides_agree_and_depend_on_both_inputs",
+    "status": "verified",
+    "method": "Test",
+    "need": "N-1"
+   },
+   {
+    "req_id": "REQ-SEC-001",
+    "statement": "The link can certify its own key device-independently with settings and outcomes exchanged no faster than d/c; the finite-key rate is positive once enough rounds accumulate per round trip",
+    "phase": "6",
+    "test_path": "tests/test_simulations.py::test_s06_finite_key_di_limits_and_sealing",
+    "status": "verified (model)",
+    "method": "Analysis",
+    "need": "N-1"
+   },
+   {
+    "req_id": "REQ-NET-002",
+    "statement": "Repeater results are credited only for pairs above the classical teleportation limit (F > 2/3): the chain model reports delivered fidelity and the minimum memory time for a useful chain that beats direct transmission",
+    "phase": "4",
+    "test_path": "tests/test_purified_chain.py::test_minimum_memory_for_a_useful_chain_grows_steeply_with_distance",
+    "status": "verified",
+    "method": "Analysis",
+    "need": "N-3"
+   },
+   {
+    "req_id": "REQ-NET-003",
+    "statement": "Closed-form repeater waiting times agree with exact sampling of the protocol within 10 % for up to 8 segments",
+    "phase": "4",
+    "test_path": "tests/test_repeater_montecarlo.py::test_closed_form_is_conservative_when_nested",
+    "status": "verified",
+    "method": "Analysis",
+    "need": "N-4"
+   },
+   {
+    "req_id": "REQ-CAP-003",
+    "statement": "The baseline F3 design delivers at least 1e5 useful pairs per day (F > 2/3) on every day of a synodic period outside solar conjunction",
+    "phase": "5",
+    "test_path": "tests/test_mars_budget.py::test_baseline_meets_req_cap_003_every_available_day",
+    "status": "verified",
+    "method": "Analysis",
+    "need": "N-1"
+   },
+   {
+    "req_id": "REQ-CAP-004",
+    "statement": "Architecture trade: a pair crosses one astronomical distance in the baseline; a dual-downlink relay is at least 1e6 times slower with the same hardware",
+    "phase": "5",
+    "test_path": "tests/test_mars_budget.py::test_dual_downlink_pays_diffraction_twice",
+    "status": "verified",
+    "method": "Analysis",
+    "need": "N-2"
+   },
+   {
+    "req_id": "REQ-HW-001",
+    "statement": "The processor node's simulated CZ gate reaches coherent average fidelity of at least 0.999 with leakage at most 1e-3",
+    "phase": "2",
+    "test_path": "tests/test_cz_gate.py::test_calibrated_default_is_a_cz_with_negligible_leakage",
+    "status": "verified",
+    "method": "Analysis",
+    "need": "N-2"
+   },
+   {
+    "req_id": "REQ-HW-002",
+    "statement": "Static ZZ at the tunable coupler's idle point is below the conditional-Ramsey resolution of 1.5 kHz, and the experiment recovers the model's ZZ elsewhere within 3 %",
+    "phase": "2",
+    "test_path": "tests/test_zz_ramsey.py::test_recovers_the_coupler_model_zz_and_the_idle_point",
+    "status": "verified",
+    "method": "Analysis",
+    "need": "N-2"
+   },
+   {
+    "req_id": "REQ-QEC-001",
+    "statement": "A matching-decoded surface code shows threshold behaviour: larger codes fail less below 5 % and more above 13 % bit-flip probability, crossing between 8.5 % and 10.5 %",
+    "phase": "2",
+    "test_path": "tests/test_surface_code_capacity.py::test_threshold_crossing",
+    "status": "verified",
+    "method": "Analysis",
+    "need": "N-2"
+   },
+   {
+    "req_id": "REQ-WEB-001",
+    "statement": "Every number the website and README show is computed by the tested code, and every JavaScript port agrees with its Python model",
+    "phase": "6",
+    "test_path": "tests/test_site.py",
+    "status": "verified",
+    "method": "Test",
+    "need": "N-4"
+   }
+  ],
+  "trades": [
+   "TS-1 link architecture",
+   "TS-2 carrier wavelength",
+   "TS-3 memory platform",
+   "TS-4 apertures",
+   "TS-5 transduction"
+  ],
+  "risks": [
+   {
+    "id": "R-1",
+    "risk": "Memory coherence falls short of the 6\u201345 min round trip",
+    "status": "Open. Only the trapped ion clears the maximum round trip usefully, margin < 1.5\u00d7; crystals clear it with retrieval \u2264 1 %"
+   },
+   {
+    "id": "R-2",
+    "risk": "Thermal load of cryogenic memories in space",
+    "status": "Mitigated for ions (300 K); open for rare-earth crystals"
+   },
+   {
+    "id": "R-3",
+    "risk": "Diffraction loss at astronomical distance",
+    "status": "Mitigated in the budget: 87 dB paid once; REQ-CAP-003 met with margin ~9 at maximum range"
+   },
+   {
+    "id": "R-4",
+    "risk": "Simulator drift between pinned libraries",
+    "status": "Mitigated"
+   },
+   {
+    "id": "R-5",
+    "risk": "An unverified citation reaches the code",
+    "status": "Mitigated; 21 entries hand-verified, the rest marked"
+   },
+   {
+    "id": "R-6",
+    "risk": "Over-claiming feasibility",
+    "status": "Mitigated; the 393 km headline now carries its 0.58 fidelity"
+   },
+   {
+    "id": "R-7",
+    "risk": "Pointing at 100 nrad from a planetary distance",
+    "status": "Open"
+   },
+   {
+    "id": "R-8",
+    "risk": "Key cannot be distilled near maximum range (Werner error rate above 11 %)",
+    "status": "Open (learn 03/21)"
+   }
+  ]
  }
 }

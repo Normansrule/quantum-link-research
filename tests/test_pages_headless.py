@@ -164,3 +164,17 @@ def test_link_budget_page_matches_the_python_budget(browser, server):
     assert page.locator("#mem-rows tr").count() == 6
     assert errors == []
     page.close()
+
+
+def test_systems_page_lists_every_requirement_and_filters(browser, server):
+    from qll.systems.traceability import load_matrix
+    rows = load_matrix()
+    page, errors = open_page(browser, server + "/systems/")
+    page.wait_for_function("document.body.dataset.ready === '1'", timeout=30000)
+    assert page.locator(".req").count() == len(rows)
+    page.click("[data-n='N-1']")
+    assert page.locator(".req").count() == sum(r["need"] == "N-1" for r in rows)
+    page.click("[data-n='']"); page.fill("#q", "REQ-CAP-003")
+    assert page.locator(".req").count() == 1
+    assert errors == []
+    page.close()

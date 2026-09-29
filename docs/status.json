@@ -1,8 +1,8 @@
 {
- "version": "0.38.0",
- "tests": 656,
- "requirements": 25,
- "requirements_verified": 24,
+ "version": "0.39.0",
+ "tests": 659,
+ "requirements": 33,
+ "requirements_verified": 32,
  "references": 403,
  "references_verified": 21,
  "learn_files": 92,

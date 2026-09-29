@@ -76,3 +76,12 @@ def test_validation():
         budget(replace(D, architecture="teleporter"), 0.0)
     with pytest.raises(ValueError):
         budget(replace(D, memory="unobtainium"), 0.0)
+
+
+def test_baseline_meets_req_cap_003_every_available_day():
+    days = np.arange(0.0, 780.0, 1.0)
+    got = [budget(D, float(t)) for t in days]
+    available = [b for b in got if b.pairs_per_day > 0]
+    assert len(available) > 0.95 * len(days)                                    # only conjunction weeks are lost
+    assert min(b.pairs_per_day for b in available) >= 1e5
+    assert all(b.useful for b in available)

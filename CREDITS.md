@@ -6,7 +6,7 @@ The website is plain HTML, CSS, and JavaScript with no build step, so GitHub Pag
 | Project | Licence | What it contributed | Where to see it |
 |---|---|---|---|
 | [react-bits](https://github.com/DavidHDev/react-bits) (David Haz) | see repository | animated gradient text, blur-in reveals, spotlight cards that follow the pointer | landing-page headline, every `.card` |
-| [Magic UI](https://github.com/magicuidesign/magicui) | MIT | bento grid, number tickers, aurora background, **AnimatedBeam**, **Marquee** | numbers section, flagships, the `qll` stack diagram, the landmark marquee, the coupler and repeater labs' rotating border beams and the repeater lab's arcs |
+| [Magic UI](https://github.com/magicuidesign/magicui) | MIT | bento grid, number tickers, aurora background, **AnimatedBeam**, **Marquee** | numbers section, flagships, the `qll` stack diagram, the landmark marquee, the coupler and repeater labs' rotating border beams and the repeater lab's arcs, the traceability page's V-model beams and tickers |
 | [Animate UI](https://animate-ui.com/) | see site | staggered entrances and easing curves | section reveals (GSAP timings) |
 | [motion-primitives](https://github.com/ibelick/motion-primitives) (ibelick) | MIT | minimal glass panels, restrained motion | panel styling across all pages |
 | [WebGL-Fluid-Simulation](https://github.com/PavelDoGreat/WebGL-Fluid-Simulation) (Pavel Dobryakov) | MIT | raw WebGL fragment shaders over a full canvas, driven by the pointer | the **interference lab** (`docs/js/interference.js`): the shader sums the two slit waves exactly |

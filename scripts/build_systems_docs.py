@@ -1,0 +1,110 @@
+"""Generate the systems-engineering documents that must not drift from the code: the requirements document from the
+traceability matrix, and the result tables of the trade studies from the tested models.
+
+    python scripts/build_systems_docs.py      # writes systems/requirements.md and the tables in systems/trade_studies.md
+"""
+from __future__ import annotations
+
+import re
+from dataclasses import replace
+from pathlib import Path
+
+import numpy as np
+
+ROOT = Path(__file__).resolve().parents[1]
+GH = "https://github.com/Normansrule/quantum-link-research/blob/main/"
+
+NEED_TITLES = {
+    "N-1": "Confidential Earth–Mars messaging whose security does not rest on computational assumptions alone",
+    "N-2": "A quantitative account of what temperature, loss, and light time do to every link in the chain",
+    "N-3": "An honest separation of what is achievable today from what is open research",
+    "N-4": "Reproducible, citable models suitable for a master's thesis and for teaching",
+    "N-5": "An open-source artifact others can extend",
+}
+PREFIXES = ("PHY physics invariants · THM thermal · CHN channel · CIR circuit · QKD key distribution · NET network · "
+            "CAP capability · APP application · SYS systems · SPC space segment · SEC security · F2 flagship F2 · "
+            "HW hardware node · QEC error correction · WEB website and README")
+
+
+def requirements_md() -> str:
+    from qll.systems.traceability import load_matrix
+
+    rows = load_matrix()
+    verified = sum(r["status"].lower().startswith("verified") for r in rows)
+    out = ["# Requirements", "",
+           "*Generated from `traceability_matrix.csv` by `scripts/build_systems_docs.py`; edit the matrix, not this file.*", "",
+           f"{len(rows)} requirements, {verified} verified. A requirement is verified only when its test exists, the named "
+           "test function exists in it (checked by `python -m qll.systems.traceability`), and the test passes in CI. "
+           "Verification methods follow the classic set: **Test** (the implementation is exercised), **Analysis** (a "
+           "tested model is evaluated against the requirement), **Demonstration** (a simulation shows the behaviour end "
+           "to end), and **Inspection** (the code or documents are checked mechanically).", "",
+           f"Prefixes: {PREFIXES}.", ""]
+    for need, title in NEED_TITLES.items():
+        mine = [r for r in rows if r["need"] == need]
+        if not mine:
+            continue
+        out += [f"## {need}: {title}", "", "| ID | Requirement | Phase | Method | Verified by | Status |", "|---|---|---|---|---|---|"]
+        for r in mine:
+            tp = r["test_path"]
+            link = f"[`{tp.split('::')[-1] if '::' in tp else tp}`]({GH}{tp.split('::')[0]})" if tp and tp != "TBD" else "—"
+            out.append(f"| {r['req_id']} | {r['statement']} | {r['phase']} | {r['method']} | {link} | {r['status']} |")
+        out.append("")
+    return "\n".join(out)
+
+
+def trade_tables() -> dict[str, str]:
+    from qll.network.memory_decoherence import MEMORY_TABLE
+    from qll.network.purified_chain import useful_distance_range_km
+    from qll.space.ephemeris import earth_mars_range_m
+    from qll.systems.mars_budget import MarsLinkDesign, budget
+
+    d = MarsLinkDesign()
+    days = np.arange(0.0, 800.0, 1.0)
+    r = np.array([float(earth_mars_range_m(t)) for t in days])
+    tc, tf = float(days[np.argmin(r)]), float(days[np.argmax(r)])
+    f = lambda x: f"{x:.2g}" if x < 1e4 else f"{x:.1e}"
+    T = {}
+    rows = ["| architecture | pairs/day, closest | pairs/day, farthest | loss at closest |", "|---|---|---|---|"]
+    for arch, name in (("earth_source", "source at Earth (baseline)"), ("relay_dual", "relay at L4, two downlinks")):
+        a, b = budget(replace(d, architecture=arch), tc), budget(replace(d, architecture=arch), tf)
+        rows.append(f"| {name} | {f(a.pairs_per_day)} | {f(b.pairs_per_day)} | {a.total_db:.0f} dB |")
+    T["architecture"] = "\n".join(rows)
+    rows = ["| wavelength | pairs/day, farthest | diffraction factor | atmosphere factor |", "|---|---|---|---|"]
+    for lam in (810e-9, 1550e-9):
+        b = budget(replace(d, wavelength_m=lam), tf)
+        diff = next(s.factor for s in b.stages if "diffraction" in s.name)
+        atm = next(s.factor for s in b.stages if "atmosphere" in s.name)
+        rows.append(f"| {lam * 1e9:.0f} nm | {f(b.pairs_per_day)} | {diff:.2e} | {atm:.2f} |")
+    T["wavelength"] = "\n".join(rows)
+    rows = ["| memory | coherence | retrieval | pairs/day to Mars, farthest | fidelity after storage | useful fiber-repeater range |",
+            "|---|---|---|---|---|---|"]
+    for p in MEMORY_TABLE:
+        b = budget(replace(d, memory=p.name), tf)
+        rng = useful_distance_range_km(p.lifetime_s, p.efficiency)
+        rows.append(f"| {p.name} | {p.lifetime_s:g} s | {100 * p.efficiency:g} % | {f(b.pairs_per_day)} | {b.teleport_fidelity:.2f} | "
+                    f"{'none' if rng is None else f'{rng[0]:.0f}–{rng[1]:.0f} km'} |")
+    T["memory"] = "\n".join(rows)
+    rows = ["| Mars receiver | transmit waist 0.15 m | 0.5 m (baseline) | 1.5 m |", "|---|---|---|---|"]
+    for D in (1.0, 2.0, 4.0, 8.0, 16.0):
+        rows.append(f"| {D:g} m | " + " | ".join(f(budget(replace(d, rx_diameter_mars_m=D, tx_waist_m=w), tf).pairs_per_day)
+                                                  for w in (0.15, 0.5, 1.5)) + " |")
+    T["aperture"] = "\n".join(rows)
+    return T
+
+
+def fill_trade_studies(text: str, tables: dict[str, str]) -> str:
+    for key, table in tables.items():
+        text = re.sub(rf"(<!-- trade:{key}:start -->).*?(<!-- trade:{key}:end -->)",
+                      lambda m: m.group(1) + "\n" + table + "\n" + m.group(2), text, flags=re.S)
+    return text
+
+
+def main() -> None:
+    (ROOT / "systems" / "requirements.md").write_text(requirements_md() + "\n", encoding="utf-8")
+    ts = ROOT / "systems" / "trade_studies.md"
+    ts.write_text(fill_trade_studies(ts.read_text(encoding="utf-8"), trade_tables()), encoding="utf-8")
+    print("wrote systems/requirements.md and the trade-study tables")
+
+
+if __name__ == "__main__":
+    main()

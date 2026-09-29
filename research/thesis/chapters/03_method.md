@@ -2,7 +2,7 @@
 
 ## 3.1 Systems-engineering frame
 
-The project follows a verification-driven "V": stakeholder needs (N-1 to N-5) become testable requirements with identifiers (REQ-PHY, REQ-THM, REQ-CHN, REQ-CIR, REQ-QKD, REQ-NET, REQ-CAP, REQ-SPC, REQ-APP, REQ-SYS), each requirement names the test that verifies it, and a script fails the build if any test path is missing. Twenty-four requirements exist at the time of writing; twenty-two are verified by tests, and two await bench data. Risks (R-1 to R-6) and Technology Readiness Levels (TRL) are tracked alongside, and every design decision that should not be revisited without a written reason is logged with its date.
+The project follows a verification-driven "V": stakeholder needs (N-1 to N-5, each with a measure of effectiveness) become testable requirements with identifiers (REQ-PHY, THM, CHN, CIR, QKD, NET, CAP, SPC, APP, SYS, SEC, HW, QEC, WEB), each requirement names its parent need, its verification method (test, analysis, demonstration, or inspection), and the test function that verifies it, and a script fails the build if any test file or named test function is missing or a row lacks a method or need. The requirements document is generated from the matrix, and the trade-study tables are regenerated from the tested models on every commit, so neither can drift from the code; the counts at any moment are in `docs/status.md`. Five trade studies (link architecture, wavelength, memory platform, apertures, transduction), a risk register with likelihood, impact, mitigation, and status (R-1 to R-8), and Technology Readiness Levels are tracked alongside, and every design decision that should not be revisited without a written reason is logged with its date.
 
 ## 3.2 Physics-first modular code
 

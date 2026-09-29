@@ -1,26 +1,34 @@
-req_id,statement,phase,test_path,status
-REQ-PHY-001,Classical information latency is never below d/c,1,tests/test_phase1_constants.py,verified
-REQ-PHY-002,Teleportation consumes exactly 2 classical bits per qubit,2,tests/test_phase2_circuits.py::test_teleportation_costs_two_bits_and_one_pair_and_respects_light_time,verified
-REQ-PHY-003,No public function returns two copies of an unknown input state,2,tests/test_phase2_no_cloning.py,verified
-REQ-THM-001,Thermal occupation obeys Bose-Einstein limits at T=0 and high T,1,tests/test_phase1_thermal.py,verified
-REQ-THM-002,Generalized amplitude damping is trace preserving,1,tests/test_phase2_noise.py,verified
-REQ-THM-003,Memory coherence time is modeled as a function of temperature,4,TBD,planned (bench E2; the memory table carries operating temperature)
-REQ-CHN-001,Fiber transmittance follows 10^(-alpha L/10),1,tests/test_phase1_channels.py,verified
-REQ-CHN-002,Free-space geometric loss follows the exact Gaussian-over-aperture law with 1/L^2 far-field limit,3,tests/test_phase3_links.py::test_exact_gaussian_reduces_to_far_field_and_near_field_limits,verified
-REQ-CIR-001,Ideal teleportation fidelity equals 1,2,tests/test_phase2_circuits.py::test_teleportation_ideal_fidelity_is_one,verified
-REQ-CIR-002,Noisy teleportation fidelity is compared with the 2/3 classical limit,2,tests/test_phase2_circuits.py::test_teleportation_werner_fidelity_matches_2f_plus_1_over_3,verified
-REQ-CIR-003,Ideal CHSH value equals 2*sqrt(2),2,tests/test_phase2_circuits.py::test_chsh_ideal_and_werner,verified
-REQ-QKD-001,BB84 secret-key rate reaches zero at QBER 11%,1,tests/test_phase1_qkd_theory.py,verified
-REQ-QKD-002,All repeaterless QKD rates are bounded by the PLOB capacity,3,tests/test_phase3_qkd.py::test_all_repeaterless_rates_below_plob,verified
-REQ-NET-001,A repeater chain beats direct transmission beyond a crossover distance that depends on memory time,4,tests/test_phase4_network.py::test_repeater_chain_crossover_exists_and_depends_on_memory,verified
-REQ-CAP-001,Each demonstrated memory is compared against the classical round trip of each baseline (metro to Mars max),4,tests/test_phase4_network.py::test_capability_matrix_req_cap_001,verified
-REQ-APP-001,The messenger refuses to send when the QKD key buffer is empty (never downgrades) and cannot deliver before d/c,6,tests/test_phase6_app.py::test_messenger_fails_closed_and_respects_light_time,verified
-REQ-SYS-001,No traceability row points at a non-existent test,1,tests/test_phase1_systems.py,verified
-REQ-CAP-002,Teleportation completes after a light-time-delayed classical channel (bench analogue: simulation S02),2,tests/test_simulations.py,verified
-REQ-SYS-002,No module imports upward in the physical stack (constants→channels→circuits→qkd→network→space→app),2,tests/test_phase2_dag.py,verified
-REQ-F2-001,Link-budget model reproduces the Micius two-downlink loss (64-82 dB) within 3 dB; Jinan-1 within 3 dB once exact figures are verified,3,tests/test_phase3_links.py::test_micius_two_downlink_loss_within_3db_of_reported,verified (Micius); Jinan-1 pending
-REQ-SPC-001,Earth-Mars range envelope from the ephemeris matches the constants within 1 % and the light-time bounds 3.0-3.2 and 22.0-22.6 min,5,tests/test_phase5_space.py::test_range_envelope_matches_constants,verified
-REQ-SPC-002,Solar-conjunction blackouts recur once per synodic period with 2-3 week duration at SEP < 3 deg and an L4/L5 relay keeps availability above 99.9 %,5,tests/test_phase5_space.py::test_relays_raise_availability_and_l4_geometry,verified
-REQ-SPC-003,Memory operating temperature and heat load are checked against flown cooler classes,5,tests/test_phase5_space.py::test_platform_thermal_table,verified
-REQ-APP-002,Hybrid ML-KEM + QKD session keys agree on both ends and depend on both inputs,6,tests/test_phase6_app.py::test_hybrid_kem_both_sides_agree_and_depend_on_both_inputs,verified
-REQ-SEC-001,The link can certify its own key device-independently with settings and outcomes exchanged no faster than d/c; the finite-key rate is positive once enough rounds accumulate per round trip,6,tests/test_simulations.py::test_s06_finite_key_di_limits_and_sealing,verified (model)
+req_id,statement,phase,test_path,status,method,need
+REQ-PHY-001,Classical information latency is never below d/c,1,tests/test_phase1_constants.py,verified,Test,N-2
+REQ-PHY-002,Teleportation consumes exactly 2 classical bits per qubit,2,tests/test_phase2_circuits.py::test_teleportation_costs_two_bits_and_one_pair_and_respects_light_time,verified,Test,N-2
+REQ-PHY-003,No public function returns two copies of an unknown input state,2,tests/test_phase2_no_cloning.py,verified,Test,N-2
+REQ-THM-001,Thermal occupation obeys Bose-Einstein limits at T=0 and high T,1,tests/test_phase1_thermal.py,verified,Analysis,N-2
+REQ-THM-002,Generalized amplitude damping is trace preserving,1,tests/test_phase2_noise.py,verified,Analysis,N-2
+REQ-THM-003,Memory coherence time is modeled as a function of temperature,4,TBD,planned (bench E2; the memory table carries operating temperature),Test (bench),N-2
+REQ-CHN-001,Fiber transmittance follows 10^(-alpha L/10),1,tests/test_phase1_channels.py,verified,Analysis,N-2
+REQ-CHN-002,Free-space geometric loss follows the exact Gaussian-over-aperture law with 1/L^2 far-field limit,3,tests/test_phase3_links.py::test_exact_gaussian_reduces_to_far_field_and_near_field_limits,verified,Analysis,N-2
+REQ-CIR-001,Ideal teleportation fidelity equals 1,2,tests/test_phase2_circuits.py::test_teleportation_ideal_fidelity_is_one,verified,Analysis,N-2
+REQ-CIR-002,Noisy teleportation fidelity is compared with the 2/3 classical limit,2,tests/test_phase2_circuits.py::test_teleportation_werner_fidelity_matches_2f_plus_1_over_3,verified,Analysis,N-2
+REQ-CIR-003,Ideal CHSH value equals 2*sqrt(2),2,tests/test_phase2_circuits.py::test_chsh_ideal_and_werner,verified,Analysis,N-2
+REQ-QKD-001,BB84 secret-key rate reaches zero at QBER 11%,1,tests/test_phase1_qkd_theory.py,verified,Analysis,N-1
+REQ-QKD-002,All repeaterless QKD rates are bounded by the PLOB capacity,3,tests/test_phase3_qkd.py::test_all_repeaterless_rates_below_plob,verified,Analysis,N-1
+REQ-NET-001,A repeater chain beats direct transmission beyond a crossover distance that depends on memory time,4,tests/test_phase4_network.py::test_repeater_chain_crossover_exists_and_depends_on_memory,verified,Analysis,N-2
+REQ-CAP-001,Each demonstrated memory is compared against the classical round trip of each baseline (metro to Mars max),4,tests/test_phase4_network.py::test_capability_matrix_req_cap_001,verified,Analysis,N-3
+REQ-APP-001,The messenger refuses to send when the QKD key buffer is empty (never downgrades) and cannot deliver before d/c,6,tests/test_phase6_app.py::test_messenger_fails_closed_and_respects_light_time,verified,Test,N-1
+REQ-SYS-001,No traceability row points at a non-existent test,1,tests/test_phase1_systems.py,verified,Inspection,N-4
+REQ-CAP-002,Teleportation completes after a light-time-delayed classical channel (bench analogue: simulation S02),2,tests/test_simulations.py,verified,Demonstration,N-3
+REQ-SYS-002,No module imports upward in the physical stack (constants→channels→circuits→qkd→network→space→app),2,tests/test_phase2_dag.py,verified,Inspection,N-4
+REQ-F2-001,Link-budget model reproduces the Micius two-downlink loss (64-82 dB) within 3 dB; Jinan-1 within 3 dB once exact figures are verified,3,tests/test_phase3_links.py::test_micius_two_downlink_loss_within_3db_of_reported,verified (Micius); Jinan-1 pending,Analysis,N-3
+REQ-SPC-001,Earth-Mars range envelope from the ephemeris matches the constants within 1 % and the light-time bounds 3.0-3.2 and 22.0-22.6 min,5,tests/test_phase5_space.py::test_range_envelope_matches_constants,verified,Analysis,N-2
+REQ-SPC-002,Solar-conjunction blackouts recur once per synodic period with 2-3 week duration at SEP < 3 deg and an L4/L5 relay keeps availability above 99.9 %,5,tests/test_phase5_space.py::test_relays_raise_availability_and_l4_geometry,verified,Analysis,N-2
+REQ-SPC-003,Memory operating temperature and heat load are checked against flown cooler classes,5,tests/test_phase5_space.py::test_platform_thermal_table,verified,Analysis,N-2
+REQ-APP-002,Hybrid ML-KEM + QKD session keys agree on both ends and depend on both inputs,6,tests/test_phase6_app.py::test_hybrid_kem_both_sides_agree_and_depend_on_both_inputs,verified,Test,N-1
+REQ-SEC-001,The link can certify its own key device-independently with settings and outcomes exchanged no faster than d/c; the finite-key rate is positive once enough rounds accumulate per round trip,6,tests/test_simulations.py::test_s06_finite_key_di_limits_and_sealing,verified (model),Analysis,N-1
+REQ-NET-002,Repeater results are credited only for pairs above the classical teleportation limit (F > 2/3): the chain model reports delivered fidelity and the minimum memory time for a useful chain that beats direct transmission,4,tests/test_purified_chain.py::test_minimum_memory_for_a_useful_chain_grows_steeply_with_distance,verified,Analysis,N-3
+REQ-NET-003,Closed-form repeater waiting times agree with exact sampling of the protocol within 10 % for up to 8 segments,4,tests/test_repeater_montecarlo.py::test_closed_form_is_conservative_when_nested,verified,Analysis,N-4
+REQ-CAP-003,The baseline F3 design delivers at least 1e5 useful pairs per day (F > 2/3) on every day of a synodic period outside solar conjunction,5,tests/test_mars_budget.py::test_baseline_meets_req_cap_003_every_available_day,verified,Analysis,N-1
+REQ-CAP-004,Architecture trade: a pair crosses one astronomical distance in the baseline; a dual-downlink relay is at least 1e6 times slower with the same hardware,5,tests/test_mars_budget.py::test_dual_downlink_pays_diffraction_twice,verified,Analysis,N-2
+REQ-HW-001,The processor node's simulated CZ gate reaches coherent average fidelity of at least 0.999 with leakage at most 1e-3,2,tests/test_cz_gate.py::test_calibrated_default_is_a_cz_with_negligible_leakage,verified,Analysis,N-2
+REQ-HW-002,"Static ZZ at the tunable coupler's idle point is below the conditional-Ramsey resolution of 1.5 kHz, and the experiment recovers the model's ZZ elsewhere within 3 %",2,tests/test_zz_ramsey.py::test_recovers_the_coupler_model_zz_and_the_idle_point,verified,Analysis,N-2
+REQ-QEC-001,"A matching-decoded surface code shows threshold behaviour: larger codes fail less below 5 % and more above 13 % bit-flip probability, crossing between 8.5 % and 10.5 %",2,tests/test_surface_code_capacity.py::test_threshold_crossing,verified,Analysis,N-2
+REQ-WEB-001,"Every number the website and README show is computed by the tested code, and every JavaScript port agrees with its Python model",6,tests/test_site.py,verified,Test,N-4

@@ -1,6 +1,6 @@
 # Status
 
-Version 0.38.0 · 656 tests · 24/25 requirements verified · 403 references (21 verified) · 92 learn files · 8 simulations · 44 figures
+Version 0.39.0 · 659 tests · 32/33 requirements verified · 403 references (21 verified) · 92 learn files · 8 simulations · 44 figures
 
 | Requirement | Statement | Phase | Status |
 |---|---|---|---|
@@ -29,3 +29,11 @@ Version 0.38.0 · 656 tests · 24/25 requirements verified · 403 references (21
 | REQ-SPC-003 | Memory operating temperature and heat load are checked against flown cooler classes | 5 | verified |
 | REQ-APP-002 | Hybrid ML-KEM + QKD session keys agree on both ends and depend on both inputs | 6 | verified |
 | REQ-SEC-001 | The link can certify its own key device-independently with settings and outcomes exchanged no faster than d/c; the finite-key rate is positive once enough rounds accumulate per round trip | 6 | verified (model) |
+| REQ-NET-002 | Repeater results are credited only for pairs above the classical teleportation limit (F > 2/3): the chain model reports delivered fidelity and the minimum memory time for a useful chain that beats direct transmission | 4 | verified |
+| REQ-NET-003 | Closed-form repeater waiting times agree with exact sampling of the protocol within 10 % for up to 8 segments | 4 | verified |
+| REQ-CAP-003 | The baseline F3 design delivers at least 1e5 useful pairs per day (F > 2/3) on every day of a synodic period outside solar conjunction | 5 | verified |
+| REQ-CAP-004 | Architecture trade: a pair crosses one astronomical distance in the baseline; a dual-downlink relay is at least 1e6 times slower with the same hardware | 5 | verified |
+| REQ-HW-001 | The processor node's simulated CZ gate reaches coherent average fidelity of at least 0.999 with leakage at most 1e-3 | 2 | verified |
+| REQ-HW-002 | Static ZZ at the tunable coupler's idle point is below the conditional-Ramsey resolution of 1.5 kHz, and the experiment recovers the model's ZZ elsewhere within 3 % | 2 | verified |
+| REQ-QEC-001 | A matching-decoded surface code shows threshold behaviour: larger codes fail less below 5 % and more above 13 % bit-flip probability, crossing between 8.5 % and 10.5 % | 2 | verified |
+| REQ-WEB-001 | Every number the website and README show is computed by the tested code, and every JavaScript port agrees with its Python model | 6 | verified |

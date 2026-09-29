@@ -70,6 +70,20 @@ def qec_data() -> dict:
     return out
 
 
+def systems_data() -> dict:
+    """The traceability matrix and stakeholder needs for the systems page (docs/systems/)."""
+    import sys as _sys
+    _sys.path.insert(0, str(ROOT / "scripts"))
+    from build_systems_docs import NEED_TITLES
+    from qll.systems.traceability import load_matrix
+
+    return {"needs": NEED_TITLES, "requirements": load_matrix(),
+            "trades": ["TS-1 link architecture", "TS-2 carrier wavelength", "TS-3 memory platform", "TS-4 apertures", "TS-5 transduction"],
+            "risks": [{"id": c[1].strip(), "risk": c[2].strip(), "status": c[-2].strip()}
+                      for c in (line.split("|") for line in (ROOT / "systems" / "risk_register.md").read_text(encoding="utf-8").splitlines())
+                      if len(c) > 7 and c[1].strip().startswith("R-")]}
+
+
 def compute_data() -> dict:
     from qll.app.messenger import required_buffer_bytes
     from qll.channels.fiber_loss import attenuation_length_km
@@ -140,6 +154,7 @@ def compute_data() -> dict:
     cp = coupler_data()
     data["coupler"] = cp
     data["qec"] = qec_data()
+    data["systems"] = systems_data()
     data["headline"].update({"zz_idle_ghz": cp["idle_ghz"], "cz_duration_ns": cp["cz"]["angle"]["duration_ns"],
                              "cz_fidelity": cp["cz"]["angle"]["fidelity"], "cz_leakage": cp["cz"]["angle"]["leakage"],
                              "cz_leakage_frequency_shaped": cp["cz"]["frequency"]["leakage"]})

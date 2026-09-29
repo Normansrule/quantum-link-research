@@ -127,6 +127,12 @@ Each line is a module in [`qll/`](qll) with a test that checks it against its cl
 
 <p align="center"><img src="docs/figures/readme_stack.svg" alt="The qll package stack: constants, channels, circuits, QKD (quantum key distribution), network, space, and the fail-closed messenger" width="100%"></p>
 
+## Systems engineering
+
+<p align="center"><a href="https://Normansrule.github.io/quantum-link-research/systems/"><img src="docs/figures/site_systems.jpg" alt="The traceability page: needs, requirements, trades, risks, and the V model" width="100%"></a></p>
+
+This is a systems-engineering thesis, and the repository is organized like a system. Five stakeholder needs ([`systems/needs.md`](systems/needs.md)) trace to the requirements in [`traceability_matrix.csv`](systems/traceability_matrix.csv), each with a verification method and the named test that verifies it; `python -m qll.systems.traceability` fails if a test or test function is missing, and the requirements document ([`systems/requirements.md`](systems/requirements.md)) is generated from the matrix. Five trade studies ([`systems/trade_studies.md`](systems/trade_studies.md)) choose the architecture from tables the code regenerates on every commit, and the risk register, concept of operations, and technology-readiness assessment sit beside them. The [traceability page](https://Normansrule.github.io/quantum-link-research/systems/) puts it all on a V model you can filter.
+
 ## Three experiments, one physics
 
 <p align="center"><img src="docs/figures/flagship_overview.svg" alt="The three flagship experiments" width="100%"></p>

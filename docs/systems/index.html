@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Traceability · Quantum Link Research</title>
+<meta name="description" content="The systems-engineering spine of the Earth–Mars quantum link: stakeholder needs, requirements, trade studies, risks, and the test that verifies each requirement.">
+<meta property="og:title" content="Traceability · Quantum Link Research">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://normansrule.github.io/quantum-link-research/systems/">
+<meta property="og:image" content="https://normansrule.github.io/quantum-link-research/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://normansrule.github.io/quantum-link-research/og.png">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧭</text></svg>">
+<link rel="stylesheet" href="../space.css">
+<style>
+  .lab { max-width: 1320px; margin: 0 auto; padding: 5.4rem 3vw 2rem }
+  .intro { max-width: 960px; margin: 0 0 1.2rem }
+  .intro h1 { font-size: clamp(1.9rem, 3.6vw, 3rem); line-height: 1.08; margin: .5rem 0 .7rem; letter-spacing: -.02em }
+  .p { border: 1px solid var(--line); border-radius: 16px; background: var(--glass); padding: .95rem 1.05rem; position: relative; overflow: hidden; margin-bottom: 1rem }
+  .p h4 { margin: 0 0 .55rem; font-size: .74rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); font-weight: 700 }
+  svg#vmodel { width: 100%; height: auto; display: block }
+  .vbox rect { fill: #111a2e; stroke: rgba(148,170,210,.3) }
+  .vbox text { fill: #e8eef8; font: 600 14px Inter, sans-serif } .vbox text.s { fill: #93a1b8; font: 500 11.5px "JetBrains Mono", monospace }
+  .beam { fill: none; stroke: #5ef2e0; stroke-width: 2.4; stroke-linecap: round; stroke-dasharray: 40 400; animation: flow 3s linear infinite; opacity: .85 }
+  .rail { fill: none; stroke: rgba(148,170,210,.2); stroke-width: 1.6; stroke-dasharray: 4 5 }
+  @keyframes flow { from { stroke-dashoffset: 440 } to { stroke-dashoffset: 0 } }
+  @media (prefers-reduced-motion: reduce) { .beam { animation: none; stroke-dasharray: none; opacity: .4 } }
+  .kpis { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: .7rem; margin-bottom: 1rem }
+  .k { border: 1px solid var(--line); border-radius: 12px; padding: .6rem .7rem; background: rgba(10,15,28,.55) }
+  .k .v { font: 800 1.6rem/1.15 "JetBrains Mono", monospace; font-variant-numeric: tabular-nums } .k .s { font-size: .74rem; color: var(--faint) }
+  .chips { display: flex; gap: .4rem; flex-wrap: wrap; margin: .3rem 0 }
+  .chip { font: 600 .78rem "JetBrains Mono", monospace; padding: .35rem .6rem; border-radius: 999px; border: 1px solid var(--line); background: var(--bg2); color: var(--muted); cursor: pointer }
+  .chip.on { color: var(--ink); border-color: var(--cyan); box-shadow: 0 0 12px rgba(94,242,224,.25) }
+  input#q { font: 500 .9rem Inter, sans-serif; padding: .5rem .7rem; border-radius: 10px; border: 1px solid var(--line); background: var(--bg2); color: var(--ink); min-width: 260px }
+  .reqs { display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: .7rem; margin-top: .8rem; align-items: start }
+  .req { border: 1px solid var(--line); border-radius: 12px; padding: .7rem .8rem; background: rgba(10,15,28,.55); transition: border-color .2s, transform .2s }
+  .req:hover { border-color: rgba(94,242,224,.5); transform: translateY(-2px) }
+  .req .id { font: 700 .82rem "JetBrains Mono", monospace; color: var(--cyan) } .req .st { font-size: .9rem; margin: .3rem 0 .45rem; color: var(--ink) }
+  .req .meta { display: flex; gap: .4rem; flex-wrap: wrap; font: 600 .72rem "JetBrains Mono", monospace }
+  .tag2 { padding: .15rem .45rem; border-radius: 6px; background: rgba(148,170,210,.12); color: var(--muted) }
+  .tag2.ok { background: rgba(69,224,160,.14); color: var(--green) } .tag2.plan { background: rgba(255,138,76,.15); color: var(--warm) }
+  .req a { font: .76rem "JetBrains Mono", monospace; color: var(--blue); word-break: break-all }
+  .risks { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: .6rem }
+  .risk { border-left: 3px solid var(--line); padding: .3rem .7rem; font-size: .86rem; color: var(--muted) } .risk b { color: var(--ink) }
+  .risk.open { border-color: var(--mars) } .risk.mit { border-color: var(--green) } .risk.part { border-color: var(--warm) }
+  .note { color: var(--muted); font-size: .88rem; margin: .5rem 0 0 }
+</style>
+</head>
+<body>
+<div class="aurora"></div>
+<header class="top">
+  <a class="brand" href="../"><span class="dot"></span>Quantum Link Research</a>
+  <nav><a href="../budget/">Link budget</a><a href="../repeater/">Repeater lab</a><a href="../qec/">QEC lab</a><a class="gh" href="https://github.com/Normansrule/quantum-link-research">GitHub ↗</a></nav>
+</header>
+<main class="lab">
+  <div class="intro">
+    <div class="kicker">Systems engineering · needs → requirements → tests</div>
+    <h1>Every requirement points at <span class="gradient-text">the test that proves it</span>.</h1>
+    <p class="sub" style="margin:0">This is a systems-engineering thesis, so the physics is organized the way a system is: stakeholder needs, requirements traced to them, trade studies that choose the architecture, risks, and a verification for every requirement. The matrix below is <code>systems/traceability_matrix.csv</code>; a requirement counts as verified only if its named test exists and passes in CI.</p>
+  </div>
+
+  <div class="kpis" id="kpis"></div>
+
+  <div class="p"><h4>the V model · the left arm decomposes, the right arm verifies; each beam is a trace that a test checks</h4>
+    <svg id="vmodel" viewBox="0 0 1200 430" role="img" aria-label="V model from stakeholder needs to validation"></svg>
+  </div>
+
+  <div class="p"><h4>traceability matrix</h4>
+    <div class="chips" id="f-need"></div>
+    <div class="chips" id="f-method"></div>
+    <div class="chips"><input id="q" type="search" placeholder="search statements, IDs, tests…" aria-label="search requirements"><span class="chip" id="k-count">—</span></div>
+    <div class="reqs" id="reqs"></div>
+  </div>
+
+  <div class="p"><h4>risk register · red open, amber partly mitigated, green mitigated</h4>
+    <div class="risks" id="risks"></div>
+    <p class="note">Trade studies (TS-1 to TS-5, with tables generated from the code) are in <a href="https://github.com/Normansrule/quantum-link-research/blob/main/systems/trade_studies.md">systems/trade_studies.md</a>; the concept of operations and technology readiness in the same folder.</p>
+  </div>
+</main>
+<footer>Traceability. Data from <code>systems/traceability_matrix.csv</code>, <code>systems/risk_register.md</code>, and <code>docs/status.json</code>; the requirements document is generated by <code>scripts/build_systems_docs.py</code>. Design after Magic UI (AnimatedBeam, number tickers, bento cards), react-bits (hover glow), and worldmonitor (a filterable status board). See <a href="https://github.com/Normansrule/quantum-link-research/blob/main/CREDITS.md">CREDITS.md</a>.</footer>
+<script src="../vendor/gsap/gsap.min.js"></script>
+<script>
+(async function () {
+  document.documentElement.classList.remove("no-js");
+  const $ = (id) => document.getElementById(id);
+  const DATA = await (await fetch("../site_data.json")).json(), S = DATA.systems, ST = DATA.status || {};
+  const R = S.requirements, GH = "https://github.com/Normansrule/quantum-link-research/blob/main/";
+  const verified = R.filter((r) => r.status.toLowerCase().startsWith("verified")).length;
+  const open = S.risks.filter((r) => r.status.startsWith("Open")).length;
+  const kp = [["stakeholder needs", Object.keys(S.needs).length], ["requirements", R.length], ["verified by test", verified],
+              ["trade studies", S.trades.length], ["open risks", open], ["tests in the suite", ST.tests || 0]];
+  $("kpis").innerHTML = kp.map(([s, v], i) => `<div class="k"><div class="s">${s}</div><div class="v" data-v="${v}" id="kv${i}">0</div></div>`).join("");
+  kp.forEach(([, v], i) => { const o = { x: 0 }; gsap.to(o, { x: v, duration: 1.4, delay: 0.1 * i, ease: "power3.out", onUpdate: () => { $("kv" + i).textContent = Math.round(o.x).toLocaleString(); } }); });
+
+  // V model
+  const L = [["Stakeholder needs", `N-1 … N-${Object.keys(S.needs).length}`], ["Requirements", `${R.length} in the matrix`], ["Architecture & trades", `TS-1 … TS-${S.trades.length}`], ["Tested models", "qll/ · one idea per file"]];
+  const Rt = [["Validation", "bench experiments E1–E16"], ["Verification", `${verified}/${R.length} requirements`], ["Integration tests", "pages · JS ports · CI"], ["Unit tests", `${(ST.tests || 0).toLocaleString()} tests`]];
+  const W = 1200, bw = 250, bh = 58, pos = (side, k) => [side === "L" ? 40 + k * 80 : W - 40 - bw - k * 80, 30 + k * 88];
+  let svg = "";
+  for (let k = 0; k < 4; k++) { const [x1, y1] = pos("L", k), [x2, y2] = pos("R", 3 - (3 - k));
+    svg += `<path class="rail" d="M${x1 + bw},${y1 + bh / 2} L${x2},${y1 + bh / 2}"/>`;
+    svg += `<path class="beam" style="animation-delay:${-0.7 * k}s" d="M${x1 + bw},${y1 + bh / 2} L${x2},${y1 + bh / 2}"/>`; }
+  for (let k = 0; k < 3; k++) { const [a, b] = pos("L", k), [c, d] = pos("L", k + 1); svg += `<path class="rail" d="M${a + 30},${b + bh} L${c + 30},${d}"/>`;
+    const [e, f] = pos("R", k), [g, h] = pos("R", k + 1); svg += `<path class="rail" d="M${e + bw - 30},${f + bh} L${g + bw - 30},${h}"/>`; }
+  const [bx, by] = [W / 2 - bw / 2, 30 + 4 * 88 - 10];
+  svg += `<path class="rail" d="M${pos("L", 3)[0] + 30},${pos("L", 3)[1] + bh} L${bx},${by + bh / 2}"/><path class="rail" d="M${pos("R", 3)[0] + bw - 30},${pos("R", 3)[1] + bh} L${bx + bw},${by + bh / 2}"/>`;
+  const box = (x, y, t, s) => `<g class="vbox"><rect x="${x}" y="${y}" width="${bw}" height="${bh}" rx="12"/><text x="${x + 16}" y="${y + 24}">${t}</text><text class="s" x="${x + 16}" y="${y + 44}">${s}</text></g>`;
+  L.forEach(([t, s], k) => { const [x, y] = pos("L", k); svg += box(x, y, t, s); });
+  Rt.forEach(([t, s], k) => { const [x, y] = pos("R", k); svg += box(x, y, t, s); });
+  svg += box(bx, by, "Implementation", "Python · JavaScript · CI");
+  $("vmodel").innerHTML = svg;
+
+  // matrix explorer
+  let fNeed = null, fMethod = null;
+  const needs = Object.keys(S.needs), methods = [...new Set(R.map((r) => r.method))];
+  $("f-need").innerHTML = `<span class="chip on" data-n="">all needs</span>` + needs.map((n) => `<span class="chip" data-n="${n}" title="${S.needs[n]}">${n}</span>`).join("");
+  $("f-method").innerHTML = `<span class="chip on" data-m="">all methods</span>` + methods.map((m) => `<span class="chip" data-m="${m}">${m}</span>`).join("");
+  function render() {
+    const q = $("q").value.trim().toLowerCase();
+    const rows = R.filter((r) => (!fNeed || r.need === fNeed) && (!fMethod || r.method === fMethod) && (!q || (r.req_id + " " + r.statement + " " + r.test_path).toLowerCase().includes(q)));
+    $("k-count").textContent = `${rows.length} shown`;
+    $("reqs").innerHTML = rows.map((r) => { const ok = r.status.toLowerCase().startsWith("verified"), tp = r.test_path, file = tp.split("::")[0];
+      return `<div class="req" data-id="${r.req_id}"><div class="id">${r.req_id}</div><div class="st">${r.statement}</div>
+        <div class="meta"><span class="tag2" title="${S.needs[r.need] || ""}">${r.need}</span><span class="tag2">${r.method}</span><span class="tag2">phase ${r.phase}</span><span class="tag2 ${ok ? "ok" : "plan"}">${r.status}</span></div>
+        ${tp && tp !== "TBD" ? `<div style="margin-top:.4rem"><a href="${GH}${file}">${tp}</a></div>` : ""}</div>`; }).join("");
+  }
+  $("f-need").onclick = (e) => { const c = e.target.closest(".chip"); if (!c) return; fNeed = c.dataset.n || null; [...$("f-need").children].forEach((x) => x.classList.toggle("on", x === c)); render(); };
+  $("f-method").onclick = (e) => { const c = e.target.closest(".chip"); if (!c) return; fMethod = c.dataset.m || null; [...$("f-method").children].forEach((x) => x.classList.toggle("on", x === c)); render(); };
+  $("q").addEventListener("input", render);
+  render();
+  $("risks").innerHTML = S.risks.map((r) => { const cls = r.status.startsWith("Open") ? "open" : r.status.startsWith("Mitigated for") ? "part" : "mit";
+    return `<div class="risk ${cls}"><b>${r.id}</b> ${r.risk}<br><span style="font-size:.8rem">${r.status}</span></div>`; }).join("");
+  document.body.dataset.ready = "1";
+})();
+</script>
+</body>
+</html>

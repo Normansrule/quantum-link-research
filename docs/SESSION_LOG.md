@@ -49,3 +49,4 @@
 - 2026-09-26 0.36.0: purified repeater chain, design space (min memory 39 s at 1000 km; Yb+ and NV 13C qualify), lab purification controls, learn 03/20.
 - 2026-09-28 0.37.0: surface code under bit flips with PyMatching, QEC lab page (240 decoded shots, self-checking), thesis 4.4 repeater findings.
 - 2026-09-28 0.38.0: Earth–Mars link budget (module, page, lesson 03/21, thesis 4.5), batched CZ propagator.
+- 2026-09-28 0.39.0: systems-engineering spine (33 requirements with methods and needs, generated requirements and trade tables, risk register, traceability page).
