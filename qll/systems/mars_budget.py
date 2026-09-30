@@ -32,8 +32,10 @@ signal pairs / w; teleportations and key are counted per herald, because a recei
 The Mars half must wait in its memory until Earth's two classical bits arrive; the storage time is taken as
 storage_factor x the one-way light time (default 2, the round trip, as in requirement REQ-CAP-001), and the pair's
 Werner fraction decays as f = 1/4 + (f0 - 1/4) exp(-t/T_mem) [memory_decoherence.py]. The delivered pair is useful for
-teleportation if (2f + 1)/3 > 2/3, and yields BBM92 key at the asymptotic rate 1 - 2 h(Q) per sifted pair with the
-Werner error rate Q = 2(1 - f)/3 [bennett1992bbm92] [shor2000]. This is a budget, not a simulation: every factor is an
+teleportation if (2f + 1)/3 > 2/3. Secret key does not wait: in BBM92 each end measures its photon in a random basis
+as soon as it has it, and the bases are compared later over the classical channel [bennett1992bbm92], so key needs
+neither the memories nor the storage. It is distilled at the asymptotic rate 1 - 2 h(Q) per sifted pair with the Werner
+error rate Q = 2(1 - f_key)/3 of the pair as delivered, f_key = 1/4 + w (f0 - 1/4) [shor2000]. This is a budget, not a simulation: every factor is an
 average, and the result is only as good as the least certain stage, which is why each stage is shown.
 """
 from __future__ import annotations
@@ -113,6 +115,7 @@ class Budget:
     extra: dict = field(default_factory=dict)
     purity: float = 1.0                     # fraction of heralds that are signal
     noise_per_mode_s: float = 0.0           # background photons per second per mode at the receiving aperture(s)
+    memory_factor: float = 1.0              # the memory stage, which key (measured on arrival) does not pay
 
     @property
     def heralds_per_day(self) -> float:
@@ -132,7 +135,8 @@ class Budget:
 
     @property
     def key_bits_per_day(self) -> float:
-        return self.heralds_per_day * self.key_bits_per_pair if self.pairs_per_day > 0 else 0.0
+        """BBM92 key per day: every herald, measured on arrival, without the memory stage."""
+        return self.heralds_per_day / self.memory_factor * self.key_bits_per_pair if self.pairs_per_day > 0 else 0.0
 
     @property
     def total_db(self) -> float:
@@ -217,10 +221,12 @@ def budget(d: MarsLinkDesign, t_days: float) -> Budget:
     f_stored = fraction_after_storage_analytic(d.f0, t_store, mem.lifetime_s, mem.model)
     f = 0.25 + w * (f_stored - 0.25)
     F = (2 * f + 1) / 3
-    Q = 2 * (1 - f) / 3
+    f_key = 0.25 + w * (d.f0 - 0.25)                      # measured on arrival: no storage, no memory
+    Q = 2 * (1 - f_key) / 3
     key = max(0.0, 1 - 2 * h2(Q)) if Q < 0.5 else 0.0
     extra["fraction_stored"] = f_stored
-    return Budget(d, t_days, L, tuple(stages), t_store, f, F, key, extra, w, noise)
+    extra["key_error_rate"] = Q
+    return Budget(d, t_days, L, tuple(stages), t_store, f, F, key, extra, w, noise, mem.efficiency**2)
 
 
 def required_rejection(d: MarsLinkDesign, t_days: float, purity: float = 0.99) -> float:

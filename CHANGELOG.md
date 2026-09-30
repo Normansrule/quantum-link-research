@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.41.0 — 2026-09-30 (key does not wait; the key bank)
+*Includes all of 0.40.0, which had not reached GitHub when this was built; one overlay applies both.*
+- **Correction.** The budget charged secret key for the memory wait. In BBM92 each end measures its photon on arrival and compares bases later, so key needs neither storage nor memories: its Werner error rate is set by f₀ and the background alone (3.3 % at closest approach, 5.1 % at the farthest), and key flows on every day with a link, 4.9 × 10⁵ to 2.2 × 10⁷ bits per day, 3.2 × 10⁹ per synodic period (ten times the old figure). `Budget.key_bits_per_day` counts every herald without the memory stage; `extra["key_error_rate"]`; the JavaScript port follows. Risk R-8 (no key near maximum range) is closed: it was an artifact of the error.
+- `qll/app/key_bank.py`: the sequent-peak rule of reservoir design sizes the store that lets a fail-closed messenger spend uneven key evenly; a day-by-day bank; the largest demand for a given capacity. Tested against the square-wave result, a wrap-around dry season, the identity K − L_t = S_t, and a 1 % smaller bank that refuses.
+- `qll/systems/key_ledger.py`: one synodic period of daily key from the budget, and the bank for a demand. A steady 10⁶ bits per day (125 kB of one-time pad, about 3,900 session keys) needs a 16.7 MB bank at each end; with no bank it is refused on 341 of 780 days. The most any bank can carry is the mean supply, 4.1 × 10⁶ bits per day.
+- **Systems**: REQ-APP-003 (the bank carries the baseline demand through every day of the cycle; 35 requirements, 34 verified), trade TS-7 (spending the key), risk R-10 (banked key compromised at rest), R-8 closed, concept of operations steps 4 and 5 rewritten.
+- **Link budget page**: a key-bank panel with a synodic period of daily key, the demand, the days a bank-less messenger refuses, and the level of the sequent-peak bank; a demand slider and four KPIs. `docs/js/key_bank.js` matches the Python to 10⁻¹² (Node test); the page test checks the bank against the ledger.
+- learn 03/22 "The key bank: storing secrets through conjunction"; learn 03/21's key paragraph corrected; thesis 4.5 and 4.6; a README numbers row.
+- Bibliography: Loucks and van Beek (2017), Vernam (1926), Shannon (1949).
+
 ## 0.40.0 — 2026-09-29 (the planet in the field of view: background light moves the source into space)
 - `qll/channels/planetshine.py`: sunlight reflected by a planet into a single-mode receiver. The radiance of a sunlit Lambertian patch, A E cos z / π; the photons one diffraction-limited mode collects from an extended source, L Δλ λ² / (hc/λ) (étendue λ²); the flux of an unresolved planet, E p (R/d)² Φ(α), with the Lambert-sphere phase function; the Airy wing 8/(π x³); night-side hydroxyl airglow. Tested against direct integration of a Lambertian sphere, the blackbody occupation number 1/(e^{hν/kT} − 1) per mode, and the exact Airy pattern.
 - `qll/space/dark_window.py`: the fraction of a day a ground station sees Mars above 40° with the Sun 12° down, clip(ε − 52°, 0, 100°)/360 for an equatorial station; tested against a sweep of the hour angle.

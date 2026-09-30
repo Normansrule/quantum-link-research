@@ -170,6 +170,13 @@ def test_link_budget_page_matches_the_python_budget(browser, server):
     page.click("#a-earth"); page.click("#t-conj")
     assert "Sun is in the way" in page.locator("#k-verdict").inner_text()
     assert page.locator("#mem-rows tr").count() == 6
+    from qll.systems.key_ledger import ledger
+    L = ledger(MarsLinkDesign(), 1e6)
+    page.click("#a-space")
+    assert page.locator("#k-bank").inner_text() == f"{L.capacity_bits / 8e6:.1f} MB"          # the page's bank is the Python's
+    assert page.locator("#k-refuse").inner_text() == f"{L.refused_days_without_bank} of 780"
+    page.evaluate("document.getElementById('dem').value = 7.5; document.getElementById('dem').dispatchEvent(new Event('input'))")
+    assert "none is enough" in page.locator("#k-bank").inner_text()
     assert errors == []
     page.close()
 

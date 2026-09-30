@@ -1,12 +1,12 @@
 {
  "status": {
-  "version": "0.40.0",
-  "tests": 671,
-  "requirements": 34,
-  "requirements_verified": 33,
-  "references": 409,
+  "version": "0.41.0",
+  "tests": 681,
+  "requirements": 35,
+  "requirements_verified": 34,
+  "references": 412,
   "references_verified": 21,
-  "learn_files": 92,
+  "learn_files": 93,
   "experiment_files": 55,
   "research_files": 35,
   "simulations": 8,
@@ -33,6 +33,10 @@
   "mars_fidelity_farthest": 0.7171198775788238,
   "mars_relay_pairs_per_day_closest": 1.5505311089788896e-05,
   "mars_purity_farthest": 0.9622762609985798,
+  "mars_key_bits_per_day_farthest": 486827.6149117321,
+  "mars_key_bits_per_day_closest": 21960262.554409377,
+  "key_bank_mb_1e6": 16.73098814759993,
+  "key_bank_refused_days_no_bank": 341,
   "mars_ground_purity_daylight_closest": 0.00589050344462578,
   "mars_ground_days_without_dark_sky": 333,
   "min_useful_memory_segments_1000km": 16,
@@ -12187,6 +12191,15 @@
     "status": "verified",
     "method": "Test",
     "need": "N-4"
+   },
+   {
+    "req_id": "REQ-APP-003",
+    "statement": "A key bank sized by the sequent-peak rule carries the messenger's demand of 1e6 key bits per day through every day of a synodic period including conjunction; 1 % less capacity refuses",
+    "phase": "6",
+    "test_path": "tests/test_key_bank.py::test_req_app_003_a_bank_carries_the_messenger_through_every_conjunction",
+    "status": "verified",
+    "method": "Analysis",
+    "need": "N-1"
    }
   ],
   "trades": [
@@ -12235,12 +12248,17 @@
    {
     "id": "R-8",
     "risk": "Key cannot be distilled near maximum range (Werner error rate above 11 %)",
-    "status": "Open (learn 03/21)"
+    "status": "Closed in 0.41: the risk came from charging key for the memory wait; measured on arrival, key flows on every day with a link (error rate \u2264 5 %)"
    },
    {
     "id": "R-9",
     "risk": "Sunlit Earth swamps the heralds at the Mars receiver (background light)",
     "status": "Mitigated in the budget: purity \u2265 0.96 every day with a link; floor not yet demonstrated at 1 mrad"
+   },
+   {
+    "id": "R-10",
+    "risk": "Banked key is compromised at rest while it waits up to a synodic period",
+    "status": "Open: the bank is tens of megabytes, so the cost is its protection, not its size"
    }
   ]
  }

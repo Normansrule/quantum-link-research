@@ -105,6 +105,17 @@ def trade_tables() -> dict[str, str]:
         rows.append(f"| {D:g} m | " + " | ".join(f(budget(replace(d, rx_diameter_mars_m=D, tx_waist_m=w), tf).pairs_per_day)
                                                   for w in (0.15, 0.5, 1.5)) + " |")
     T["aperture"] = "\n".join(rows)
+    from qll.systems.key_ledger import daily_key_bits, ledger
+    key = daily_key_bits(d)
+    mean = float(key.mean())
+    rows = ["| daily demand | one-time pad per day | 256-bit session keys per day | days refused with no bank | key bank needed |",
+            "|---|---|---|---|---|"]
+    for dem in (1e5, 3e5, 1e6, 2e6, mean):
+        L = ledger(d, dem, key)
+        tag = " (the mean supply: the most any bank can carry)" if dem == mean else " (baseline)" if dem == 1e6 else ""
+        rows.append(f"| {dem:.2g} bits{tag} | {L.otp_bytes_per_day / 1e3:,.0f} kB | {L.sessions_per_day:,.0f} | "
+                    f"{L.refused_days_without_bank} of 780 | {L.capacity_bits / 8e6:.2f} MB |")
+    T["keyspend"] = "\n".join(rows)
     return T
 
 

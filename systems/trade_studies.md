@@ -78,3 +78,18 @@ A purity of 0.99 at the farthest point needs a total off-axis rejection of 2.6e-
 
 **Decision.** The lunar distance with a 10⁻⁹ floor. At geostationary distance Earth is only about 0.1 mrad from the transmitter at maximum range, and the diffraction wing of a clear 4 m aperture already leaks more than the floor. From the lunar distance onward the floor decides, and 10⁻⁹ keeps at least 95 % of heralds clean on every day with a link. A floor of 10⁻⁹ at a few thousand λ/D is the regime of coronagraph-grade optics, which makes the Mars receiver's stray-light design a driving requirement (risk R-9). The geometry assumes the offset is seen side-on from Mars; an orbit that carries the transmitter across Earth's disk as seen from Mars must pause, as for conjunction.
 
+## TS-7 Spending the key: how much to bank, and how to use it
+**Alternatives.** A constant daily demand from 10⁵ bits to the mean supply, spent as a one-time pad (one key bit per message bit, information-theoretically secure) or as 256-bit hybrid session keys. **Criterion.** Days on which the messenger must refuse (REQ-APP-001 forbids sending unkeyed), and the key bank that removes every refusal (REQ-APP-003). Key is measured on arrival and needs no quantum memory, so it flows on every day with a link; it stops only for the three conjunction weeks, and near maximum range it falls to about 5 × 10⁵ bits per day.
+
+<!-- trade:keyspend:start -->
+| daily demand | one-time pad per day | 256-bit session keys per day | days refused with no bank | key bank needed |
+|---|---|---|---|---|
+| 1e+05 bits | 12 kB | 391 | 21 of 780 | 0.26 MB |
+| 3e+05 bits | 38 kB | 1,172 | 21 of 780 | 0.79 MB |
+| 1e+06 bits (baseline) | 125 kB | 3,906 | 341 of 780 | 16.73 MB |
+| 2e+06 bits | 250 kB | 7,812 | 467 of 780 | 68.72 MB |
+| 4.1e+06 bits (the mean supply: the most any bank can carry) | 518 kB | 16,185 | 567 of 780 | 209.37 MB |
+<!-- trade:keyspend:end -->
+
+**Decision.** A demand of 10⁶ bits per day with a bank of about 17 MB: 125 kB of one-time pad a day, enough for text and telemetry, or thousands of session keys. Without a bank that demand is refused on most days of the far half of the orbit, not only in conjunction. The bank is small enough to be nothing as storage and large enough to matter as a target, so its protection is the design problem (R-10). A demand near the mean supply needs a bank of about 200 MB; the baseline leaves a factor of four in hand.
+

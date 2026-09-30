@@ -207,14 +207,36 @@ def test_js_mars_budget_matches_python(tmp_path):
         "const fs=require('fs');const E=require(process.argv[2]);const B=require(process.argv[3])(E);"
         "const data=JSON.parse(fs.readFileSync(process.argv[4],'utf8'));E.configure(data);const ds=JSON.parse(process.argv[5]);const ts=JSON.parse(process.argv[6]);"
         "console.log(JSON.stringify(ds.map(d=>ts.map(t=>{const b=B.budget(d,t,data.memories);"
-        "return [b.stages.map(s=>s.rate_per_s),b.teleport_fidelity,b.key_bits_per_pair,b.storage_s,b.purity,b.noise_per_mode_s];}))))")
+        "return [b.stages.map(s=>s.rate_per_s),b.teleport_fidelity,b.key_bits_per_pair,b.storage_s,b.purity,b.noise_per_mode_s,b.key_bits_per_day];}))))")
     out = json.loads(subprocess.run([node, str(script), str(DOCS / "js" / "ephemeris.js"), str(DOCS / "js" / "budget_core.js"),
                                      str(DOCS / "site_data.json"), json.dumps(designs), json.dumps(days)],
                                     capture_output=True, text=True, check=True).stdout)
     for d, rows in zip(designs, out):
-        for t, (rates, F, key, ts, w, noise) in zip(days, rows):
+        for t, (rates, F, key, ts, w, noise, kday) in zip(days, rows):
             b = budget(replace(MarsLinkDesign(), **d), t)
             assert w == pytest.approx(b.purity, rel=1e-9) and noise == pytest.approx(b.noise_per_mode_s, rel=1e-9), (d, t)
+            assert kday == pytest.approx(b.key_bits_per_day, rel=1e-6, abs=1e-9), (d, t)
             assert rates == pytest.approx([s.rate_per_s for s in b.stages], rel=1e-9, abs=1e-300), (d, t)
             assert F == pytest.approx(b.teleport_fidelity, rel=1e-9) and ts == pytest.approx(b.storage_s, rel=1e-9)
             assert key == pytest.approx(b.key_bits_per_pair, rel=1e-6, abs=1e-12)
+
+
+@pytest.mark.skipif(node is None, reason="node not installed")
+def test_js_key_bank_matches_python(tmp_path):
+    from qll.app.key_bank import sequent_peak, simulate
+    from qll.systems.key_ledger import daily_key_bits
+    from qll.systems.mars_budget import MarsLinkDesign
+
+    key = [float(x) for x in daily_key_bits(MarsLinkDesign())]
+    cases = [1e5, 1e6, 3e6]
+    script = tmp_path / "bank.js"
+    script.write_text(
+        "const K=require(process.argv[2]);const s=JSON.parse(process.argv[3]);const ds=JSON.parse(process.argv[4]);"
+        "console.log(JSON.stringify(ds.map(d=>{const c=K.sequentPeak(s,d);const r=K.simulate(s,d,0.5*c);"
+        "return [c,r.level,r.refusedDays];})))")
+    out = json.loads(subprocess.run([node, str(script), str(DOCS / "js" / "key_bank.js"), json.dumps(key), json.dumps(cases)],
+                                    capture_output=True, text=True, check=True).stdout)
+    for dem, (cap, level, refused) in zip(cases, out):
+        assert cap == pytest.approx(sequent_peak(key, dem), rel=1e-12)
+        run = simulate(key, dem, 0.5 * cap)
+        assert level == pytest.approx(list(run.level), rel=1e-12, abs=1e-6) and refused == run.refused_days

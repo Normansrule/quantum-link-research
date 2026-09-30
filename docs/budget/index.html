@@ -28,6 +28,9 @@
   .p h4 { margin: 0 0 .55rem; font-size: .74rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); font-weight: 700 }
   .w8 { grid-column: span 8 } .w4 { grid-column: span 4 } .w12 { grid-column: span 12 } .w6 { grid-column: span 6 } .w5 { grid-column: span 5 } .w7 { grid-column: span 7 }
   @media (max-width: 1000px) { .w8, .w4, .w6, .w5, .w7 { grid-column: span 12 } }
+  canvas#bank { width: 100%; height: 240px; display: block }
+  .legend { display: flex; gap: 1.1rem; flex-wrap: wrap; font-size: .78rem; color: var(--muted); margin: .35rem 0 0 }
+  .legend i { display: inline-block; width: 14px; height: 3px; border-radius: 2px; vertical-align: middle; margin-right: .35rem }
   canvas#sky { width: 100%; height: 300px; display: block; border-radius: 12px; background: radial-gradient(ellipse at 50% 50%, #0b1224 0%, #04070f 75%) }
   canvas#flow { width: 100%; height: 360px; display: block }
   canvas#dates { width: 100%; height: 120px; display: block }
@@ -109,6 +112,20 @@
       </div>
       <p class="note" id="k-verdict">—</p>
     </div>
+    <div class="p w12"><h4>the key bank · one synodic period of secret key, and the bank that lets the messenger spend it evenly</h4>
+      <canvas id="bank"></canvas>
+      <div class="legend"><span><i style="background:#5ef2e0"></i>key made each day (log scale)</span><span><i style="background:#ffb454"></i>daily demand</span><span><i style="background:#c792ff"></i>bank level (right scale)</span><span><i style="background:#ff6b4a"></i>days a messenger with no bank must refuse</span></div>
+      <div class="grid" style="margin:.6rem 0 0;gap:.8rem">
+        <div class="w4" style="grid-column:span 4"><div class="sl"><span>daily demand</span><b id="v-dem"></b><input type="range" id="dem" min="4" max="7" step="any" value="6"></div></div>
+        <div style="grid-column:span 8" class="kpis">
+          <div class="k"><div class="s">bank needed</div><div class="v" id="k-bank">—</div></div>
+          <div class="k"><div class="s">refused days with no bank</div><div class="v" id="k-refuse">—</div></div>
+          <div class="k"><div class="s">one-time pad per day</div><div class="v" id="k-otp">—</div></div>
+          <div class="k"><div class="s">256-bit session keys per day</div><div class="v" id="k-sess">—</div></div>
+        </div>
+      </div>
+      <p class="note" id="bank-note">—</p>
+    </div>
     <div class="p w12"><h4>the same link with each demonstrated memory</h4>
       <table class="mem"><thead><tr><th>memory</th><th>coherence</th><th>retrieval</th><th>pairs / day</th><th>fidelity after storage</th><th>verdict</th></tr></thead><tbody id="mem-rows"></tbody></table>
       <p class="note">A memory is paid for twice here: its retrieval efficiency at both ends multiplies the rate, and its coherence time sets the fidelity after the wait. Assumptions (all adjustable in <code>MarsLinkDesign</code>): 1550 nm, transmit optics 0.8, receive optics 0.7, detectors 0.9, Earth elevation 40° and the Sun 12° below the horizon for a ground station, weather and operations duty 0.5, storage for one round trip, depolarizing memories, Earth's near-infrared albedo 0.3, airglow 10⁻⁷ W m⁻² sr⁻¹ nm⁻¹.</p>
@@ -118,6 +135,7 @@
 <footer>Link budget. Physics from <code>qll/systems/mars_budget.py</code> and the channel, memory, and key-rate modules it composes and the background light of <code>qll/channels/planetshine.py</code> [siegman1986, bourgoin2013, sinclair2014, yin2017, bennett1992bbm92, shor2000, gueymard2004, russell1916, hapke2012, born1999, rousselot2000, meeus1998]. Design after Remotion and Magic UI (flowing streams and beams), llm-viz (the real numbers at every stage), and worldmonitor (a live dashboard). See <a href="https://github.com/Normansrule/quantum-link-research/blob/main/CREDITS.md">CREDITS.md</a>.</footer>
 <script src="../js/ephemeris.js"></script>
 <script src="../js/budget_core.js"></script>
+<script src="../js/key_bank.js"></script>
 <script>
 (async function () {
   document.documentElement.classList.remove("no-js");
@@ -186,6 +204,52 @@
   function wrap(g, text, x, y, w) { const words = text.split(" "); let line = "", yy = y; for (const wd of words) { const t = line ? line + " " + wd : wd;
       if (g.measureText(t).width > w && line) { g.fillText(line, x, yy); line = wd; yy += 12; } else line = t; } g.fillText(line, x, yy); }
 
+  // the key bank: daily key over one synodic period for the current design, cached until the design changes
+  const KB = window.QLLKeyBank; let keyCache = { sig: "", key: [] };
+  function cycleKey(d) {
+    const sig = JSON.stringify(d);
+    if (sig !== keyCache.sig) keyCache = { sig, key: Array.from({ length: 780 }, (_, i) => B.budget(d, i, MEMS).key_bits_per_day) };
+    return keyCache.key;
+  }
+  function drawBank(t, d) {
+    const key = cycleKey(d), dem = Math.pow(10, +$("dem").value), mean = KB.sustainableDemand(key);
+    const [g, W, H] = ctx($("bank")), x0 = 52, x1 = W - 58, y0 = 10, y1 = H - 26, X = (i) => x0 + (x1 - x0) * i / 779;
+    const lo = 4, hi = 8, Y = (v) => y1 - (y1 - y0) * (Math.log10(Math.max(v, Math.pow(10, lo))) - lo) / (hi - lo);
+    g.font = "11px JetBrains Mono, monospace"; g.fillStyle = "#5b6780";
+    for (let e = lo; e <= hi; e++) { g.fillText("10" + String(e).split("").map((c) => SUP[c]).join(""), 8, Y(Math.pow(10, e)) + 4);
+      g.strokeStyle = "rgba(148,170,210,.1)"; g.beginPath(); g.moveTo(x0, Y(Math.pow(10, e))); g.lineTo(x1, Y(Math.pow(10, e))); g.stroke(); }
+    [0, 200, 400, 600].forEach((i) => g.fillText("day " + i, X(i) - 14, H - 8));
+    // key made each day
+    const grd = g.createLinearGradient(0, y0, 0, y1); grd.addColorStop(0, "rgba(94,242,224,.55)"); grd.addColorStop(1, "rgba(94,242,224,.05)");
+    g.fillStyle = grd; g.beginPath(); g.moveTo(X(0), y1); key.forEach((k, i) => g.lineTo(X(i), k > 0 ? Y(k) : y1)); g.lineTo(X(779), y1); g.closePath(); g.fill();
+    g.strokeStyle = "#5ef2e0"; g.lineWidth = 1.5; g.beginPath(); key.forEach((k, i) => (i ? g.lineTo(X(i), k > 0 ? Y(k) : y1) : g.moveTo(X(i), Y(k)))); g.stroke();
+    // demand and the days it cannot be met from the day's own key
+    g.strokeStyle = "#ffb454"; g.setLineDash([6, 4]); g.beginPath(); g.moveTo(x0, Y(dem)); g.lineTo(x1, Y(dem)); g.stroke(); g.setLineDash([]);
+    const noBank = KB.simulate(key, dem, 0, 0);
+    g.fillStyle = "rgba(255,107,74,.85)"; noBank.refused.forEach((r, i) => { if (r > 1e-9 * dem) g.fillRect(X(i), y1 + 2, Math.max(1, (x1 - x0) / 780), 5); });
+    // the bank, right-hand linear scale, starting full at its sequent-peak capacity
+    if (dem <= mean) {
+      const cap = KB.sequentPeak(key, dem), run = KB.simulate(key, dem, cap), Yb = (v) => y1 - (y1 - y0) * v / Math.max(cap, 1);
+      g.strokeStyle = "#c792ff"; g.lineWidth = 2; g.beginPath(); run.level.forEach((v, i) => (i ? g.lineTo(X(i), Yb(v)) : g.moveTo(X(i), Yb(v)))); g.stroke();
+      g.fillStyle = "#c792ff"; g.fillText((cap / 8e6).toFixed(cap < 8e6 ? 2 : 1) + " MB", x1 + 6, y0 + 8); g.fillText("0", x1 + 6, y1);
+    }
+    g.strokeStyle = "#e8fffb"; g.setLineDash([2, 3]); const ti = ((Math.round(t) % 780) + 780) % 780;
+    g.beginPath(); g.moveTo(X(ti), y0); g.lineTo(X(ti), y1); g.stroke(); g.setLineDash([]);
+    return { key, dem, mean, noBank };
+  }
+  function updateBank(t, d) {
+    const r = drawBank(t, d), ok = r.dem <= r.mean, cap = ok ? KB.sequentPeak(r.key, r.dem) : Infinity;
+    $("v-dem").textContent = sci(r.dem, 1) + " bits";
+    $("k-bank").innerHTML = ok ? `<span class="ok">${(cap / 8e6).toFixed(cap < 8e6 ? 2 : 1)} MB</span>` : `<span class="bad">none is enough</span>`;
+    $("k-refuse").innerHTML = `<span class="${r.noBank.refusedDays > 0 ? "warm" : "ok"}">${r.noBank.refusedDays} of 780</span>`;
+    $("k-otp").textContent = (r.dem / 8e3 < 10 ? (r.dem / 8e3).toFixed(1) : Math.round(r.dem / 8e3).toLocaleString()) + " kB";
+    $("k-sess").textContent = Math.round(r.dem / KB.AES_KEY_BITS).toLocaleString();
+    const gap = r.key.filter((k) => k <= 0).length;
+    $("bank-note").innerHTML = ok
+      ? `Key is measured as it arrives (BBM92), so it needs no quantum memory and flows on every day with a link: from ${sci(Math.min(...r.key.filter((k) => k > 0)), 1)} to ${sci(Math.max(...r.key), 1)} bits a day. It stops for ${gap} days at conjunction. Once distilled, key is classical and can wait; a bank sized by the sequent-peak rule, starting full, never refuses. The most any bank can carry is the mean supply, ${sci(r.mean, 1)} bits a day.`
+      : `<b class="bad">No bank can carry this.</b> The demand is above the mean supply of ${sci(r.mean, 1)} bits a day; the bank would drain every cycle.`;
+  }
+
   // with no dark-sky window a ground station could only work in daylight: show that purity, not the night one
   const noDark = () => { const s = cur.stages.find((x) => x.name.startsWith("dark-sky")); return !!s && s.factor === 0; };
   const shownPurity = () => (noDark() && arch === "earth_source" ? cur.extra.purity_daylight : cur.purity);
@@ -246,22 +310,23 @@
     $("k-pairs").innerHTML = `<span class="${cur.pairs_per_day >= 1 ? "ok" : "bad"}">${fmtN(cur.pairs_per_day)}</span>`;
     $("k-store").textContent = fmtT(cur.storage_s);
     $("k-fid").innerHTML = `<span class="${cur.useful ? "ok" : "bad"}">${cur.teleport_fidelity.toFixed(3)}</span>`;
-    $("k-key").innerHTML = cur.key_bits_per_pair > 0 ? `<span class="ok">${fmtN(cur.key_bits_per_day)} bits</span>` : `<span class="bad">none (error rate ${(100 * 2 * (1 - cur.fraction) / 3).toFixed(1)} %)</span>`;
+    $("k-key").innerHTML = cur.key_bits_per_pair > 0 ? `<span class="ok">${fmtN(cur.key_bits_per_day)} bits</span>` : `<span class="bad">none (error rate ${(100 * cur.key_error_rate).toFixed(1)} %)</span>`;
     $("h-survive").textContent = cur.pairs_per_day > 0 ? `${fmtN(cur.pairs_per_day)} a day.` : "None, today.";
     const dark = cur.stages.find((s) => s.name.startsWith("dark-sky"));
     $("k-verdict").innerHTML = !cur.available ? `<b class="bad">The Sun is in the way.</b> Within 3° of the Sun no optical link closes; ${arch !== "relay_dual" ? "a relay off the Earth–Mars line (try the L4 architecture, or wait a few weeks)" : "this relay geometry is blocked too"}.`
       : dark && dark.factor === 0 ? `<b class="bad">No dark sky.</b> Mars is ${E.sepDeg(t).toFixed(0)}° from the Sun, so it is up only in daylight, when sunlit ground behind the transmitter would swamp the heralds. Move the source into space.`
       : cur.pairs_per_day < 1 ? `<b class="bad">Less than one pair a day.</b> ${arch === "relay_dual" ? "Both photons cross astronomical distances, so the diffraction loss is paid twice: about 90 dB each way." : "Widen the transmit beam waist, the receiver, or the multiplexing."}`
       : !cur.useful ? `<b class="warm">Pairs arrive but are useless for teleportation.</b> The ${fmtT(cur.storage_s)} wait outlasts the memory's coherence; see the table below.`
-      : `<b class="ok">${fmtN(cur.teleportations_per_day)} useful pairs a day</b> at teleportation fidelity ${cur.teleport_fidelity.toFixed(3)}${cur.key_bits_per_pair > 0 ? `, and ${fmtN(cur.key_bits_per_day)} secret bits` : "; too noisy for key (the error rate is above 11 %)"}.`;
+      : `<b class="ok">${fmtN(cur.teleportations_per_day)} useful pairs a day</b> at teleportation fidelity ${cur.teleport_fidelity.toFixed(3)}${cur.key_bits_per_pair > 0 ? `, and ${fmtN(cur.key_bits_per_day)} secret bits` : "; no key today (the error rate is above 11 %)"}. Key needs no memory: it is measured on arrival.`;
     $("arch-note").innerHTML = arch === "space_source" ? "The pair is made on a spacecraft displaced from Earth, above the atmosphere; one photon is stored locally and the other crosses the Earth–Mars distance once. Ground users reach it over a short link."
       : arch === "earth_source" ? "The pair is made at a ground station; one photon is stored locally and the other crosses the atmosphere and the Earth–Mars distance once." : "A source at Sun–Earth L4 sends one photon to each planet, like Micius's two downlinks. Both legs are astronomical, so the loss is paid twice; it keeps a line of sight during Earth–Mars conjunction.";
     $("mem-rows").innerHTML = MEMS.map((m) => { const b = B.budget(Object.assign({}, d, { memory: m.name }), t, MEMS);
       const v = b.pairs_per_day < 1 ? "<span class='bad'>too few pairs</span>" : !b.useful ? "<span class='warm'>decays before the bits arrive</span>" : "<span class='ok'>useful</span>";
       return `<tr class="${m.name === d.memory ? "sel" : ""}"><td>${m.name}</td><td>${m.lifetime_s < 1 ? m.lifetime_s * 1e3 + " ms" : fmtT(m.lifetime_s)}</td><td>${(100 * m.efficiency).toFixed(1)} %</td><td>${fmtN(b.pairs_per_day)}</td><td>${b.teleport_fidelity.toFixed(3)}</td><td>${v}</td></tr>`; }).join("");
     drawDates(t);
+    updateBank(t, d);
   }
-  ["t", "w0", "D", "pt", "R", "M", "f0", "mem", "B", "S", "O"].forEach((id) => $(id).addEventListener("input", update));
+  ["t", "w0", "D", "pt", "R", "M", "f0", "mem", "B", "S", "O", "dem"].forEach((id) => $(id).addEventListener("input", update));
   const setArch = (a) => { arch = a; [["a-space", "space_source"], ["a-earth", "earth_source"], ["a-relay", "relay_dual"]].forEach(([id, v]) => $(id).classList.toggle("on", a === v)); update(); };
   $("a-space").onclick = () => setArch("space_source"); $("a-earth").onclick = () => setArch("earth_source"); $("a-relay").onclick = () => setArch("relay_dual");
   const iMin = RS.indexOf(Math.min(...RS)), iMax = RS.indexOf(Math.max(...RS)), iConj = BLOCK.indexOf(true);

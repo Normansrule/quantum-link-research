@@ -82,11 +82,13 @@
     const stages = [{ name: "source", factor: 1, rate_per_s: rate }];
     for (const [name, f] of factors) { rate *= f; stages.push({ name, factor: f, rate_per_s: rate }); }
     const tStore = d.storage_factor * L / C, fStored = stored(d.f0, tStore, mem.lifetime_s), f = 0.25 + w * (fStored - 0.25);
-    const F = (2 * f + 1) / 3, Q = 2 * (1 - f) / 3, key = Q < 0.5 ? Math.max(0, 1 - 2 * h2(Q)) : 0;
-    const perDay = rate * 86400, heralds = w > 0 ? perDay / w : Infinity, useful = F > 2 / 3;
+    // key is measured on arrival (BBM92): no storage decay and no memory stage
+    const F = (2 * f + 1) / 3, fKey = 0.25 + w * (d.f0 - 0.25), Q = 2 * (1 - fKey) / 3, key = Q < 0.5 ? Math.max(0, 1 - 2 * h2(Q)) : 0;
+    const perDay = rate * 86400, heralds = w > 0 ? perDay / w : Infinity, useful = F > 2 / 3, memFactor = mem.efficiency * mem.efficiency;
     return { range_m: L, legs_m: legs, stages, storage_s: tStore, fraction: f, fraction_stored: fStored, teleport_fidelity: F,
              key_bits_per_pair: key, pairs_per_day: perDay, purity: w, noise_per_mode_s: noise, heralds_per_day: heralds, useful,
-             teleportations_per_day: useful && perDay > 0 ? heralds : 0, key_bits_per_day: perDay > 0 ? heralds * key : 0,
+             teleportations_per_day: useful && perDay > 0 ? heralds : 0, key_bits_per_day: perDay > 0 ? heralds / memFactor * key : 0,
+             key_error_rate: Q, memory_factor: memFactor,
              total_db: stages.slice(1).reduce((s, x) => s + (x.factor > 0 ? 10 * Math.log10(x.factor) : -Infinity), 0), available, extra };
   }
   return { DEFAULT, geometric, pointing, atmosphere, h2, lambertPhase, sunlitRadiance, singleMode, earthshineFlux, airy, darkFraction, budget };

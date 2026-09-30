@@ -104,6 +104,8 @@ def compute_data() -> dict:
     status = json.loads((ROOT / "docs" / "status.json").read_text()) if (ROOT / "docs" / "status.json").exists() else {}
     from qll.systems.mars_budget import MarsLinkDesign
     from qll.systems.mars_budget import budget as mars_budget
+    from qll.systems.key_ledger import ledger as _key_ledger
+    _ledger = _key_ledger(MarsLinkDesign(), 1e6)
     _days = np.arange(0.0, 800.0, 1.0)
     _r = np.array([float(earth_mars_range_m(t)) for t in _days])
     t_close, t_far = float(_days[np.argmin(_r)]), float(_days[np.argmax(_r)])
@@ -134,6 +136,9 @@ def compute_data() -> dict:
             "mars_fidelity_farthest": mars_budget(MarsLinkDesign(), t_far).teleport_fidelity,
             "mars_relay_pairs_per_day_closest": mars_budget(MarsLinkDesign(architecture="relay_dual"), t_close).pairs_per_day,
             "mars_purity_farthest": mars_budget(MarsLinkDesign(), t_far).purity,
+            "mars_key_bits_per_day_farthest": mars_budget(MarsLinkDesign(), t_far).key_bits_per_day,
+            "mars_key_bits_per_day_closest": mars_budget(MarsLinkDesign(), t_close).key_bits_per_day,
+            "key_bank_mb_1e6": _ledger.capacity_bits / 8e6, "key_bank_refused_days_no_bank": _ledger.refused_days_without_bank,
             "mars_ground_purity_daylight_closest": mars_budget(MarsLinkDesign(architecture="earth_source"), t_close).extra["purity_daylight"],
             "mars_ground_days_without_dark_sky": sum(1 for t in range(780) if mars_budget(MarsLinkDesign(architecture="earth_source"), float(t)).pairs_per_day == 0),
             "min_useful_memory_segments_1000km": best_useful_chain(1000.0, 1.001 * minimum_useful_memory_s(1000.0)).n_segments,
@@ -186,6 +191,7 @@ def write_readme_numbers(data: dict) -> None:
         ("Teleportation fidelity of the pairs it delivers there, without purification", (lambda x: f"{x:.2f} (below 2/3: rate is not enough)" if x < 2 / 3 else f"{x:.2f} (above 2/3)")(h['chain_teleport_fidelity_at_crossover']), "`qll/network/repeater_chain.py`"),
         ("Memory needed for a useful chain (F > 2/3) that beats direct fiber over 1000 km", f"{h['min_useful_memory_s_1000km']:.0f} s (best: {h['min_useful_memory_segments_1000km']} segments, {h['min_useful_memory_rounds_1000km']} purification round{'s' if h['min_useful_memory_rounds_1000km'] != 1 else ''})", "`qll/network/purified_chain.py`"),
         (f"Useful Earth–Mars pairs per day, source in space at {MarsLinkDesign().tx_offset_m / 1e3:,.0f} km from Earth (beam waist {MarsLinkDesign().tx_waist_m:g} m, {MarsLinkDesign().rx_diameter_mars_m:g} m receiver, {MarsLinkDesign().modes:,} modes)", f"{h['mars_pairs_per_day_closest']:.1e} at closest, {h['mars_pairs_per_day_farthest']:.1e} at farthest (F = {h['mars_fidelity_farthest']:.2f}); {h['mars_relay_pairs_per_day_closest']:.0e} through an L4 relay's two downlinks", "`qll/systems/mars_budget.py`"),
+        ("Secret key, measured on arrival (no memory), and the bank that spends it evenly", f"{h['mars_key_bits_per_day_closest']:.1e} bits/day at closest, {h['mars_key_bits_per_day_farthest']:.1e} at farthest, none for 3 weeks at conjunction; a {h['key_bank_mb_1e6']:.1f} MB bank carries 10⁶ bits/day through every day (refused on {h['key_bank_refused_days_no_bank']} of 780 days without one)", "`qll/app/key_bank.py`"),
         ("Sunlit Earth behind a ground transmitter, seen from Mars (100 MHz per mode)", f"{100 * (1 - h['mars_ground_purity_daylight_closest']):.1f} % of daytime heralds are noise; no dark-sky view of Mars on {h['mars_ground_days_without_dark_sky']} of 780 days; from space, {100 * h['mars_purity_farthest']:.0f} % of heralds are signal even at full-phase Earth", "`qll/channels/planetshine.py`"),
         ("Purification 0.80 → 0.99", f"BBPSSW {h['bbpssw_rounds_08_to_099']} rounds / {h['bbpssw_pairs']:.0f} pairs; DEJMPS {h['dejmps_rounds_08_to_099']} / {h['dejmps_pairs']:.0f}", "`qll/network/purification.py`"),
         ("Rounds for a device-independent key at S = 0.95·2√2", f"{h['di_rounds_095']:,}", "`qll/qkd/e91.py`"),

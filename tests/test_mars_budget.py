@@ -124,7 +124,7 @@ def test_space_source_background_is_the_off_axis_earth():
         S = D.source_rate_hz * D.eta_tx * math.prod(s.factor for s in b.stages if "space to Mars" in s.name and "receiver" not in s.name)
         assert b.purity == pytest.approx(S / (S + b.noise_per_mode_s), rel=1e-12)
         assert b.heralds_per_day == pytest.approx(b.pairs_per_day / b.purity, rel=1e-12)
-        assert b.key_bits_per_day == pytest.approx(b.heralds_per_day * b.key_bits_per_pair, rel=1e-12)
+        assert b.key_bits_per_day == pytest.approx(b.heralds_per_day / b.memory_factor * b.key_bits_per_pair, rel=1e-12)
     # with the floor above the Airy wing, a bigger receiver buys signal and background alike: purity does not move
     big = budget(replace(D, rx_diameter_mars_m=8.0), T_FAR)
     assert big.pairs_per_day > 3.9 * budget(D, T_FAR).pairs_per_day
@@ -144,3 +144,18 @@ def test_required_rejection_restores_the_target_purity():
 def test_req_cap_005_stray_light_keeps_heralds_clean_every_available_day():
     got = [budget(D, float(t)) for t in np.arange(0.0, 780.0, 1.0)]
     assert min(b.purity for b in got if b.pairs_per_day > 0) >= 0.95
+
+
+def test_key_does_not_wait_for_the_memory():
+    # BBM92 measures each photon on arrival: key depends on f0 and the background, not on storage or the memory
+    for t in (T_CLOSE, T_FAR):
+        b = budget(D, t)
+        f_key = 0.25 + b.purity * (D.f0 - 0.25)
+        assert b.extra["key_error_rate"] == pytest.approx(2 * (1 - f_key) / 3, rel=1e-12)
+        assert budget(replace(D, storage_factor=10.0), t).key_bits_per_pair == b.key_bits_per_pair
+        crystal = budget(replace(D, memory="Eu:YSO nuclear spin, 13.1 h"), t)
+        assert crystal.key_bits_per_day == pytest.approx(b.key_bits_per_day, rel=1e-12)    # 0.5 % retrieval is irrelevant
+        assert crystal.pairs_per_day < 1e-3 * b.pairs_per_day                               # but teleportation pays it
+    # so key flows on every day with a link, even at maximum range where the stored pairs are too noisy for key
+    far = budget(D, T_FAR)
+    assert far.key_bits_per_day > 1e5 and 2 * (1 - far.fraction) / 3 > 0.11

@@ -1,6 +1,6 @@
 # Status
 
-Version 0.40.0 · 671 tests · 33/34 requirements verified · 409 references (21 verified) · 92 learn files · 8 simulations · 44 figures
+Version 0.41.0 · 681 tests · 34/35 requirements verified · 412 references (21 verified) · 93 learn files · 8 simulations · 44 figures
 
 | Requirement | Statement | Phase | Status |
 |---|---|---|---|
@@ -38,3 +38,4 @@ Version 0.40.0 · 671 tests · 33/34 requirements verified · 409 references (21
 | REQ-HW-002 | Static ZZ at the tunable coupler's idle point is below the conditional-Ramsey resolution of 1.5 kHz, and the experiment recovers the model's ZZ elsewhere within 3 % | 2 | verified |
 | REQ-QEC-001 | A matching-decoded surface code shows threshold behaviour: larger codes fail less below 5 % and more above 13 % bit-flip probability, crossing between 8.5 % and 10.5 % | 2 | verified |
 | REQ-WEB-001 | Every number the website and README show is computed by the tested code, and every JavaScript port agrees with its Python model | 6 | verified |
+| REQ-APP-003 | A key bank sized by the sequent-peak rule carries the messenger's demand of 1e6 key bits per day through every day of a synodic period including conjunction; 1 % less capacity refuses | 6 | verified |
