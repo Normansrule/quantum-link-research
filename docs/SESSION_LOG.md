@@ -50,3 +50,4 @@
 - 2026-09-28 0.37.0: surface code under bit flips with PyMatching, QEC lab page (240 decoded shots, self-checking), thesis 4.4 repeater findings.
 - 2026-09-28 0.38.0: Earth–Mars link budget (module, page, lesson 03/21, thesis 4.5), batched CZ propagator.
 - 2026-09-28 0.39.0: systems-engineering spine (33 requirements with methods and needs, generated requirements and trade tables, risk register, traceability page).
+- 2026-09-29 0.40.0: background light (planetshine, single-mode radiance, dark-sky window); the space source becomes the baseline; REQ-CAP-005, R-9, TS-6; budget page shows what the Mars receiver sees.

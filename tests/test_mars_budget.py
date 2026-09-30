@@ -7,10 +7,11 @@ import numpy as np
 import pytest
 
 from qll.channels.free_space_diffraction import geometric_transmittance
+from qll.channels.planetshine import airy_leakage, planetshine_photon_flux, single_mode_photon_rate
 from qll.channels.light_time_delay import one_way_delay_s
 from qll.network.memory_decoherence import MEMORY_TABLE, fraction_after_storage_analytic
 from qll.space.ephemeris import earth_mars_range_m, sun_earth_mars_angle_deg
-from qll.systems.mars_budget import MarsLinkDesign, budget, compare_memories
+from qll.systems.mars_budget import MarsLinkDesign, budget, compare_memories, required_rejection
 
 pytestmark = pytest.mark.phase1
 D = MarsLinkDesign()
@@ -55,9 +56,11 @@ def test_fidelity_and_key_follow_the_memory_model():
     yb = next(p for p in MEMORY_TABLE if p.name == D.memory)
     t_store = 2 * one_way_delay_s(b.range_m)
     assert b.storage_s == pytest.approx(t_store, rel=1e-12)
-    assert b.fraction == pytest.approx(fraction_after_storage_analytic(D.f0, t_store, yb.lifetime_s), rel=1e-12)
+    f_stored = fraction_after_storage_analytic(D.f0, t_store, yb.lifetime_s)
+    assert b.extra["fraction_stored"] == pytest.approx(f_stored, rel=1e-12)
+    assert b.fraction == pytest.approx(0.25 + b.purity * (f_stored - 0.25), rel=1e-12)     # noise heralds are Werner 1/4
     assert b.teleport_fidelity == pytest.approx((2 * b.fraction + 1) / 3, rel=1e-12)
-    perfect = budget(replace(D, f0=1.0, memory="Eu:YSO nuclear spin, 13.1 h", storage_factor=0.0), T_CLOSE)
+    perfect = budget(replace(D, f0=1.0, memory="Eu:YSO nuclear spin, 13.1 h", storage_factor=0.0, stray_light=0.0), T_CLOSE)
     assert perfect.key_bits_per_pair == pytest.approx(1.0) and perfect.teleport_fidelity == pytest.approx(1.0)
     # the Werner error rate Q = 2(1 - f)/3 crosses the BB84/BBM92 threshold near 11 %: at f = 0.83 no key is left
     assert budget(replace(D, f0=0.83, storage_factor=0.0), T_CLOSE).key_bits_per_pair == 0.0
@@ -76,6 +79,10 @@ def test_validation():
         budget(replace(D, architecture="teleporter"), 0.0)
     with pytest.raises(ValueError):
         budget(replace(D, memory="unobtainium"), 0.0)
+    with pytest.raises(ValueError):
+        budget(replace(D, tx_offset_m=1e6), 0.0)                                   # on Earth's disk is not "in space"
+    with pytest.raises(TypeError):
+        budget(replace(D, stray_light=1e-9 + 0j), 0.0)
 
 
 def test_baseline_meets_req_cap_003_every_available_day():
@@ -85,3 +92,55 @@ def test_baseline_meets_req_cap_003_every_available_day():
     assert len(available) > 0.95 * len(days)                                    # only conjunction weeks are lost
     assert min(b.pairs_per_day for b in available) >= 1e5
     assert all(b.useful for b in available)
+
+
+GROUND = replace(D, architecture="earth_source")
+
+
+def test_a_ground_source_is_blind_in_daylight():
+    for t in (T_CLOSE, T_FAR):
+        b = budget(GROUND, t)
+        assert b.extra["purity_daylight"] < 0.01                                     # daytime heralds are > 99 % noise
+        assert b.noise_per_mode_s == pytest.approx(single_mode_photon_rate(D.night_radiance, D.wavelength_m, D.filter_hz))
+    assert budget(GROUND, T_CLOSE).purity > 0.99                                    # at night the airglow is faint
+
+
+def test_a_ground_source_loses_the_months_around_conjunction():
+    got = [budget(GROUND, float(t)) for t in np.arange(0.0, 780.0, 1.0)]
+    dark = [next(s.factor for s in b.stages if "dark-sky" in s.name) for b in got]
+    assert sum(1 for x in dark if x == 0) > 0.3 * len(got)                          # no night-time view of Mars at all
+    assert max(dark) == pytest.approx(100 / 360)                                     # best case: 40 % of the night at opposition
+    available = [b for b in got if b.pairs_per_day > 0]
+    assert min(b.pairs_per_day for b in available) < 1e5                             # REQ-CAP-003 fails for this design
+
+
+def test_space_source_background_is_the_off_axis_earth():
+    for t in (T_CLOSE, T_FAR):
+        b = budget(D, t)
+        theta = D.tx_offset_m / b.range_m
+        rej = max(airy_leakage(theta, D.rx_diameter_mars_m, D.wavelength_m), D.stray_light)
+        flux = planetshine_photon_flux(D.wavelength_m, D.filter_hz, b.range_m, math.radians(sun_earth_mars_angle_deg(t)))
+        assert b.noise_per_mode_s == pytest.approx(flux * math.pi * (D.rx_diameter_mars_m / 2) ** 2 * rej, rel=1e-12)
+        S = D.source_rate_hz * D.eta_tx * math.prod(s.factor for s in b.stages if "space to Mars" in s.name and "receiver" not in s.name)
+        assert b.purity == pytest.approx(S / (S + b.noise_per_mode_s), rel=1e-12)
+        assert b.heralds_per_day == pytest.approx(b.pairs_per_day / b.purity, rel=1e-12)
+        assert b.key_bits_per_day == pytest.approx(b.heralds_per_day * b.key_bits_per_pair, rel=1e-12)
+    # with the floor above the Airy wing, a bigger receiver buys signal and background alike: purity does not move
+    big = budget(replace(D, rx_diameter_mars_m=8.0), T_FAR)
+    assert big.pairs_per_day > 3.9 * budget(D, T_FAR).pairs_per_day
+    assert big.purity == pytest.approx(budget(D, T_FAR).purity, rel=1e-3)
+    # a GEO transmitter is only 0.1 mrad from Earth at maximum range: the Airy wing, not the floor, then dominates
+    geo = budget(replace(D, tx_offset_m=4.2e7, stray_light=0.0), T_FAR)
+    assert geo.extra["rejection"] > 1e-9 and geo.purity < budget(D, T_FAR).purity
+
+
+def test_required_rejection_restores_the_target_purity():
+    for t in (T_CLOSE, T_FAR):
+        c = required_rejection(D, t, purity=0.99)
+        assert budget(replace(D, stray_light=c), t).purity == pytest.approx(0.99, rel=1e-6)
+    assert required_rejection(D, T_FAR) < required_rejection(D, T_CLOSE)          # full-phase Earth is the hard case
+
+
+def test_req_cap_005_stray_light_keeps_heralds_clean_every_available_day():
+    got = [budget(D, float(t)) for t in np.arange(0.0, 780.0, 1.0)]
+    assert min(b.purity for b in got if b.pairs_per_day > 0) >= 0.95

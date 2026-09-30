@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Link budget · Quantum Link Research</title>
-<meta name="description" content="Follow a trillion entangled pairs per second from Earth to Mars, stage by stage, and see how many survive to become teleportations and secret key.">
+<meta name="description" content="Follow a trillion entangled pairs per second from Earth to Mars, stage by stage, see how sunlit Earth competes with the signal, and see how many pairs survive to become teleportations and secret key.">
 <meta property="og:title" content="Earth–Mars link budget · Quantum Link Research">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://normansrule.github.io/quantum-link-research/budget/">
@@ -26,8 +26,9 @@
   @property --a { syntax: "<angle>"; initial-value: 0deg; inherits: false }
   @keyframes spin { to { --a: 360deg } }
   .p h4 { margin: 0 0 .55rem; font-size: .74rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); font-weight: 700 }
-  .w8 { grid-column: span 8 } .w4 { grid-column: span 4 } .w12 { grid-column: span 12 } .w6 { grid-column: span 6 }
-  @media (max-width: 1000px) { .w8, .w4, .w6 { grid-column: span 12 } }
+  .w8 { grid-column: span 8 } .w4 { grid-column: span 4 } .w12 { grid-column: span 12 } .w6 { grid-column: span 6 } .w5 { grid-column: span 5 } .w7 { grid-column: span 7 }
+  @media (max-width: 1000px) { .w8, .w4, .w6, .w5, .w7 { grid-column: span 12 } }
+  canvas#sky { width: 100%; height: 300px; display: block; border-radius: 12px; background: radial-gradient(ellipse at 50% 50%, #0b1224 0%, #04070f 75%) }
   canvas#flow { width: 100%; height: 360px; display: block }
   canvas#dates { width: 100%; height: 120px; display: block }
   .lab button { font: 600 .84rem/1 "JetBrains Mono", ui-monospace, monospace; padding: .5rem .75rem; border-radius: 10px; border: 1px solid var(--line); background: var(--bg2); color: var(--ink); cursor: pointer }
@@ -56,7 +57,7 @@
   <div class="intro">
     <div class="kicker">Link budget · flagship F3 · REQ-CAP-001</div>
     <h1>A trillion pairs a second leave Earth. <span class="gradient-text" id="h-survive">How many reach Mars?</span></h1>
-    <p class="sub" style="margin:0">Every stage of the link multiplies the rate by a factor from a tested model: optics, the atmosphere, the spreading of the beam over hundreds of millions of kilometres, pointing jitter, detectors, memories, and the Sun getting in the way. Then the pair must wait in a memory for Earth's two classical bits. The stream below is drawn from <code>qll/systems/mars_budget.py</code>, ported line by line to <code>docs/js/budget_core.js</code> and checked against it.</p>
+    <p class="sub" style="margin:0">Every stage of the link multiplies the rate by a factor from a tested model: optics, the atmosphere, the spreading of the beam over hundreds of millions of kilometres, pointing jitter, detectors, memories, and the Sun getting in the way. Sunlight reflected by Earth competes with the signal at the Mars receiver, and every herald it causes stores noise. Then the pair must wait in a memory for Earth's two classical bits. The stream below is drawn from <code>qll/systems/mars_budget.py</code>, ported line by line to <code>docs/js/budget_core.js</code> and checked against it.</p>
   </div>
 
   <section class="grid">
@@ -72,25 +73,36 @@
       <div class="row"><button id="t-close">closest approach</button><button id="t-far">farthest</button><button id="t-conj">conjunction</button></div>
     </div>
     <div class="p w4"><h4>architecture</h4>
-      <div class="row"><button id="a-earth" class="on">source at Earth</button><button id="a-relay">relay at L4, two downlinks</button></div>
+      <div class="row"><button id="a-space" class="on">source in space</button><button id="a-earth">ground station</button><button id="a-relay">relay at L4, two downlinks</button></div>
       <p class="note" id="arch-note">—</p>
       <div class="sl" style="margin-top:.6rem"><span>memory</span><b></b><select id="mem"></select></div>
     </div>
-    <div class="p w6"><h4>hardware</h4>
+    <div class="p w4"><h4>hardware</h4>
       <div class="sl"><span>transmit beam waist w₀</span><b id="v-w0"></b><input type="range" id="w0" min="-1" max="0.7" step="any" value="-0.30103"></div>
       <div class="sl"><span>Mars receiver diameter</span><b id="v-D"></b><input type="range" id="D" min="0" max="1.5" step="any" value="0.60206"></div>
       <div class="sl"><span>pointing jitter (per axis)</span><b id="v-pt"></b><input type="range" id="pt" min="-9" max="-5" step="any" value="-7"></div>
     </div>
-    <div class="p w6"><h4>source and operations</h4>
+    <div class="p w4"><h4>source and operations</h4>
       <div class="sl"><span>pairs per second per mode</span><b id="v-R"></b><input type="range" id="R" min="6" max="10" step="any" value="9"></div>
       <div class="sl"><span>multiplexed modes</span><b id="v-M"></b><input type="range" id="M" min="0" max="5" step="any" value="3"></div>
       <div class="sl"><span>elementary pair fraction f₀</span><b id="v-f0"></b><input type="range" id="f0" min="0.8" max="1" step="0.005" value="0.95"></div>
     </div>
-    <div class="p w12"><h4>what arrives</h4>
+    <div class="p w4"><h4>background light</h4>
+      <div class="sl"><span>filter bandwidth per mode</span><b id="v-B"></b><input type="range" id="B" min="7" max="11" step="any" value="8"></div>
+      <div class="sl"><span>stray-light floor of the Mars receiver</span><b id="v-S"></b><input type="range" id="S" min="-12" max="-5" step="any" value="-9"></div>
+      <div class="sl" id="off-row"><span>transmitter offset from Earth</span><b id="v-O"></b><input type="range" id="O" min="7" max="9.3" step="any" value="8.584331224367531"></div>
+    </div>
+    <div class="p w5"><h4>what the Mars receiver sees · Earth's phase, the transmitter, and the receiver's one mode</h4>
+      <canvas id="sky"></canvas>
+      <p class="note" id="sky-note">—</p>
+    </div>
+    <div class="p w7"><h4>what arrives</h4>
       <div class="kpis">
         <div class="k"><div class="s">Earth–Mars range</div><div class="v" id="k-range">—</div></div>
         <div class="k"><div class="s">total loss after the source</div><div class="v" id="k-db">—</div></div>
-        <div class="k"><div class="s">heralded pairs per day</div><div class="v" id="k-pairs">—</div></div>
+        <div class="k"><div class="s">signal pairs per day</div><div class="v" id="k-pairs">—</div></div>
+        <div class="k"><div class="s">heralds that are signal</div><div class="v" id="k-pur">—</div></div>
+        <div class="k"><div class="s">background per mode at the aperture</div><div class="v" id="k-noise">—</div></div>
         <div class="k"><div class="s">storage until Earth's bits arrive</div><div class="v" id="k-store">—</div></div>
         <div class="k"><div class="s">teleportation fidelity after storage</div><div class="v" id="k-fid">—</div></div>
         <div class="k"><div class="s">secret key (BBM92) per day</div><div class="v" id="k-key">—</div></div>
@@ -99,11 +111,11 @@
     </div>
     <div class="p w12"><h4>the same link with each demonstrated memory</h4>
       <table class="mem"><thead><tr><th>memory</th><th>coherence</th><th>retrieval</th><th>pairs / day</th><th>fidelity after storage</th><th>verdict</th></tr></thead><tbody id="mem-rows"></tbody></table>
-      <p class="note">A memory is paid for twice here: its retrieval efficiency at both ends multiplies the rate, and its coherence time sets the fidelity after the wait. Assumptions (all adjustable in <code>MarsLinkDesign</code>): 1550 nm, transmit optics 0.8, receive optics 0.7, detectors 0.9, Earth elevation 40°, weather and operations duty 0.5, storage for one round trip, depolarizing memories.</p>
+      <p class="note">A memory is paid for twice here: its retrieval efficiency at both ends multiplies the rate, and its coherence time sets the fidelity after the wait. Assumptions (all adjustable in <code>MarsLinkDesign</code>): 1550 nm, transmit optics 0.8, receive optics 0.7, detectors 0.9, Earth elevation 40° and the Sun 12° below the horizon for a ground station, weather and operations duty 0.5, storage for one round trip, depolarizing memories, Earth's near-infrared albedo 0.3, airglow 10⁻⁷ W m⁻² sr⁻¹ nm⁻¹.</p>
     </div>
   </section>
 </main>
-<footer>Link budget. Physics from <code>qll/systems/mars_budget.py</code> and the channel, memory, and key-rate modules it composes [siegman1986, bourgoin2013, sinclair2014, yin2017, bennett1992bbm92, shor2000]. Design after Remotion and Magic UI (flowing streams and beams), llm-viz (the real numbers at every stage), and worldmonitor (a live dashboard). See <a href="https://github.com/Normansrule/quantum-link-research/blob/main/CREDITS.md">CREDITS.md</a>.</footer>
+<footer>Link budget. Physics from <code>qll/systems/mars_budget.py</code> and the channel, memory, and key-rate modules it composes and the background light of <code>qll/channels/planetshine.py</code> [siegman1986, bourgoin2013, sinclair2014, yin2017, bennett1992bbm92, shor2000, gueymard2004, russell1916, hapke2012, born1999, rousselot2000, meeus1998]. Design after Remotion and Magic UI (flowing streams and beams), llm-viz (the real numbers at every stage), and worldmonitor (a live dashboard). See <a href="https://github.com/Normansrule/quantum-link-research/blob/main/CREDITS.md">CREDITS.md</a>.</footer>
 <script src="../js/ephemeris.js"></script>
 <script src="../js/budget_core.js"></script>
 <script>
@@ -114,13 +126,14 @@
   const MEMS = DATA.memories;
   MEMS.forEach((m) => { const o = document.createElement("option"); o.value = o.textContent = m.name; $("mem").appendChild(o); });
   $("mem").value = "171Yb+ hyperfine";
-  let arch = "earth_source";
+  let arch = "space_source";
   const SUP = { "-": "⁻", "0": "⁰", "1": "¹", "2": "²", "3": "³", "4": "⁴", "5": "⁵", "6": "⁶", "7": "⁷", "8": "⁸", "9": "⁹" };
   const sci = (x, dp) => { const [m, e] = x.toExponential(dp).split("e"); return `${m}×10${String(+e).split("").map((c) => SUP[c]).join("")}`; };
   const fmtN = (x) => x === 0 ? "0" : x >= 1e6 ? sci(x, 2) : x >= 100 ? Math.round(x).toLocaleString() : x >= 1 ? x.toFixed(1) : sci(x, 1);
   const fmtT = (s) => s < 120 ? s.toFixed(0) + " s" : s < 7200 ? (s / 60).toFixed(1) + " min" : (s / 3600).toFixed(1) + " h";
   const design = () => ({ architecture: arch, tx_waist_m: Math.pow(10, +$("w0").value), rx_diameter_mars_m: Math.pow(10, +$("D").value), rx_diameter_earth_m: Math.pow(10, +$("D").value),
-    pointing_rad: Math.pow(10, +$("pt").value), source_rate_hz: Math.pow(10, +$("R").value), modes: Math.round(Math.pow(10, +$("M").value)), f0: +$("f0").value, memory: $("mem").value });
+    pointing_rad: Math.pow(10, +$("pt").value), source_rate_hz: Math.pow(10, +$("R").value), modes: Math.round(Math.pow(10, +$("M").value)), f0: +$("f0").value, memory: $("mem").value,
+    filter_hz: Math.pow(10, +$("B").value), stray_light: Math.pow(10, +$("S").value), tx_offset_m: Math.pow(10, +$("O").value) });
   function ctx(cv) { const g = cv.getContext("2d"), dpr = Math.min(devicePixelRatio || 1, 2), W = cv.clientWidth, H = cv.clientHeight;
     if (cv.width !== Math.round(W * dpr)) { cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); }
     g.setTransform(dpr, 0, 0, dpr, 0, 0); g.clearRect(0, 0, W, H); return [g, W, H]; }
@@ -164,7 +177,8 @@
       g.strokeStyle = "rgba(148,170,210,.2)"; g.beginPath(); g.moveTo(x, 10); g.lineTo(x, H - 70); g.stroke();
       if (i > 0) { g.fillStyle = db < -20 ? "#ff6b4a" : db < -3 ? "#ff8a4c" : "#93a1b8"; g.fillText(isFinite(db) ? db.toFixed(1) + " dB" : "blocked", x, H - 52); }
       g.fillStyle = "#c9d4e6"; g.fillText(s.rate_per_s > 0 ? fmtN(s.rate_per_s) + "/s" : "0", x, H - 36);
-      const name = (i === 0 ? "source" : s.name.replace("Earth to Mars: ", "").replace("relay to ", "").replace("(write and read, both ends)", "").replace("availability (conjunction x duty)", "availability"));
+      const name = (i === 0 ? "source" : s.name.replace("Earth to Mars: ", "").replace("space to Mars: ", "").replace("relay to ", "").replace("(write and read, both ends)", "")
+        .replace("availability (conjunction x duty)", "availability").replace("dark-sky window (Mars up, Sun down)", "dark sky").replace("dark-sky window at the Earth receiver", "dark sky at Earth"));
       g.fillStyle = "#5b6780"; wrap(g, name, x, H - 20, dx - 6); }
     g.textAlign = "left";
     requestAnimationFrame(drawFlow);
@@ -172,36 +186,89 @@
   function wrap(g, text, x, y, w) { const words = text.split(" "); let line = "", yy = y; for (const wd of words) { const t = line ? line + " " + wd : wd;
       if (g.measureText(t).width > w && line) { g.fillText(line, x, yy); line = wd; yy += 12; } else line = t; } g.fillText(line, x, yy); }
 
+  // with no dark-sky window a ground station could only work in daylight: show that purity, not the night one
+  const noDark = () => { const s = cur.stages.find((x) => x.name.startsWith("dark-sky")); return !!s && s.factor === 0; };
+  const shownPurity = () => (noDark() && arch === "earth_source" ? cur.extra.purity_daylight : cur.purity);
+  const pct = (x) => { const p = 100 * x; return p > 0 && p < 1 ? p.toPrecision(2) : p > 99.9 && p < 100 ? p.toFixed(3) : p > 99 && p < 99.95 ? p.toFixed(2) : p.toFixed(1); };
+  // what the Mars receiver sees: Earth at its true phase, the transmitter, and the one spatial mode the receiver accepts
+  function drawSky(t, d) {
+    const [g, W, H] = ctx($("sky")); if (!cur) return;
+    const alpha = E.sepDeg(t) * Math.PI / 180, R = Math.min(W, H) * 0.24, cx = arch === "space_source" ? W * 0.3 : W * 0.5, cy = H * 0.48;
+    // the Sun is to the right in this picture; the lit fraction follows the phase angle
+    const glow = g.createRadialGradient(cx, cy, R * 0.8, cx, cy, R * 1.6); glow.addColorStop(0, "rgba(94,168,255,.18)"); glow.addColorStop(1, "rgba(94,168,255,0)");
+    g.fillStyle = glow; g.beginPath(); g.arc(cx, cy, R * 1.6, 0, 7); g.fill();
+    g.fillStyle = "#0d1830"; g.beginPath(); g.arc(cx, cy, R, 0, 7); g.fill();
+    const k = Math.cos(alpha);                                   // terminator ellipse half-width, signed
+    const lit = g.createLinearGradient(cx - R, 0, cx + R, 0); lit.addColorStop(0, "#2b6cb0"); lit.addColorStop(0.6, "#5ea8ff"); lit.addColorStop(1, "#cfe6ff");
+    g.fillStyle = lit; g.beginPath(); g.arc(cx, cy, R, -Math.PI / 2, Math.PI / 2, false);
+    g.ellipse(cx, cy, Math.abs(k) * R, R, 0, Math.PI / 2, -Math.PI / 2, k < 0); g.closePath(); g.fill();
+    g.strokeStyle = "rgba(148,170,210,.35)"; g.lineWidth = 1; g.beginPath(); g.arc(cx, cy, R, 0, 7); g.stroke();
+    let tx, ty, onDisk = arch !== "space_source";
+    if (arch === "space_source") { tx = W * 0.82; ty = cy; }
+    else { const night = (cur.stages.find((s) => s.name.startsWith("dark-sky")) || { factor: 1 }).factor > 0; tx = cx + (night ? -0.55 : 0.55) * R; ty = cy - 0.2 * R; }
+    // the receiver's single mode, drawn (much) larger than life
+    const pur = shownPurity(), col = pur > 0.9 ? "#45e0a0" : pur > 0.5 ? "#ffb454" : "#ff6b4a";
+    const pulse = 1 + 0.15 * Math.sin(performance.now() / 300);
+    g.strokeStyle = col; g.lineWidth = 2; g.beginPath(); g.arc(tx, ty, 14 * pulse, 0, 7); g.stroke();
+    g.fillStyle = "#e8fffb"; g.beginPath(); g.arc(tx, ty, 3.5, 0, 7); g.fill();
+    g.font = "11px JetBrains Mono, monospace"; g.fillStyle = "#93a1b8"; g.textAlign = "center";
+    g.fillText("Earth, phase angle " + (alpha * 180 / Math.PI).toFixed(0) + "°", cx, cy + R + 22);
+    g.fillText("Sun →", W - 34, 18);
+    if (arch === "space_source") {
+      const th = cur.extra.earth_offset_rad, rad = 6.371e6 / cur.range_m;
+      g.setLineDash([4, 4]); g.strokeStyle = "rgba(148,170,210,.45)"; g.beginPath(); g.moveTo(cx + R + 6, cy); g.lineTo(tx - 18, cy); g.stroke(); g.setLineDash([]);
+      g.fillStyle = "#c9d4e6"; g.fillText(`${(th * 1e3).toFixed(2)} mrad`, (cx + R + tx) / 2 + 8, cy - 26);
+      g.fillStyle = "#93a1b8"; g.fillText(`${(th / rad).toFixed(0)} Earth radii`, (cx + R + tx) / 2 + 8, cy - 12);
+      g.fillStyle = "#93a1b8"; g.fillText("transmitter", tx, ty + 32);
+    } else g.fillText(arch === "earth_source" ? "ground transmitter" : "Earth receiver", tx, ty - 26);
+    g.textAlign = "left";
+    requestAnimationFrame(() => drawSky(+$("t").value, d));
+  }
+
   function update() {
     const t = +$("t").value, d = design(); cur = B.budget(d, t, MEMS);
     $("v-t").textContent = `${t} (${new Date(Date.UTC(2000, 0, 1, 12) + t * 864e5).toISOString().slice(0, 10)})`;
     $("v-w0").textContent = d.tx_waist_m.toFixed(2) + " m"; $("v-D").textContent = d.rx_diameter_mars_m.toFixed(1) + " m";
     $("v-pt").textContent = (d.pointing_rad * 1e9).toFixed(d.pointing_rad < 1e-8 ? 1 : 0) + " nrad"; $("v-R").textContent = sci(d.source_rate_hz, 1);
     $("v-M").textContent = d.modes.toLocaleString(); $("v-f0").textContent = d.f0.toFixed(3);
+    $("v-B").textContent = d.filter_hz >= 1e9 ? (d.filter_hz / 1e9).toFixed(1) + " GHz" : (d.filter_hz / 1e6).toFixed(0) + " MHz";
+    $("v-S").textContent = sci(d.stray_light, 1); $("v-O").textContent = Math.round(d.tx_offset_m / 1e3).toLocaleString() + " km";
+    $("off-row").style.opacity = arch === "space_source" ? 1 : 0.35; $("O").disabled = arch !== "space_source";
+    const wp = shownPurity(), pc = wp > 0.9 ? "ok" : wp > 0.5 ? "warm" : "bad", daytime = noDark() && arch === "earth_source";
+    $("k-pur").innerHTML = `<span class="${pc}">${pct(wp)} %</span>${daytime ? " <span class='s'>(daylight)</span>" : ""}`;
+    $("k-noise").textContent = fmtN(daytime ? cur.extra.noise_daylight_per_mode_s : cur.noise_per_mode_s) + " /s";
+    $("sky-note").innerHTML = arch === "space_source"
+      ? `Earth is ${(cur.extra.earth_offset_rad * 1e3).toFixed(2)} mrad off the receiver's axis; it leaks in at ${sci(cur.extra.rejection, 1)} of its full brightness (${cur.extra.rejection > d.stray_light ? "the diffraction wing" : "the stray-light floor"}). Signal-to-background does not depend on the receiver's size here, because both grow with its area.`
+      : arch === "earth_source"
+      ? `A 4 m receiver resolves Earth, so its one mode sees the ground around the transmitter. In daylight that patch puts ${fmtN(cur.extra.noise_daylight_per_mode_s)} photons/s into each mode and ${pct(1 - cur.extra.purity_daylight)} % of heralds would be sunlight, so the station works only with Mars up and the Sun down.`
+      : "The relay sits 60° from Earth; the Mars receiver sees only its stray-light floor of Earthshine, but the Earth receiver on the ground needs a dark sky too.";
     $("k-range").textContent = (cur.range_m / E.AU).toFixed(2) + " au"; $("k-db").textContent = isFinite(cur.total_db) ? cur.total_db.toFixed(1) + " dB" : "blocked";
     $("k-pairs").innerHTML = `<span class="${cur.pairs_per_day >= 1 ? "ok" : "bad"}">${fmtN(cur.pairs_per_day)}</span>`;
     $("k-store").textContent = fmtT(cur.storage_s);
     $("k-fid").innerHTML = `<span class="${cur.useful ? "ok" : "bad"}">${cur.teleport_fidelity.toFixed(3)}</span>`;
     $("k-key").innerHTML = cur.key_bits_per_pair > 0 ? `<span class="ok">${fmtN(cur.key_bits_per_day)} bits</span>` : `<span class="bad">none (error rate ${(100 * 2 * (1 - cur.fraction) / 3).toFixed(1)} %)</span>`;
     $("h-survive").textContent = cur.pairs_per_day > 0 ? `${fmtN(cur.pairs_per_day)} a day.` : "None, today.";
-    $("k-verdict").innerHTML = !cur.available ? `<b class="bad">The Sun is in the way.</b> Within 3° of the Sun no optical link closes; ${arch === "earth_source" ? "a relay off the Earth–Mars line (try the L4 architecture, or wait a few weeks)" : "this relay geometry is blocked too"}.`
+    const dark = cur.stages.find((s) => s.name.startsWith("dark-sky"));
+    $("k-verdict").innerHTML = !cur.available ? `<b class="bad">The Sun is in the way.</b> Within 3° of the Sun no optical link closes; ${arch !== "relay_dual" ? "a relay off the Earth–Mars line (try the L4 architecture, or wait a few weeks)" : "this relay geometry is blocked too"}.`
+      : dark && dark.factor === 0 ? `<b class="bad">No dark sky.</b> Mars is ${E.sepDeg(t).toFixed(0)}° from the Sun, so it is up only in daylight, when sunlit ground behind the transmitter would swamp the heralds. Move the source into space.`
       : cur.pairs_per_day < 1 ? `<b class="bad">Less than one pair a day.</b> ${arch === "relay_dual" ? "Both photons cross astronomical distances, so the diffraction loss is paid twice: about 90 dB each way." : "Widen the transmit beam waist, the receiver, or the multiplexing."}`
       : !cur.useful ? `<b class="warm">Pairs arrive but are useless for teleportation.</b> The ${fmtT(cur.storage_s)} wait outlasts the memory's coherence; see the table below.`
       : `<b class="ok">${fmtN(cur.teleportations_per_day)} useful pairs a day</b> at teleportation fidelity ${cur.teleport_fidelity.toFixed(3)}${cur.key_bits_per_pair > 0 ? `, and ${fmtN(cur.key_bits_per_day)} secret bits` : "; too noisy for key (the error rate is above 11 %)"}.`;
-    $("arch-note").innerHTML = arch === "earth_source" ? "The pair is made at Earth; one photon is stored locally and the other crosses the Earth–Mars distance once." : "A source at Sun–Earth L4 sends one photon to each planet, like Micius's two downlinks. Both legs are astronomical, so the loss is paid twice; it keeps a line of sight during Earth–Mars conjunction.";
+    $("arch-note").innerHTML = arch === "space_source" ? "The pair is made on a spacecraft displaced from Earth, above the atmosphere; one photon is stored locally and the other crosses the Earth–Mars distance once. Ground users reach it over a short link."
+      : arch === "earth_source" ? "The pair is made at a ground station; one photon is stored locally and the other crosses the atmosphere and the Earth–Mars distance once." : "A source at Sun–Earth L4 sends one photon to each planet, like Micius's two downlinks. Both legs are astronomical, so the loss is paid twice; it keeps a line of sight during Earth–Mars conjunction.";
     $("mem-rows").innerHTML = MEMS.map((m) => { const b = B.budget(Object.assign({}, d, { memory: m.name }), t, MEMS);
       const v = b.pairs_per_day < 1 ? "<span class='bad'>too few pairs</span>" : !b.useful ? "<span class='warm'>decays before the bits arrive</span>" : "<span class='ok'>useful</span>";
       return `<tr class="${m.name === d.memory ? "sel" : ""}"><td>${m.name}</td><td>${m.lifetime_s < 1 ? m.lifetime_s * 1e3 + " ms" : fmtT(m.lifetime_s)}</td><td>${(100 * m.efficiency).toFixed(1)} %</td><td>${fmtN(b.pairs_per_day)}</td><td>${b.teleport_fidelity.toFixed(3)}</td><td>${v}</td></tr>`; }).join("");
     drawDates(t);
   }
-  ["t", "w0", "D", "pt", "R", "M", "f0", "mem"].forEach((id) => $(id).addEventListener("input", update));
-  const setArch = (a) => { arch = a; $("a-earth").classList.toggle("on", a === "earth_source"); $("a-relay").classList.toggle("on", a === "relay_dual"); update(); };
-  $("a-earth").onclick = () => setArch("earth_source"); $("a-relay").onclick = () => setArch("relay_dual");
+  ["t", "w0", "D", "pt", "R", "M", "f0", "mem", "B", "S", "O"].forEach((id) => $(id).addEventListener("input", update));
+  const setArch = (a) => { arch = a; [["a-space", "space_source"], ["a-earth", "earth_source"], ["a-relay", "relay_dual"]].forEach(([id, v]) => $(id).classList.toggle("on", a === v)); update(); };
+  $("a-space").onclick = () => setArch("space_source"); $("a-earth").onclick = () => setArch("earth_source"); $("a-relay").onclick = () => setArch("relay_dual");
   const iMin = RS.indexOf(Math.min(...RS)), iMax = RS.indexOf(Math.max(...RS)), iConj = BLOCK.indexOf(true);
   $("t-close").onclick = () => { $("t").value = TS[iMin]; update(); }; $("t-far").onclick = () => { $("t").value = TS[iMax]; update(); };
   $("t-conj").onclick = () => { $("t").value = TS[iConj + 3]; update(); };
   addEventListener("resize", update);
-  update(); requestAnimationFrame(drawFlow);
+  update(); requestAnimationFrame(drawFlow); requestAnimationFrame(() => drawSky(+$("t").value, design()));
   window.QLLBudgetPage = { get current() { return cur; }, setDay(t) { $("t").value = t; update(); }, setArch };
   document.body.dataset.ready = "1";
 })();

@@ -1,10 +1,10 @@
 {
  "status": {
-  "version": "0.39.0",
-  "tests": 659,
-  "requirements": 33,
-  "requirements_verified": 32,
-  "references": 403,
+  "version": "0.40.0",
+  "tests": 671,
+  "requirements": 34,
+  "requirements_verified": 33,
+  "references": 409,
   "references_verified": 21,
   "learn_files": 92,
   "experiment_files": 55,
@@ -28,10 +28,13 @@
   "chain_crossover_km_1s_memory": 392.6313401706839,
   "chain_teleport_fidelity_at_crossover": 0.5828465965902333,
   "min_useful_memory_s_1000km": 38.803168306709914,
-  "mars_pairs_per_day_closest": 29477365.54469695,
-  "mars_pairs_per_day_farthest": 867180.888884473,
-  "mars_fidelity_farthest": 0.7256315430181274,
-  "mars_relay_pairs_per_day_closest": 0.0006977389990404997,
+  "mars_pairs_per_day_closest": 37225025.85766462,
+  "mars_pairs_per_day_farthest": 1095105.699423825,
+  "mars_fidelity_farthest": 0.7171198775788238,
+  "mars_relay_pairs_per_day_closest": 1.5505311089788896e-05,
+  "mars_purity_farthest": 0.9622762609985798,
+  "mars_ground_purity_daylight_closest": 0.00589050344462578,
+  "mars_ground_days_without_dark_sky": 333,
   "min_useful_memory_segments_1000km": 16,
   "min_useful_memory_rounds_1000km": 2,
   "bbpssw_rounds_08_to_099": 10,
@@ -12124,7 +12127,7 @@
    },
    {
     "req_id": "REQ-CAP-003",
-    "statement": "The baseline F3 design delivers at least 1e5 useful pairs per day (F > 2/3) on every day of a synodic period outside solar conjunction",
+    "statement": "The baseline F3 design (source in space) delivers at least 1e5 useful pairs per day (F > 2/3) on every day of a synodic period outside solar conjunction",
     "phase": "5",
     "test_path": "tests/test_mars_budget.py::test_baseline_meets_req_cap_003_every_available_day",
     "status": "verified",
@@ -12139,6 +12142,15 @@
     "status": "verified",
     "method": "Analysis",
     "need": "N-2"
+   },
+   {
+    "req_id": "REQ-CAP-005",
+    "statement": "Background light: with the Mars receiver's off-axis rejection floor at 1e-9 at least 95 % of heralds are signal on every day with a link; a ground transmitter is shown to fail REQ-CAP-003",
+    "phase": "5",
+    "test_path": "tests/test_mars_budget.py::test_req_cap_005_stray_light_keeps_heralds_clean_every_available_day",
+    "status": "verified",
+    "method": "Analysis",
+    "need": "N-1"
    },
    {
     "req_id": "REQ-HW-001",
@@ -12198,7 +12210,7 @@
    {
     "id": "R-3",
     "risk": "Diffraction loss at astronomical distance",
-    "status": "Mitigated in the budget: 87 dB paid once; REQ-CAP-003 met with margin ~9 at maximum range"
+    "status": "Mitigated in the budget: 87 dB paid once; REQ-CAP-003 met with margin ~11 at maximum range"
    },
    {
     "id": "R-4",
@@ -12224,6 +12236,11 @@
     "id": "R-8",
     "risk": "Key cannot be distilled near maximum range (Werner error rate above 11 %)",
     "status": "Open (learn 03/21)"
+   },
+   {
+    "id": "R-9",
+    "risk": "Sunlit Earth swamps the heralds at the Mars receiver (background light)",
+    "status": "Mitigated in the budget: purity \u2265 0.96 every day with a link; floor not yet demonstrated at 1 mrad"
    }
   ]
  }

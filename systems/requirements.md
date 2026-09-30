@@ -2,7 +2,7 @@
 
 *Generated from `traceability_matrix.csv` by `scripts/build_systems_docs.py`; edit the matrix, not this file.*
 
-33 requirements, 32 verified. A requirement is verified only when its test exists, the named test function exists in it (checked by `python -m qll.systems.traceability`), and the test passes in CI. Verification methods follow the classic set: **Test** (the implementation is exercised), **Analysis** (a tested model is evaluated against the requirement), **Demonstration** (a simulation shows the behaviour end to end), and **Inspection** (the code or documents are checked mechanically).
+34 requirements, 33 verified. A requirement is verified only when its test exists, the named test function exists in it (checked by `python -m qll.systems.traceability`), and the test passes in CI. Verification methods follow the classic set: **Test** (the implementation is exercised), **Analysis** (a tested model is evaluated against the requirement), **Demonstration** (a simulation shows the behaviour end to end), and **Inspection** (the code or documents are checked mechanically).
 
 Prefixes: PHY physics invariants · THM thermal · CHN channel · CIR circuit · QKD key distribution · NET network · CAP capability · APP application · SYS systems · SPC space segment · SEC security · F2 flagship F2 · HW hardware node · QEC error correction · WEB website and README.
 
@@ -15,7 +15,8 @@ Prefixes: PHY physics invariants · THM thermal · CHN channel · CIR circuit ·
 | REQ-APP-001 | The messenger refuses to send when the QKD key buffer is empty (never downgrades) and cannot deliver before d/c | 6 | Test | [`test_messenger_fails_closed_and_respects_light_time`](https://github.com/Normansrule/quantum-link-research/blob/main/tests/test_phase6_app.py) | verified |
 | REQ-APP-002 | Hybrid ML-KEM + QKD session keys agree on both ends and depend on both inputs | 6 | Test | [`test_hybrid_kem_both_sides_agree_and_depend_on_both_inputs`](https://github.com/Normansrule/quantum-link-research/blob/main/tests/test_phase6_app.py) | verified |
 | REQ-SEC-001 | The link can certify its own key device-independently with settings and outcomes exchanged no faster than d/c; the finite-key rate is positive once enough rounds accumulate per round trip | 6 | Analysis | [`test_s06_finite_key_di_limits_and_sealing`](https://github.com/Normansrule/quantum-link-research/blob/main/tests/test_simulations.py) | verified (model) |
-| REQ-CAP-003 | The baseline F3 design delivers at least 1e5 useful pairs per day (F > 2/3) on every day of a synodic period outside solar conjunction | 5 | Analysis | [`test_baseline_meets_req_cap_003_every_available_day`](https://github.com/Normansrule/quantum-link-research/blob/main/tests/test_mars_budget.py) | verified |
+| REQ-CAP-003 | The baseline F3 design (source in space) delivers at least 1e5 useful pairs per day (F > 2/3) on every day of a synodic period outside solar conjunction | 5 | Analysis | [`test_baseline_meets_req_cap_003_every_available_day`](https://github.com/Normansrule/quantum-link-research/blob/main/tests/test_mars_budget.py) | verified |
+| REQ-CAP-005 | Background light: with the Mars receiver's off-axis rejection floor at 1e-9 at least 95 % of heralds are signal on every day with a link; a ground transmitter is shown to fail REQ-CAP-003 | 5 | Analysis | [`test_req_cap_005_stray_light_keeps_heralds_clean_every_available_day`](https://github.com/Normansrule/quantum-link-research/blob/main/tests/test_mars_budget.py) | verified |
 
 ## N-2: A quantitative account of what temperature, loss, and light time do to every link in the chain
 

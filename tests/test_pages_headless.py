@@ -155,7 +155,15 @@ def test_link_budget_page_matches_the_python_budget(browser, server):
     page.evaluate("QLLBudgetPage.setDay(538)")
     js = page.evaluate("QLLBudgetPage.current.pairs_per_day")
     assert js == pytest.approx(budget(MarsLinkDesign(), 538.0).pairs_per_day, rel=1e-9)
+    assert page.evaluate("QLLBudgetPage.current.purity") == pytest.approx(budget(MarsLinkDesign(), 538.0).purity, rel=1e-7)
     assert "useful pairs a day" in page.locator("#k-verdict").inner_text()
+    page.evaluate("QLLBudgetPage.setDay(202)")
+    assert page.evaluate("QLLBudgetPage.current.purity") == pytest.approx(budget(MarsLinkDesign(), 202.0).purity, rel=1e-7)   # sliders hold log10 values to 5 digits
+    page.click("#a-earth")
+    assert "No dark sky" in page.locator("#k-verdict").inner_text()                   # Mars is only up in daylight
+    assert "sunlight" in page.locator("#sky-note").inner_text()
+    assert "daylight" in page.locator("#k-pur").inner_text()
+    page.click("#a-space"); page.evaluate("QLLBudgetPage.setDay(538)")
     page.click("#a-relay")
     assert page.evaluate("QLLBudgetPage.current.pairs_per_day") == pytest.approx(
         budget(replace(MarsLinkDesign(), architecture="relay_dual"), 538.0).pairs_per_day, rel=1e-8)   # two 1e-10 legs amplify rounding
@@ -174,7 +182,7 @@ def test_systems_page_lists_every_requirement_and_filters(browser, server):
     assert page.locator(".req").count() == len(rows)
     page.click("[data-n='N-1']")
     assert page.locator(".req").count() == sum(r["need"] == "N-1" for r in rows)
-    page.click("[data-n='']"); page.fill("#q", "REQ-CAP-003")
+    page.click("[data-n='']"); page.fill("#q", "REQ-HW-002")
     assert page.locator(".req").count() == 1
     assert errors == []
     page.close()

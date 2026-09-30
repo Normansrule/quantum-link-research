@@ -65,7 +65,8 @@ Every number above is written by [`scripts/make_readme_art.py`](scripts/make_rea
 | Where a repeater chain (1 s memories) beats direct fiber | **393 km** | `qll/network/repeater_chain.py` |
 | Teleportation fidelity of the pairs it delivers there, without purification | **0.58 (below 2/3: rate is not enough)** | `qll/network/repeater_chain.py` |
 | Memory needed for a useful chain (F > 2/3) that beats direct fiber over 1000 km | **39 s (best: 16 segments, 2 purification rounds)** | `qll/network/purified_chain.py` |
-| Useful Earth–Mars pairs per day, source at Earth (beam waist 0.5 m, 4 m receiver, 1,000 modes) | **2.9e+07 at closest, 8.7e+05 at farthest (F = 0.73); 7e-04 through an L4 relay's two downlinks** | `qll/systems/mars_budget.py` |
+| Useful Earth–Mars pairs per day, source in space at 384,000 km from Earth (beam waist 0.5 m, 4 m receiver, 1,000 modes) | **3.7e+07 at closest, 1.1e+06 at farthest (F = 0.72); 2e-05 through an L4 relay's two downlinks** | `qll/systems/mars_budget.py` |
+| Sunlit Earth behind a ground transmitter, seen from Mars (100 MHz per mode) | **99.4 % of daytime heralds are noise; no dark-sky view of Mars on 333 of 780 days; from space, 96 % of heralds are signal even at full-phase Earth** | `qll/channels/planetshine.py` |
 | Purification 0.80 → 0.99 | **BBPSSW 10 rounds / 2917 pairs; DEJMPS 4 / 32** | `qll/network/purification.py` |
 | Rounds for a device-independent key at S = 0.95·2√2 | **2,535** | `qll/qkd/e91.py` |
 | Key buffer to message once a minute through a Mars round trip | **1.43 kB** | `qll/app/messenger.py` |
@@ -98,7 +99,7 @@ Nine interactive pages, all driven by the same tested numbers and tested themsel
 </tr>
 <tr>
 <td width="50%" valign="top"><a href="https://Normansrule.github.io/quantum-link-research/qec/"><img src="docs/figures/anim_qec.gif" alt="QEC lab: a surface code catching bit flips" width="100%"></a><br><b>QEC lab</b> <sup>new</sup><br><sub>A distance-5 surface code under bit flips: errors appear, parity checks light up, PyMatching pairs them, and the correction either saves the logical qubit or closes a string across the lattice. Every shot is decoded in the tested Python and re-checked by the page.</sub></td>
-<td width="50%" valign="top"><a href="https://Normansrule.github.io/quantum-link-research/budget/"><img src="docs/figures/anim_budget.gif" alt="Earth–Mars link budget: the pair stream narrowing stage by stage" width="100%"></a><br><b>Earth–Mars link budget</b> <sup>new</sup><br><sub>A trillion pairs a second leave Earth; the stream narrows at every stage (87 dB of it at diffraction) as Mars recedes. Pick the architecture, the memory, the telescopes, and the day, and count the useful teleportations and secret bits that arrive.</sub></td>
+<td width="50%" valign="top"><a href="https://Normansrule.github.io/quantum-link-research/budget/"><img src="docs/figures/anim_budget.gif" alt="Earth–Mars link budget: the pair stream narrowing stage by stage" width="100%"></a><br><b>Earth–Mars link budget</b> <sup>new</sup><br><sub>A trillion pairs a second leave the Earth end; the stream narrows at every stage (87 dB of it at diffraction) as Mars recedes. See Earth as the Mars receiver does, at its true phase, and why sunlit ground swamps a transmitter on the ground. Pick the architecture, the memory, the telescopes, the filter, and the day, and count the useful teleportations and secret bits that arrive.</sub></td>
 </tr>
 </table>
 

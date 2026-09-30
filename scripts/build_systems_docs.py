@@ -56,7 +56,8 @@ def trade_tables() -> dict[str, str]:
     from qll.network.memory_decoherence import MEMORY_TABLE
     from qll.network.purified_chain import useful_distance_range_km
     from qll.space.ephemeris import earth_mars_range_m
-    from qll.systems.mars_budget import MarsLinkDesign, budget
+    from qll.channels.planetshine import airy_leakage
+    from qll.systems.mars_budget import MarsLinkDesign, budget, required_rejection
 
     d = MarsLinkDesign()
     days = np.arange(0.0, 800.0, 1.0)
@@ -64,18 +65,33 @@ def trade_tables() -> dict[str, str]:
     tc, tf = float(days[np.argmin(r)]), float(days[np.argmax(r)])
     f = lambda x: f"{x:.2g}" if x < 1e4 else f"{x:.1e}"
     T = {}
-    rows = ["| architecture | pairs/day, closest | pairs/day, farthest | loss at closest |", "|---|---|---|---|"]
-    for arch, name in (("earth_source", "source at Earth (baseline)"), ("relay_dual", "relay at L4, two downlinks")):
-        a, b = budget(replace(d, architecture=arch), tc), budget(replace(d, architecture=arch), tf)
-        rows.append(f"| {name} | {f(a.pairs_per_day)} | {f(b.pairs_per_day)} | {a.total_db:.0f} dB |")
+    link_days = lambda dd: sum(1 for t in days[:780] if budget(dd, float(t)).pairs_per_day > 0)
+    rows = ["| architecture | pairs/day, closest | pairs/day, farthest | days with a link (of 780) | herald purity, farthest | loss at closest |",
+            "|---|---|---|---|---|---|"]
+    for arch, name in (("space_source", "source in space, lunar distance from Earth (baseline)"),
+                       ("earth_source", "source at a ground station, night only"), ("relay_dual", "relay at L4, two downlinks")):
+        dd = replace(d, architecture=arch)
+        a, b = budget(dd, tc), budget(dd, tf)
+        rows.append(f"| {name} | {f(a.pairs_per_day)} | {f(b.pairs_per_day)} | {link_days(dd)} | {b.purity:.3f} | {a.total_db:.0f} dB |")
     T["architecture"] = "\n".join(rows)
-    rows = ["| wavelength | pairs/day, farthest | diffraction factor | atmosphere factor |", "|---|---|---|---|"]
+    rows = ["| wavelength | pairs/day, farthest | diffraction factor | Earthshine per mode, farthest | herald purity, farthest | ground atmosphere factor |",
+            "|---|---|---|---|---|---|"]
     for lam in (810e-9, 1550e-9):
         b = budget(replace(d, wavelength_m=lam), tf)
         diff = next(s.factor for s in b.stages if "diffraction" in s.name)
-        atm = next(s.factor for s in b.stages if "atmosphere" in s.name)
-        rows.append(f"| {lam * 1e9:.0f} nm | {f(b.pairs_per_day)} | {diff:.2e} | {atm:.2f} |")
+        atm = next(s.factor for s in budget(replace(d, wavelength_m=lam, architecture="earth_source"), tf).stages if "atmosphere" in s.name)
+        rows.append(f"| {lam * 1e9:.0f} nm | {f(b.pairs_per_day)} | {diff:.2e} | {b.noise_per_mode_s:.2g} /s | {b.purity:.3f} | {atm:.2f} |")
     T["wavelength"] = "\n".join(rows)
+    rows = ["| transmitter offset from Earth | angle at farthest | floor 1e-8 | floor 1e-9 (baseline) | floor 1e-10 | Airy wing alone |",
+            "|---|---|---|---|---|---|"]
+    for off, name in ((4.2e7, "geostationary, 42,000 km"), (3.84e8, "lunar distance, 384,000 km (baseline)"), (1.5e9, "Sun–Earth L1/L2, 1.5 million km")):
+        cells = [f"{budget(replace(d, tx_offset_m=off, stray_light=c), tf).purity:.3f}" for c in (1e-8, 1e-9, 1e-10)]
+        wing = airy_leakage(off / budget(d, tf).range_m, d.rx_diameter_mars_m, d.wavelength_m)
+        rows.append(f"| {name} | {off / budget(d, tf).range_m * 1e3:.2f} mrad | " + " | ".join(cells) + f" | {wing:.1e} |")
+    T["needed"] = (f"A purity of 0.99 at the farthest point needs a total off-axis rejection of "
+                   f"{required_rejection(d, tf):.1e}; at the closest point, where Earth shows its night side to Mars, "
+                   f"{required_rejection(d, tc):.1e} suffices.")
+    T["background"] = "\n".join(rows)
     rows = ["| memory | coherence | retrieval | pairs/day to Mars, farthest | fidelity after storage | useful fiber-repeater range |",
             "|---|---|---|---|---|---|"]
     for p in MEMORY_TABLE:
