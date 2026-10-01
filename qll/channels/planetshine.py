@@ -9,7 +9,8 @@ lambda / D = 0.39 microradian at 1550 nm, so the mode sees only a small patch of
 background photons per second in that mode, both polarizations, in a filter of bandwidth B_nu, are
     N = L_lambda Delta_lambda lambda^2 / (h c / lambda),   Delta_lambda = lambda^2 B_nu / c,
 with L_lambda the spectral radiance of the patch. A sunlit Lambertian patch of normal albedo A, with the Sun at zenith
-angle z, has L_lambda = A E_sun,lambda(r) cos z / pi [hapke2012], E_sun,lambda(r) = E_sun,lambda(1 au) / r^2
+angle z, has L_lambda = A E_sun,lambda(r) cos z / pi [hapke2012] (any lamp of spectral irradiance E_lambda works the same
+way, which is what the bench of experiments/protocols/P09 uses), E_sun,lambda(r) = E_sun,lambda(1 au) / r^2
 [gueymard2004]. On the night side the patch still glows: near 1.5 micrometres the hydroxyl airglow of the upper
 atmosphere dominates [rousselot2000]; NIGHT_RADIANCE below is an order-of-magnitude, line-averaged value (a narrow
 filter placed between the lines does better). The receiver aperture does not appear in N, and the signal collected
@@ -20,7 +21,10 @@ unresolved source of spectral flux
     F_lambda = E_sun,lambda(r) p (R / d)^2 Phi(alpha)
 at distance d, with p the geometric albedo, R the radius, and for a Lambertian sphere [russell1916]
     Phi(alpha) = (sin alpha + (pi - alpha) cos alpha) / pi,
-1 at full phase (alpha = 0) and 0 at new phase (alpha = pi). The power that reaches the on-axis mode is F_lambda A_rx
+1 at full phase (alpha = 0) and 0 at new phase (alpha = pi); a Lambertian sphere of normal albedo A has geometric albedo
+p = 2A/3 [russell1916]. A multimode fiber behind a lens accepts the etendue G = (pi a^2)(pi NA^2) of its core radius a
+and numerical aperture NA, unless the lens's own etendue (pi (D/2)^2)(pi (a/f)^2) is smaller, so it collects G / lambda^2
+times the background of a single-mode fiber [siegman1986]. The power that reaches the on-axis mode is F_lambda A_rx
 times the receiver's off-axis rejection: for a clear circular aperture the Airy envelope 8 / (pi x^3),
 x = pi D theta / lambda, beyond the first dark ring [born1999]; for a real telescope never better than its stray-light
 floor (scatter from mirrors and baffles), a design parameter. The solar irradiance values are representative of the
@@ -71,11 +75,34 @@ def lambert_phase(alpha_rad: float) -> float:
     return (math.sin(a) + (math.pi - a) * math.cos(a)) / math.pi
 
 
+def lambertian_radiance(irradiance: float, albedo: float, zenith_rad: float = 0.0) -> float:
+    """Radiance of a Lambertian surface lit by `irradiance` from zenith angle z: A E cos z / pi (zero when z > 90 deg).
+    Units follow the irradiance: W m^-2 nm^-1 in gives W m^-2 sr^-1 nm^-1 out [hapke2012]."""
+    _check(irradiance, albedo, zenith_rad)
+    return albedo * irradiance * max(0.0, math.cos(zenith_rad)) / math.pi
+
+
 def sunlit_radiance(lambda_m: float, sun_zenith_rad: float = 0.0, planet: str = "earth") -> float:
     """Spectral radiance (W m^-2 sr^-1 nm^-1) of a sunlit Lambertian patch: A E cos z / pi, zero with the Sun down."""
     _check(lambda_m, sun_zenith_rad)
     _, albedo, r_au = PLANETS[planet]
-    return albedo * solar_irradiance(lambda_m) / r_au**2 * max(0.0, math.cos(sun_zenith_rad)) / math.pi
+    return lambertian_radiance(solar_irradiance(lambda_m) / r_au**2, albedo, sun_zenith_rad)
+
+
+def lambert_geometric_albedo(normal_albedo: float) -> float:
+    """Geometric albedo of a Lambertian sphere: p = 2A/3 [russell1916]."""
+    _check(normal_albedo)
+    return 2.0 * normal_albedo / 3.0
+
+
+def multimode_etendue(core_radius_m: float, numerical_aperture: float, lens_diameter_m: float | None = None,
+                      lens_focal_m: float | None = None) -> float:
+    """Etendue (m^2 sr) a multimode fiber accepts: (pi a^2)(pi NA^2), capped by a lens's (pi (D/2)^2)(pi (a/f)^2)."""
+    _check(core_radius_m, numerical_aperture)
+    G = math.pi * core_radius_m**2 * math.pi * numerical_aperture**2
+    if lens_diameter_m is not None and lens_focal_m is not None:
+        G = min(G, math.pi * (lens_diameter_m / 2) ** 2 * math.pi * (core_radius_m / lens_focal_m) ** 2)
+    return G
 
 
 def single_mode_photon_rate(radiance: float, lambda_m: float, bandwidth_hz: float) -> float:

@@ -12,6 +12,7 @@ Can two independent computers in one city share heralded entanglement at a usefu
 ## Stages
 | Stage | What | Pass | Cost / time | Files |
 |---|---|---|---|---|
+| S0 key link | the SEE 510 case study: a two-site BB84 key link, simulated end to end with Cascade, privacy amplification, an authenticated classical channel, an adversary, and key delivery; then P07 on a fiber spool | validation V1–V12 pass; hardware per [09](../../systems/see510/09_limitations_and_hardware.md) | software (done); P07 hardware $1–3k | [`systems/see510/`](../../systems/see510/README.md), `qll/link/` |
 | S1 simulate | Aer + Stim model of two nodes, midpoint BSM, `ClassicalMessage` heralds; rate and fidelity vs L | rate and $F$ reproduce Stolk 2024 within 3× | software, 2 weeks | Phase 2 circuits, Phase 4 `repeater_chain.py` |
 | S2 bench | P03: SPDC source, HOM, CHSH; then split the two arms onto a 1 km fiber spool each | $S>2.2$ after the spool; HOM visibility > 85 % | $5–15k, one semester | [P03](../protocols/P03_spdc_bell_test.md) |
 | S3 campus | two labs, deployed campus fiber (1–3 km), GPS-disciplined clocks, midpoint at a third location | herald rate > 1 Hz; $S>2.2$; teleportation $F>0.7$ | detectors + timing, one semester | new protocol P05 (NEXT_100 #66–68) |
@@ -21,7 +22,7 @@ Can two independent computers in one city share heralded entanglement at a usefu
 Rate per node pair must not collapse as nodes are added: multiplexing (time-bin, frequency), a link-layer protocol ([T01](../../research/theories/T01_quantum_internet_stack.md)), and a routing rule ([T08](../../research/theories/T08_entanglement_routing_and_qos.md)) are part of the deliverable, tested in SeQUeNCe with 3, 5, and 10 nodes.
 
 ## Requirements verified
-REQ-CIR-001..003, REQ-PHY-002, REQ-NET-001 (metro scale), plus a new REQ-F1-001: "two nodes deliver heralded pairs at > 1 Hz over ≥ 1 km deployed fiber with $S>2.2$."
+REQ-CIR-001..003, REQ-PHY-002, REQ-NET-001 (metro scale), REQ-F1-002 (the two-site key link, verified in simulation), plus a new REQ-F1-001: "two nodes deliver heralded pairs at > 1 Hz over ≥ 1 km deployed fiber with $S>2.2$."
 
 ## Key references
 Stolk et al. (2024) *Sci. Adv.* 10, eadp6442 · Knaut et al. (2024) *Nature* 629, 573 · Pompili et al. (2021) *Science* 372, 259 · Dahlberg et al. (2019) *SIGCOMM* · Dehlinger & Mitchell (2002) *Am. J. Phys.* 70, 903.

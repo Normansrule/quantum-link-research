@@ -1,0 +1,15 @@
+Simulation Run ID:       9ce7440fb81b
+Scenario:                1_baseline
+Protocol:                BB84 (ideal single-photon source, prepare and measure)
+Distance:                0 km
+Loss:                    0.00 dB (transmittance 1)
+States Sent:             1,000,000
+States Detected:         158,319 (p = 1.583e-01)
+Sifted Key Bits:         79,373
+Errors:                  90 of 7938 sampled bits
+QBER:                    1.13 % estimated (upper bound 4.94 %)
+Adversary:               none
+Key Accepted:            yes
+Final Usable Key Length: 44,396 bits (44,396.0 bit/s at the pulse rate)
+Random Seed:             11
+Execution Time:          0.241 s

@@ -1,5 +1,74 @@
 # Changelog
 
+## 0.43.0 — 2026-10-01 (the SEE 510 case study: a two-site fiber key link, simulated end to end)
+- **`qll/link/`**: the Scalable Two-Node Fiber-Optic Quantum Communication Link as a modular simulation, one module per block of the handoff's architecture:
+  - **Configuration:** every input with ranges and a run identifier (`config.py`).
+  - **Models:** closed-form expectations (`models.py`).
+  - **Sites and channel:** Site A, the fiber channel, and Site B.
+  - **Adversary:** intercept-and-resend on a chosen fraction of pulses, recording what she did.
+  - **Classical channel:** HMAC-authenticated, with a transcript and a tampering option.
+  - **Reconciliation:** Cascade with back-tracking, every disclosed parity counted, then hash verification.
+  - **Protocol:** one BB84 session following CONOPS steps 1–10, with alert and abort thresholds, a Hoeffding margin on the error rate, and Toeplitz privacy amplification.
+  - **Monitoring and logging:** status, events, per-run summary, evidence folders, and CSV tables.
+  - **Key delivery:** stores with `status`, `get_key`, and `get_key_with_ids` after ETSI GS QKD 014, one store per peer site.
+  - **Demonstration:** AES-256-GCM, failing closed with no key.
+  - **Scenarios, plots, and a runner:** `python -m qll.link.run session|validate|scenarios|demo`.
+- **Validation:** twelve controlled cases (V1–V12) match closed forms within four standard deviations:
+  - detection probability, sifting fraction, and error rate at 0, 25, and 75 km;
+  - 25 % under full interception;
+  - an ideal channel giving identical keys;
+  - exact reproducibility from configuration and seed;
+  - rejection of tampered messages;
+  - Cascade correcting every error within 1.1 to 1.4 times the Slepian–Wolf limit;
+  - a fresh run reproducing the committed evidence.
+- **Scenarios 1–6 and the demonstration** (`systems/see510/evidence/`, ten plots, generated report):
+  - **Throughput:** about 45,000 key bits per second at 0 km and 11,600 at 25 km.
+  - **Range:** a 10⁶-pulse block stops yielding key between 75 and 100 km, while ten-times-longer blocks reach 125 km.
+  - **Interception:** the operator is alerted from about 10 % interception and the session rejected above about 40 %; accepted sessions lose more bits to privacy amplification than the adversary knew.
+  - **Noise:** ordinary noise and interception are indistinguishable by error rate and detection rate.
+  - **Key delivery:** only accepted key reaches the application.
+- **`systems/see510/`**: the case-study documents:
+  - architecture with the CONOPS mapping;
+  - protocol selection;
+  - fourteen assumptions;
+  - every input and output;
+  - the mathematical models;
+  - test cases;
+  - traceability from SN-01 to SN-15 (generated from a CSV and checked by tests);
+  - the sixteen development stages with what each proves and does not;
+  - limitations and the transition to hardware, with equipment parameters, hazards, and standards.
+- **`qll/qkd/privacy_amplification.py`**: Toeplitz hashing gains an exact FFT path (200,000 bits in milliseconds), tested against the explicit matrix product.
+- **Requirement REQ-F1-002**, verified in simulation with the hardware pending. Flagship F1 gains stage S0; thesis section 4.3 gains a paragraph on the two-site link; the README gains a section.
+- **Bibliography:** Hoeffding (1963), FIPS 198-1, NIST SP 800-90A, ETSI GS QKD 014, Gisin et al. (2002), and Brassard et al. (2000).
+
+## 0.42.0 — 2026-09-30 (the Mars link on a table: a bench to build, with a tested twin)
+- **Protocol P09** (`experiments/protocols/P09_mars_link_on_a_table.md`): a lamp for the Sun, a matte white ball for Earth, a fiber tip for the Earth-end transmitter, and a fiber collimator for the Mars receiver, built in eight stages. Each stage has build steps, a prediction, a log format, and a pass criterion:
+  - 0: simulate first;
+  - 1: frame and lamp calibration;
+  - 2: the ball's Lambert phase curve;
+  - 3: radiance conservation, the filter law, and single-mode étendue λ² against multimode;
+  - 4: off-axis rejection and the stray-light floor;
+  - 5: ground source by day and night against a space source;
+  - 6: background turning into errors;
+  - 7: a synodic period compressed into a seven-minute run, and the key bank.
+
+  Tiered from $0 (simulation) through photodiodes ($150–400) and photon counting (adds $150–400) to the P03 entangled source. Bill of materials, a configuration template, safety notes, and what the bench does and does not prove.
+- `qll/systems/bench_twin.py`: the bench's digital twin, predicting every stage with the same functions that evaluate the Mars link. It includes the identity e = w e_opt + (1 − w)/2 = 2(1 − f)/3 between a classical bench's error fraction and the budget's Werner error rate.
+- `qll/analysis/bench_fit.py` and `qll/analysis/bench_report.py`: the commands `predict`, `synthetic`, `schedule`, and `report`, which fit each logged stage, compare it with the twin, and print PASS or CHECK. A synthetic data set is in `data/_examples/bench/`.
+- `qll/channels/planetshine.py`: `lambertian_radiance` (any lamp), `lambert_geometric_albedo` (p = 2A/3), and `multimode_etendue`.
+- **Tests:**
+  - the Lambert sphere's p = 2A/3 by integration;
+  - the MMF/SMF ratio V²/4;
+  - the single-mode background equal to the Mars formula;
+  - the error-rate identity;
+  - the report recovering a hidden bench (albedo, stray floor, polarization error) from synthetic data.
+- **Other additions:**
+  - requirement REQ-CHN-003 (verified for the model and analysis, hardware pending);
+  - figure `bench_layout` (the bench from above and what stands in for what);
+  - a README section "F3 on a table";
+  - thesis section 3.4a, "A digital twin for every bench";
+  - links from lessons 03/21, 03/22, and proposal E04.
+
 ## 0.41.0 — 2026-09-30 (key does not wait; the key bank)
 *Includes all of 0.40.0, which had not reached GitHub when this was built; one overlay applies both.*
 - **Correction.** The budget charged secret key for the memory wait. In BBM92 each end measures its photon on arrival and compares bases later, so key needs neither storage nor memories: its Werner error rate is set by f₀ and the background alone (3.3 % at closest approach, 5.1 % at the farthest), and key flows on every day with a link, 4.9 × 10⁵ to 2.2 × 10⁷ bits per day, 3.2 × 10⁹ per synodic period (ten times the old figure). `Budget.key_bits_per_day` counts every herald without the memory stage; `extra["key_error_rate"]`; the JavaScript port follows. Risk R-8 (no key near maximum range) is closed: it was an artifact of the error.

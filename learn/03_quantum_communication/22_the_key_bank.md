@@ -39,6 +39,9 @@ The bank is negligible as storage. As a target it is not: a copy of the bank is 
 ## Try it
 The [link budget page](https://normansrule.github.io/quantum-link-research/budget/) draws the key made each day across a synodic period, the demand you set, the days a messenger with no bank must refuse, and the level of the bank that removes every refusal. Every change to the telescope, filter, or source moves the curve.
 
+## On a table
+Stage 7 of protocol [P09](../../experiments/protocols/P09_mars_link_on_a_table.md) steps a bench transmitter through a synodic period in under seven minutes (`python -m qll.analysis.bench_report schedule`), turns the logged counts into key, and sizes the bank from your own data.
+
 ## Key papers
 - Bennett, C. H., Brassard, G., & Mermin, N. D. (1992). Quantum cryptography without Bell's theorem. *Physical Review Letters*, 68, 557–559. https://doi.org/10.1103/PhysRevLett.68.557
 - Shor, P. W., & Preskill, J. (2000). Simple proof of security of the BB84 quantum key distribution protocol. *Physical Review Letters*, 85, 441–444. https://doi.org/10.1103/PhysRevLett.85.441

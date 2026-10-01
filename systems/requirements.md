@@ -2,9 +2,9 @@
 
 *Generated from `traceability_matrix.csv` by `scripts/build_systems_docs.py`; edit the matrix, not this file.*
 
-35 requirements, 34 verified. A requirement is verified only when its test exists, the named test function exists in it (checked by `python -m qll.systems.traceability`), and the test passes in CI. Verification methods follow the classic set: **Test** (the implementation is exercised), **Analysis** (a tested model is evaluated against the requirement), **Demonstration** (a simulation shows the behaviour end to end), and **Inspection** (the code or documents are checked mechanically).
+37 requirements, 36 verified. A requirement is verified only when its test exists, the named test function exists in it (checked by `python -m qll.systems.traceability`), and the test passes in CI. Verification methods follow the classic set: **Test** (the implementation is exercised), **Analysis** (a tested model is evaluated against the requirement), **Demonstration** (a simulation shows the behaviour end to end), and **Inspection** (the code or documents are checked mechanically).
 
-Prefixes: PHY physics invariants · THM thermal · CHN channel · CIR circuit · QKD key distribution · NET network · CAP capability · APP application · SYS systems · SPC space segment · SEC security · F2 flagship F2 · HW hardware node · QEC error correction · WEB website and README.
+Prefixes: PHY physics invariants · THM thermal · CHN channel · CIR circuit · QKD key distribution · NET network · CAP capability · APP application · SYS systems · SPC space segment · SEC security · F1 flagship F1 · F2 flagship F2 · HW hardware node · QEC error correction · WEB website and README.
 
 ## N-1: Confidential Earth–Mars messaging whose security does not rest on computational assumptions alone
 
@@ -51,6 +51,7 @@ Prefixes: PHY physics invariants · THM thermal · CHN channel · CIR circuit ·
 | REQ-CAP-002 | Teleportation completes after a light-time-delayed classical channel (bench analogue: simulation S02) | 2 | Demonstration | [`tests/test_simulations.py`](https://github.com/Normansrule/quantum-link-research/blob/main/tests/test_simulations.py) | verified |
 | REQ-F2-001 | Link-budget model reproduces the Micius two-downlink loss (64-82 dB) within 3 dB; Jinan-1 within 3 dB once exact figures are verified | 3 | Analysis | [`test_micius_two_downlink_loss_within_3db_of_reported`](https://github.com/Normansrule/quantum-link-research/blob/main/tests/test_phase3_links.py) | verified (Micius); Jinan-1 pending |
 | REQ-NET-002 | Repeater results are credited only for pairs above the classical teleportation limit (F > 2/3): the chain model reports delivered fidelity and the minimum memory time for a useful chain that beats direct transmission | 4 | Analysis | [`test_minimum_memory_for_a_useful_chain_grows_steeply_with_distance`](https://github.com/Normansrule/quantum-link-research/blob/main/tests/test_purified_chain.py) | verified |
+| REQ-CHN-003 | The background model is validated on a bench (P09): radiance conservation, single-mode etendue lambda^2, off-axis rejection, background-limited purity, and the error-rate identity, each predicted by the twin and recovered by the analysis from data | 3 | Test (bench) | [`test_report_recovers_a_synthetic_bench`](https://github.com/Normansrule/quantum-link-research/blob/main/tests/test_bench_twin.py) | verified (model and analysis); hardware pending (P09) |
 
 ## N-4: Reproducible, citable models suitable for a master's thesis and for teaching
 
@@ -60,4 +61,5 @@ Prefixes: PHY physics invariants · THM thermal · CHN channel · CIR circuit ·
 | REQ-SYS-002 | No module imports upward in the physical stack (constants→channels→circuits→qkd→network→space→app) | 2 | Inspection | [`tests/test_phase2_dag.py`](https://github.com/Normansrule/quantum-link-research/blob/main/tests/test_phase2_dag.py) | verified |
 | REQ-NET-003 | Closed-form repeater waiting times agree with exact sampling of the protocol within 10 % for up to 8 segments | 4 | Analysis | [`test_closed_form_is_conservative_when_nested`](https://github.com/Normansrule/quantum-link-research/blob/main/tests/test_repeater_montecarlo.py) | verified |
 | REQ-WEB-001 | Every number the website and README show is computed by the tested code, and every JavaScript port agrees with its Python model | 6 | Test | [`tests/test_site.py`](https://github.com/Normansrule/quantum-link-research/blob/main/tests/test_site.py) | verified |
+| REQ-F1-002 | The two-site laboratory link (SEE 510 case study, systems/see510) is simulated end to end: its statistics match closed-form detection and error-rate models, it rejects intercept-resend above the threshold and any tampered classical message, Cascade leaves matching keys, and only accepted key reaches the external application | 3 | Analysis | [`test_every_validation_check_passes`](https://github.com/Normansrule/quantum-link-research/blob/main/tests/test_two_site_link.py) | verified (simulation); hardware pending (P07) |
 

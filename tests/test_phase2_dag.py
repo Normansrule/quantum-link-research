@@ -6,7 +6,7 @@ import pytest
 
 pytestmark = pytest.mark.phase2
 ROOT = Path(__file__).resolve().parents[1] / "qll"
-LEVEL = {"constants": 0, "channels": 1, "hardware": 1, "circuits": 2, "qkd": 3, "network": 4, "space": 5, "app": 6, "viz": 7, "systems": 8}
+LEVEL = {"constants": 0, "channels": 1, "hardware": 1, "circuits": 2, "qkd": 3, "network": 4, "space": 5, "app": 6, "link": 7, "viz": 7, "systems": 8}
 
 
 def test_no_upward_imports():

@@ -6,6 +6,8 @@
 
 **Prefactor check done (0.17.0).** The mode-counting formula n·B·(AΩ/λ²) equals the Planck-radiance route L_ν A Ω B/(hν) exactly for one polarization (factor 2 for both), so the Phase 1 TODO is closed; `background_from_spectral_radiance` accepts a measured daylight sky radiance, which is what this experiment supplies.
 
+**On a table first (0.42.0).** Protocol P09 measures the same background physics indoors, with a lamp for the Sun and a white ball for a sunlit planet: radiance conservation, the λ² étendue of a single-mode receiver, off-axis rejection, and background-limited purity, each predicted by `qll/systems/bench_twin.py`.
+
 **Verifies.** The channel-noise model; gives REQ-CHN-003 ("background prefactor validated on hardware").
 
 **Failure modes.** Detector saturation and afterpulsing at high background; stray-light paths in the receiver; forgetting that Mars' own albedo adds to the background on the Earth-receiving side.

@@ -135,6 +135,21 @@ Each line is a module in [`qll/`](qll) with a test that checks it against its cl
 
 This is a systems-engineering thesis, and the repository is organized like a system. Five stakeholder needs ([`systems/needs.md`](systems/needs.md)) trace to the requirements in [`traceability_matrix.csv`](systems/traceability_matrix.csv), each with a verification method and the named test that verifies it; `python -m qll.systems.traceability` fails if a test or test function is missing, and the requirements document ([`systems/requirements.md`](systems/requirements.md)) is generated from the matrix. Five trade studies ([`systems/trade_studies.md`](systems/trade_studies.md)) choose the architecture from tables the code regenerates on every commit, and the risk register, concept of operations, and technology-readiness assessment sit beside them. The [traceability page](https://Normansrule.github.io/quantum-link-research/systems/) puts it all on a V model you can filter.
 
+### The two-site key link (SEE 510 case study)
+
+[`systems/see510/`](systems/see510/README.md) takes flagship F1 down to a laboratory key link between Site A and Site B and simulates it end to end:
+
+- BB84 states through a fiber of configurable length;
+- detectors with finite efficiency and dark counts;
+- a textbook intercept-and-resend adversary;
+- Cascade error correction with hash verification, and privacy amplification;
+- an authenticated classical channel;
+- key delivery to an AES-256-GCM demonstration application through an ETSI GS QKD 014-style interface.
+
+Twelve validation cases match closed-form models, and every run reproduces from its configuration and seed. Fifteen stakeholder needs trace to modules, tests, and [evidence](systems/see510/evidence/README.md). `python -m qll.link.run scenarios` regenerates the evidence in about 25 seconds.
+
+<p align="center"><a href="systems/see510/evidence/README.md"><img src="systems/see510/evidence/plots/baseline_vs_adversary.svg" alt="Interception raises the error rate" width="48%"></a> <a href="systems/see510/evidence/README.md"><img src="systems/see510/evidence/plots/key_vs_distance.svg" alt="Usable key per session against fiber length" width="48%"></a></p>
+
 ## Three experiments, one physics
 
 <p align="center"><img src="docs/figures/flagship_overview.svg" alt="The three flagship experiments" width="100%"></p>
@@ -146,13 +161,19 @@ This is a systems-engineering thesis, and the repository is organized like a sys
 | **Our version** | P03 bench → campus fiber | Micius budget reproduced within 3 dB → rooftop link | delayed-bits bench, relay scheduling, fail-closed messenger |
 | **Plan** | [F1](experiments/flagship/F1_earth_to_earth.md) | [F2](experiments/flagship/F2_earth_to_satellite.md) | [F3](experiments/flagship/F3_earth_to_mars.md) |
 
+### F3 on a table: build it, stage by stage
+
+<p align="center"><a href="experiments/protocols/P09_mars_link_on_a_table.md"><img src="docs/figures/bench_layout.svg" alt="The tabletop Mars-link bench from above, and what stands in for what" width="100%"></a></p>
+
+Protocol [P09](experiments/protocols/P09_mars_link_on_a_table.md) turns the Earth–Mars results into a bench you can build for a few hundred dollars: a lamp for the Sun, a matte white ball for Earth, a fiber tip for the transmitter, and a fiber collimator for the Mars receiver. Eight stages, from simulation only to photon counting, each with a prediction, a log format, and a pass criterion. A tested digital twin (`qll/systems/bench_twin.py`) predicts every reading with the same functions that evaluate the Mars link. `python -m qll.analysis.bench_report synthetic` and `report` run the whole analysis today on synthetic data; the [bill of materials](experiments/bench/P09_bill_of_materials.md) is tiered from $0 to photon counting.
+
 <p align="center"><a href="experiments/done/README.md"><img src="docs/figures/readme_marquee.svg" alt="Landmark experiments recreated in the repository, from Stern–Gerlach 1922 to Jinan-1 2025" width="100%"></a></p>
 
 ## What is inside
 
 | | | |
 |---|---|---|
-| 📚 **[Learn](learn/README.md)**<br>foundations, computing core, eight qubit platforms, communication; every file with equations, a figure, references, and exercises | 🧪 **[Experiments](experiments/README.md)**<br>three flagships, eight bench protocols, fifteen landmark experiments with cheap recreations, sixteen proposals, lessons | 🔭 **[Research](research/README.md)**<br>timeline, open problems, fifteen frontier theories, design process, thesis chapters |
+| 📚 **[Learn](learn/README.md)**<br>foundations, computing core, eight qubit platforms, communication; every file with equations, a figure, references, and exercises | 🧪 **[Experiments](experiments/README.md)**<br>three flagships, nine bench protocols, fifteen landmark experiments with cheap recreations, sixteen proposals, lessons | 🔭 **[Research](research/README.md)**<br>timeline, open problems, fifteen frontier theories, design process, thesis chapters |
 | 💻 **[`qll/`](qll)**<br>tested physics from thermal occupation to a fail-closed Mars messenger, with Qiskit Aer, Stim, QuTiP, SeQUeNCe, and Perceval adapters | 🎛️ **[Simulations](simulations/README.md)**<br>eight scripts that predict what each bench must reproduce | 🎓 **[Course](learn/COURSE_SYLLABUS.md)**<br>15 weeks, four machine-graded problem sets |
 | 📈 **[Data](data/README.md)**<br>tested analysis pipelines waiting for the first ODMR (optically detected magnetic resonance) and T₁(T) measurements | 🎬 **[YouTube](youtube/README.md)**<br>verified English videos per topic | 📖 **[References](docs/references.md)**<br>a bibliography that every code citation is checked against |
 
@@ -233,7 +254,7 @@ python scripts/make_readme_art.py                         # redraw the animated 
 | 4 | memories, purification (BBPSSW, DEJMPS), repeaters, scheduling, routing | chain beats direct; $T_{\rm mem}$ vs $2d/c$ | **done** |
 | 5 | Kepler ephemeris, conjunction, relays, relativity, flown coolers, DSOC-class link | envelope within 1 %; L4/L5 > 99.9 % availability | **done** |
 | 6 | ML-KEM + QKD hybrid, AES-GCM, fail-closed messenger, benchmark | never sends unkeyed | **done** |
-| — | bench data (P01 ODMR, P02 T₁ vs temperature) | REQ-THM-003 | **waiting on hardware** |
+| — | bench data (P01 ODMR, P02 T₁ vs temperature, P09 the Mars link on a table) | REQ-THM-003, REQ-CHN-003 | **waiting on hardware**; P09's twin and analysis are tested |
 
 </details>
 

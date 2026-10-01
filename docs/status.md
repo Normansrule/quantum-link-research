@@ -1,6 +1,6 @@
 # Status
 
-Version 0.41.0 · 681 tests · 34/35 requirements verified · 412 references (21 verified) · 93 learn files · 8 simulations · 44 figures
+Version 0.43.0 · 719 tests · 36/37 requirements verified · 418 references (21 verified) · 93 learn files · 8 simulations · 45 figures
 
 | Requirement | Statement | Phase | Status |
 |---|---|---|---|
@@ -39,3 +39,5 @@ Version 0.41.0 · 681 tests · 34/35 requirements verified · 412 references (21
 | REQ-QEC-001 | A matching-decoded surface code shows threshold behaviour: larger codes fail less below 5 % and more above 13 % bit-flip probability, crossing between 8.5 % and 10.5 % | 2 | verified |
 | REQ-WEB-001 | Every number the website and README show is computed by the tested code, and every JavaScript port agrees with its Python model | 6 | verified |
 | REQ-APP-003 | A key bank sized by the sequent-peak rule carries the messenger's demand of 1e6 key bits per day through every day of a synodic period including conjunction; 1 % less capacity refuses | 6 | verified |
+| REQ-CHN-003 | The background model is validated on a bench (P09): radiance conservation, single-mode etendue lambda^2, off-axis rejection, background-limited purity, and the error-rate identity, each predicted by the twin and recovered by the analysis from data | 3 | verified (model and analysis); hardware pending (P09) |
+| REQ-F1-002 | The two-site laboratory link (SEE 510 case study, systems/see510) is simulated end to end: its statistics match closed-form detection and error-rate models, it rejects intercept-resend above the threshold and any tampered classical message, Cascade leaves matching keys, and only accepted key reaches the external application | 3 | verified (simulation); hardware pending (P07) |

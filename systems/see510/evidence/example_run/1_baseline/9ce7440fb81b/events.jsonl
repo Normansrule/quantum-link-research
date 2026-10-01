@@ -1,0 +1,7 @@
+{"step": "ready", "level": "info", "message": "session 9ce7440fb81b established; channel loss 0.00 dB"}
+{"step": "transmit", "level": "info", "message": "1,000,000 states sent, 158,319 detected"}
+{"step": "sift", "level": "info", "message": "79,373 sifted bits"}
+{"step": "estimate", "level": "info", "message": "QBER 1.13 % from 7938 sampled bits"}
+{"step": "reconcile", "level": "info", "message": "727 bits corrected, 6625 parities disclosed; keys match"}
+{"step": "amplify", "level": "info", "message": "44,396 final key bits"}
+{"step": "decide", "level": "info", "message": "ACCEPTED"}

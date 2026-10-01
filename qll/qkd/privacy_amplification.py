@@ -29,8 +29,14 @@ def toeplitz_hash(key: np.ndarray, out_len: int, seed: int = 0) -> np.ndarray:
         return np.zeros(0, dtype=np.int8)
     rng = np.random.default_rng(seed)
     diag = rng.integers(0, 2, size=n + out_len - 1, dtype=np.int8)   # first column + first row
-    out = np.zeros(out_len, dtype=np.int8)
-    for i in range(out_len):
-        row = diag[i : i + n][::-1]
-        out[i] = int(np.dot(row, k) % 2)
-    return out
+    if n * out_len <= 4_000_000:
+        out = np.zeros(out_len, dtype=np.int8)
+        for i in range(out_len):
+            row = diag[i : i + n][::-1]
+            out[i] = int(np.dot(row, k) % 2)
+        return out
+    # the same matrix-vector product as a convolution, out[i] = (diag * k)[i + n - 1], by FFT; the sums are integers
+    # below 2^31, far inside double precision, so rounding recovers them exactly
+    size = 1 << int(np.ceil(np.log2(n + len(diag))))
+    conv = np.fft.irfft(np.fft.rfft(diag.astype(float), size) * np.fft.rfft(k.astype(float), size), size)
+    return (np.rint(conv[n - 1 : n - 1 + out_len]).astype(np.int64) % 2).astype(np.int8)

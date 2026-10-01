@@ -52,3 +52,5 @@
 - 2026-09-28 0.39.0: systems-engineering spine (33 requirements with methods and needs, generated requirements and trade tables, risk register, traceability page).
 - 2026-09-29 0.40.0: background light (planetshine, single-mode radiance, dark-sky window); the space source becomes the baseline; REQ-CAP-005, R-9, TS-6; budget page shows what the Mars receiver sees.
 - 2026-09-30 0.41.0: key is measured on arrival (budget correction, R-8 closed); the key bank (sequent-peak sizing, 16.7 MB carries 10⁶ bits/day through conjunction), REQ-APP-003, TS-7, R-10, lesson 03/22, budget page panel.
+- 2026-09-30 0.42.0: P09 the Mars link on a table (eight-stage bench, tiered bill of materials), its digital twin and analysis (predict, synthetic, schedule, report), REQ-CHN-003, bench_layout figure.
+- 2026-10-01 0.43.0: SEE 510 two-site fiber key link simulated end to end (qll/link/, Cascade, authenticated classical channel, ETSI 014-style key delivery, AES-GCM demo), validation V1–V12, scenarios 1–6 with evidence, systems/see510 documents and SN-01–SN-15 traceability.

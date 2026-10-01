@@ -48,6 +48,9 @@ Retrieval efficiency is paid at both ends, so the long-lived crystals deliver te
 ## Architecture decides first
 A relay at Sun–Earth L4 that sends one photon to each planet (the Micius two-downlink pattern [yin2017]) keeps a line of sight during conjunction, but both photons now cross astronomical distances and diffraction is paid twice: about 2 × 10⁻⁵ pairs per day at closest approach with the same hardware, 10⁻¹² of the baseline rate, and its Earth receiver on the ground needs a dark sky too. That relay is useful as a store-and-forward node with its own memory, not as a two-downlink source. The first design decision is how many times a photon crosses an astronomical unit; the hardware only moves the result by decibels after that.
 
+## On a table
+Protocol [P09](../../experiments/protocols/P09_mars_link_on_a_table.md) builds this lesson's background physics on a bench, a lamp for the Sun and a white ball for Earth, with a digital twin (`qll/systems/bench_twin.py`) that predicts each reading: the ground transmitter in daylight is swamped, the one beside the ball is clean, and a single-mode receiver collects a λ² étendue of the ball's radiance whatever its distance.
+
 ## Key papers
 - Siegman, A. E. (1986). *Lasers*. University Science Books.
 - Bourgoin, J.-P., et al. (2013). A comprehensive design and performance analysis of low Earth orbit satellite quantum communication. *New Journal of Physics*, 15, 023006. https://doi.org/10.1088/1367-2630/15/2/023006

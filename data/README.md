@@ -8,6 +8,7 @@ synthetic files so the analysis pipeline can be tested before the bench exists.
 |---|---|---|---|
 | `odmr/` | P01 ODMR (continuous-wave) | `frequency_hz, signal` | `python -m qll.analysis.odmr_report data/odmr/<file>.csv` |
 | `pulsed/` | P02 Rabi, Ramsey, echo, T1, T1(T) | `time_s, signal` (and a `temperature_k` in the sidecar) | `qll.analysis.relaxation_fit` (`fit_rabi`, `fit_ramsey`, `fit_echo`, `fit_t1`, `fit_t1_vs_temperature`) |
+| `bench/` | P09 the Mars link on a table | `calibration.csv`, `phase.csv`, `etendue.csv`, `rejection.csv`, `purity.csv`, `errors.csv`, `run.csv` and `bench.json` (columns in `python -m qll.analysis.bench_report --help`; a synthetic set is in `_examples/bench/`) | `python -m qll.analysis.bench_report report data/bench --save bench.svg` |
 | `spdc/` | P03 coincidences vs angle | `angle_a_deg, angle_b_deg, coincidences, singles_a, singles_b, seconds` | (CHSH from `qll.circuits.chsh`; report script to add) |
 
 Sidecar `.json` fields for ODMR: `{"diamond": "...", "laser_mw": 0.8, "microwave_dbm": 20, "dwell_ms": 30, "averages": 20,

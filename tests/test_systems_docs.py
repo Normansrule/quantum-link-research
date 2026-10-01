@@ -28,3 +28,10 @@ def test_trade_study_tables_are_current():
     for key in ("architecture", "wavelength", "memory", "aperture"):
         start, end = f"<!-- trade:{key}:start -->", f"<!-- trade:{key}:end -->"
         assert text.count("|", text.index(start), text.index(end)) > 10       # a filled table, not empty markers
+
+
+def test_see510_traceability_document_is_generated_from_its_csv():
+    import build_systems_docs as b
+
+    text = (ROOT / "systems" / "see510" / "07_traceability.md").read_text(encoding="utf-8").replace("\r\n", "\n")
+    assert text == b.see510_traceability_md() + "\n"
