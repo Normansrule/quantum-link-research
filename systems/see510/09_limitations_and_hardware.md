@@ -19,12 +19,12 @@ The simulation was built so that hardware replaces blocks, not the design (01). 
 | H3 | Polarization or time-bin encoding at Site A; analysis at Site B; error rate with no adversary | A-03 | `misalignment_error` | laser: eye-safe class 1 at 1550 nm after attenuation; never view a fiber end |
 | H4 | Weak-coherent source with an attenuator; decoy intensities | A-01 | `source_model` (decoy-state model to add) | as H3 |
 | H5 | Random bases from a quantum random number generator | A-09 | — | none |
-| H6 | Log raw detections with timestamps; feed them to `protocol_bb84.py` in place of `site_a.py`, `quantum_channel.py`, `site_b.py` | the quantum blocks | the measured session itself | none |
+| H6 | Log raw detections with timestamps in the format of `qll/link/hardware_log.py`; `python -m qll.link.run ingest` runs them through `protocol_bb84.py` in place of `site_a.py`, `quantum_channel.py`, `site_b.py` (implemented and tested: a simulated log reproduces the simulated session exactly) | the quantum blocks | the measured session itself | none |
 | H7 | Intercept-resend station on the link (protocol P07 step 6) | A-06 | `eve_fraction` | as H3 |
 | H8 | Classical channel over a network socket; Wegman–Carter tags | A-07, A-08 | — | none |
 | H9 | Key store as a service with the same three calls; application on two computers | A-12 | — | key handling: no test keys reused for real data; only non-sensitive test data |
 
-For each step the simulation already states what the measurement should show, so a hardware result either confirms the model or identifies the assumption that failed. The detailed bench is protocol P07 (BB84 over a fiber spool, `experiments/protocols/P07_bb84_over_a_fiber_spool.md`), whose costs and parts are in `experiments/bench/`.
+Document [10](10_real_world_experiments.md) turns these steps into a ladder of five setups with parts, costs, procedures, and pass criteria, from a $40 tabletop analogue to a deployed link. For each step the simulation already states what the measurement should show, so a hardware result either confirms the model or identifies the assumption that failed. The detailed bench is protocol P07 (BB84 over a fiber spool, `experiments/protocols/P07_bb84_over_a_fiber_spool.md`), whose costs and parts are in `experiments/bench/`.
 
 ## Equipment definition (SN-11)
 | Component class | Parameters that matter (configuration field) | Simulation default | What the default implies |

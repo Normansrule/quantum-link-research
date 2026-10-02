@@ -146,7 +146,7 @@ This is a systems-engineering thesis, and the repository is organized like a sys
 - an authenticated classical channel;
 - key delivery to an AES-256-GCM demonstration application through an ETSI GS QKD 014-style interface.
 
-Twelve validation cases match closed-form models, and every run reproduces from its configuration and seed. Fifteen stakeholder needs trace to modules, tests, and [evidence](systems/see510/evidence/README.md). `python -m qll.link.run scenarios` regenerates the evidence in about 25 seconds.
+Twelve validation cases match closed-form models, and every run reproduces from its configuration and seed. A [real-world ladder](systems/see510/10_real_world_experiments.md) builds it in five tiers, from a $40–120 Arduino-and-polarizer analogue through fiber characterization and single-photon BB84 to entanglement-based BBM92. Each tier's log runs through the same protocol code with `python -m qll.link.run ingest`. Fifteen stakeholder needs trace to modules, tests, and [evidence](systems/see510/evidence/README.md). `python -m qll.link.run scenarios` regenerates the evidence in about 25 seconds.
 
 <p align="center"><a href="systems/see510/evidence/README.md"><img src="systems/see510/evidence/plots/baseline_vs_adversary.svg" alt="Interception raises the error rate" width="48%"></a> <a href="systems/see510/evidence/README.md"><img src="systems/see510/evidence/plots/key_vs_distance.svg" alt="Usable key per session against fiber length" width="48%"></a></p>
 

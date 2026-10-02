@@ -1,5 +1,22 @@
 # Changelog
 
+## 0.44.0 — 2026-10-01 (the two-site link in the real world: an experiment ladder, and logs through the same code)
+- **`systems/see510/10_real_world_experiments.md`**: five tiers from a tabletop analogue to a deployed link. Each tier has its setup, parts with planning prices, step-by-step build and measurement, a prediction from a preset configuration, pass criteria, what it proves and does not, and safety.
+  - **Tier 1, a bright-light polarization analogue** ($40–120): laser pointer, polarizer film on servos, photodiode, Arduino; no security claim.
+  - **Tier 2, fiber channel characterization** ($80–350): telecom transceivers, power meter, attenuator, spool, a wavelength multiplexer for coexistence.
+  - **Tier 3, weak-coherent BB84 at the single-photon level** ($2,000–8,000; no decoy states yet).
+  - **Tier 4, entanglement-based BBM92 with a Bell test** ($15,000–60,000, or a lent teaching kit).
+  - **Tier 5, a commercial or testbed link** over deployed fiber.
+- **`qll/link/hardware_log.py`**: a per-slot log format for experiments. `run_from_log` replaces steps 3–4 of a session with measured data and runs sifting, estimation, Cascade, verification, amplification, and delivery unchanged; a simulated session written as a log and read back reproduces exactly. New command: `python -m qll.link.run ingest LOG.csv --config ...`. `protocol_bb84.run_session` gains a `record` argument; `simulate_quantum` exposes the simulated record.
+- **`qll/link/bench_tier1.py`** and **`experiments/bench/see510_tier1/see510_tier1.ino`**: the Tier 1 bench.
+  - Its software twin models Malus's law, polarizer leakage, room light, and noise; with no interception the twin's error rate is near 0 %, and with full intercept-and-resend about 25 %, as the theory says.
+  - An Arduino sketch and a serial driver with a three-command protocol.
+  - Threshold calibration and a runner that writes the log.
+- **Tier presets** (`systems/see510/hardware/`) for Tiers 1, 2, 3, and 4, each documenting its approximations: mean photon number as extra loss, entanglement visibility as misalignment, and accidentals as dark counts.
+- **Tests:** a log reproduces the simulated session; malformed logs are refused; the Tier 1 twin with and without interception; the serial protocol against a fake port; the presets predict accepted keys.
+- **Documents and traceability:** traceability SN-01, SN-07, SN-08, SN-10, SN-11, and SN-14 updated; development stage 17; the protocols index and flagship F1 link the ladder.
+- **Bibliography:** Hecht (2017).
+
 ## 0.43.0 — 2026-10-01 (the SEE 510 case study: a two-site fiber key link, simulated end to end)
 - **`qll/link/`**: the Scalable Two-Node Fiber-Optic Quantum Communication Link as a modular simulation, one module per block of the handoff's architecture:
   - **Configuration:** every input with ranges and a run identifier (`config.py`).

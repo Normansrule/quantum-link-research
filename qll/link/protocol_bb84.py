@@ -39,13 +39,22 @@ from qll.link.models import channel_loss_db, channel_transmittance, hoeffding_ma
 from qll.link.monitor import SessionMetrics
 from qll.link.quantum_channel import FiberChannel
 from qll.link.reconciliation import reconcile, verify
-from qll.link.site_a import SiteA
-from qll.link.site_b import SiteB
+from qll.link.site_a import PreparedStates, SiteA
+from qll.link.site_b import Detections, SiteB
 from qll.qkd.binary_entropy import h2
 from qll.qkd.privacy_amplification import toeplitz_hash
 
 PROTOCOL = "BB84 (ideal single-photon source, prepare and measure)"
 STREAMS = ("site_a", "adversary", "channel", "site_b", "protocol")
+
+
+@dataclass(frozen=True)
+class QuantumRecord:
+    """What the quantum part of a session produced: Site A's states, Site B's detections, and any adversary record.
+    Simulated by default; read from an experiment's log by qll/link/hardware_log.py."""
+    states: PreparedStates
+    det: Detections
+    adversary: AdversaryRecord | None = None
 
 
 @dataclass
@@ -64,8 +73,19 @@ def auth_key_for(c: LinkConfig) -> bytes:
     return hashlib.sha256(f"qll-link-psk/{c.seed}".encode()).digest()
 
 
+def simulate_quantum(c: LinkConfig) -> QuantumRecord:
+    """Steps 3-4 alone: the simulated quantum transmission, from the same seeded streams run_session uses."""
+    rngs = dict(zip(STREAMS, (np.random.default_rng(s) for s in np.random.SeedSequence(c.seed).spawn(len(STREAMS)))))
+    adversary = InterceptResend(c.eve_fraction, rngs["adversary"]) if c.eve_fraction > 0 else None
+    states = SiteA(rngs["site_a"]).prepare(c.n_pulses)
+    out = FiberChannel(c, rngs["channel"], adversary).transmit(states)
+    return QuantumRecord(states, SiteB(c, rngs["site_b"]).measure(out), out.adversary)
+
+
 def run_session(c: LinkConfig, managers: dict[str, SiteKeyManager] | None = None, site_a: str = "A",
-                site_b: str = "B") -> SessionResult:
+                site_b: str = "B", record: QuantumRecord | None = None) -> SessionResult:
+    """One session. With `record`, the quantum part comes from an experiment instead of the simulation and every later
+    step (sifting, estimation, Cascade, verification, amplification, delivery) runs unchanged."""
     t0 = time.perf_counter()
     rngs = dict(zip(STREAMS, (np.random.default_rng(s) for s in np.random.SeedSequence(c.seed).spawn(len(STREAMS)))))
     adversary = InterceptResend(c.eve_fraction, rngs["adversary"]) if c.eve_fraction > 0 else None
@@ -90,15 +110,21 @@ def run_session(c: LinkConfig, managers: dict[str, SiteKeyManager] | None = None
         cc.send("A", "session_start", {"run_id": m.run_id, "n_pulses": c.n_pulses, "protocol": "BB84"})
         cc.send("B", "session_ready", {"run_id": m.run_id})
         m.event("ready", "info", f"session {m.run_id} established; channel loss {m.channel_loss_db:.2f} dB")
-        # 3-4 quantum transmission
-        states = SiteA(rngs["site_a"]).prepare(c.n_pulses)
-        out = FiberChannel(c, rngs["channel"], adversary).transmit(states)
-        rec = out.adversary
-        det = SiteB(c, rngs["site_b"]).measure(out)
+        # 3-4 quantum transmission (simulated, or recorded by an experiment)
+        if record is None:
+            states = SiteA(rngs["site_a"]).prepare(c.n_pulses)
+            out = FiberChannel(c, rngs["channel"], adversary).transmit(states)
+            rec = out.adversary
+            det = SiteB(c, rngs["site_b"]).measure(out)
+        else:
+            states, det, rec = record.states, record.det, record.adversary
+            m.states_sent = len(states.bits)
+            m.protocol = "BB84 post-processing of an experiment log (source and detectors as recorded)"
+            m.event("transmit", "info", "quantum record supplied by an experiment log")
         m.states_detected = int(det.detected.sum())
-        m.detection_probability = m.states_detected / c.n_pulses
+        m.detection_probability = m.states_detected / m.states_sent
         m.eve_touched = rec.n_touched if rec else 0
-        m.event("transmit", "info", f"{c.n_pulses:,} states sent, {m.states_detected:,} detected")
+        m.event("transmit", "info", f"{m.states_sent:,} states sent, {m.states_detected:,} detected")
         # 5 sifting over the authenticated public channel
         idx = np.nonzero(det.detected)[0]
         payload = cc.send("B", "sifting_bases_b", {"idx": pack_indices(idx), "bases": pack(det.bases[idx])})
@@ -155,7 +181,7 @@ def run_session(c: LinkConfig, managers: dict[str, SiteKeyManager] | None = None
         final_a, final_b = toeplitz_hash(ka, l, pa_seed), toeplitz_hash(rc.key_b, l, pa_seed)
         m.final_key_bits = l
         m.pa_removed_bits = len(ka) - l
-        m.secret_key_rate_bps = l / (c.n_pulses / c.pulse_rate_hz)
+        m.secret_key_rate_bps = l / (m.states_sent / c.pulse_rate_hz) if c.pulse_rate_hz > 0 else 0.0
         m.event("amplify", "info", f"{l:,} final key bits")
         # 9 deliver accepted key to both sites' stores
         if managers is not None:

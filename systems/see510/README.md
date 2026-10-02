@@ -16,6 +16,7 @@
 | 07 | [Traceability: SN-01 to SN-15](07_traceability.md) ([`traceability.csv`](traceability.csv)) | 8 |
 | 08 | [Development stages](08_development_stages.md): what each stage models, why, which need, what it proves and does not | 10–15 |
 | 09 | [Limitations and the transition to hardware](09_limitations_and_hardware.md) | 16 |
+| 10 | [**Real-world experiments**](10_real_world_experiments.md): a ladder from a $40 tabletop analogue to a deployed link, each tier predicted, logged, and processed by the same code | after 16 |
 | — | [**Evidence**](evidence/README.md): validation table, six scenarios, plots, per-run summaries | 11–14 |
 
 ## Run it
@@ -27,7 +28,9 @@ python -m qll.link.run session --set distance_km=25 eve_fraction=0.1 --out runs/
 python -m qll.link.run validate                                  # the controlled cases against the closed-form models
 python -m qll.link.run scenarios                                 # scenarios 1-6 and the demo; rewrites evidence/ (~25 s)
 python -m qll.link.run demo                                      # deliver accepted keys to the demonstration application
-python -m pytest tests/test_two_site_link.py                     # 21 fast tests (the full scenario run is marked slow)
+python -m qll.link.bench_tier1 --out tier1.csv                   # Tier 1 bench (add --port COM5 for the real Arduino)
+python -m qll.link.run ingest tier1.csv --config systems/see510/hardware/tier1.json   # process an experiment's log
+python -m pytest tests/test_two_site_link.py                     # 26 fast tests (the full scenario run is marked slow)
 ```
 
 ## Folder and file structure
@@ -47,7 +50,10 @@ qll/link/                     the simulation (one module per logical block of th
   key_store.py                key delivery (ETSI GS QKD 014-style get_key / get_key_with_ids)
   demo_app.py                 the external secure-communication demonstration (AES-256-GCM)
   scenarios.py                scenarios 1-6, the demonstration, and the validation checks
+  hardware_log.py             experiment logs in, the same protocol out (run_from_log)
+  bench_tier1.py              Tier 1 bench: its software twin, the Arduino serial driver, and the runner
   plots.py  run.py            evidence plots; the command-line runner
 tests/test_two_site_link.py   tests with known answers for every module
-systems/see510/               these documents, traceability.csv, and evidence/
+systems/see510/               these documents, traceability.csv, evidence/, and hardware/ (tier presets)
+experiments/bench/see510_tier1/  the Tier 1 Arduino sketch
 ```

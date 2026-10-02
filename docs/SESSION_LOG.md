@@ -54,3 +54,4 @@
 - 2026-09-30 0.41.0: key is measured on arrival (budget correction, R-8 closed); the key bank (sequent-peak sizing, 16.7 MB carries 10⁶ bits/day through conjunction), REQ-APP-003, TS-7, R-10, lesson 03/22, budget page panel.
 - 2026-09-30 0.42.0: P09 the Mars link on a table (eight-stage bench, tiered bill of materials), its digital twin and analysis (predict, synthetic, schedule, report), REQ-CHN-003, bench_layout figure.
 - 2026-10-01 0.43.0: SEE 510 two-site fiber key link simulated end to end (qll/link/, Cascade, authenticated classical channel, ETSI 014-style key delivery, AES-GCM demo), validation V1–V12, scenarios 1–6 with evidence, systems/see510 documents and SN-01–SN-15 traceability.
+- 2026-10-01 0.44.0: real-world experiment ladder for the two-site link (Tiers 1-5 with parts, costs, procedures, safety), experiment logs processed by the same protocol (ingest), Tier 1 Arduino bench with its twin and serial driver, tier presets.

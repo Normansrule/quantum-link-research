@@ -1,0 +1,16 @@
+{
+  "_help": "Tier 1, bright-light polarization analogue (laser pointer, polarizer film on servos, photodiode, Arduino). Every slot 'clicks'; the error rate comes from polarizer leakage, noise, and threshold choice. Short sessions, so the security parameters are relaxed to 1e-2 and the tag is 32 bits: the resulting key demonstrates the processing chain and has no security meaning.",
+  "scenario": "tier1_bright_analogue",
+  "n_pulses": 4000,
+  "pulse_rate_hz": 2.0,
+  "detector_efficiency": 1.0,
+  "receiver_loss_db": 0.0,
+  "dark_count_prob": 0.0,
+  "misalignment_error": 0.01,
+  "sample_fraction": 0.2,
+  "min_sample_bits": 50,
+  "min_key_block_bits": 200,
+  "eps_pe": 0.01,
+  "eps_pa": 0.01,
+  "verify_tag_bits": 32
+}

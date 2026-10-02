@@ -214,3 +214,71 @@ def test_docs_cover_every_input_and_need():
         names = {n.name for n in ast.walk(ast.parse((ROOT / path).read_text(encoding="utf-8"))) if isinstance(n, ast.FunctionDef)}
         assert fn in names, fn
         assert (ROOT / "systems" / "see510" / r["evidence"]).exists(), r["evidence"]
+
+
+def test_an_experiment_log_runs_through_the_same_protocol_exactly(tmp_path):
+    from qll.link.hardware_log import read_log, run_from_log, simulate_log
+    for c in (SMALL, SMALL.with_(eve_fraction=0.2, distance_km=10)):
+        log = simulate_log(c, tmp_path / "sim.csv")
+        direct, replayed = run_session(c).metrics, run_from_log(log, c).metrics
+        for f in ("states_detected", "sifted_bits", "sample_errors", "ec_leaked_bits", "final_key_bits", "accepted", "eve_known_key_bits"):
+            assert getattr(direct, f) == getattr(replayed, f), f
+        assert "experiment log" in replayed.protocol
+    rec = read_log(log)
+    assert rec.adversary is not None and len(rec.states.bits) == SMALL.n_pulses
+
+
+def test_experiment_logs_are_validated(tmp_path):
+    from qll.link.hardware_log import read_log
+    (tmp_path / "bad.csv").write_text("pulse,alice_bit,alice_basis,bob_basis,bob_click\n0,1,0,0,1\n")
+    with pytest.raises(ValueError):
+        read_log(tmp_path / "bad.csv")
+    (tmp_path / "bad2.csv").write_text("pulse,alice_bit,alice_basis,bob_basis,bob_click,bob_bit\n0,2,0,0,1,1\n")
+    with pytest.raises(ValueError):
+        read_log(tmp_path / "bad2.csv")
+
+
+def test_tier1_twin_shows_the_protocol_and_the_intercept_disturbance(tmp_path):
+    from qll.link.bench_tier1 import ANGLE, MalusBench, calibrate, run
+    from qll.link.hardware_log import write_log, run_from_log
+    t1 = LinkConfig.from_dict({k: v for k, v in __import__("json").loads((ROOT / "systems/see510/hardware/tier1.json").read_text()).items()})
+    bench = MalusBench(seed=4)
+    th = calibrate(bench)
+    assert bench.pulse(90, 0)[0] < th.low < th.high < bench.pulse(0, 0)[0]
+    assert ANGLE[(1, 1)] == 135
+    clean = run_from_log(write_log(tmp_path / "a.csv", run(bench, 3000, 5, 0.0, th)), t1).metrics
+    assert clean.qber_true < 0.03 and clean.accepted
+    eve = run_from_log(write_log(tmp_path / "b.csv", run(MalusBench(seed=6), 3000, 7, 1.0, th)), t1.with_(eve_fraction=1.0)).metrics
+    assert eve.qber_true == pytest.approx(0.25, abs=0.04) and eve.reject_reason == "qber"
+
+
+def test_tier1_serial_protocol(monkeypatch):
+    import sys, types
+    from qll.link import bench_tier1 as T
+    sent = []
+
+    class FakeSerial:
+        def __init__(self, *a, **k):
+            self.replies = [b"SEE510 tier1 ready\n"]
+        def write(self, data):
+            sent.append(data.decode().strip())
+            cmd, a, b = sent[-1].split()
+            aligned = abs(int(float(a)) - int(float(b))) % 180 == 0
+            self.replies.append(b"V 800\n" if aligned else b"V 30\n")
+        def readline(self):
+            return self.replies.pop(0)
+
+    monkeypatch.setitem(sys.modules, "serial", types.SimpleNamespace(Serial=FakeSerial))
+    bench = T.SerialBench("/dev/fake")
+    assert bench.pulse(0, 0)[0] == 800 and bench.eve_read(45, 0) == 30 and bench.resend(90, 90) == 800
+    assert sent == ["P 0 0", "E 45 0", "R 90 90"]
+    with pytest.raises(ValueError):
+        T.run(bench, 10, 1, eve_fraction=0.5)
+
+
+def test_tier_presets_are_valid_and_predict_a_key():
+    import json
+    for t in ("tier1", "tier3", "tier4"):
+        c = LinkConfig.from_dict(json.loads((ROOT / f"systems/see510/hardware/{t}.json").read_text()))
+        assert run_session(c.with_(n_pulses=min(c.n_pulses, 400_000))).metrics.accepted, t
+    LinkConfig.from_dict(json.loads((ROOT / "systems/see510/hardware/tier2_channel.json").read_text()))

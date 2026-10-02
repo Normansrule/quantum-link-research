@@ -1,0 +1,14 @@
+{
+  "_help": "Tier 4, entanglement-based BBM92 (spontaneous parametric down-conversion source of polarization-entangled pairs near 810 nm, polarization analyzers at both sites, silicon single-photon detectors, a time tagger). Each 'pulse' is one Site A detection; Site B's collection and detection efficiency is detector_efficiency; accidental coincidences in the coincidence window play the role of dark counts; imperfect entanglement visibility V appears as misalignment_error = (1 - V)/2 (here V = 0.94). The post-processing is the same as BB84's [bennett1992bbm92]. The alert level is set from this setup's own baseline (about 3 %), at 5 %.",
+  "scenario": "tier4_entanglement_bbm92",
+  "n_pulses": 2000000,
+  "pulse_rate_hz": 50000,
+  "distance_km": 1.0,
+  "attenuation_db_per_km": 3.5,
+  "extra_loss_db": 0.0,
+  "receiver_loss_db": 1.0,
+  "detector_efficiency": 0.25,
+  "dark_count_prob": 1e-05,
+  "misalignment_error": 0.03,
+  "qber_alert": 0.05
+}

@@ -12,7 +12,7 @@ Can two independent computers in one city share heralded entanglement at a usefu
 ## Stages
 | Stage | What | Pass | Cost / time | Files |
 |---|---|---|---|---|
-| S0 key link | the SEE 510 case study: a two-site BB84 key link, simulated end to end with Cascade, privacy amplification, an authenticated classical channel, an adversary, and key delivery; then P07 on a fiber spool | validation V1–V12 pass; hardware per [09](../../systems/see510/09_limitations_and_hardware.md) | software (done); P07 hardware $1–3k | [`systems/see510/`](../../systems/see510/README.md), `qll/link/` |
+| S0 key link | the SEE 510 case study: a two-site BB84 key link, simulated end to end with Cascade, privacy amplification, an authenticated classical channel, an adversary, and key delivery; then P07 on a fiber spool | validation V1–V12 pass; hardware ladder in [10](../../systems/see510/10_real_world_experiments.md), Tier 1 ($40–120) first | software (done); P07 hardware $1–3k | [`systems/see510/`](../../systems/see510/README.md), `qll/link/` |
 | S1 simulate | Aer + Stim model of two nodes, midpoint BSM, `ClassicalMessage` heralds; rate and fidelity vs L | rate and $F$ reproduce Stolk 2024 within 3× | software, 2 weeks | Phase 2 circuits, Phase 4 `repeater_chain.py` |
 | S2 bench | P03: SPDC source, HOM, CHSH; then split the two arms onto a 1 km fiber spool each | $S>2.2$ after the spool; HOM visibility > 85 % | $5–15k, one semester | [P03](../protocols/P03_spdc_bell_test.md) |
 | S3 campus | two labs, deployed campus fiber (1–3 km), GPS-disciplined clocks, midpoint at a third location | herald rate > 1 Hz; $S>2.2$; teleportation $F>0.7$ | detectors + timing, one semester | new protocol P05 (NEXT_100 #66–68) |

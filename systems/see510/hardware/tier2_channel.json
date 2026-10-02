@@ -1,0 +1,8 @@
+{
+  "_help": "Tier 2, fiber channel characterization. Replace each value with your measurement: attenuation from cut-back or spool-versus-patch-cord power readings at the operating wavelength; extra_loss_db from connectors, splices, and the variable attenuator setting; misalignment_error from the polarization extinction through the spool (fraction of power in the wrong port of an inline polarizer or PBS, averaged over your session time). Merge these into tier3.json or tier4.json.",
+  "scenario": "tier2_channel",
+  "distance_km": 2.0,
+  "attenuation_db_per_km": 0.35,
+  "extra_loss_db": 1.5,
+  "misalignment_error": 0.03
+}

@@ -5,6 +5,7 @@
   scenarios [--out DIR] [--sessions]                                    scenarios 1-6 and the demonstration; writes CSVs,
                                                                         plots, and a report (about 20 s on a laptop)
   demo                                                                  deliver accepted keys to the demonstration apps
+  ingest    LOG.csv [--config FILE.json] [--set ...] [--out DIR]       process an experiment's log with the same protocol
 
 Default evidence folder: systems/see510/evidence/. Everything written there is regenerated from configurations and
 seeds; rerunning reproduces every number except execution times and timestamps.
@@ -72,6 +73,18 @@ def cmd_validate(a) -> list[dict]:
             w = csv.DictWriter(fh, fieldnames=list(rows[0]))
             w.writeheader(); w.writerows(rows)
     return rows
+
+
+def cmd_ingest(a) -> None:
+    """Process an experiment log (systems/see510/10_real_world_experiments.md) with the protocol code."""
+    from qll.link.hardware_log import run_from_log
+    c = _config(a.config, a.set).with_(scenario=f"experiment:{Path(a.log).stem}")
+    r = run_from_log(Path(a.log), c)
+    print(summary(r.metrics))
+    for e in r.metrics.events:
+        print(f"  [{e['level']:>7}] {e['step']:<10} {e['message']}")
+    if a.out:
+        print(f"wrote {write_session(r, Path(a.out))}")
 
 
 def cmd_demo(a) -> dict:
@@ -222,8 +235,9 @@ def main(argv: list[str] | None = None) -> None:
     p = sub.add_parser("validate"); p.add_argument("--out")
     p = sub.add_parser("scenarios"); p.add_argument("--out"); p.add_argument("--sessions", action="store_true")
     sub.add_parser("demo")
+    p = sub.add_parser("ingest"); p.add_argument("log"); p.add_argument("--config"); p.add_argument("--set", nargs="*"); p.add_argument("--out")
     a = ap.parse_args(argv)
-    {"session": cmd_session, "validate": cmd_validate, "scenarios": cmd_scenarios, "demo": cmd_demo}[a.cmd](a)
+    {"session": cmd_session, "validate": cmd_validate, "scenarios": cmd_scenarios, "demo": cmd_demo, "ingest": cmd_ingest}[a.cmd](a)
 
 
 if __name__ == "__main__":

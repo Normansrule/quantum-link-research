@@ -21,4 +21,6 @@ The handoff's sixteen tasks, in the order they were done. For each: what is mode
 | 15 | External demonstration | key stores with an ETSI GS QKD 014-style interface; AES-256-GCM application; fail closed (TC-7) | SN-09, SN-12, SN-15 | A-12 | only accepted key is used; messages decrypt; empty store refuses | protection of keys at rest and in use | done |
 | 16 | Limitations and hardware | what is left out, and the path to a bench (09) | SN-10, SN-11, SN-14 | — | the transition is planned against measurable parameters | that it will succeed | done |
 
+| 17 | Real-world ladder | five tiers from a bright-light analogue to a deployed link; experiment logs processed by the same protocol code; Tier 1 twin, Arduino sketch, and serial driver (10) | SN-01, SN-08, SN-10, SN-11, SN-14 | tier presets in `hardware/` | the path from simulation to hardware is executable, and a log reproduces the simulated session exactly | that any tier has been built yet | designed; Tier 1 ready to build |
+
 **Next stages (not done).** Decoy-state BB84 with a weak-coherent source (removes A-01); Wegman–Carter authentication (removes A-07, completes SN-05); a composable finite-key length (removes A-10); a live monitoring dashboard (extends SN-04); feeding hardware logs from protocol P07 into the same protocol code (09).
