@@ -1,5 +1,32 @@
 # Changelog
 
+## 0.45.0 — 2026-10-02 (information-theoretic authentication; laser sources, decoy states, and photon-number splitting)
+- **Wegman–Carter authentication** (`qll/link/authentication.py`; channel mode `wegman_carter`, now the default):
+  - **Method:** a polynomial universal hash over GF(2¹²⁷ − 1) with one-time-pad masks. Each site tags its view of the whole transcript once, and the other checks the tag before any key is accepted, so a tampered message is caught at the end of the session.
+  - **Cost:** a hash key and two pads, 381 bits per session, drawn from a pool of pre-shared key and replaced from the session's output.
+  - **Net key:** new metrics `auth_bits_consumed`, `net_key_bits`, and `forgery_probability` (below 10⁻³² in every scenario session). Only net key reaches the key stores, and a session that nets nothing is flagged. HMAC remains as `auth_mode="hmac"`. SN-05 is now met in simulation.
+- **Laser sources** (`source_model`: `weak_coherent`, `weak_coherent_decoy`):
+  - Poisson photon numbers, photon-by-photon fiber loss, and click probability for several arriving photons.
+  - Signal, weak-decoy, and vacuum intensities chosen at random per pulse.
+  - `qll/link/decoy.py`: the vacuum-plus-weak-decoy bounds on the single-photon yield and error rate (Ma et al., 2005) with inverted Chernoff margins on every count, and the worst-case bound without decoys (GLLP). The key length now rests on the single-photon detections.
+- **Photon-number-splitting adversary** (`eve_attack="pns"`):
+  - **Attack:** keeps one photon of each multi-photon pulse, forwards the rest losslessly, and blocks single-photon pulses just enough to keep the signal gain honest; she cannot tell signal from decoy.
+  - **Alert:** raised when the decoy gain falls more than five standard deviations below what the signal gain implies for an honest channel.
+  - **Diagnostic:** `naive_key_bits`, the key an analysis ignoring multi-photon pulses would keep (simulation only).
+- **Scenario 8** (25 km, 10⁷ pulses):
+  - **Ideal source:** 160,180 bits.
+  - **Laser without decoys:** rejected even on an honest channel. Under attack, a naive key of about 74,000 bits against about 74,000 known to the adversary.
+  - **Laser with decoys:** 25,977 bits honestly, and 3,289 under attack, with an alert at −32 standard deviations.
+  - **Decoy laser over distance:** key to 50 km.
+- **Other additions:**
+  - a net-key plot;
+  - experiment logs gain an optional `alice_intensity` column, so a decoy experiment round-trips exactly;
+  - the Tier 3 preset now uses the decoy model;
+  - assumptions A-01, A-06, A-07, and A-10 updated, and A-15 added;
+  - models, test cases (V13–V15, TC-8, TC-9), traceability, stages 18–19, limitations, and the ladder updated;
+  - thesis 4.3 extended.
+- **Bibliography:** Stinson (1994), Chernoff (1952).
+
 ## 0.44.0 — 2026-10-01 (the two-site link in the real world: an experiment ladder, and logs through the same code)
 - **`systems/see510/10_real_world_experiments.md`**: five tiers from a tabletop analogue to a deployed link. Each tier has its setup, parts with planning prices, step-by-step build and measurement, a prediction from a preset configuration, pass criteria, what it proves and does not, and safety.
   - **Tier 1, a bright-light polarization analogue** ($40–120): laser pointer, polarizer film on servos, photodiode, Arduino; no security claim.

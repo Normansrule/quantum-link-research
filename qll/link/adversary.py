@@ -51,3 +51,48 @@ class InterceptResend:
         out = PreparedStates(np.where(touched, e_bits, s.bits).astype(np.int8), np.where(touched, e_bases, s.bases).astype(np.int8))
         rec = AdversaryRecord(self.fraction, touched, e_bases, e_bits, s.bases)
         return out, rec
+
+
+class PhotonNumberSplitting:
+    """Photon-number splitting on a weak-coherent source [brassard2000].
+
+    The adversary measures each pulse's photon number without disturbing its polarization. From a pulse with two or
+    more photons she keeps one in a memory and forwards the rest to Site B over her own lossless line; after the bases
+    are announced she measures her photon in the right basis and knows the bit, causing no errors. Single-photon
+    pulses she blocks with the probability b that makes Site B's signal gain equal an honest channel's, so loss and
+    error rate look normal (if multi-photon pulses alone already exceed that gain, she also drops some of them). She
+    cannot tell signal pulses from decoy pulses, which carry the same states at a different mean photon number, so the
+    same strategy changes the decoy class's gain differently: that is what the decoy-state estimate detects [hwang2003].
+    She is given perfect equipment: lossless line, ideal memory, knowledge of mu, the channel, and Site B's efficiency.
+    """
+
+    def __init__(self, fraction: float, rng: np.random.Generator, mu: float, honest_t: float, eta_b: float):
+        if not 0.0 <= fraction <= 1.0:
+            raise ValueError("fraction must lie in [0, 1]")
+        self.fraction, self.rng = fraction, rng
+        n = np.arange(40)
+        logp = -mu + n * np.log(mu) - np.array([sum(np.log(np.arange(1, k + 1))) for k in n])
+        pn = np.exp(logp)
+        target = 1 - np.exp(-mu * honest_t * eta_b)                       # honest signal gain at Site B (before background)
+        g1 = pn[1] * eta_b                                                # gain if every single-photon pulse is forwarded
+        gm = float(np.sum(pn[2:] * (1 - (1 - eta_b) ** (n[2:] - 1))))     # gain from forwarding n - 1 photons of the rest
+        if gm >= target:
+            self.block_single, self.forward_multi = 1.0, target / gm
+        else:
+            self.block_single, self.forward_multi = min(1.0, max(0.0, 1 - (target - gm) / g1)), 1.0
+
+    def act(self, s: PreparedStates):
+        n = len(s.bits)
+        attacked = self.rng.random(n) < self.fraction
+        u = self.rng.random(n)
+        multi = s.photons >= 2
+        single = s.photons == 1
+        keep_multi = attacked & multi & (u < self.forward_multi)
+        photons = s.photons.copy()
+        photons[attacked & single & (u < self.block_single)] = 0          # blocked
+        photons[attacked & multi & ~keep_multi] = 0                       # dropped (only if multi alone exceed the gain)
+        photons[keep_multi] -= 1                                          # one photon split off and stored
+        out = PreparedStates(s.bits, s.bases, photons, s.intensity)
+        # she learns the bit of every stored photon once the basis is announced
+        rec = AdversaryRecord(self.fraction, keep_multi, s.bases.copy(), s.bits.copy(), s.bases)
+        return out, rec, attacked                                         # attacked pulses bypass the fiber's loss

@@ -17,6 +17,9 @@ Two kinds of evidence, kept apart. **Validation** compares the simulation with c
 | V10 | verification with one differing bit | mismatch detected | exact | `test_verification_catches_a_single_differing_bit` |
 | V11 | fast Toeplitz hash | equals the explicit matrix product | exact | `test_fast_toeplitz_equals_the_matrix_product` |
 | V12 | committed evidence | a fresh run reproduces the baseline rows of `evidence/sessions/1_baseline.csv` | exact | `test_committed_evidence_is_reproduced_by_a_fresh_run` |
+| V13 | Wegman–Carter tags | altered messages change the hash; zero blocks are not invisible; the pool is charged 381 bits per session and refilled from accepted output | exact | `test_wegman_carter_tags`, `test_transcript_authentication_catches_tampering_at_the_end` |
+| V14 | decoy-state bounds with very large counts | the single-photon yield and share are bounded below their true values and within 10 % of them | exact, bounded | `test_decoy_bounds_are_conservative_and_tight_with_large_counts` |
+| V15 | experiment logs, including decoy intensities | a simulated session written as a log and read back reproduces exactly | exact | `test_an_experiment_log_runs_through_the_same_protocol_exactly`, `test_decoy_experiment_log_round_trips` |
 
 ## Scenarios (`python -m qll.link.run scenarios`)
 | ID | Scenario | Configuration | What is measured | Expected behavior (model) | Needs |
@@ -28,5 +31,7 @@ Two kinds of evidence, kept apart. **Validation** compares the simulation with c
 | TC-5 | Random channel error | misalignment 0–15 %, and an adversary tuned to the same expected error rate | error rate, detection rate, decision | the two are indistinguishable by these indicators; both rejected above the threshold | SN-03, SN-07 |
 | TC-6 | Reproducibility | same configuration and seed twice, and a second seed | every metric and the keys | identical; the second seed differs | SN-07 |
 | TC-7 | Demonstration | accepted and rejected sessions feeding the key stores and the application | keys delivered, round trips, refusal | keys only from the accepted session; messages decrypt; refusal when empty | SN-12, SN-15 |
+| TC-8 | Sources and photon-number splitting | ideal source; laser without decoys, honest and attacked; laser with decoys, honest and attacked; 25 km, 10⁷ pulses; decoy laser over 0–100 km | gains, decoy-gain deviation, single-photon bound, final and naive key, what the adversary knew | without decoys no key is guaranteed at 25 km and a naive analysis would keep a key she largely knows; with decoys the attack moves the decoy gain far from its honest value, raises the alert, and shrinks the key below what she cannot know | SN-03, SN-05 |
+| TC-9 | Authentication cost | every session of scenario 2 | final key, authentication key spent, net key | each session spends 381 bits; near 75 km a 10⁶-pulse session nets less than it spends | SN-05, SN-06 |
 
 **What this proves.** The simulation's statistics match their closed forms (V1–V5), its decisions follow the rules (V5, V7, V8), it is exactly reproducible (V6, V12), and its components work individually (V9–V11). Under the model, the scenarios then show how loss, block size, noise, and interception change the key. **What it does not prove.** That hardware behaves this way, that the security argument holds against attacks outside A-06, or that the finite-key estimate is composably secure.

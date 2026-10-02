@@ -30,7 +30,9 @@ from dataclasses import dataclass
 
 import numpy as np
 
-from qll.link.adversary import AdversaryRecord, InterceptResend
+from qll.link.adversary import AdversaryRecord, InterceptResend, PhotonNumberSplitting
+from qll.link.decoy import SinglePhotonBound, decoy_bound, gllp_bound
+from qll.link.authentication import AuthKeyPool
 from qll.link.classical_channel import AuthenticatedChannel, AuthenticationFailure
 from qll.link.codec import pack, pack_indices, unpack, unpack_indices
 from qll.link.config import LinkConfig
@@ -39,7 +41,7 @@ from qll.link.models import channel_loss_db, channel_transmittance, hoeffding_ma
 from qll.link.monitor import SessionMetrics
 from qll.link.quantum_channel import FiberChannel
 from qll.link.reconciliation import reconcile, verify
-from qll.link.site_a import PreparedStates, SiteA
+from qll.link.site_a import DECOY, SIGNAL, VACUUM, PreparedStates, SiteA
 from qll.link.site_b import Detections, SiteB
 from qll.qkd.binary_entropy import h2
 from qll.qkd.privacy_amplification import toeplitz_hash
@@ -73,37 +75,92 @@ def auth_key_for(c: LinkConfig) -> bytes:
     return hashlib.sha256(f"qll-link-psk/{c.seed}".encode()).digest()
 
 
+def make_adversary(c: LinkConfig, rng: np.random.Generator):
+    if c.eve_fraction <= 0:
+        return None
+    if c.eve_attack == "pns":
+        eta_b = 10 ** (-c.receiver_loss_db / 10) * c.detector_efficiency
+        return PhotonNumberSplitting(c.eve_fraction, rng, c.mu_signal, channel_transmittance(c), eta_b)
+    return InterceptResend(c.eve_fraction, rng)
+
+
+def adversary_label(c: LinkConfig) -> str:
+    if c.eve_fraction <= 0:
+        return "none"
+    name = "photon-number splitting" if c.eve_attack == "pns" else "intercept-resend"
+    return f"{name} on {100 * c.eve_fraction:g} % of pulses"
+
+
 def simulate_quantum(c: LinkConfig) -> QuantumRecord:
     """Steps 3-4 alone: the simulated quantum transmission, from the same seeded streams run_session uses."""
     rngs = dict(zip(STREAMS, (np.random.default_rng(s) for s in np.random.SeedSequence(c.seed).spawn(len(STREAMS)))))
-    adversary = InterceptResend(c.eve_fraction, rngs["adversary"]) if c.eve_fraction > 0 else None
-    states = SiteA(rngs["site_a"]).prepare(c.n_pulses)
+    adversary = make_adversary(c, rngs["adversary"])
+    states = SiteA(rngs["site_a"]).prepare(c.n_pulses, c)
     out = FiberChannel(c, rngs["channel"], adversary).transmit(states)
     return QuantumRecord(states, SiteB(c, rngs["site_b"]).measure(out), out.adversary)
 
 
+def new_auth_pool(c: LinkConfig) -> AuthKeyPool:
+    """The pre-shared authentication key the sites hold before their first session."""
+    return AuthKeyPool(c.auth_pool_bits, hashlib.sha256(b"wc-pool/" + auth_key_for(c)).digest())
+
+
 def run_session(c: LinkConfig, managers: dict[str, SiteKeyManager] | None = None, site_a: str = "A",
-                site_b: str = "B", record: QuantumRecord | None = None) -> SessionResult:
+                site_b: str = "B", record: QuantumRecord | None = None, pool: AuthKeyPool | None = None) -> SessionResult:
     """One session. With `record`, the quantum part comes from an experiment instead of the simulation and every later
-    step (sifting, estimation, Cascade, verification, amplification, delivery) runs unchanged."""
+    step (sifting, estimation, Cascade, verification, amplification, delivery) runs unchanged. `pool` carries the
+    Wegman-Carter key from session to session; a fresh pre-shared pool is used if none is given."""
     t0 = time.perf_counter()
     rngs = dict(zip(STREAMS, (np.random.default_rng(s) for s in np.random.SeedSequence(c.seed).spawn(len(STREAMS)))))
-    adversary = InterceptResend(c.eve_fraction, rngs["adversary"]) if c.eve_fraction > 0 else None
+    adversary = make_adversary(c, rngs["adversary"])
     m = SessionMetrics(c.run_id(), c.scenario, PROTOCOL, c.seed, c.distance_km, channel_loss_db(c), channel_transmittance(c),
-                       f"intercept-resend on {100 * c.eve_fraction:g} % of pulses" if adversary else "none", c.n_pulses,
+                       adversary_label(c), c.n_pulses,
                        timestamp_utc=_dt.datetime.now(_dt.timezone.utc).isoformat(timespec="seconds"))
-    cc = AuthenticatedChannel(auth_key_for(c), tamper_kind="sifting_bases_b" if c.tamper_classical else None)
+    if c.auth_mode == "wegman_carter" and pool is None:
+        pool = new_auth_pool(c)
+    cc = AuthenticatedChannel(auth_key_for(c), tamper_kind="sifting_bases_b" if c.tamper_classical else None,
+                              mode=c.auth_mode, pool=pool if c.auth_mode == "wegman_carter" else None)
+    m.auth_mode = c.auth_mode
     empty = np.zeros(0, dtype=np.int8)
     rec: AdversaryRecord | None = None
-    ids: list = []
+    result_ids: list = []
 
     def done(reason: str = "", key_a=empty, key_b=empty) -> SessionResult:
+        if reason != "auth" and cc.mode == "wegman_carter":
+            spent = cc.pool.consumed
+            try:
+                cc.finalize()                                   # authenticate the transcript before any decision
+                m.event("authenticate", "info", f"transcript tags agree (forgery probability below {cc.forgery_probability:.1e})")
+            except AuthenticationFailure as err:
+                m.event("authenticate", "alarm", str(err))
+                reason, key_a, key_b = "auth", empty, empty
+            except RuntimeError as err:                         # pool exhausted
+                m.event("authenticate", "alarm", str(err))
+                reason, key_a, key_b = "auth", empty, empty
+            m.auth_bits_consumed = cc.pool.consumed - spent
+            m.forgery_probability = cc.forgery_probability
+        if reason == "" and len(key_a):
+            # replace the authentication key this session spent from its own output, then deliver the rest
+            m.net_key_bits = len(key_a) - m.auth_bits_consumed
+            if cc.mode == "wegman_carter":
+                cc.pool.refill(min(len(key_a), m.auth_bits_consumed))
+            key_a, key_b = key_a[m.auth_bits_consumed:], key_b[m.auth_bits_consumed:]
+            m.net_key_rate_bps = max(0, m.net_key_bits) / (m.states_sent / c.pulse_rate_hz) if c.pulse_rate_hz > 0 else 0.0
+            if m.net_key_bits <= 0:
+                m.event("deliver", "warning", "the session made less key than its authentication consumed: no net key")
+            elif managers is not None:
+                ids = managers[site_a].store_for(site_b, c.key_size_bits).deposit(m.run_id, key_a)
+                ids_b = managers[site_b].store_for(site_a, c.key_size_bits).deposit(m.run_id, key_b)
+                assert ids == ids_b
+                m.keys_delivered_256 = len(ids)
+                m.event("deliver", "info", f"{len(ids)} keys of {c.key_size_bits} bits deposited at both sites")
+                result_ids.extend(ids)
         m.reject_reason = reason
         m.accepted = reason == ""
         m.event("decide", "info" if m.accepted else "alarm", m.status)
         m.classical_messages, m.classical_bytes = cc.n_messages, cc.bytes_sent
         m.execution_time_s = time.perf_counter() - t0
-        return SessionResult(c, m, key_a, key_b, cc, rec, ids)
+        return SessionResult(c, m, key_a, key_b, cc, rec, result_ids)
 
     try:
         # 1-2 configure and verify readiness
@@ -112,7 +169,7 @@ def run_session(c: LinkConfig, managers: dict[str, SiteKeyManager] | None = None
         m.event("ready", "info", f"session {m.run_id} established; channel loss {m.channel_loss_db:.2f} dB")
         # 3-4 quantum transmission (simulated, or recorded by an experiment)
         if record is None:
-            states = SiteA(rngs["site_a"]).prepare(c.n_pulses)
+            states = SiteA(rngs["site_a"]).prepare(c.n_pulses, c)
             out = FiberChannel(c, rngs["channel"], adversary).transmit(states)
             rec = out.adversary
             det = SiteB(c, rngs["site_b"]).measure(out)
@@ -133,6 +190,26 @@ def run_session(c: LinkConfig, managers: dict[str, SiteKeyManager] | None = None
         match = bases_a == bases_b
         keep = idx_rx[match]
         ka, kb = states.bits[keep].astype(np.int8), det.bits[keep].astype(np.int8)
+        m.source_model = c.source_model
+        decoy_counts = None
+        if states.intensity is not None:
+            # Site A announces each detected pulse's intensity class and how many pulses of each class it sent
+            totals = [int(np.sum(states.intensity == k)) for k in (SIGNAL, DECOY, VACUUM)]
+            cls_rx = unpack_indices(cc.send("A", "intensity_classes", {"classes": pack_indices(states.intensity[idx_rx]),
+                                                                       "totals": totals})["classes"])
+            detected_per_class = [int(np.sum(cls_rx == k)) for k in (SIGNAL, DECOY, VACUUM)]
+            cls_keep = cls_rx[match]
+            dec = cls_keep == DECOY
+            da = unpack(cc.send("A", "decoy_bits_a", pack(ka[dec])))           # decoy bits are disclosed, never key
+            db = unpack(cc.send("B", "decoy_bits_b", pack(kb[dec])))
+            decoy_counts = (totals, detected_per_class, int(np.sum(da != db)), int(dec.sum()))
+            m.gain_signal = detected_per_class[0] / max(totals[0], 1)
+            m.gain_decoy = detected_per_class[1] / max(totals[1], 1)
+            m.gain_vacuum = detected_per_class[2] / max(totals[2], 1)
+            sig = cls_keep == SIGNAL
+            keep, ka, kb = keep[sig], ka[sig], kb[sig]
+        elif c.source_model == "weak_coherent":
+            m.gain_signal = m.detection_probability
         m.sifted_bits = len(keep)
         m.qber_true = float(np.mean(ka != kb)) if len(keep) else 0.5
         m.event("sift", "info", f"{m.sifted_bits:,} sifted bits")
@@ -156,6 +233,33 @@ def run_session(c: LinkConfig, managers: dict[str, SiteKeyManager] | None = None
             m.eve_known_key_bits = int(np.sum(rec.touched[k_idx] & (rec.bases[k_idx] == states.bases[k_idx])))
         m.key_block_bits = len(ka)
         m.event("estimate", "info", f"QBER {100 * m.qber_estimate:.2f} % from {n_sample} sampled bits")
+        # single-photon bound: exact for an ideal source; decoy-state or worst-case (GLLP) for a laser
+        if c.source_model == "single_photon":
+            bound = SinglePhotonBound(1.0, m.qber_upper_bound)
+        elif c.source_model == "weak_coherent":
+            bound = gllp_bound(c.mu_signal, m.gain_signal, m.qber_upper_bound)
+        else:
+            (tot, dets, derr, dsift) = decoy_counts
+            bound = decoy_bound(c.mu_signal, c.mu_decoy, tuple(tot), tuple(dets), derr, dsift, c.eps_pe)
+            m.y1_lower = bound.y1_lower
+        m.single_photon_fraction, m.e1_upper = bound.single_fraction, bound.e1_upper
+        if decoy_counts is not None and m.gain_signal > 0:
+            # an honest channel fixes the decoy gain once the signal gain is known: Q_nu = 1 - e^(-nu T), T from Q_mu
+            t_eff = -math.log(max(1e-300, 1 - m.gain_signal)) / c.mu_signal
+            expected = 1 - math.exp(-c.mu_decoy * t_eff)
+            sd = math.sqrt(max(expected * (1 - expected), 1e-300) / max(decoy_counts[0][1], 1))
+            m.decoy_gain_deviation_sd = (m.gain_decoy - expected) / sd
+            if m.decoy_gain_deviation_sd < -5:
+                m.alert = True
+                m.event("estimate", "warning", f"decoy gain {m.decoy_gain_deviation_sd:.1f} standard deviations below what the "
+                        "signal gain implies for an honest channel: consistent with photon-number splitting")
+        if c.source_model != "single_photon":
+            # simulation-only: the key an analysis that treated the laser as a single-photon source would have kept
+            m.naive_key_bits = max(0, math.floor(len(ka) * (1 - h2(m.qber_upper_bound)) - 1.2 * len(ka) * h2(max(m.qber_estimate, 1e-9))
+                                                 - c.verify_tag_bits - 2 * math.log2(1 / c.eps_pa)))
+            m.event("estimate", "info" if bound.usable else "alarm",
+                    f"at least {100 * max(bound.single_fraction, 0):.1f} % of signal detections are single-photon, "
+                    f"their error rate at most {100 * bound.e1_upper:.1f} %")
         if m.qber_estimate > c.qber_alert:
             m.alert = True
             m.event("estimate", "warning", f"QBER above the {100 * c.qber_alert:g} % alert level: possible interception or "
@@ -163,6 +267,8 @@ def run_session(c: LinkConfig, managers: dict[str, SiteKeyManager] | None = None
         if m.qber_estimate > c.qber_threshold:
             m.event("estimate", "alarm", f"QBER above the {100 * c.qber_threshold:g} % threshold")
             return done("qber")
+        if not bound.usable:
+            return done("single_photon")
         # 7 reconciliation and verification
         rc = reconcile(ka, kb, m.qber_estimate, c.ec_passes, rngs["protocol"], cc)
         m.ec_leaked_bits, m.ec_corrected_bits = rc.leaked_bits, rc.corrected
@@ -173,7 +279,8 @@ def run_session(c: LinkConfig, managers: dict[str, SiteKeyManager] | None = None
         if not m.verified:
             return done("verify")
         # 8 privacy amplification
-        l = math.floor(len(ka) * (1 - h2(m.qber_upper_bound)) - rc.leaked_bits - c.verify_tag_bits - 2 * math.log2(1 / c.eps_pa))
+        l = math.floor(len(ka) * bound.single_fraction * (1 - h2(bound.e1_upper)) - rc.leaked_bits - c.verify_tag_bits
+                       - 2 * math.log2(1 / c.eps_pa))
         if l <= 0:
             m.event("amplify", "alarm", "no secret key after deductions")
             return done("no_key")
@@ -183,13 +290,7 @@ def run_session(c: LinkConfig, managers: dict[str, SiteKeyManager] | None = None
         m.pa_removed_bits = len(ka) - l
         m.secret_key_rate_bps = l / (m.states_sent / c.pulse_rate_hz) if c.pulse_rate_hz > 0 else 0.0
         m.event("amplify", "info", f"{l:,} final key bits")
-        # 9 deliver accepted key to both sites' stores
-        if managers is not None:
-            ids = managers[site_a].store_for(site_b, c.key_size_bits).deposit(m.run_id, final_a)
-            ids_b = managers[site_b].store_for(site_a, c.key_size_bits).deposit(m.run_id, final_b)
-            assert ids == ids_b
-            m.keys_delivered_256 = len(ids)
-            m.event("deliver", "info", f"{len(ids)} keys of {c.key_size_bits} bits deposited at both sites")
+        # 9-10 authenticate the transcript, replace the authentication key, deliver the rest (in done)
         return done("", final_a, final_b)
     except AuthenticationFailure as err:
         m.event("classical", "alarm", str(err))

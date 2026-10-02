@@ -106,6 +106,9 @@ def cmd_scenarios(a) -> None:
     res["5_noise_vs_adversary"] = [r for p in pairs for r in p if r is not None]
     rep = S.reproducibility(base)
     res["6_reproducibility"] = rep["runs"]
+    src = S.sources(base)
+    res["8_sources"] = [r for _, r in src]
+    res["8_decoy_distance"] = S.decoy_distance(base)
     demo = S.demonstration(base)
     validation = S.validation_checks()
     for name, rs in res.items():
@@ -117,8 +120,10 @@ def cmd_scenarios(a) -> None:
     from qll.link.plots import make_all
     plots = make_all([r.metrics for r in res["2_distance"]], [r.metrics for r in res["3_interception"]],
                      [r.metrics for r in res["4_high_loss"]], pairs, base, out / "plots")
+    from qll.link.plots import sources_plot
+    plots.append(sources_plot(src, out / "plots"))
     elapsed = time.perf_counter() - t0
-    (out / "README.md").write_text(_report(res, pairs, rep, demo, validation, plots, example, out, base, elapsed), encoding="utf-8")
+    (out / "README.md").write_text(_report(res, pairs, rep, demo, validation, plots, example, out, base, elapsed, src), encoding="utf-8")
     print(f"wrote {out}/README.md, {len(plots)} plots, and {len(res)} scenario tables in {elapsed:.1f} s")
 
 
@@ -129,8 +134,9 @@ def _row(m) -> dict:
             "final key bits": f"{m.final_key_bits:,}", "seed": m.seed}
 
 
-def _report(res, pairs, rep, demo, validation, plots, example, out, base, elapsed) -> str:
+def _report(res, pairs, rep, demo, validation, plots, example, out, base, elapsed, src=()) -> str:
     rel = lambda p: Path(p).relative_to(out).as_posix()
+    P = lambda name: rel(next(p for p in plots if Path(p).stem == name))
     cols = ["distance (km)", "loss (dB)", "adversary", "detected", "sifted", "QBER", "alert", "decision", "final key bits", "seed"]
     L = [
         "# Simulation evidence: Scalable Two-Node Fiber-Optic Quantum Communication Link",
@@ -164,11 +170,11 @@ def _report(res, pairs, rep, demo, validation, plots, example, out, base, elapse
         "",
         "## Scenario 2: increasing distance",
         "",
-        f"![loss]({rel(plots[0])}) ![detection]({rel(plots[1])})",
+        f"![loss]({P("loss_vs_distance")}) ![detection]({P("detection_vs_distance")})",
         "",
-        f"![qber]({rel(plots[2])}) ![key]({rel(plots[3])})",
+        f"![qber]({P("qber_vs_distance")}) ![key]({P("key_vs_distance")})",
         "",
-        f"![acceptance]({rel(plots[4])})",
+        f"![acceptance]({P("acceptance_vs_distance")})",
         "",
         _md_table([_row(r.metrics) for r in res["2_distance"] if r.metrics.seed == S.SEEDS[0]], cols),
         "",
@@ -179,7 +185,7 @@ def _report(res, pairs, rep, demo, validation, plots, example, out, base, elapse
         "",
         "## Scenario 3: interception (intercept-and-resend) and classical tampering",
         "",
-        f"![adversary]({rel(plots[5])}) ![amplification]({rel(plots[6])})",
+        f"![adversary]({P("baseline_vs_adversary")}) ![amplification]({P("amplification_vs_adversary")})",
         "",
         _md_table([_row(r.metrics) for r in res["3_interception"]], cols),
         "",
@@ -191,13 +197,13 @@ def _report(res, pairs, rep, demo, validation, plots, example, out, base, elapse
         "",
         "## Scenario 4: high loss from an inserted attenuator",
         "",
-        f"![high loss]({rel(plots[8])})",
+        f"![high loss]({P("high_loss")})",
         "",
         _md_table([_row(r.metrics) for r in res["4_high_loss"]], cols),
         "",
         "## Scenario 5: ordinary noise against an adversary with the same expected error rate",
         "",
-        f"![noise]({rel(plots[7])})",
+        f"![noise]({P("noise_vs_adversary")})",
         "",
         _md_table([_row(r.metrics) for r in res["5_noise_vs_adversary"]], cols),
         "",
@@ -211,6 +217,39 @@ def _report(res, pairs, rep, demo, validation, plots, example, out, base, elapse
         f"Same configuration and seed twice: metrics identical **{rep['same_metrics']}**, keys identical **{rep['same_keys']}**, "
         f"run identifier identical **{rep['same_run_id']}**. A different seed gives a different key: **{rep['other_seed_differs']}**.",
         "",
+        "## Authentication cost and net key",
+        "",
+        f"![net key]({P('net_key_vs_distance')})",
+        "",
+        f"The classical channel is authenticated with Wegman–Carter tags over each site's view of the whole transcript "
+        f"(information-theoretically secure; forgery probability below 10⁻³⁰ per session). Each session spends "
+        f"{res['1_baseline'][0].metrics.auth_bits_consumed} bits of authentication key, replaced from its own output before "
+        "any key is delivered. A session that yields less than that is accepted but delivers nothing: the link is then "
+        "consuming its pre-shared key rather than growing it, which in the 10⁶-pulse sessions happens near 75 km.",
+        "",
+        "## Scenario 8: the source, and photon-number splitting (25 km, 10⁷ pulses)",
+        "",
+        f"![sources]({P('sources_and_pns')})",
+        "",
+        _md_table([{"case": lab, "decision": "accepted" if r.metrics.accepted else f"rejected ({r.metrics.reject_reason})",
+                    "QBER": f"{100 * r.metrics.qber_estimate:.2f} %", "single-photon share (bound)": f"{100 * r.metrics.single_photon_fraction:.1f} %",
+                    "decoy gain vs honest": f"{r.metrics.decoy_gain_deviation_sd:+.1f} sd" if "decoy" in r.config.source_model else "",
+                    "alert": "yes" if r.metrics.alert else "", "final key": f"{r.metrics.final_key_bits:,}",
+                    "naive key": f"{r.metrics.naive_key_bits:,}" if r.config.source_model != "single_photon" else "",
+                    "adversary knew": f"{r.metrics.eve_known_key_bits:,}"} for lab, r in src],
+                  ["case", "decision", "QBER", "single-photon share (bound)", "decoy gain vs honest", "alert", "final key", "naive key", "adversary knew"]),
+        "",
+        "An attenuated laser sends some pulses with two or more photons. A photon-number-splitting adversary keeps one "
+        "photon of each, reads it after the bases are announced, and blocks single-photon pulses just enough that the "
+        "detection rate looks like an honest channel's; she causes no errors. Without decoys the error rate and the gain "
+        "look normal, and an analysis that treated the laser as a single-photon source would keep a key of which she "
+        "knows a large share (\"naive key\" against \"adversary knew\"). The worst-case analysis without decoys "
+        "(GLLP) must grant her every multi-photon pulse and finds no key at 25 km even on an honest channel. With decoy "
+        "intensities she cannot tell signal from decoy pulses, the decoy gain falls far below what the signal gain implies, "
+        "the operator is alerted, and the single-photon bound shrinks the key to what she cannot know.",
+        "",
+        _md_table([_row(r.metrics) for r in res["8_decoy_distance"]], cols),
+        "",
         "## Demonstration: external secure-communication application",
         "",
         f"An accepted session delivered {demo['keys_from_good']} keys of 256 bits to both sites; a rejected session "
@@ -220,7 +259,7 @@ def _report(res, pairs, rep, demo, validation, plots, example, out, base, elapse
         "",
         "## All sessions",
         "",
-        f"![outcomes]({rel(plots[9])})",
+        f"![outcomes]({P("session_outcomes")})",
         "",
         "Rejection reasons: " + "; ".join(f"`{k}`: {v}" for k, v in REJECT_REASONS.items()) + ".",
         "",

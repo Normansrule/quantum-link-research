@@ -162,6 +162,18 @@ def make_all(dist, eve, loss, pairs, base: LinkConfig, out: Path) -> list[Path]:
     ax.annotate("rejected sessions are drawn at the axis floor", (0.02, 0.04), xycoords="axes fraction", fontsize=8, color=MUTED)
     paths.append(_save(fig, out, "high_loss"))
 
+    # 10b net key against distance: what authentication costs
+    if net_main := [m for m in main if m.final_key_bits > 0]:
+        fig, ax = plt.subplots(figsize=(6.4, 3.8))
+        ax.semilogy([m.distance_km for m in net_main], [m.final_key_bits for m in net_main], "o", ms=7, color=BLUE, mec="white", label="final key")
+        pos = [m for m in net_main if m.net_key_bits > 0]
+        ax.semilogy([m.distance_km for m in pos], [m.net_key_bits for m in pos], "s", ms=6, color=ORANGE, mec="white", label="net key, after replacing authentication key")
+        ax.axhline(net_main[0].auth_bits_consumed, color=MUTED, ls="--", lw=1.2)
+        ax.annotate(f"authentication cost {net_main[0].auth_bits_consumed} bits per session", (1, net_main[0].auth_bits_consumed), xytext=(0, 5), textcoords="offset points", fontsize=9, color=MUTED)
+        _style(ax, "Net key: a session must out-earn its authentication", "fiber length (km)", "bits per session")
+        ax.legend(frameon=False, fontsize=9)
+        paths.append(_save(fig, out, "net_key_vs_distance"))
+
     # 10 session outcomes
     allm = dist + eve + loss + [n.metrics for n, _ in pairs] + [a.metrics for _, a in pairs if a]
     cnt = Counter("accepted" if m.accepted else m.reject_reason for m in allm)
@@ -175,3 +187,25 @@ def make_all(dist, eve, loss, pairs, base: LinkConfig, out: Path) -> list[Path]:
     _style(ax, f"Outcomes of all {len(allm)} scenario sessions", "sessions", "")
     paths.append(_save(fig, out, "session_outcomes"))
     return paths
+
+
+def sources_plot(rows, out: Path) -> Path:
+    """Scenario 8: the key, the key a naive analysis would have kept, and what the adversary knew, per source case."""
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    labels = [lab.replace(", photon-number splitting", ",\nphoton-number splitting") for lab, _ in rows]
+    ms = [r.metrics for _, r in rows]
+    x = np.arange(len(ms))
+    fig, ax = plt.subplots(figsize=(9.6, 4.4))
+    ax.bar(x - 0.27, [m.final_key_bits for m in ms], 0.26, color=BLUE, label="final key (this analysis)")
+    ax.bar(x, [m.naive_key_bits for m in ms], 0.26, color=AQUA, label="key a single-photon analysis would keep")
+    ax.bar(x + 0.27, [m.eve_known_key_bits for m in ms], 0.26, color=ORANGE, label="key-block bits the adversary knew")
+    for i, m in enumerate(ms):
+        ax.text(i, max(m.final_key_bits, m.naive_key_bits, m.eve_known_key_bits) * 1.04 + 500,
+                "accepted" if m.accepted else "rejected", ha="center", fontsize=8, color=GOOD if m.accepted else CRITICAL)
+    ax.set_xticks(x, labels, fontsize=8)
+    ax.set_ylim(0, 1.15 * max(max(m.final_key_bits, m.naive_key_bits, m.eve_known_key_bits) for m in ms))
+    _style(ax, "Sources at 25 km: decoys expose photon-number splitting", "", "bits per 10\u2077-pulse session")
+    ax.legend(frameon=False, fontsize=8, loc="upper right")
+    return _save(fig, out, "sources_and_pns")

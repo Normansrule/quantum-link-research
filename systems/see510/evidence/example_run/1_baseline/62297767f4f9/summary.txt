@@ -1,4 +1,4 @@
-Simulation Run ID:       9ce7440fb81b
+Simulation Run ID:       62297767f4f9
 Scenario:                1_baseline
 Protocol:                BB84 (ideal single-photon source, prepare and measure)
 Distance:                0 km
@@ -11,5 +11,6 @@ QBER:                    1.13 % estimated (upper bound 4.94 %)
 Adversary:               none
 Key Accepted:            yes
 Final Usable Key Length: 44,396 bits (44,396.0 bit/s at the pulse rate)
+Authentication:          wegman_carter: 381 key bits spent; net key 44,015 bits (forgery probability below 4.8e-34)
 Random Seed:             11
-Execution Time:          0.241 s
+Execution Time:          0.416 s

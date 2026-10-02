@@ -4,8 +4,9 @@ Format
 ------
 One CSV row per pulse (or per time slot of a photon-counting experiment), with each site's private record in its
 own columns:
-    pulse, alice_bit, alice_basis, bob_basis, bob_click, bob_bit[, eve_touched, eve_basis, eve_bit]
-Bases are 0 (rectilinear, Z) and 1 (diagonal, X). `bob_click` is 1 if Site B registered a detection in that slot; for
+    pulse, alice_bit, alice_basis, bob_basis, bob_click, bob_bit[, alice_intensity][, eve_touched, eve_basis, eve_bit]
+Bases are 0 (rectilinear, Z) and 1 (diagonal, X). `alice_intensity` (0 signal, 1 decoy, 2 vacuum) is required for a
+decoy-state experiment and absent otherwise. `bob_click` is 1 if Site B registered a detection in that slot; for
 a bright-light analogue (systems/see510/10_real_world_experiments.md, Tier 1) every slot clicks. The optional Eve
 columns are written only when an intercept-resend station is present, and are used only for simulation-only
 diagnostics, never by the protocol. The log merges both sites' records for convenience; the protocol still lets
@@ -36,8 +37,10 @@ EVE_COLUMNS = ["eve_touched", "eve_basis", "eve_bit"]
 
 def write_log(path: Path, rec: QuantumRecord) -> Path:
     s, d, e = rec.states, rec.det, rec.adversary
-    cols = COLUMNS + (EVE_COLUMNS if e is not None else [])
+    cols = COLUMNS + (["alice_intensity"] if s.intensity is not None else []) + (EVE_COLUMNS if e is not None else [])
     arrays = [np.arange(len(s.bits)), s.bits, s.bases, d.bases, d.detected.astype(np.int8), np.where(d.detected, d.bits, 0)]
+    if s.intensity is not None:
+        arrays.append(s.intensity)
     if e is not None:
         arrays += [e.touched.astype(np.int8), e.bases, e.results]
     Path(path).parent.mkdir(parents=True, exist_ok=True)
@@ -62,7 +65,14 @@ def read_log(path: Path) -> QuantumRecord:
     for name in ("alice_bit", "alice_basis", "bob_basis", "bob_click", "bob_bit"):
         if not np.isin(col[name], (0, 1)).all():
             raise ValueError(f"column {name} must hold only 0 and 1")
-    states = PreparedStates(col["alice_bit"].astype(np.int8), col["alice_basis"].astype(np.int8))
+    intensity = None
+    if "alice_intensity" in col:
+        if not np.isin(col["alice_intensity"], (0, 1, 2)).all():
+            raise ValueError("column alice_intensity must hold 0 (signal), 1 (decoy), or 2 (vacuum)")
+        intensity = col["alice_intensity"].astype(np.int8)
+    # a photon count is not observable in an experiment; its presence only marks a weak-coherent record
+    photons = np.ones(len(col["alice_bit"]), dtype=np.int64) if intensity is not None else None
+    states = PreparedStates(col["alice_bit"].astype(np.int8), col["alice_basis"].astype(np.int8), photons, intensity)
     click = col["bob_click"].astype(bool)
     det = Detections(click, click, col["bob_bit"].astype(np.int8), col["bob_basis"].astype(np.int8))
     adv = None

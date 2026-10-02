@@ -14,7 +14,7 @@ A disagreement points at the assumption that failed (03).
 | 0 | Simulation only (done) | $0 | done | nothing physical | none (a model) | all, in simulation |
 | 1 | Bright-light polarization analogue: laser pointer, polarizer film on servos, photodiode, Arduino | $40–120 | 2–3 weekends | bases, sifting, errors from optics, interception disturbance, the whole processing chain on measured data | none: bright light can be tapped | SN-01, SN-02 (analogue), SN-04, SN-07, SN-08 |
 | 2 | Fiber channel characterization: telecom transceivers, power meter, attenuator, spool, wavelength multiplexer | $80–350 | 2–4 weekends | the channel's loss, connector loss, polarization drift, and cross-talk from classical traffic | none (no quantum states) | SN-06, SN-11, SN-14 |
-| 3 | Weak-coherent BB84 at the single-photon level: pulsed laser near 850 nm, four-state encoder, single-photon detectors, timing | $2,000–8,000 | one semester | single-photon detection, real dark counts, real error rates, real key from a real channel | partial: no decoy states, so not secure against photon-number splitting | SN-02, SN-03, SN-06, SN-07, SN-11 |
+| 3 | Decoy-state BB84 at the single-photon level: pulsed laser near 850 nm at three intensities, four-state encoder, single-photon detectors, timing | $2,000–8,000 | one semester | single-photon detection, real dark counts, real error rates, decoy-state bounds, real key from a real channel | laboratory-grade against photon-number splitting; detector attacks not addressed | SN-02, SN-03, SN-06, SN-07, SN-11 |
 | 4 | Entanglement-based BBM92: down-conversion pair source, analyzers at both sites, time tagger | $15,000–60,000 (or a lent teaching kit) | one semester to a year | entangled pairs, a Bell test, key measured on arrival | laboratory-grade, not device-independent | SN-02, SN-03, SN-05, SN-07 |
 | 5 | Commercial or testbed link over deployed fiber | $100,000+ or a partnership | months | a production system and real infrastructure | as certified by the vendor | SN-12, SN-13, SN-14, SN-15 |
 
@@ -145,10 +145,10 @@ A commercial version of the same idea, with half-wave plates and polarizing beam
 **Measure, step by step.**
 1. **Predict** with `tier3.json`, after merging in the Tier 2 values and your detectors' datasheet efficiency and dark-count rate. Convert the dark-count rate to a probability per detection window.
 2. **Characterize the detectors:** dark counts with the input blocked, and efficiency against the calibrated power meter. Update `detector_efficiency` and `dark_count_prob`.
-3. **Set the mean photon number:** measure the average power at Site A's output, divide by the photon energy and the pulse rate, and choose the attenuation for a mean photon number of 0.2. Represent it as `extra_loss_db = -10·log10(0.2)` (about 7 dB), as `tier3.json` explains.
+3. **Set the intensities:** measure the average power at Site A's output for each intensity, divide by the photon energy and the pulse rate, and set the attenuations for a signal mean photon number of 0.5 and a decoy of 0.1, with vacuum slots (laser off). Put the measured values in `mu_signal` and `mu_decoy`, and the proportions you programmed (for example 80 % signal, 15 % decoy) in `p_signal` and `p_decoy`.
 4. **Run and log:**
    - Run sessions of 10⁶ slots.
-   - Log one row per slot with Site A's bit and basis and Site B's basis, click, and bit, matching the hardware_log format.
+   - Log one row per slot with Site A's bit, basis, and intensity class (`alice_intensity`: 0 signal, 1 decoy, 2 vacuum) and Site B's basis, click, and bit, matching the hardware_log format.
    - A detection with both outputs firing goes in as a random bit; record how many there were.
 5. **Process:** `python -m qll.link.run ingest LOG.csv --config systems/see510/hardware/tier3.json`.
 6. **Sweep the attenuator** from 0 to 20 dB (scenario 4 on hardware) and plot the detection probability and error rate against the twin's curves.
@@ -160,9 +160,7 @@ A commercial version of the same idea, with half-wave plates and polarizing beam
 - The interception error within statistical error of e + f/4.
 - Keys verified and accepted.
 
-**What it proves.** Real single-photon detection statistics and a real key, with every processing step checked against the model. **What it does not prove.**
-- **Photon-number splitting:** without decoy states, multi-photon pulses leak information to a photon-number-splitting attack [brassard2000]. The upgrade is two or three intensities and the decoy-state analysis in `qll/qkd/decoy_state.py` [lo2005].
-- **Detector attacks:** detector blinding and similar attacks are not addressed.
+**What it proves.** Real single-photon detection statistics and a real key, with every processing step checked against the model, and the decoy-state bound on the single-photon detections [ma2005] computed from your own gains. **What it does not prove.** Security against detector blinding and similar attacks on the detectors. Running without decoys (one intensity) is a useful comparison: the worst-case analysis then guarantees no key beyond a few dB of loss, as scenario 8 shows.
 
 **Safety (SN-10).** Laser diodes near 850 nm, before attenuation, can be class 3B and are invisible.
 - Enclose the beam path.

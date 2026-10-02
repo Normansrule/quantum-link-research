@@ -14,6 +14,7 @@ REJECT_REASONS = {
     "auth": "classical message failed authentication (possible active tampering)",
     "insufficient": "too few detections to estimate the error rate and form a key block",
     "qber": "estimated error rate above threshold (consistent with interception or excessive noise)",
+    "single_photon": "too few detections can be guaranteed to come from single photons (multi-photon pulses, or decoy statistics inconsistent with an honest channel)",
     "verify": "keys still differ after reconciliation",
     "no_key": "no secret key remains after the finite-size and leakage deductions",
 }
@@ -42,12 +43,26 @@ class SessionMetrics:
     ec_leaked_bits: int = 0
     ec_corrected_bits: int = 0
     residual_errors_before_verify: int = 0  # simulation-only
+    source_model: str = "single_photon"
+    gain_signal: float = 0.0             # detections per signal pulse (weak-coherent sources)
+    gain_decoy: float = 0.0
+    gain_vacuum: float = 0.0
+    single_photon_fraction: float = 1.0  # lower bound on the single-photon share of signal detections
+    e1_upper: float = 0.0                # upper bound on the single-photon error rate
+    y1_lower: float = float("nan")       # decoy-state lower bound on the single-photon yield
+    decoy_gain_deviation_sd: float = 0.0 # decoy gain against the honest prediction from the signal gain, in standard deviations
+    naive_key_bits: int = 0              # simulation-only: key kept by an analysis that ignored multi-photon pulses
     alert: bool = False                  # error rate above the operator's alert level (key may still be accepted)
     verified: bool = False
     accepted: bool = False
     reject_reason: str = ""
-    final_key_bits: int = 0
+    final_key_bits: int = 0              # output of privacy amplification (gross)
     secret_key_rate_bps: float = 0.0
+    auth_mode: str = ""
+    auth_bits_consumed: int = 0          # authentication key spent on this session (Wegman-Carter pads and hash key)
+    net_key_bits: int = 0                # final key minus the authentication key it must replace
+    net_key_rate_bps: float = 0.0
+    forgery_probability: float = 0.0     # chance a substituted transcript passes authentication
     keys_delivered_256: int = 0
     classical_messages: int = 0
     classical_bytes: int = 0
@@ -82,6 +97,8 @@ def summary(m: SessionMetrics) -> str:
         ("QBER", f"{100 * m.qber_estimate:.2f} % estimated (upper bound {100 * m.qber_upper_bound:.2f} %)"),
         ("Adversary", m.adversary), ("Key Accepted", "yes" if m.accepted else f"no: {REJECT_REASONS.get(m.reject_reason, m.reject_reason)}"),
         ("Final Usable Key Length", f"{m.final_key_bits:,} bits ({m.secret_key_rate_bps:,.1f} bit/s at the pulse rate)"),
+        ("Authentication", f"{m.auth_mode}: {m.auth_bits_consumed} key bits spent; net key {m.net_key_bits:,} bits"
+                           + (f" (forgery probability below {m.forgery_probability:.1e})" if m.forgery_probability else "")),
         ("Random Seed", str(m.seed)), ("Execution Time", f"{m.execution_time_s:.3f} s"),
     ]
     w = max(len(k) for k, _ in rows)

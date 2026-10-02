@@ -28,7 +28,8 @@ ROOT = Path(__file__).resolve().parents[1]
 def test_config_validates_and_identifies_runs():
     assert SMALL.run_id() == LinkConfig(n_pulses=300_000).run_id() != SMALL.with_(seed=1).run_id()
     assert LinkConfig.from_dict(SMALL.to_dict()) == SMALL
-    for bad in ({"detector_efficiency": 1.5}, {"distance_km": -1}, {"source_model": "weak_coherent"}, {"misalignment_error": 0.7}):
+    for bad in ({"detector_efficiency": 1.5}, {"distance_km": -1}, {"source_model": "quantum_dot"}, {"misalignment_error": 0.7},
+                {"eve_attack": "pns"}, {"source_model": "weak_coherent_decoy", "mu_decoy": 0.6}, {"p_signal": 0.9, "p_decoy": 0.2}):
         with pytest.raises(ValueError):
             LinkConfig(**bad)
     with pytest.raises(ValueError):
@@ -102,7 +103,8 @@ def test_ideal_session_gives_identical_keys_and_the_accounted_length():
     m = r.metrics
     assert m.qber_true == 0 and m.accepted and np.array_equal(r.key_a, r.key_b)
     expected = math.floor(m.key_block_bits * (1 - h2(m.qber_upper_bound)) - m.ec_leaked_bits - 64 - 2 * math.log2(1e10))
-    assert m.final_key_bits == expected == len(r.key_a)
+    assert m.final_key_bits == expected
+    assert m.auth_bits_consumed == 3 * 127 and len(r.key_a) == m.net_key_bits == expected - m.auth_bits_consumed
     assert [e["step"] for e in m.events][:3] == ["ready", "transmit", "sift"]
 
 
@@ -133,7 +135,7 @@ def test_key_delivery_interface_and_new_sites():
     sa, sb = mgr["A"].store_for("B"), mgr["B"].store_for("A")
     sa.authorized.add("app"); sb.authorized.add("app")
     n = sa.status()["stored_key_count"]
-    assert n == r.metrics.final_key_bits // 256 > 0
+    assert n == r.metrics.net_key_bits // 256 > 0
     (kid, key), = sa.get_key("app", 1)
     assert sb.get_key_with_ids("app", [kid]) == [(kid, key)] and len(key) == 32
     with pytest.raises(KeyUnavailable):
@@ -280,5 +282,83 @@ def test_tier_presets_are_valid_and_predict_a_key():
     import json
     for t in ("tier1", "tier3", "tier4"):
         c = LinkConfig.from_dict(json.loads((ROOT / f"systems/see510/hardware/{t}.json").read_text()))
-        assert run_session(c.with_(n_pulses=min(c.n_pulses, 400_000))).metrics.accepted, t
+        cap = 2_000_000 if c.source_model == "weak_coherent_decoy" else 400_000
+        assert run_session(c.with_(n_pulses=min(c.n_pulses, cap))).metrics.accepted, t
     LinkConfig.from_dict(json.loads((ROOT / "systems/see510/hardware/tier2_channel.json").read_text()))
+
+
+
+def test_wegman_carter_tags():
+    from qll.link.authentication import P127, AuthKeyPool, forgery_bound, poly_hash, tag
+    msg = b"sifting bases " * 40
+    k, r = 123456789123456789, 987654321
+    assert tag(k, r, msg) == (poly_hash(k, msg) + r) % P127
+    assert poly_hash(k, msg) != poly_hash(k, msg[:-1] + b"t") != poly_hash(k, msg + b"\x00")
+    assert poly_hash(k, b"\x00" * 15) != poly_hash(k, b"\x00" * 30)               # zero blocks are not invisible
+    assert forgery_bound(1500) == pytest.approx(102 / P127)
+    pool = AuthKeyPool(400, b"seed")
+    pool.session_keys()
+    assert pool.bits == 400 - 381 and pool.consumed == 381
+    with pytest.raises(RuntimeError):
+        pool.session_keys()
+
+
+def test_transcript_authentication_catches_tampering_at_the_end():
+    from qll.link.protocol_bb84 import new_auth_pool
+    r = run_session(SMALL.with_(tamper_classical=True))
+    assert r.metrics.reject_reason == "auth" and r.metrics.auth_bits_consumed == 381
+    assert any(e["step"] == "authenticate" and e["level"] == "alarm" for e in r.metrics.events)
+    h = run_session(SMALL.with_(tamper_classical=True, auth_mode="hmac")).metrics
+    assert h.reject_reason == "auth" and h.auth_bits_consumed == 0              # caught at once, costs no key
+    # the pool carries over between sessions and is refilled from accepted output
+    pool = new_auth_pool(SMALL)
+    run_session(SMALL, pool=pool)
+    assert pool.bits == SMALL.auth_pool_bits                                    # spent 381, refilled 381
+    run_session(SMALL.with_(eve_fraction=1.0, seed=3), pool=pool)                 # rejected: spent, not refilled
+    assert pool.bits == SMALL.auth_pool_bits - 381
+
+
+def test_a_long_link_can_make_less_key_than_it_spends():
+    m = run_session(LinkConfig(distance_km=75, seed=11)).metrics
+    assert m.accepted and 0 < m.final_key_bits < m.auth_bits_consumed and m.net_key_bits < 0 and m.keys_delivered_256 == 0
+
+
+
+def test_decoy_bounds_are_conservative_and_tight_with_large_counts():
+    from qll.link.decoy import decoy_bound, gllp_bound
+    mu, nu, eta, y0 = 0.5, 0.1, 0.05, 1e-6
+    N = (10**9, 10**9, 10**9)
+    gain = lambda m: 1 - math.exp(-eta * m) + y0
+    k = tuple(int(round(gain(x) * n)) for x, n in zip((mu, nu, 0.0), N))
+    b = decoy_bound(mu, nu, N, k, decoy_errors=int(0.01 * k[1] / 2), decoy_sifted=k[1] // 2, eps=1e-10)
+    true_y1 = eta + y0
+    assert b.y1_lower <= true_y1 and b.y1_lower > 0.9 * true_y1
+    true_frac = true_y1 * mu * math.exp(-mu) / gain(mu)
+    assert b.single_fraction <= true_frac and b.single_fraction > 0.9 * true_frac
+    p_multi = 1 - math.exp(-mu) * (1 + mu)
+    assert gllp_bound(mu, 0.2, 0.02).single_fraction == pytest.approx(1 - p_multi / 0.2)
+    assert not gllp_bound(mu, 0.05, 0.02).usable                                   # multi-photon pulses exceed the gain
+
+
+def test_photon_number_splitting_without_and_with_decoys():
+    base = LinkConfig(distance_km=25, n_pulses=4_000_000, seed=21)
+    honest = run_session(base.with_(source_model="weak_coherent", mu_signal=0.5)).metrics
+    pns = run_session(base.with_(source_model="weak_coherent", mu_signal=0.5, eve_attack="pns", eve_fraction=1.0)).metrics
+    assert pns.qber_estimate < 0.03 and pns.gain_signal == pytest.approx(honest.gain_signal, rel=0.03)   # invisible
+    assert pns.eve_known_key_bits > pns.naive_key_bits * 0.9                       # a naive key would be largely hers
+    assert not honest.accepted and honest.reject_reason == "single_photon"       # GLLP: no key at 25 km without decoys
+    d_honest = run_session(base.with_(source_model="weak_coherent_decoy")).metrics
+    d_pns = run_session(base.with_(source_model="weak_coherent_decoy", eve_attack="pns", eve_fraction=1.0)).metrics
+    assert d_honest.accepted and not d_honest.alert and abs(d_honest.decoy_gain_deviation_sd) < 4
+    assert d_pns.alert and d_pns.decoy_gain_deviation_sd < -10
+    assert d_pns.single_photon_fraction < 0.6 * d_honest.single_photon_fraction
+    assert d_pns.final_key_bits <= d_pns.key_block_bits - d_pns.eve_known_key_bits   # the key is no larger than what she cannot know
+
+
+def test_decoy_experiment_log_round_trips(tmp_path):
+    from qll.link.hardware_log import read_log, run_from_log, simulate_log
+    c = LinkConfig(source_model="weak_coherent_decoy", n_pulses=1_000_000, distance_km=5, seed=4)
+    log = simulate_log(c, tmp_path / "decoy.csv")
+    assert read_log(log).states.intensity is not None
+    a, b = run_session(c).metrics, run_from_log(log, c).metrics
+    assert (a.final_key_bits, a.single_photon_fraction) == (b.final_key_bits, b.single_photon_fraction)

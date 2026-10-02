@@ -30,7 +30,7 @@ python -m qll.link.run scenarios                                 # scenarios 1-6
 python -m qll.link.run demo                                      # deliver accepted keys to the demonstration application
 python -m qll.link.bench_tier1 --out tier1.csv                   # Tier 1 bench (add --port COM5 for the real Arduino)
 python -m qll.link.run ingest tier1.csv --config systems/see510/hardware/tier1.json   # process an experiment's log
-python -m pytest tests/test_two_site_link.py                     # 26 fast tests (the full scenario run is marked slow)
+python -m pytest tests/test_two_site_link.py                     # 32 fast tests (the full scenario run is marked slow)
 ```
 
 ## Folder and file structure
@@ -44,6 +44,8 @@ qll/link/                     the simulation (one module per logical block of th
   classical_channel.py        authenticated public channel with a transcript
   codec.py                    compact encoding of bit arrays in messages
   reconciliation.py           Cascade error correction and hash verification
+  authentication.py           Wegman-Carter transcript tags and the authentication key pool
+  decoy.py                    single-photon bounds: decoy-state, and the worst case without decoys
   protocol_bb84.py            one session, CONOPS steps 1-10, and the accept/reject decision
   monitor.py                  metrics, status, events, the per-run summary
   logger.py                   evidence folders and CSV tables

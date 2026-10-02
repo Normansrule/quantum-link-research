@@ -55,3 +55,4 @@
 - 2026-09-30 0.42.0: P09 the Mars link on a table (eight-stage bench, tiered bill of materials), its digital twin and analysis (predict, synthetic, schedule, report), REQ-CHN-003, bench_layout figure.
 - 2026-10-01 0.43.0: SEE 510 two-site fiber key link simulated end to end (qll/link/, Cascade, authenticated classical channel, ETSI 014-style key delivery, AES-GCM demo), validation V1–V12, scenarios 1–6 with evidence, systems/see510 documents and SN-01–SN-15 traceability.
 - 2026-10-01 0.44.0: real-world experiment ladder for the two-site link (Tiers 1-5 with parts, costs, procedures, safety), experiment logs processed by the same protocol (ingest), Tier 1 Arduino bench with its twin and serial driver, tier presets.
+- 2026-10-02 0.45.0: Wegman-Carter transcript authentication with a key pool and net key (SN-05 met); weak-coherent and decoy-state sources, photon-number-splitting adversary and alert; scenario 8.

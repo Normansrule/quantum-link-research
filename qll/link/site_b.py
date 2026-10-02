@@ -34,7 +34,11 @@ class SiteB:
     def measure(self, ch: ChannelOutput) -> Detections:
         c, n = self.c, len(ch.arrived)
         bases = self.rng.integers(0, 2, n, dtype=np.int8)
-        signal = ch.arrived & (self.rng.random(n) < 10 ** (-c.receiver_loss_db / 10) * c.detector_efficiency)
+        eta_b = 10 ** (-c.receiver_loss_db / 10) * c.detector_efficiency
+        if ch.photons_arrived is None:
+            signal = ch.arrived & (self.rng.random(n) < eta_b)
+        else:                                                   # any of k arriving photons may fire the detector
+            signal = self.rng.random(n) < 1 - (1 - eta_b) ** ch.photons_arrived
         background = ~signal & (self.rng.random(n) < background_click_prob(c))
         random_bits = self.rng.integers(0, 2, n, dtype=np.int8)
         flips = self.rng.random(n) < c.misalignment_error

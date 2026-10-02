@@ -1,13 +1,18 @@
 {
-  "_help": "Tier 3, weak-coherent BB84 at the single-photon level (attenuated pulsed laser near 850 nm, silicon single-photon detectors, FPGA timing). The model's source is ideal (assumption A-01): a mean photon number mu << 1 is represented as extra loss of -10 log10(mu) dB (here mu = 0.2, about 7 dB), which is right for detection and error rates and says nothing about photon-number-splitting attacks; decoy states are needed for that. Dark-count probability is per detection window (about 300 counts/s in a 3 ns window).",
+  "_help": "Tier 3, weak-coherent BB84 with decoy states at the single-photon level (attenuated pulsed laser near 850 nm, signal, weak-decoy, and vacuum intensities chosen at random per pulse, silicon single-photon detectors, FPGA timing). Log the intensity class of every pulse in the alice_intensity column; the decoy-state analysis then bounds the single-photon detections [ma2005]. Dark-count probability is per detection window (about 300 counts/s in a 3 ns window). Ten-million-pulse sessions keep the statistical margins on the decoy gains small.",
   "scenario": "tier3_weak_coherent",
-  "n_pulses": 1000000,
+  "n_pulses": 10000000,
   "pulse_rate_hz": 100000,
   "distance_km": 0.0,
   "attenuation_db_per_km": 3.5,
-  "extra_loss_db": 7.0,
+  "extra_loss_db": 0.0,
   "receiver_loss_db": 3.0,
   "detector_efficiency": 0.5,
-  "dark_count_prob": 1e-6,
-  "misalignment_error": 0.02
+  "dark_count_prob": 1e-06,
+  "misalignment_error": 0.02,
+  "source_model": "weak_coherent_decoy",
+  "mu_signal": 0.5,
+  "mu_decoy": 0.1,
+  "p_signal": 0.8,
+  "p_decoy": 0.15
 }

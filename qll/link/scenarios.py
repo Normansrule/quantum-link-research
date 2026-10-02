@@ -65,6 +65,27 @@ def noise_vs_adversary(base: LinkConfig | None = None, errors=MISALIGNMENT) -> l
     return pairs
 
 
+SOURCE_CASES = (
+    ("ideal single-photon source", {"source_model": "single_photon"}),
+    ("laser, no decoys (mu 0.5)", {"source_model": "weak_coherent", "mu_signal": 0.5}),
+    ("laser, no decoys, photon-number splitting", {"source_model": "weak_coherent", "mu_signal": 0.5, "eve_attack": "pns", "eve_fraction": 1.0}),
+    ("laser with decoys", {"source_model": "weak_coherent_decoy"}),
+    ("laser with decoys, photon-number splitting", {"source_model": "weak_coherent_decoy", "eve_attack": "pns", "eve_fraction": 1.0}),
+)
+
+
+def sources(base: LinkConfig | None = None, distance_km: float = 25.0, n_pulses: int = 10_000_000) -> list[tuple[str, SessionResult]]:
+    """Scenario 8: what the source does to the key, with and without photon-number splitting, at one distance."""
+    base = (base or LinkConfig()).with_(scenario="8_sources", distance_km=distance_km, n_pulses=n_pulses, seed=SEEDS[0])
+    return [(label, run_session(base.with_(**kw))) for label, kw in SOURCE_CASES]
+
+
+def decoy_distance(base: LinkConfig | None = None, distances=(0, 25, 50, 75, 100), n_pulses: int = 10_000_000) -> list[SessionResult]:
+    """Scenario 8b: the decoy-state laser source over distance."""
+    base = (base or LinkConfig()).with_(scenario="8_decoy_distance", source_model="weak_coherent_decoy", n_pulses=n_pulses, seed=SEEDS[0])
+    return [run_session(base.with_(distance_km=float(d))) for d in distances]
+
+
 def reproducibility(base: LinkConfig | None = None) -> dict:
     base = (base or LinkConfig()).with_(scenario="6_reproducibility", seed=SEEDS[0])
     r1, r2, r3 = run_session(base), run_session(base), run_session(base.with_(seed=SEEDS[1]))

@@ -14,7 +14,8 @@ import json
 import math
 from dataclasses import asdict, dataclass, fields, replace
 
-SOURCE_MODELS = ("single_photon",)          # weak coherent pulses with decoy states are future work
+SOURCE_MODELS = ("single_photon", "weak_coherent", "weak_coherent_decoy")
+ATTACKS = ("intercept_resend", "pns")
 
 
 @dataclass(frozen=True)
@@ -31,8 +32,13 @@ class LinkConfig:
     dark_count_prob: float = 1e-6           # per detection gate, per detector pair
     crosstalk_click_prob: float = 0.0       # extra background per gate, e.g. from co-propagating classical light
     misalignment_error: float = 0.01        # probability that a correctly-based detection gives the wrong bit
-    source_model: str = "single_photon"
-    eve_fraction: float = 0.0               # fraction of pulses an intercept-resend adversary measures and resends
+    source_model: str = "single_photon"     # or an attenuated laser, with or without decoy intensities
+    mu_signal: float = 0.5                  # mean photon number of signal pulses (weak-coherent sources)
+    mu_decoy: float = 0.1                   # mean photon number of decoy pulses (weak_coherent_decoy)
+    p_signal: float = 0.8                   # share of signal pulses; decoy p_decoy; vacuum the rest (decoy model)
+    p_decoy: float = 0.15
+    eve_attack: str = "intercept_resend"    # or "pns": photon-number splitting (weak-coherent sources only)
+    eve_fraction: float = 0.0               # fraction of pulses the adversary attacks
     sample_fraction: float = 0.1            # share of sifted bits disclosed to estimate the error rate
     min_sample_bits: int = 200
     qber_threshold: float = 0.11            # abort above this estimated error rate
@@ -43,6 +49,8 @@ class LinkConfig:
     ec_passes: int = 4                      # passes of parity reconciliation
     verify_tag_bits: int = 64               # hash compared to confirm the keys match
     tamper_classical: bool = False          # an active attacker alters one classical message
+    auth_mode: str = "wegman_carter"        # information-theoretic transcript tags, or "hmac" (computational)
+    auth_pool_bits: int = 4096              # pre-shared authentication key available before the first session
     key_size_bits: int = 256                # size of delivered keys (AES-256)
 
     def __post_init__(self):
@@ -63,9 +71,21 @@ class LinkConfig:
         if self.misalignment_error > 0.5:
             problems.append("misalignment_error above 0.5 is not physical")
         if self.source_model not in SOURCE_MODELS:
-            problems.append(f"source_model must be one of {SOURCE_MODELS} (weak coherent pulses are future work)")
+            problems.append(f"source_model must be one of {SOURCE_MODELS}")
+        if self.eve_attack not in ATTACKS:
+            problems.append(f"eve_attack must be one of {ATTACKS}")
+        if self.eve_attack == "pns" and self.source_model == "single_photon":
+            problems.append("photon-number splitting needs a weak-coherent source")
+        if not (0 < self.mu_signal <= 10 and self.mu_decoy > 0):
+            problems.append("need 0 < mu_signal <= 10 and mu_decoy > 0")
+        if self.source_model == "weak_coherent_decoy" and not self.mu_decoy < self.mu_signal:
+            problems.append("the decoy intensity must be below the signal intensity")
+        if not (0 < self.p_signal <= 1 and 0 <= self.p_decoy and self.p_signal + self.p_decoy <= 1):
+            problems.append("need 0 < p_signal, 0 <= p_decoy, and p_signal + p_decoy <= 1")
         if not (0 < self.eps_pe < 1 and 0 < self.eps_pa < 1):
             problems.append("eps_pe and eps_pa must lie in (0, 1)")
+        if self.auth_mode not in ("wegman_carter", "hmac"):
+            problems.append("auth_mode must be 'wegman_carter' or 'hmac'")
         if self.key_size_bits % 8:
             problems.append("key_size_bits must be a multiple of 8")
         if problems:
