@@ -31,7 +31,9 @@ def _save(fig, out: Path, name: str) -> Path:
     out.mkdir(parents=True, exist_ok=True)
     p = out / f"{name}.svg"
     fig.tight_layout()
-    fig.savefig(p)
+    import matplotlib
+    with matplotlib.rc_context({"svg.hashsalt": name}):                       # stable element ids and no date: reruns
+        fig.savefig(p, metadata={"Date": None})                              # leave an unchanged file unchanged
     import matplotlib.pyplot as plt
     plt.close(fig)
     return p
@@ -209,3 +211,55 @@ def sources_plot(rows, out: Path) -> Path:
     _style(ax, "Sources at 25 km: decoys expose photon-number splitting", "", "bits per 10\u2077-pulse session")
     ax.legend(frameon=False, fontsize=8, loc="upper right")
     return _save(fig, out, "sources_and_pns")
+
+
+def operations_plot(result: dict, out: Path) -> Path:
+    """Scenario 9: the operations day as four stacked panels on one time axis (no dual axes), events shaded."""
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    rows, cfg = result["sessions"], result["config"]
+    t = np.array([r["t_h"] for r in rows])
+    status = np.array([r["status"] for r in rows])
+    fig, axes = plt.subplots(4, 1, figsize=(10.4, 9.2), sharex=True, gridspec_kw={"height_ratios": [1.25, 1, 1, 0.8]})
+    shade = {"degradation": AQUA, "attack": ORANGE, "fault": MUTED}
+    for ax in axes:
+        for e in result["plan"]:
+            ax.axvspan(e["start_h"], e["end_h"], color=shade[e["kind"]], alpha=0.14, lw=0)
+    for e in result["plan"]:
+        axes[0].text((e["start_h"] + e["end_h"]) / 2, 1.01, e["name"].replace(" ", "\n", 1), ha="center", va="bottom", fontsize=7,
+                     color=MODEL, transform=axes[0].get_xaxis_transform())
+    ax = axes[0]
+    q = np.array([np.nan if r["qber"] is None else 100 * r["qber"] for r in rows])
+    ax.plot(t, q, color=BLUE, lw=1.2)
+    marks = {"accepted": ("o", GOOD, "accepted"), "degraded": ("s", AQUA, "accepted, loss flagged"),
+             "alert": ("^", ORANGE, "accepted with alert"), "rejected": ("X", CRITICAL, "rejected")}
+    for s, (mk, col, lab) in marks.items():
+        k = status == s
+        if k.any():
+            ax.plot(t[k], np.where(np.isnan(q[k]), 0.0, q[k]), mk, ms=6, mfc=col, mec="white", mew=0.8, label=lab, ls="none")
+    ax.axhline(100 * cfg["qber_threshold"], color=CRITICAL, lw=1, ls="--")
+    ax.axhline(100 * cfg["qber_alert"], color=ORANGE, lw=1, ls=":")
+    ax.text(24, 100 * cfg["qber_threshold"], " abort", va="center", fontsize=7, color=CRITICAL)
+    ax.text(24, 100 * cfg["qber_alert"], " alert", va="center", fontsize=7, color=ORANGE)
+    ax.set_ylim(0, 27)
+    _style(ax, "A simulated operations day on the 10 km link (sessions every "
+               f"{result['interval_min']:g} min)", "", "error rate (%)")
+    ax.title.set_y(1.16)
+    ax.legend(frameon=False, fontsize=7, ncol=4, loc="upper left", bbox_to_anchor=(0, 0.83))
+    ax = axes[1]
+    ax.bar(t, [r["net_key_bits"] for r in rows], width=0.2, align="edge", color=BLUE)
+    _style(ax, "Key per session after the authentication key is replaced", "", "bits")
+    ax = axes[2]
+    ax.step(t + result["interval_min"] / 60, [r["bank_keys"] for r in rows], where="pre", color=BLUE, lw=1.5)
+    rk = [r["t_h"] for r in rows if r["refused"]]
+    if rk:
+        ax.plot(rk, [0] * len(rk), "X", ms=7, mfc=CRITICAL, mec="white", label="application refused (fail closed)", ls="none")
+        ax.legend(frameon=False, fontsize=7, loc="upper right")
+    _style(ax, f"Keys in the store at Site A (application draws {result['demand_keys_per_hour']:g} per hour)", "", "256-bit keys")
+    ax = axes[3]
+    ax.step(t + result["interval_min"] / 60, [r["pool_bits"] for r in rows], where="pre", color=BLUE, lw=1.5)
+    ax.set_ylim(0, 1.15 * max(cfg["auth_pool_bits"], max(r["pool_bits"] for r in rows)))
+    _style(ax, "Authentication key pool", "time of day (h)", "bits")
+    axes[-1].set_xlim(0, 24); axes[-1].set_xticks(range(0, 25, 3))
+    return _save(fig, out, "operations_day")

@@ -46,7 +46,9 @@ from qll.link.site_b import Detections, SiteB
 from qll.qkd.binary_entropy import h2
 from qll.qkd.privacy_amplification import toeplitz_hash
 
-PROTOCOL = "BB84 (ideal single-photon source, prepare and measure)"
+PROTOCOL = {"single_photon": "BB84 (ideal single-photon source, prepare and measure)",
+            "weak_coherent": "BB84 (attenuated laser without decoys, prepare and measure)",
+            "weak_coherent_decoy": "BB84 with decoy states (attenuated laser, prepare and measure)"}
 STREAMS = ("site_a", "adversary", "channel", "site_b", "protocol")
 
 
@@ -113,7 +115,7 @@ def run_session(c: LinkConfig, managers: dict[str, SiteKeyManager] | None = None
     t0 = time.perf_counter()
     rngs = dict(zip(STREAMS, (np.random.default_rng(s) for s in np.random.SeedSequence(c.seed).spawn(len(STREAMS)))))
     adversary = make_adversary(c, rngs["adversary"])
-    m = SessionMetrics(c.run_id(), c.scenario, PROTOCOL, c.seed, c.distance_km, channel_loss_db(c), channel_transmittance(c),
+    m = SessionMetrics(c.run_id(), c.scenario, PROTOCOL[c.source_model], c.seed, c.distance_km, channel_loss_db(c), channel_transmittance(c),
                        adversary_label(c), c.n_pulses,
                        timestamp_utc=_dt.datetime.now(_dt.timezone.utc).isoformat(timespec="seconds"))
     if c.auth_mode == "wegman_carter" and pool is None:
@@ -126,7 +128,9 @@ def run_session(c: LinkConfig, managers: dict[str, SiteKeyManager] | None = None
     result_ids: list = []
 
     def done(reason: str = "", key_a=empty, key_b=empty) -> SessionResult:
-        if reason != "auth" and cc.mode == "wegman_carter":
+        # authenticate only a session that would otherwise be accepted: a rejected session uses no key, so an adversary
+        # who forces rejections cannot drain the pool (she can still stop the key: denial of service is not prevented)
+        if reason == "" and cc.mode == "wegman_carter":
             spent = cc.pool.consumed
             try:
                 cc.finalize()                                   # authenticate the transcript before any decision
@@ -140,15 +144,19 @@ def run_session(c: LinkConfig, managers: dict[str, SiteKeyManager] | None = None
             m.auth_bits_consumed = cc.pool.consumed - spent
             m.forgery_probability = cc.forgery_probability
         if reason == "" and len(key_a):
-            # replace the authentication key this session spent from its own output, then deliver the rest
+            # top the authentication pool back up from this session's output (its own spend plus any earlier deficit),
+            # then deliver the rest; the net key is the session's output minus what it spent
             m.net_key_bits = len(key_a) - m.auth_bits_consumed
             if cc.mode == "wegman_carter":
-                cc.pool.refill(min(len(key_a), m.auth_bits_consumed))
-            key_a, key_b = key_a[m.auth_bits_consumed:], key_b[m.auth_bits_consumed:]
+                topped = min(len(key_a), max(0, c.auth_pool_bits - cc.pool.bits))
+                cc.pool.refill(topped)
+                m.auth_bits_refilled = topped
+                key_a, key_b = key_a[topped:], key_b[topped:]
+            m.key_delivered_bits = len(key_a)
             m.net_key_rate_bps = max(0, m.net_key_bits) / (m.states_sent / c.pulse_rate_hz) if c.pulse_rate_hz > 0 else 0.0
             if m.net_key_bits <= 0:
                 m.event("deliver", "warning", "the session made less key than its authentication consumed: no net key")
-            elif managers is not None:
+            if len(key_a) and managers is not None:
                 ids = managers[site_a].store_for(site_b, c.key_size_bits).deposit(m.run_id, key_a)
                 ids_b = managers[site_b].store_for(site_a, c.key_size_bits).deposit(m.run_id, key_b)
                 assert ids == ids_b
@@ -244,15 +252,21 @@ def run_session(c: LinkConfig, managers: dict[str, SiteKeyManager] | None = None
             m.y1_lower = bound.y1_lower
         m.single_photon_fraction, m.e1_upper = bound.single_fraction, bound.e1_upper
         if decoy_counts is not None and m.gain_signal > 0:
-            # an honest channel fixes the decoy gain once the signal gain is known: Q_nu = 1 - e^(-nu T), T from Q_mu
-            t_eff = -math.log(max(1e-300, 1 - m.gain_signal)) / c.mu_signal
-            expected = 1 - math.exp(-c.mu_decoy * t_eff)
+            # an honest channel fixes the decoy gain once the signal and vacuum gains are known [ma2005]:
+            # 1 - Q_k = (1 - Y0) e^(-k T) for every intensity k, so T follows from Q_mu and Y0 (the vacuum gain)
+            y0 = min(m.gain_vacuum, 0.5)
+            t_eff = -math.log(max(1e-300, (1 - m.gain_signal) / (1 - y0))) / c.mu_signal
+            expected = 1 - (1 - y0) * math.exp(-c.mu_decoy * t_eff)
             sd = math.sqrt(max(expected * (1 - expected), 1e-300) / max(decoy_counts[0][1], 1))
             m.decoy_gain_deviation_sd = (m.gain_decoy - expected) / sd
             if m.decoy_gain_deviation_sd < -5:
                 m.alert = True
                 m.event("estimate", "warning", f"decoy gain {m.decoy_gain_deviation_sd:.1f} standard deviations below what the "
                         "signal gain implies for an honest channel: consistent with photon-number splitting")
+            elif m.decoy_gain_deviation_sd > 5:
+                m.alert = True
+                m.event("estimate", "warning", f"decoy gain {m.decoy_gain_deviation_sd:.1f} standard deviations above what the "
+                        "signal gain implies for an honest channel: the channel does not act the same on every intensity")
         if c.source_model != "single_photon":
             # simulation-only: the key an analysis that treated the laser as a single-photon source would have kept
             m.naive_key_bits = max(0, math.floor(len(ka) * (1 - h2(m.qber_upper_bound)) - 1.2 * len(ka) * h2(max(m.qber_estimate, 1e-9))

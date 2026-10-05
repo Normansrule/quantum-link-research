@@ -13,4 +13,4 @@ Key Accepted:            yes
 Final Usable Key Length: 44,396 bits (44,396.0 bit/s at the pulse rate)
 Authentication:          wegman_carter: 381 key bits spent; net key 44,015 bits (forgery probability below 4.8e-34)
 Random Seed:             11
-Execution Time:          0.416 s
+Execution Time:          0.315 s

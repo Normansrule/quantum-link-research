@@ -21,7 +21,7 @@ def server():
     httpd = http.server.ThreadingHTTPServer(("127.0.0.1", 0), handler)
     threading.Thread(target=httpd.serve_forever, daemon=True).start()
     yield f"http://127.0.0.1:{httpd.server_address[1]}"
-    httpd.shutdown()
+    httpd.shutdown(); httpd.server_close()
 
 
 @pytest.fixture(scope="module")
@@ -191,5 +191,34 @@ def test_systems_page_lists_every_requirement_and_filters(browser, server):
     assert page.locator(".req").count() == sum(r["need"] == "N-1" for r in rows)
     page.click("[data-n='']"); page.fill("#q", "REQ-HW-002")
     assert page.locator(".req").count() == 1
+    assert errors == []
+    page.close()
+
+
+def test_operations_console_replays_the_committed_day(browser, server):
+    import json
+    d = json.loads((DOCS / "link" / "ops.json").read_text(encoding="utf-8"))
+    page, errors = open_page(browser, server + "/link/")
+    page.wait_for_function("document.getElementById('k-time').textContent !== '\u2014'", timeout=30000)
+    assert "simulation" in page.locator(".replay").inner_text().lower()                 # labelled as a replay, not telemetry
+    def at(i):
+        page.fill("#scrub", str(i)); page.dispatch_event("#scrub", "input")
+        page.wait_for_function(f"document.getElementById('k-sess').textContent.startsWith('session {i + 1} ')", timeout=10000)
+        return d["sessions"][i]
+    for i, s in enumerate(d["sessions"]):
+        if s["status"] == "rejected" and s["reason"] == "qber":
+            at(i); break
+    assert page.locator("#k-status").inner_text().strip() == "rejected"
+    assert page.locator("#k-qber").inner_text().strip() == f"{100 * s['qber']:.2f} %"
+    assert page.locator("#k-bank").inner_text().strip() == f"{s['bank_keys']:,} keys"
+    s = at(len(d["sessions"]) - 1)
+    total_refused = sum(r["refused"] for r in d["sessions"])
+    assert page.locator("#k-app-s").inner_text().endswith(f"{total_refused:,} refused today")
+    assert page.locator("#feed .ev").count() == len(d["log"]) and "fail closed" in page.locator("#feed").inner_text()
+    assert page.locator("#plan tbody tr").count() == len(d["plan"])
+    page.hover("#c-q", position={"x": 300, "y": 100})
+    assert page.locator("#tip").is_visible()
+    page.click("#play")                                                                  # replay restarts from the start
+    page.wait_for_function("!document.getElementById('k-sess').textContent.startsWith('session 96 ')", timeout=10000)
     assert errors == []
     page.close()

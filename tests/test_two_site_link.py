@@ -104,7 +104,7 @@ def test_ideal_session_gives_identical_keys_and_the_accounted_length():
     assert m.qber_true == 0 and m.accepted and np.array_equal(r.key_a, r.key_b)
     expected = math.floor(m.key_block_bits * (1 - h2(m.qber_upper_bound)) - m.ec_leaked_bits - 64 - 2 * math.log2(1e10))
     assert m.final_key_bits == expected
-    assert m.auth_bits_consumed == 3 * 127 and len(r.key_a) == m.net_key_bits == expected - m.auth_bits_consumed
+    assert m.auth_bits_consumed == 3 * 127 and len(r.key_a) == m.net_key_bits == m.key_delivered_bits == expected - m.auth_bits_consumed
     assert [e["step"] for e in m.events][:3] == ["ready", "transmit", "sift"]
 
 
@@ -191,7 +191,9 @@ def test_cli(capsys, tmp_path):
 def test_scenarios_command_writes_the_evidence(tmp_path):
     from qll.link.run import main
     main(["scenarios", "--out", str(tmp_path)])
-    assert (tmp_path / "README.md").exists() and len(list((tmp_path / "plots").glob("*.svg"))) == 10
+    committed = ROOT / "systems" / "see510" / "evidence" / "plots"
+    assert (tmp_path / "README.md").exists()
+    assert {f.name for f in (tmp_path / "plots").glob("*.svg")} == {f.name for f in committed.glob("*.svg")}   # every committed plot
 
 
 def test_crosstalk_acts_as_background():
@@ -314,8 +316,12 @@ def test_transcript_authentication_catches_tampering_at_the_end():
     pool = new_auth_pool(SMALL)
     run_session(SMALL, pool=pool)
     assert pool.bits == SMALL.auth_pool_bits                                    # spent 381, refilled 381
-    run_session(SMALL.with_(eve_fraction=1.0, seed=3), pool=pool)                 # rejected: spent, not refilled
-    assert pool.bits == SMALL.auth_pool_bits - 381
+    run_session(SMALL.with_(eve_fraction=1.0, seed=3), pool=pool)                 # rejected: nothing to authenticate
+    assert pool.bits == SMALL.auth_pool_bits                                    # so forced rejections cannot drain the pool
+    short = run_session(LinkConfig(distance_km=75, seed=11), pool=pool).metrics   # a session smaller than its spend
+    assert short.key_delivered_bits == 0 and pool.bits == SMALL.auth_pool_bits - 381 + short.final_key_bits
+    full = run_session(SMALL.with_(seed=5), pool=pool).metrics                 # the next good session repays the deficit
+    assert full.auth_bits_refilled == 381 + (381 - short.final_key_bits) and pool.bits == SMALL.auth_pool_bits
 
 
 def test_a_long_link_can_make_less_key_than_it_spends():
@@ -362,3 +368,66 @@ def test_decoy_experiment_log_round_trips(tmp_path):
     assert read_log(log).states.intensity is not None
     a, b = run_session(c).metrics, run_from_log(log, c).metrics
     assert (a.final_key_bits, a.single_photon_fraction) == (b.final_key_bits, b.single_photon_fraction)
+
+
+
+def _short_day():
+    from qll.link.operations import OperationsDay, OpsEvent
+    plan = (OpsEvent(0.5, 1.0, "partial interception", "attack", {"eve_fraction": 0.2}, "IR on 20 %"),
+            OpsEvent(1.0, 1.5, "fiber bend", "fault", {"extra_loss_db": 8.0}, "bend"),
+            OpsEvent(1.5, 2.0, "full interception", "attack", {"eve_fraction": 1.0}, "IR on all"),
+            OpsEvent(2.0, 3.0, "fiber cut", "fault", {"extra_loss_db": 60.0}, "cut"))
+    return OperationsDay(plan=plan, hours=3.5, initial_bank_keys=60).run()
+
+
+def test_operations_day_flags_each_event_and_fails_closed():
+    res = _short_day()
+    rows, pool_cap = res["sessions"], res["config"]["auth_pool_bits"]
+    by = lambda a, b: [r for r in rows if a <= r["t_h"] < b]
+    assert all(r["status"] == "accepted" for r in by(0, 0.5) + by(3.0, 4))
+    assert all(r["status"] == "alert" for r in by(0.5, 1.0))                      # 20 % interception: about 5 % errors
+    assert all(r["status"] == "degraded" and r["qber"] < res["config"]["qber_alert"] for r in by(1.0, 1.5))  # only loss shows it
+    assert all(r["status"] == "rejected" and r["reason"] == "qber" for r in by(1.5, 2.0))
+    assert all(r["status"] == "rejected" and r["reason"] == "insufficient" for r in by(2.0, 3.0))
+    for r in rows:
+        if r["status"] == "rejected":                                             # nothing delivered, no authentication key spent
+            assert r["keys_delivered"] == 0 and r["auth_spent"] == 0
+        else:                                                                     # the pool is topped up before key is delivered
+            assert r["pool_bits"] == pool_cap and r["net_key_bits"] == r["final_key_bits"] - r["auth_spent"]
+        assert (r["refused"] > 0) <= (r["bank_keys"] == 0)                        # refused only when the store is empty
+    assert sum(r["refused"] for r in by(2.0, 3.0)) > 0 and sum(r["refused"] for r in by(3.25, 4)) == 0
+    s = res["summary"]
+    assert s["minutes_to_flag"] == {"partial interception": 0, "fiber bend": 0, "full interception": 0, "fiber cut": 0}
+    assert s["keys_served"] + s["keys_refused"] == int(330 * 3.5)                  # every request is answered, one way or the other
+    levels = [e["level"] for e in res["log"]]
+    assert "alarm" in levels and any("fail closed" in e["message"] for e in res["log"]) and any("resumes" in e["message"] for e in res["log"])
+
+
+def test_tampering_spends_its_tags_and_the_next_session_refills_them():
+    from qll.link.operations import OperationsDay, OpsEvent
+    res = OperationsDay(plan=(OpsEvent(0.25, 0.5, "classical tampering", "attack", {"tamper_classical": True}, "tamper"),),
+                        hours=0.75).run()
+    r0, r1, r2 = res["sessions"]
+    assert r1["status"] == "rejected" and r1["reason"] == "auth" and r1["auth_spent"] == 381 and r1["pool_bits"] == 4096 - 381
+    assert r2["status"] == "accepted" and r2["pool_bits"] == 4096
+
+
+def test_committed_operations_day_is_consistent():
+    import json
+    from qll.link.operations import DEFAULT_PLAN, summarize
+    d = json.loads((ROOT / "docs" / "link" / "ops.json").read_text(encoding="utf-8"))
+    assert len(d["sessions"]) == 96 and d["summary"] == json.loads(json.dumps(summarize(d["sessions"], DEFAULT_PLAN)))
+    assert all(v is not None for v in d["summary"]["minutes_to_flag"].values())
+    assert all(d["summary"]["minutes_to_flag"][e.name] == 0 for e in DEFAULT_PLAN if e.kind == "attack")
+    readme = (ROOT / "systems" / "see510" / "evidence" / "operations" / "README.md").read_text(encoding="utf-8")
+    assert f"| {d['summary']['sessions']} | {d['summary']['accepted']} |" in readme
+    rows = list(csv.DictReader((ROOT / "systems" / "see510" / "evidence" / "operations" / "sessions.csv").read_text(encoding="utf-8").splitlines()))
+    assert [r["run_id"] for r in rows] == [r["run_id"] for r in d["sessions"]]
+
+
+@pytest.mark.slow
+def test_committed_operations_day_is_reproduced_by_a_fresh_run():
+    import json
+    from qll.link.operations import OperationsDay
+    d = json.loads((ROOT / "docs" / "link" / "ops.json").read_text(encoding="utf-8"))
+    assert json.loads(json.dumps(OperationsDay().run())) == d

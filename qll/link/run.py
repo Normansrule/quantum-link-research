@@ -2,10 +2,15 @@
 
   session   [--config FILE.json] [--set name=value ...] [--out DIR]   one session; prints the per-run summary
   validate  [--out DIR]                                                 controlled cases against the closed-form models
-  scenarios [--out DIR] [--sessions]                                    scenarios 1-6 and the demonstration; writes CSVs,
-                                                                        plots, and a report (about 20 s on a laptop)
+  scenarios [--out DIR] [--sessions]                                    scenarios 1-8 and the demonstration; writes CSVs,
+                                                                        plots, and a report (about 45 s on a laptop)
   demo                                                                  deliver accepted keys to the demonstration apps
-  ingest    LOG.csv [--config FILE.json] [--set ...] [--out DIR]       process an experiment's log with the same protocol
+  ingest    LOG.csv [--bob BOB.csv] [--config FILE.json] [--set ...]   process an experiment's log with the same protocol;
+                                                                        with --bob, LOG.csv is Site A's log and BOB.csv
+                                                                        Site B's (one file per room, P10)
+  operations [--out DIR] [--site FILE.json]                             scenario 9: a simulated 24-hour operations day;
+                                                                        writes evidence/operations/ and the replay data
+                                                                        for the operations console (docs/link/ops.json)
 
 Default evidence folder: systems/see510/evidence/. Everything written there is regenerated from configurations and
 seeds; rerunning reproduces every number except execution times and timestamps.
@@ -29,6 +34,7 @@ from qll.link.protocol_bb84 import run_session
 
 ROOT = Path(__file__).resolve().parents[2]
 EVIDENCE = ROOT / "systems" / "see510" / "evidence"
+OPS_JSON = ROOT / "docs" / "link" / "ops.json"
 
 
 def _parse_set(items: list[str]) -> dict:
@@ -77,9 +83,9 @@ def cmd_validate(a) -> list[dict]:
 
 def cmd_ingest(a) -> None:
     """Process an experiment log (systems/see510/10_real_world_experiments.md) with the protocol code."""
-    from qll.link.hardware_log import run_from_log
+    from qll.link.hardware_log import run_from_log, run_from_site_logs
     c = _config(a.config, a.set).with_(scenario=f"experiment:{Path(a.log).stem}")
-    r = run_from_log(Path(a.log), c)
+    r = run_from_site_logs(Path(a.log), Path(a.bob), c) if a.bob else run_from_log(Path(a.log), c)
     print(summary(r.metrics))
     for e in r.metrics.events:
         print(f"  [{e['level']:>7}] {e['step']:<10} {e['message']}")
@@ -125,6 +131,93 @@ def cmd_scenarios(a) -> None:
     elapsed = time.perf_counter() - t0
     (out / "README.md").write_text(_report(res, pairs, rep, demo, validation, plots, example, out, base, elapsed, src), encoding="utf-8")
     print(f"wrote {out}/README.md, {len(plots)} plots, and {len(res)} scenario tables in {elapsed:.1f} s")
+
+
+def cmd_operations(a) -> dict:
+    from qll.link.operations import OperationsDay, write
+    from qll.link.plots import operations_plot
+    out = Path(a.out or EVIDENCE) / "operations"
+    t0 = time.perf_counter()
+    res = OperationsDay().run()
+    elapsed = time.perf_counter() - t0
+    out.mkdir(parents=True, exist_ok=True)
+    rows = [{**r, "events": "; ".join(r["events"])} for r in res["sessions"]]
+    with open(out / "sessions.csv", "w", newline="", encoding="utf-8") as fh:
+        w = csv.DictWriter(fh, fieldnames=list(rows[0])); w.writeheader(); w.writerows(rows)
+    with open(out / "log.csv", "w", newline="", encoding="utf-8") as fh:
+        w = csv.DictWriter(fh, fieldnames=["t_h", "level", "message"]); w.writeheader(); w.writerows(res["log"])
+    plot = operations_plot(res, out)
+    (out / "README.md").write_text(_ops_report(res, plot, out, elapsed), encoding="utf-8")
+    site = write(res, Path(a.site) if a.site else OPS_JSON)
+    s = res["summary"]
+    print(f"{s['sessions']} sessions: {s['accepted']} accepted ({s['alerts']} with alerts, {s['degraded']} with loss flagged), "
+          f"{s['rejected']} rejected; {s['keys_delivered']:,} keys delivered, {s['keys_served']:,} served, {s['keys_refused']:,} refused")
+    print(f"wrote {out}/README.md and {site} in {elapsed:.1f} s")
+    return res
+
+
+def _clock(h: float) -> str:
+    return f"{int(h):02d}:{int(round((h % 1) * 60)):02d}"
+
+
+def _ops_report(res, plot, out, elapsed) -> str:
+    s, c = res["summary"], res["config"]
+    plan = [{"from": _clock(e["start_h"]), "to": _clock(e["end_h"]), "event": e["name"], "kind": e["kind"], "description": e["description"],
+             "flagged after": "not flagged" if s["minutes_to_flag"][e["name"]] is None else f"{s['minutes_to_flag'][e['name']]:g} min"}
+            for e in res["plan"]]
+    L = [
+        "# Scenario 9: a simulated operations day",
+        "",
+        "Generated by `python -m qll.link.run operations`. **A replay of a simulation under the assumptions of "
+        "`../../03_assumptions.md`, not telemetry from hardware.** The same data drive the operations console on the "
+        "website (`docs/link/`).",
+        "",
+        f"A {c['distance_km']:g} km link runs a session of {c['n_pulses']:,} pulses every {res['interval_min']:g} minutes for "
+        f"24 hours. The authentication pool ({c['auth_pool_bits']:,} bits) and both sites' key stores persist all day; the store "
+        f"starts with {res['initial_bank_keys']} keys. An external application draws {res['demand_keys_per_hour']:g} keys of 256 "
+        "bits per hour and is refused when the store is empty (fail closed). Scripted events from the concept of "
+        "operations' degraded and adversarial modes change the configuration while active. A session is flagged when it "
+        "is rejected, when its error rate passes the alert level, or when its detection rate falls below half of the "
+        "morning baseline (loss). "
+        f"The whole day ran in about {max(5, round(elapsed / 5) * 5)} s on one core.",
+        "",
+        f"![operations day]({Path(plot).relative_to(out).as_posix()})",
+        "",
+        "## Events and how fast the monitor flagged them",
+        "",
+        _md_table(plan, ["from", "to", "event", "kind", "description", "flagged after"]),
+        "",
+        "## Summary",
+        "",
+        _md_table([{"sessions": s["sessions"], "accepted": s["accepted"], "of which clean": s["accepted_clean"], "with alert": s["alerts"],
+                    "with loss flagged": s["degraded"], "rejected": s["rejected"], "keys delivered": f"{s['keys_delivered']:,}",
+                    "keys served": f"{s['keys_served']:,}", "requests refused": f"{s['keys_refused']:,}",
+                    "lowest pool (bits)": f"{s['min_pool_bits']:,}", "lowest store (keys)": s["min_bank_keys"]}],
+                  ["sessions", "accepted", "of which clean", "with alert", "with loss flagged", "rejected", "keys delivered",
+                   "keys served", "requests refused", "lowest pool (bits)", "lowest store (keys)"]),
+        "",
+        "What the day shows, within this model:",
+        "",
+        "- Every adversarial event was flagged in the first session it touched. Partial interception raised the error rate "
+        "past the alert level but not the abort threshold, so the key was shortened and kept; full interception and the "
+        "altered classical message were rejected. No session's key reached the application while rejected.",
+        "- The polarization drift was flagged only once its error rate crossed the alert level; until then, the key simply "
+        "shrank as the error rate rose. The error rate alone cannot say whether drift or an adversary caused it (scenario 5).",
+        "- The fiber bend left the error rate below the alert level; only the fall in detections flagged it. The fiber cut produced no "
+        "detections, every session was rejected, the store ran dry, and the application was refused until the repair: "
+        "the link failed closed rather than open.",
+        "- Sessions rejected before authentication (error rate or too few detections) spent no authentication key, so "
+        "the pool did not drain while the link was down. The tampered session had already spent its tags when the check "
+        "failed; the next accepted session topped the pool back up from its own output before delivering key.",
+        "",
+        "## Operator log",
+        "",
+        _md_table([{"time": _clock(e["t_h"]), "level": e["level"], "message": e["message"]} for e in res["log"]], ["time", "level", "message"]),
+        "",
+        "Per-session data: `sessions.csv`; log: `log.csv`. Every row records its run identifier and seed.",
+        "",
+    ]
+    return "\n".join(L)
 
 
 def _row(m) -> dict:
@@ -250,6 +343,12 @@ def _report(res, pairs, rep, demo, validation, plots, example, out, base, elapse
         "",
         _md_table([_row(r.metrics) for r in res["8_decoy_distance"]], cols),
         "",
+        "## Scenario 9: an operations day",
+        "",
+        "A scripted 24 hours of sessions with drift, interception, a bend, tampering, and a fiber cut, with persistent key "
+        "stores and authentication pool: [`operations/README.md`](operations/README.md), written by "
+        "`python -m qll.link.run operations`, and replayed on the website's operations console.",
+        "",
         "## Demonstration: external secure-communication application",
         "",
         f"An accepted session delivered {demo['keys_from_good']} keys of 256 bits to both sites; a rejected session "
@@ -274,9 +373,11 @@ def main(argv: list[str] | None = None) -> None:
     p = sub.add_parser("validate"); p.add_argument("--out")
     p = sub.add_parser("scenarios"); p.add_argument("--out"); p.add_argument("--sessions", action="store_true")
     sub.add_parser("demo")
-    p = sub.add_parser("ingest"); p.add_argument("log"); p.add_argument("--config"); p.add_argument("--set", nargs="*"); p.add_argument("--out")
+    p = sub.add_parser("ingest"); p.add_argument("log"); p.add_argument("--bob"); p.add_argument("--config"); p.add_argument("--set", nargs="*"); p.add_argument("--out")
+    p = sub.add_parser("operations"); p.add_argument("--out"); p.add_argument("--site")
     a = ap.parse_args(argv)
-    {"session": cmd_session, "validate": cmd_validate, "scenarios": cmd_scenarios, "demo": cmd_demo, "ingest": cmd_ingest}[a.cmd](a)
+    {"session": cmd_session, "validate": cmd_validate, "scenarios": cmd_scenarios, "demo": cmd_demo, "ingest": cmd_ingest,
+     "operations": cmd_operations}[a.cmd](a)
 
 
 if __name__ == "__main__":

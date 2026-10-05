@@ -1,5 +1,80 @@
 # Changelog
 
+## 0.47.0 — 2026-10-05 (the mission: from two rooms to orbit, on a student budget)
+- **A phased mission plan** (`systems/program/`).
+  - **Phases:**
+    - Phase 0, foundations (done).
+    - Phase 1, two rooms: a fiber classical channel and a single-photon quantum link.
+    - Phase 2, entanglement between the rooms.
+    - Phase 3, outdoors and toward orbit.
+    - Phase 4, entanglement-assisted communication.
+    - A parallel startup track.
+  - **Gates G0–G3:** modelled on NASA's reviews; money is committed only after the previous gate passes. The G0 concept review is recorded.
+  - **Milestones:** 29, each with weeks, a three-point cost, prerequisites, a technology readiness level, a verification with a pass criterion, and the experiments it builds on.
+  - **Documents:** mission needs and 31 requirements with verification methods; a cost model and funding sources (free cloud time, I-Corps, SBIR, the CubeSat Launch Initiative, with dated and sourced figures); a risk register; five scored trade studies; a startup path; and a plan for the first three papers.
+- **`qll/systems/program_plan.py`:**
+  - PERT means, a critical-path schedule, and a Monte Carlo cost risk (50th and 80th percentiles).
+  - Out-of-pocket and outside-funded milestones are kept apart, and a solo calendar is computed alongside the parallel one.
+  - **Result:** two rooms sharing quantum states for about $670 likely ($1,370 at worst); entanglement between the rooms for about $450 more with a borrowed source.
+- **`qll/systems/experiment_catalog.py`:**
+  - Every experiment in the repository is catalogued, with its status, twin, test, cost, and role: 15 landmarks, P01–P11, the five ladder tiers, E01–E17, and F1–F3.
+  - `scripts/build_program_docs.py` generates the phase tables, the research foundation, the feasibility numbers, and two figures.
+  - Tests fail if an experiment file is missing from the catalog, or if a replicable entry lacks a procedure, a twin, or a test that uses it.
+- **P11 and E17, the collapse code** (`qll/circuits/collapse_signalling.py`). Can the way a shared state collapses carry a message?
+  - **Physics:** Bob's state is exactly unchanged by any instrument of Alice's, checked for random states and random instruments.
+  - **Analysis:** a Monte Carlo of three encodings; a likelihood-ratio test; Clopper–Pearson intervals; an upper bound on the information per use from the convexity of mutual information; and a sample-size formula.
+  - **Controls:** teleportation with and without its two bits, and an injected dissipative leak. A unitary leak would be invisible, because Bob's state is I/2.
+  - **Hardware path:** Qiskit circuits, an Aer path, and a runner (`experiments/bench/E17_collapse_code/`) that rehearses on a fake IBM device and runs on real hardware within the free plan.
+- **P10, the two-room link** (`qll/link/two_room.py`).
+  - **Setup:** four 405 nm diodes behind polarizers with decoy drive, four silicon photomultipliers (datasheet-sourced), and FPGA gating.
+  - **Twin:** builds the link configuration from the parts; `predict` and `check_against_twin` give PASS or CHECK line by line. The preset `systems/see510/hardware/two_room.json` is generated from the parts.
+  - **Twin verdict:** free space across a hallway gives about 12,800 net key bits per ten-second session. Fiber through the wall at 405 nm does not, because the coupling loss lets dark counts win. Without decoys there is no key.
+- **Per-site logs** (`hardware_log.write_site_logs`, `read_site_logs`, `run_from_site_logs`; `run ingest A.csv --bob B.csv`). Room A logs every pulse and room B only its clicks; joining them reproduces the simulated session bit for bit.
+- **`qll/link/net_transport.py`:** the classical channel between the rooms over TCP (Ethernet, Wi-Fi, or fiber media converters), with HMAC-SHA256, sequence numbers, and rejection of tampering, replay, and wrong keys. A `probe` command reports round trips against the light's own.
+- **Decoy alert:**
+  - the honest-channel expectation now includes the vacuum gain, which matters at high dark counts;
+  - a decoy gain far *above* expectation also raises an alert;
+  - session metrics name the protocol by source model.
+- **Other changes:**
+  - configuration files may carry any `_`-prefixed notes;
+  - `qiskit-ibm-runtime==0.50.0` pinned;
+  - protocol and proposal indexes completed (P05–P08 were missing);
+  - F1 gains stage S0.5 (two rooms);
+  - the hardware ladder gains Tier 2½;
+  - thesis section 5.5;
+  - README mission section.
+- **Bibliography:** Casella and Berger (2002); Clopper and Pearson (1934); Cover and Thomas (2006); Malcolm et al. (1959); Kelley and Walker (1959); NASA cost-estimating handbook (2015); onsemi MicroFC data sheet; Villar et al. (2020); and dated sources for IBM's open plan, NSF SBIR, I-Corps, the CubeSat Launch Initiative, and rideshare prices.
+
+## 0.46.0 — 2026-10-02 (an operations day for the two-site link, and its console)
+- **Authentication-key fix.** In 0.45.0 every session spent 381 bits of authentication key, including sessions rejected for their error rate or for too few detections, so an adversary who cut or disturbed the fiber could drain the pre-shared pool. Now:
+  - only a session that has passed every other check is authenticated, so a rejected session spends nothing (a tampered session still spends its tags, because tampering is found by the check itself);
+  - after acceptance, the pool is topped back up to `auth_pool_bits` from the new key before any key is delivered, which also repays a deficit left by an earlier short session;
+  - new metrics `auth_bits_refilled` and `key_delivered_bits`.
+- **Scenario 9, an operations day** (`qll/link/operations.py`; `python -m qll.link.run operations`):
+  - **Setup:** a 10 km link runs a session every 15 minutes for 24 hours. Key stores and the authentication pool persist, and an application draws 330 keys of 256 bits per hour and is refused when the store is empty.
+  - **Scripted events** from the CONOPS degraded and adversarial modes: polarization drift ramping from 1.5 % to 7.5 %, 20 % and 100 % intercept-and-resend, an 8 dB fiber bend, an altered classical message, and a one-hour fiber cut.
+  - **Monitoring:** a new degraded status when detections fall below half of the morning baseline, which is the only indicator of the bend; an operator log of events, warnings, and alarms; and the minutes from each event to its first flag.
+  - **Result:** 96 sessions, 87 accepted (10 with alerts, 2 with loss flagged), 9 rejected. Every attack was flagged in its first session, the drift after 30 minutes. 7,862 keys were delivered and 7,814 served. 106 requests were refused during the cut (fail closed), and the application resumed after the repair. The pool never fell below 3,715 bits.
+  - **Outputs:** written to `systems/see510/evidence/operations/` (README, CSV, log, and a four-panel plot) and to `docs/link/ops.json`.
+- **Operations console** (`docs/link/`):
+  - **Replay:** a website page that replays the day, labelled as a replay of a simulation. It has play, pause, speed, scrub, and jump-to-event controls.
+  - **Status tiles:** status shown with icons and labels, plus the error rate, detections against the baseline, key store, and application.
+  - **Charts:** four stacked timelines with shaded events: the error rate with its abort and alert lines, key per session, keys in the store, and the authentication pool.
+  - **Details:** a hover tooltip, the current session's full record, the operator log, and the event table with time to flag.
+  - **Landing page:** linked from the landing page.
+- **Traceability:** SN-04 is met in simulation per session and over a scripted day; live telemetry from hardware is future work. SN-03 is extended. Updated documents:
+  - test case TC-10;
+  - stage 20;
+  - the architecture block table;
+  - the authentication rule in the models;
+  - the new metrics in inputs and outputs.
+- **Evidence SVGs** are now byte-for-byte reproducible (stable element identifiers, no date), so a rerun with the same library versions leaves unchanged plots unchanged.
+- **Fixes:**
+  - the development-stages table no longer breaks after stage 16;
+  - the browser-test server now closes its socket;
+  - the slow scenarios test checks the committed plot set instead of a fixed count (it expected 10 plots after 0.45 added two);
+  - the README now describes the 0.45 sources and authentication.
+
 ## 0.45.0 — 2026-10-02 (information-theoretic authentication; laser sources, decoy states, and photon-number splitting)
 - **Wegman–Carter authentication** (`qll/link/authentication.py`; channel mode `wegman_carter`, now the default):
   - **Method:** a polynomial universal hash over GF(2¹²⁷ − 1) with one-time-pad masks. Each site tags its view of the whole transcript once, and the other checks the tag before any key is accepted, so a tampered message is caught at the end of the session.

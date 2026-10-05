@@ -35,6 +35,7 @@ flowchart LR
 | Monitor and logger | metrics, events | summaries, folders, CSV | the same code |
 | Key store (`key_store.py`) | accepted key | 256-bit keys by identifier | a key-management service with the same three calls |
 | Demo application (`demo_app.py`) | key, message | ciphertext and decryption | the same code on two computers |
+| Operations day (`operations.py`) | a configuration and a plan of events | a status per session, an operator log, the console's replay data | a scheduler running sessions on the bench, logging the same fields |
 
 The protocol module is the only one that knows the order of the steps; everything else is a component it calls. A different protocol (for example BBM92 with an entangled source, repository module `qll/qkd/e91.py`) would replace `protocol_bb84.py`, `site_a.py`, and `site_b.py` and leave the channels, monitor, logger, key store, and application untouched.
 

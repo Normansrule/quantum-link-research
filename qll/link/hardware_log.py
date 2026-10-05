@@ -93,3 +93,58 @@ def run_from_log(path: Path, c: LinkConfig, managers=None) -> SessionResult:
     rec = read_log(path)
     c = replace(c, n_pulses=len(rec.states.bits))
     return run_session(c, managers, record=rec)
+
+
+# ------------------------------------------------------------------------------------- one log per site (two rooms)
+ALICE_SITE = ["pulse", "alice_bit", "alice_basis"]
+BOB_SITE = ["pulse", "bob_basis", "bob_bit"]
+
+
+def write_site_logs(rec: QuantumRecord, alice_path: Path, bob_path: Path) -> tuple[Path, Path]:
+    """Write what each site records on its own computer: Site A every pulse it prepared (and its intensity class),
+    Site B only the pulses on which a detector clicked, with its basis and bit. This is the format of a real two-room
+    run; the files never need to be merged by hand."""
+    s, d = rec.states, rec.det
+    a_cols = ALICE_SITE + (["alice_intensity"] if s.intensity is not None else [])
+    a = [np.arange(len(s.bits)), s.bits, s.bases] + ([s.intensity] if s.intensity is not None else [])
+    idx = np.flatnonzero(d.detected)
+    for path, cols, arrays in ((alice_path, a_cols, a), (bob_path, BOB_SITE, [idx, d.bases[idx], d.bits[idx]])):
+        Path(path).parent.mkdir(parents=True, exist_ok=True)
+        np.savetxt(path, np.column_stack(arrays).astype(np.int64), fmt="%d", delimiter=",", header=",".join(cols), comments="")
+    return Path(alice_path), Path(bob_path)
+
+
+def _load(path: Path, required: list[str]) -> dict[str, np.ndarray]:
+    with open(path, encoding="utf-8") as fh:
+        header = fh.readline().strip().split(",")
+    missing = [c for c in required if c not in header]
+    if missing:
+        raise ValueError(f"{Path(path).name} is missing columns {missing}")
+    rows = np.loadtxt(path, delimiter=",", skiprows=1, dtype=np.int64, ndmin=2)
+    return {name: rows[:, i] for i, name in enumerate(header)} if rows.size else {name: np.zeros(0, np.int64) for name in header}
+
+
+def read_site_logs(alice_path: Path, bob_path: Path) -> QuantumRecord:
+    """Join the two sites' logs on the pulse index into the record the protocol processes."""
+    a, b = _load(alice_path, ALICE_SITE), _load(bob_path, BOB_SITE)
+    n = len(a["pulse"])
+    if n == 0 or not np.array_equal(a["pulse"], np.arange(n)):
+        raise ValueError("Site A's log must list every pulse once, in order, from 0")
+    idx = b["pulse"]
+    if len(idx) and (idx.min() < 0 or idx.max() >= n or np.any(np.diff(idx) <= 0)):
+        raise ValueError("Site B's pulse indices must be increasing and within Site A's log")
+    for name, col in (("alice_bit", a["alice_bit"]), ("alice_basis", a["alice_basis"]), ("bob_basis", b["bob_basis"]), ("bob_bit", b["bob_bit"])):
+        if not np.isin(col, (0, 1)).all():
+            raise ValueError(f"column {name} must hold only 0 and 1")
+    intensity = a["alice_intensity"].astype(np.int8) if "alice_intensity" in a else None
+    photons = np.ones(n, dtype=np.int64) if intensity is not None else None
+    states = PreparedStates(a["alice_bit"].astype(np.int8), a["alice_basis"].astype(np.int8), photons, intensity)
+    click = np.zeros(n, bool); click[idx] = True
+    bases = np.zeros(n, np.int8); bases[idx] = b["bob_basis"]
+    bits = np.zeros(n, np.int8); bits[idx] = b["bob_bit"]
+    return QuantumRecord(states, Detections(click, click, bits, bases), None)
+
+
+def run_from_site_logs(alice_path: Path, bob_path: Path, c: LinkConfig, managers=None) -> SessionResult:
+    rec = read_site_logs(alice_path, bob_path)
+    return run_session(replace(c, n_pulses=len(rec.states.bits)), managers, record=rec)

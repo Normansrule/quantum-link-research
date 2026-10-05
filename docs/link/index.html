@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Operations console · Quantum Link Research</title>
+<meta name="description" content="A replay of a simulated 24-hour operations day on the two-site BB84 fiber link: error rate, key, key store, and authentication pool, with drift, attacks, a bend, and a fiber cut.">
+<meta property="og:title" content="Operations console · Quantum Link Research">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://normansrule.github.io/quantum-link-research/link/">
+<meta property="og:image" content="https://normansrule.github.io/quantum-link-research/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://normansrule.github.io/quantum-link-research/og.png">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔐</text></svg>">
+<link rel="stylesheet" href="../space.css">
+<style>
+  .dash { max-width: 1320px; margin: 0 auto; padding: 5.2rem 3vw 2rem; display: grid; gap: 1rem; grid-template-columns: repeat(12, 1fr) }
+  .dash > * { min-width: 0 }
+  .p { border: 1px solid var(--line); border-radius: 14px; background: var(--glass); padding: .9rem 1rem; position: relative }
+  .p h4 { margin: 0 0 .5rem; font-size: .74rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); font-weight: 700 }
+  .head { grid-column: span 12; display: flex; flex-wrap: wrap; gap: .6rem 1.2rem; align-items: baseline; justify-content: space-between }
+  .head h1 { font-size: clamp(1.3rem, 2.2vw, 1.75rem); margin: 0; letter-spacing: -.01em }
+  .head p { margin: .2rem 0 0; color: var(--muted); font-size: .92rem; max-width: 80ch }
+  .replay { display: inline-flex; gap: .45rem; align-items: center; padding: .3rem .8rem; border-radius: 999px; border: 1px solid rgba(255,138,76,.45);
+    background: rgba(255,138,76,.1); color: var(--warm); font: 700 .74rem/1.2 Inter, system-ui, sans-serif; letter-spacing: .1em; text-transform: uppercase; white-space: nowrap }
+  .kpi { grid-column: span 2 } .kpi .v { font: 700 1.45rem/1.25 "JetBrains Mono", monospace; font-variant-numeric: tabular-nums; white-space: nowrap }
+  .kpi .s { font-size: .78rem; color: var(--faint) }
+  .wide { grid-column: span 8 } .side { grid-column: span 4 } .full { grid-column: span 12 }
+  @media (max-width: 1000px) { .kpi { grid-column: span 4 } .wide, .side { grid-column: span 12 } }
+  @media (max-width: 560px) { .kpi { grid-column: span 6 } .replay { white-space: normal; letter-spacing: .06em } }
+  .charts canvas { width: 100%; display: block; cursor: crosshair } .charts .c-tall { height: 230px } .charts .c-mid { height: 165px } .charts .c-low { height: 130px }
+  .charts h5 { margin: .7rem 0 .15rem; font-size: .78rem; color: var(--muted); font-weight: 600 } .charts h5:first-of-type { margin-top: 0 }
+  .legend { display: flex; flex-wrap: wrap; gap: .3rem 1rem; font-size: .78rem; color: var(--muted); margin: .2rem 0 .4rem }
+  .sw { display: inline-block; width: 12px; height: 12px; border-radius: 3px; vertical-align: -2px; margin-right: .3rem }
+  .feed { font: .78rem/1.6 "JetBrains Mono", monospace; color: var(--muted); max-height: 260px; overflow: auto }
+  .feed .ev { border-bottom: 1px dashed var(--line); padding: .3rem 0 } .feed .ev b { font-weight: 700 }
+  .feed .event b { color: var(--cyan) } .feed .warning b { color: var(--warm) } .feed .alarm b { color: var(--mars) } .feed .info b { color: var(--green) }
+  .st { display: inline-flex; align-items: center; gap: .45rem } .st svg { width: 1.15em; height: 1.15em; flex: none }
+  .s-accepted { color: var(--green) } .s-degraded { color: var(--cyan) } .s-alert { color: var(--warm) } .s-rejected { color: var(--mars) }
+  .kv { display: grid; grid-template-columns: auto 1fr; gap: .15rem .9rem; font: .82rem/1.55 "JetBrains Mono", monospace; color: var(--muted) }
+  .kv b { color: var(--ink); font-weight: 600; overflow-wrap: anywhere }
+  .ctrl { margin: 0 0 .4rem } .ctrl input[type=range] { width: 100% } .scrub { display: flex; gap: .6rem; align-items: center }
+  .jumps { display: flex; flex-wrap: wrap; gap: .4rem; margin-top: .55rem }
+  .jumps button { font: 600 .74rem/1 Inter, system-ui, sans-serif; padding: .4rem .6rem; border-radius: 999px; border: 1px solid var(--line); background: var(--bg2); color: var(--muted); cursor: pointer }
+  .jumps button:hover { color: var(--ink); border-color: var(--cyan) }
+  #tip { position: fixed; z-index: 30; pointer-events: none; display: none; padding: .55rem .7rem; border-radius: 10px; border: 1px solid var(--line);
+    background: rgba(10,15,28,.96); font: .76rem/1.5 "JetBrains Mono", monospace; color: var(--muted); max-width: 300px; box-shadow: 0 10px 30px rgba(0,0,0,.4) }
+  #tip b { color: var(--ink) }
+  table.plan { width: 100%; min-width: 680px; border-collapse: collapse; font-size: .84rem } table.plan th, table.plan td { text-align: left; padding: .45rem .5rem; border-bottom: 1px solid var(--line); vertical-align: top }
+  table.plan th { color: var(--muted); font-weight: 600; font-size: .76rem } table.plan td.n { font-family: "JetBrains Mono", monospace; white-space: nowrap }
+  .tablewrap { overflow-x: auto }
+  .note { font-size: .82rem; color: var(--faint); margin: .5rem 0 0 }
+</style>
+</head>
+<body>
+<div class="aurora"></div>
+<header class="top">
+  <a class="brand" href="../"><span class="dot"></span>Quantum Link Research</a>
+  <nav><a href="../mars/">Mars simulator</a><a href="../monitor/">Link monitor</a><a href="../budget/">Link budget</a><a href="../repeater/">Repeater lab</a><a href="../qec/">QEC lab</a><a href="../systems/">Traceability</a><a class="gh" href="https://github.com/Normansrule/quantum-link-research">GitHub ↗</a></nav>
+</header>
+<main class="dash">
+  <div class="head">
+    <div>
+      <h1>Two-site link · operations console</h1>
+      <p>A simulated 24-hour day on the 10 km BB84 fiber link of the SEE 510 case study: a session every 15 minutes, a key store that an application draws from, and scripted drift, attacks, a fiber bend, and a fiber cut. The monitor sees only what the sites can measure.</p>
+    </div>
+    <span class="replay" title="Every number comes from docs/link/ops.json, written by python -m qll.link.run operations">● Replay of a simulation, not live telemetry</span>
+  </div>
+
+  <div class="p kpi"><h4>time</h4><div class="v" id="k-time">—</div><div class="s" id="k-sess"></div></div>
+  <div class="p kpi"><h4>session</h4><div class="v" id="k-status" aria-live="polite">—</div><div class="s" id="k-status-s"></div></div>
+  <div class="p kpi"><h4>error rate</h4><div class="v" id="k-qber">—</div><div class="s" id="k-qber-s"></div></div>
+  <div class="p kpi"><h4>detections</h4><div class="v" id="k-det">—</div><div class="s">of the morning baseline</div></div>
+  <div class="p kpi"><h4>key store</h4><div class="v" id="k-bank">—</div><div class="s" id="k-bank-s"></div></div>
+  <div class="p kpi"><h4>application</h4><div class="v" id="k-app">—</div><div class="s" id="k-app-s"></div></div>
+
+  <div class="p wide charts">
+    <div class="legend" id="legend"></div>
+    <h5>Error rate (%) · dashed: abort threshold · dotted: alert level</h5><canvas class="c-tall" id="c-q"></canvas>
+    <h5>Key per session (bits, after the authentication key is replaced)</h5><canvas class="c-mid" id="c-k"></canvas>
+    <h5>Keys in the store at Site A (256-bit keys) · ✕: application refused</h5><canvas class="c-mid" id="c-b"></canvas>
+    <h5>Authentication key pool (bits)</h5><canvas class="c-low" id="c-p"></canvas>
+  </div>
+
+  <div class="side" style="display:grid;gap:1rem;align-content:start">
+    <div class="p"><h4>replay</h4>
+      <div class="ctrl" style="display:flex;gap:.5rem;flex-wrap:wrap">
+        <button id="play" aria-label="play or pause">▶ play</button>
+        <select id="speed" aria-label="replay speed"><option value="1">1 session/s</option><option value="2" selected>2 sessions/s</option><option value="4">4 sessions/s</option><option value="8">8 sessions/s</option></select>
+      </div>
+      <div class="scrub"><input id="scrub" type="range" min="0" max="95" step="1" value="0" aria-label="session"><span class="mono" id="scrub-v" style="color:var(--muted);white-space:nowrap"></span></div>
+      <div class="jumps" id="jumps"></div>
+    </div>
+    <div class="p"><h4>current session</h4><div class="kv" id="cur"></div></div>
+    <div class="p"><h4>operator log</h4><div class="feed" id="feed"></div></div>
+  </div>
+
+  <div class="p full"><h4>the day's events and when the monitor flagged them</h4>
+    <div class="tablewrap"><table class="plan" id="plan"><thead><tr><th>from</th><th>to</th><th>event</th><th>kind</th><th>what happens</th><th>flagged after</th></tr></thead><tbody></tbody></table></div>
+    <p class="note" id="summary"></p>
+    <p class="note">A session is flagged when it is rejected, when its error rate passes the alert level, or when its detections fall below half of the morning baseline. The error rate alone cannot tell drift or noise from interception; the protocol treats every error as if an adversary caused it. Within this model, under the assumptions of <a href="https://github.com/Normansrule/quantum-link-research/blob/main/systems/see510/03_assumptions.md">03_assumptions.md</a>; not a proof of real-world security. Evidence: <a href="https://github.com/Normansrule/quantum-link-research/blob/main/systems/see510/evidence/operations/README.md">scenario 9</a>.</p>
+  </div>
+</main>
+<div id="tip" role="tooltip"></div>
+<footer style="max-width:1320px">Generated by <code>python -m qll.link.run operations</code> from tested Python (<code>qll/link/operations.py</code>); this page only draws <code>ops.json</code>. Dashboard pattern after the link monitor: state tiles, a timeline, and an event feed. See CREDITS.md.</footer>
+<script>
+(async function () {
+  document.documentElement.classList.remove("no-js");
+  const $ = (id) => document.getElementById(id);
+  let D;
+  try { D = await (await fetch("ops.json")).json(); }
+  catch (e) { $("k-status").textContent = "no data"; $("feed").textContent = "ops.json could not be loaded; serve the docs folder over HTTP."; return; }
+  const S = D.sessions, N = S.length, C = D.config, dt = D.interval_min / 60;
+  const css = getComputedStyle(document.documentElement), V = (n) => css.getPropertyValue(n).trim();
+  const COL = { accepted: V("--green"), degraded: V("--cyan"), alert: V("--warm"), rejected: V("--mars") };
+  const LAB = { accepted: "accepted", degraded: "loss flagged", alert: "alert", rejected: "rejected" };
+  const KIND = { degradation: "rgba(94,242,224,.10)", attack: "rgba(255,138,76,.13)", fault: "rgba(147,161,184,.13)" };
+  const ICON = {
+    accepted: '<svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7" fill="currentColor"/><path d="M4.5 8.2l2.2 2.2 4.8-4.8" stroke="#05070d" stroke-width="2" fill="none"/></svg>',
+    degraded: '<svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.5" y="1.5" width="13" height="13" rx="2" fill="currentColor"/><path d="M4 8h8" stroke="#05070d" stroke-width="2"/></svg>',
+    alert: '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1l7 13H1z" fill="currentColor"/><path d="M8 5.5v4M8 11.2v1.3" stroke="#05070d" stroke-width="1.8"/></svg>',
+    rejected: '<svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7" fill="currentColor"/><path d="M5 5l6 6M11 5l-6 6" stroke="#05070d" stroke-width="2"/></svg>',
+  };
+  const clock = (h) => String(Math.floor(h + 1e-9)).padStart(2, "0") + ":" + String(Math.round((h % 1) * 60) % 60).padStart(2, "0");
+  const fmt = (n) => Math.round(n).toLocaleString("en-US");
+  const base = S[0].detection;
+  const reasons = D.reasons || {};
+  const status = (s) => `<span class="st s-${s.status}">${ICON[s.status]}${LAB[s.status]}</span>`;
+
+  $("legend").innerHTML = Object.keys(LAB).map((k) => `<span class="st s-${k}">${ICON[k]}<span style="color:var(--muted)">${k === "alert" ? "accepted with alert" : k === "degraded" ? "accepted, loss flagged" : LAB[k]}</span></span>`).join("")
+    + Object.entries({ degradation: "drift", attack: "attack", fault: "fault" }).map(([k, l]) => `<span><span class="sw" style="background:${KIND[k].replace(/[\d.]+\)$/, ".45)")}"></span>${l}</span>`).join("");
+
+  // plan table, summary, jump buttons
+  const flag = D.summary.minutes_to_flag;
+  $("plan").querySelector("tbody").innerHTML = D.plan.map((e) => `<tr><td class="n">${clock(e.start_h)}</td><td class="n">${clock(e.end_h)}</td><td>${e.name}</td><td>${e.kind}</td><td>${e.description}</td><td class="n">${flag[e.name] === null ? "not flagged" : flag[e.name] + " min"}</td></tr>`).join("");
+  const sm = D.summary;
+  $("summary").textContent = `${sm.sessions} sessions: ${sm.accepted} accepted (${sm.alerts} with an alert, ${sm.degraded} with loss flagged), ${sm.rejected} rejected. `
+    + `${fmt(sm.keys_delivered)} keys delivered, ${fmt(sm.keys_served)} served to the application, ${fmt(sm.keys_refused)} requests refused. Lowest authentication pool ${fmt(sm.min_pool_bits)} bits.`;
+  $("jumps").innerHTML = D.plan.map((e) => `<button data-t="${e.start_h}">${clock(e.start_h)} ${e.name}</button>`).join("");
+  $("jumps").querySelectorAll("button").forEach((b) => b.onclick = () => { setIndex(Math.round(+b.dataset.t / dt)); pause(); });
+
+  // charts: one time axis, no dual axes
+  const charts = [
+    { id: "c-q", ymax: 27, y: (s) => s.qber === null ? 0 : 100 * s.qber, kind: "points", ticks: [0, 5, 10, 15, 20, 25], f: (v) => v + "%",
+      lines: [[100 * C.qber_threshold, V("--mars"), [6, 4]], [100 * C.qber_alert, V("--warm"), [2, 3]]] },
+    { id: "c-k", ymax: 1.12 * Math.max(...S.map((s) => s.net_key_bits)), y: (s) => s.net_key_bits, kind: "bars", f: (v) => (v / 1000).toFixed(0) + "k" },
+    { id: "c-b", ymax: 1.12 * Math.max(...S.map((s) => s.bank_keys)), y: (s) => s.bank_keys, kind: "step", refused: true, f: (v) => v.toFixed(0) },
+    { id: "c-p", ymax: 1.15 * Math.max(C.auth_pool_bits, ...S.map((s) => s.pool_bits)), y: (s) => s.pool_bits, kind: "step", f: (v) => (v / 1000).toFixed(1) + "k" },
+  ];
+  const PADL = 44, PADR = 10, PADT = 6, PADB = 20;
+  function geom(cv) { const W = cv.clientWidth, H = cv.clientHeight; return { W, H, X: (h) => PADL + (W - PADL - PADR) * h / 24, iX: (x) => (x - PADL) / (W - PADL - PADR) * 24 }; }
+  function draw(ch, upto) {
+    const cv = $(ch.id), g = cv.getContext("2d"), dpr = Math.min(window.devicePixelRatio || 1, 2), { W, H, X } = geom(cv);
+    if (cv.width !== Math.round(W * dpr) || cv.height !== Math.round(H * dpr)) { cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); }
+    g.setTransform(dpr, 0, 0, dpr, 0, 0); g.clearRect(0, 0, W, H);
+    const Y = (v) => H - PADB - (H - PADB - PADT) * Math.min(v, ch.ymax) / ch.ymax;
+    D.plan.forEach((e) => { g.fillStyle = KIND[e.kind]; g.fillRect(X(e.start_h), PADT, X(e.end_h) - X(e.start_h), H - PADB - PADT); });
+    g.font = "10.5px JetBrains Mono, monospace"; g.lineWidth = 1;
+    const ticks = ch.ticks || [0, ch.ymax / 2 / 1.12, ch.ymax / 1.12];
+    ticks.forEach((v) => { g.strokeStyle = "rgba(148,170,210,.13)"; g.beginPath(); g.moveTo(PADL, Y(v)); g.lineTo(W - PADR, Y(v)); g.stroke(); g.fillStyle = V("--faint"); g.textAlign = "right"; g.fillText(ch.f(v), PADL - 6, Y(v) + 3.5); });
+    g.textAlign = "center";
+    for (let h = 0; h <= 24; h += W < 520 ? 6 : 3) { g.fillStyle = V("--faint"); g.fillText(String(h).padStart(2, "0") + ":00", Math.min(Math.max(X(h), PADL + 14), W - PADR - 14), H - 5); }
+    (ch.lines || []).forEach(([v, c, dash]) => { g.strokeStyle = c; g.setLineDash(dash); g.beginPath(); g.moveTo(PADL, Y(v)); g.lineTo(W - PADR, Y(v)); g.stroke(); g.setLineDash([]); });
+    const n = upto + 1;
+    if (ch.kind === "bars") {
+      const bw = Math.max(1, (X(dt) - X(0)) * 0.78);
+      for (let i = 0; i < n; i++) { const s = S[i], v = ch.y(s); if (v <= 0) continue; g.fillStyle = COL[s.status]; g.fillRect(X(s.t_h) + 0.5, Y(v), bw, Y(0) - Y(v)); }
+    } else if (ch.kind === "step") {
+      g.strokeStyle = V("--blue"); g.lineWidth = 1.8; g.beginPath();
+      for (let i = 0; i < n; i++) { const s = S[i], x0 = X(s.t_h), x1 = X(s.t_h + dt), y = Y(ch.y(s)); if (i === 0) g.moveTo(x0, y); else g.lineTo(x0, y); g.lineTo(x1, y); }
+      g.stroke();
+      if (ch.refused) for (let i = 0; i < n; i++) if (S[i].refused) mark(g, "rejected", X(S[i].t_h + dt / 2), Y(0) - 1, 4.5);
+    } else {
+      g.strokeStyle = "rgba(94,168,255,.65)"; g.lineWidth = 1.3; g.beginPath(); let pen = false;
+      for (let i = 0; i < n; i++) { const s = S[i]; if (s.qber === null) { pen = false; continue; } const x = X(s.t_h + dt / 2), y = Y(ch.y(s)); pen ? g.lineTo(x, y) : g.moveTo(x, y); pen = true; }
+      g.stroke();
+      for (let i = 0; i < n; i++) mark(g, S[i].status, X(S[i].t_h + dt / 2), Y(ch.y(S[i])), 4);
+    }
+    const xc = X(S[upto].t_h + dt / 2); g.strokeStyle = "rgba(232,238,248,.7)"; g.setLineDash([3, 3]); g.beginPath(); g.moveTo(xc, PADT); g.lineTo(xc, H - PADB); g.stroke(); g.setLineDash([]);
+  }
+  function mark(g, st, x, y, r) {
+    g.fillStyle = COL[st]; g.strokeStyle = "#05070d"; g.lineWidth = 1; g.beginPath();
+    if (st === "accepted") g.arc(x, y, r, 0, 7);
+    else if (st === "degraded") g.rect(x - r, y - r, 2 * r, 2 * r);
+    else if (st === "alert") { g.moveTo(x, y - r - 1); g.lineTo(x + r + 1, y + r); g.lineTo(x - r - 1, y + r); g.closePath(); }
+    else { g.lineWidth = 2.4; g.strokeStyle = COL[st]; g.moveTo(x - r, y - r); g.lineTo(x + r, y + r); g.moveTo(x + r, y - r); g.lineTo(x - r, y + r); g.stroke(); return; }
+    g.fill(); g.stroke();
+  }
+
+  // state
+  let idx = 0, playing = false, acc = 0, last = performance.now(), dirty = true;
+  function setIndex(i) { idx = Math.max(0, Math.min(N - 1, i)); $("scrub").value = idx; dirty = true; }
+  function pause() { playing = false; $("play").textContent = "▶ play"; }
+  function render() {
+    const s = S[idx], t = s.t_h;
+    $("k-time").textContent = clock(t); $("k-sess").textContent = `session ${idx + 1} of ${N} · run ${s.run_id}`;
+    $("k-status").innerHTML = status(s); $("k-status-s").textContent = s.status === "rejected" ? (reasons[s.reason] || s.reason).split(" (")[0] : s.events.length ? s.events.join(", ") : "no event active";
+    $("k-qber").innerHTML = s.qber === null ? '<span style="color:var(--faint)">n/a</span>' : `<span class="${s.qber > C.qber_threshold ? "s-rejected" : s.qber > C.qber_alert ? "s-alert" : ""}">${(100 * s.qber).toFixed(2)} %</span>`;
+    $("k-qber-s").textContent = `alert ${100 * C.qber_alert} % · abort ${100 * C.qber_threshold} %`;
+    const det = 100 * s.detection / base;
+    $("k-det").innerHTML = `<span class="${det < 50 ? "s-degraded" : ""}">${det.toFixed(det < 1 ? 2 : 0)} %</span>`;
+    $("k-bank").textContent = fmt(s.bank_keys) + " keys"; $("k-bank-s").textContent = `+${fmt(s.keys_delivered)} this session · pool ${fmt(s.pool_bits)} bits`;
+    let served = 0, refused = 0; for (let i = 0; i <= idx; i++) { served += S[i].served; refused += S[i].refused; }
+    $("k-app").innerHTML = s.refused ? '<span class="s-rejected">refused</span>' : '<span class="s-accepted">served</span>';
+    $("k-app-s").textContent = `${fmt(served)} served · ${fmt(refused)} refused today`;
+    $("scrub-v").textContent = clock(t);
+    $("cur").innerHTML = [["time", `${clock(t)}–${clock(t + dt)}`], ["status", status(s)], ["reason", s.reason ? (reasons[s.reason] || s.reason) : "—"],
+      ["events", s.events.length ? s.events.join(", ") : "none"], ["error rate", s.qber === null ? "n/a (no detections)" : (100 * s.qber).toFixed(3) + " %"],
+      ["channel loss", s.loss_db.toFixed(1) + " dB"], ["misalignment", (100 * s.misalignment).toFixed(2) + " %"],
+      ["final key", fmt(s.final_key_bits) + " bits"], ["auth spent", fmt(s.auth_spent) + " bits"], ["net key", fmt(s.net_key_bits) + " bits"],
+      ["keys delivered", fmt(s.keys_delivered)], ["app served / refused", `${fmt(s.served)} / ${fmt(s.refused)}`],
+      ["adversary knew", fmt(s.eve_known_key_bits) + " bits of the raw block"], ["run · seed", `${s.run_id} · ${s.seed}`]]
+      .map(([k, v]) => `<span>${k}</span><b>${v}</b>`).join("");
+    const lines = D.log.filter((e) => e.t_h <= t + 1e-9).reverse();
+    $("feed").innerHTML = lines.length ? lines.map((e) => `<div class="ev ${e.level}">${clock(e.t_h)} · <b>${e.level}</b> · ${e.message}</div>`).join("")
+      : '<div class="ev">no events yet; the link runs normally</div>';
+    charts.forEach((ch) => draw(ch, idx));
+  }
+  function loop(now) {
+    const d = Math.min(0.25, (now - last) / 1000); last = now;
+    if (playing) { acc += d * +$("speed").value; while (acc >= 1) { acc -= 1; if (idx < N - 1) setIndex(idx + 1); else { pause(); break; } } }
+    if (dirty) { dirty = false; render(); }
+    requestAnimationFrame(loop);
+  }
+  $("play").onclick = () => { if (playing) pause(); else { if (idx >= N - 1) setIndex(0); playing = true; acc = 0; $("play").textContent = "❚❚ pause"; } };
+  $("scrub").max = N - 1; $("scrub").addEventListener("input", () => { setIndex(+$("scrub").value); pause(); });
+  window.addEventListener("resize", () => { dirty = true; });
+
+  // hover tooltip
+  const tip = $("tip");
+  charts.forEach((ch) => {
+    const cv = $(ch.id);
+    cv.addEventListener("mousemove", (ev) => {
+      const r = cv.getBoundingClientRect(), h = geom(cv).iX(ev.clientX - r.left), i = Math.floor(h / dt);
+      if (i < 0 || i > idx) { tip.style.display = "none"; return; }
+      const s = S[i];
+      tip.innerHTML = `<b>${clock(s.t_h)}</b> · ${status(s)}<br>error rate <b>${s.qber === null ? "n/a" : (100 * s.qber).toFixed(2) + " %"}</b> · detections <b>${(100 * s.detection / base).toFixed(0)} %</b><br>`
+        + `net key <b>${fmt(s.net_key_bits)}</b> bits · store <b>${fmt(s.bank_keys)}</b> keys<br>pool <b>${fmt(s.pool_bits)}</b> bits${s.refused ? ` · <span class="s-rejected">${s.refused} refused</span>` : ""}`
+        + (s.events.length ? `<br>${s.events.join(", ")}` : "");
+      tip.style.display = "block";
+      tip.style.left = Math.min(ev.clientX + 14, innerWidth - tip.offsetWidth - 8) + "px"; tip.style.top = (ev.clientY + 14) + "px";
+    });
+    cv.addEventListener("mouseleave", () => { tip.style.display = "none"; });
+    cv.addEventListener("click", (ev) => { const r = cv.getBoundingClientRect(); setIndex(Math.floor(geom(cv).iX(ev.clientX - r.left) / dt)); pause(); });
+  });
+
+  setIndex(0);
+  if (!matchMedia("(prefers-reduced-motion: reduce)").matches) { playing = true; $("play").textContent = "❚❚ pause"; }
+  requestAnimationFrame(loop);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,27 @@
+t_h,level,message
+3.0,event,polarization drift begins: temperature change twists the fiber's polarization; the operator realigns at 05:00
+3.5,warning,error rate 3.1 % above the alert level; key shortened
+5.0,event,polarization drift ends
+8.0,event,partial interception begins: intercept-and-resend on 20 % of pulses
+8.0,warning,error rate 6.4 % above the alert level; key shortened
+9.0,event,partial interception ends
+12.0,event,fiber bend begins: a cable tray is moved; 8 dB of bend loss
+12.0,warning,"detection rate 16 % of its baseline: loss has increased (bend, connector, or fiber)"
+12.5,event,fiber bend ends
+14.0,event,full interception begins: intercept-and-resend on every pulse
+14.0,alarm,session rejected: estimated error rate above threshold (consistent with interception or excessive noise)
+14.25,alarm,session rejected: estimated error rate above threshold (consistent with interception or excessive noise)
+14.5,alarm,session rejected: estimated error rate above threshold (consistent with interception or excessive noise)
+14.75,alarm,session rejected: estimated error rate above threshold (consistent with interception or excessive noise)
+15.0,event,full interception ends
+17.0,event,classical tampering begins: a message on the classical channel is altered in transit
+17.0,alarm,session rejected: classical message failed authentication (possible active tampering)
+17.25,event,classical tampering ends
+19.0,event,fiber cut begins: the fiber is cut; repaired at 20:00
+19.0,alarm,session rejected: too few detections to estimate the error rate and form a key block
+19.25,alarm,session rejected: too few detections to estimate the error rate and form a key block
+19.5,alarm,session rejected: too few detections to estimate the error rate and form a key block
+19.5,alarm,key store empty: the application is refused (fail closed)
+19.75,alarm,session rejected: too few detections to estimate the error rate and form a key block
+20.0,event,fiber cut ends
+20.0,info,key available again: the application resumes

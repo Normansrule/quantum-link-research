@@ -100,7 +100,7 @@ class LinkConfig:
     @classmethod
     def from_dict(cls, d: dict) -> "LinkConfig":
         names = {f.name for f in fields(cls)}
-        unknown = set(d) - names - {"_help"}
+        unknown = {k for k in d if not k.startswith("_")} - names          # "_help", "_parts": notes, not inputs
         if unknown:
             raise ValueError(f"unknown configuration fields: {sorted(unknown)}")
         return cls(**{k: v for k, v in d.items() if k in names})

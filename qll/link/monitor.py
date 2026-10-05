@@ -60,7 +60,9 @@ class SessionMetrics:
     secret_key_rate_bps: float = 0.0
     auth_mode: str = ""
     auth_bits_consumed: int = 0          # authentication key spent on this session (Wegman-Carter pads and hash key)
-    net_key_bits: int = 0                # final key minus the authentication key it must replace
+    auth_bits_refilled: int = 0          # final-key bits used to top the authentication pool back up
+    net_key_bits: int = 0                # final key minus the authentication key this session spent (may be negative)
+    key_delivered_bits: int = 0          # final key left for applications after topping the pool back up
     net_key_rate_bps: float = 0.0
     forgery_probability: float = 0.0     # chance a substituted transcript passes authentication
     keys_delivered_256: int = 0

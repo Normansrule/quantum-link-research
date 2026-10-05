@@ -139,16 +139,29 @@ This is a systems-engineering thesis, and the repository is organized like a sys
 
 [`systems/see510/`](systems/see510/README.md) takes flagship F1 down to a laboratory key link between Site A and Site B and simulates it end to end:
 
-- BB84 states through a fiber of configurable length;
+- BB84 states from an ideal single-photon source or an attenuated laser with decoy states, through a fiber of configurable length;
 - detectors with finite efficiency and dark counts;
-- a textbook intercept-and-resend adversary;
+- two textbook adversaries: intercept-and-resend, and photon-number splitting on a laser source;
 - Cascade error correction with hash verification, and privacy amplification;
-- an authenticated classical channel;
+- a classical channel authenticated with Wegman–Carter tags, whose key each session replaces from its own output;
 - key delivery to an AES-256-GCM demonstration application through an ETSI GS QKD 014-style interface.
 
-Twelve validation cases match closed-form models, and every run reproduces from its configuration and seed. A [real-world ladder](systems/see510/10_real_world_experiments.md) builds it in five tiers, from a $40–120 Arduino-and-polarizer analogue through fiber characterization and single-photon BB84 to entanglement-based BBM92. Each tier's log runs through the same protocol code with `python -m qll.link.run ingest`. Fifteen stakeholder needs trace to modules, tests, and [evidence](systems/see510/evidence/README.md). `python -m qll.link.run scenarios` regenerates the evidence in about 25 seconds.
+Twelve validation cases match closed-form models, and every run reproduces from its configuration and seed. A [real-world ladder](systems/see510/10_real_world_experiments.md) builds it in five tiers, from a $40–120 Arduino-and-polarizer analogue through fiber characterization and single-photon BB84 to entanglement-based BBM92. Each tier's log runs through the same protocol code with `python -m qll.link.run ingest`. Fifteen stakeholder needs trace to modules, tests, and [evidence](systems/see510/evidence/README.md). `python -m qll.link.run scenarios` regenerates the evidence in about 45 seconds. A scripted [operations day](systems/see510/evidence/operations/README.md) runs 96 sessions through drift, interception, a fiber bend, tampering, and a fiber cut; the [operations console](https://normansrule.github.io/quantum-link-research/link/) replays it, and shows the link failing closed during the cut.
 
 <p align="center"><a href="systems/see510/evidence/README.md"><img src="systems/see510/evidence/plots/baseline_vs_adversary.svg" alt="Interception raises the error rate" width="48%"></a> <a href="systems/see510/evidence/README.md"><img src="systems/see510/evidence/plots/key_vs_distance.svg" alt="Usable key per session against fiber length" width="48%"></a></p>
+
+### The mission: from two rooms to orbit
+
+[`systems/program/`](systems/program/README.md) turns the research into one phased plan, with gates, three-point costs, a critical-path schedule, a risk register, trade studies, and a path to a company:
+
+1. **Phase 1, two rooms (about $670 likely).** A fiber classical channel between two rooms. Single-photon BB84 with decoys across a hallway, using four silicon photomultipliers ([P10](experiments/protocols/P10_two_room_single_photon_link.md)), matched line by line to a digital twin. The collapse code on a free cloud processor ([P11](experiments/protocols/P11_collapse_code_on_a_cloud_processor.md)): a measured bound on whether the way a shared state collapses can carry a message (quantum mechanics says it carries none).
+2. **Phase 2, entanglement between the rooms.** A borrowed source, a Bell test, and an entanglement-based key.
+3. **Phase 3, outdoors and toward orbit.** Free space, a ground station, and a satellite only with a partner.
+4. **Phase 4, the frontier.** Entanglement-assisted communication: teleportation and superdense coding, each with its classical channel.
+
+Every experiment already in the repository is catalogued with the phase it feeds and what it takes to replicate it ([02](systems/program/02_research_foundation.md)).
+
+<p align="center"><a href="systems/program/01_phases_and_milestones.md"><img src="systems/program/figures/budget.svg" alt="Out-of-pocket cost by phase" width="70%"></a></p>
 
 ## Three experiments, one physics
 

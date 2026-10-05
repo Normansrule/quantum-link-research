@@ -53,14 +53,14 @@ def test_all_site_javascript_parses(tmp_path):
         target.write_text(src)
         r = subprocess.run([node, "--check", str(target)], capture_output=True, text=True)
         assert r.returncode == 0, f"{js.name}: {r.stderr}"
-    for page in (DOCS / "mars" / "index.html", DOCS / "teleport" / "index.html", DOCS / "monitor" / "index.html"):
+    for page in (DOCS / "mars" / "index.html", DOCS / "teleport" / "index.html", DOCS / "monitor" / "index.html", DOCS / "link" / "index.html"):
         for i, body in enumerate(re.findall(r"<script>(.*?)</script>", page.read_text(), re.S)):
             f = tmp_path / f"inline_{i}.js"; f.write_text(body)
             r = subprocess.run([node, "--check", str(f)], capture_output=True, text=True)
             assert r.returncode == 0, r.stderr
 
 
-@pytest.mark.parametrize("page", ["index.html", "mars/index.html", "teleport/index.html", "monitor/index.html"])
+@pytest.mark.parametrize("page", ["index.html", "mars/index.html", "teleport/index.html", "monitor/index.html", "link/index.html"])
 def test_local_links_resolve(page):
     path = DOCS / page
     html = path.read_text()
@@ -111,7 +111,7 @@ def test_js_buffer_rule_matches_messenger(tmp_path):
 
 
 def test_pages_need_no_cdn_and_vendored_files_exist():
-    for page in ("index.html", "mars/index.html", "teleport/index.html", "monitor/index.html"):
+    for page in ("index.html", "mars/index.html", "teleport/index.html", "monitor/index.html", "link/index.html"):
         html = (DOCS / page).read_text()
         assert "cdn.jsdelivr" not in html and "unpkg.com" not in html, page
     for f in ("three/three.module.js", "three/three.core.js", "three/addons/controls/OrbitControls.js", "gsap/gsap.min.js",

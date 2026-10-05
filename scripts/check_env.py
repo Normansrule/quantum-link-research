@@ -12,7 +12,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 IMPORT_NAMES = {
-    "qiskit": "qiskit", "qiskit-aer": "qiskit_aer", "stim": "stim", "qutip": "qutip",
+    "qiskit": "qiskit", "qiskit-aer": "qiskit_aer", "qiskit-ibm-runtime": "qiskit_ibm_runtime", "stim": "stim", "qutip": "qutip",
     "sequence": "sequence", "perceval-quandela": "perceval", "kyber-py": "kyber_py",
     "cryptography": "cryptography", "numpy": "numpy", "scipy": "scipy",
     "matplotlib": "matplotlib", "networkx": "networkx", "pytest": "pytest",

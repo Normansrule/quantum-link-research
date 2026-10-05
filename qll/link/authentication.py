@@ -13,9 +13,10 @@ across messages; every tag consumes one pad.
 Cascade exchanges hundreds of messages per session, so tagging each would spend more key than a long link makes.
 Instead each site tags the whole transcript as it saw it (every message sent and received, in order) at the end of
 the session, and the other site checks it against its own view, before any key is accepted ("authenticate before
-use"). Two pads per session, plus a share of the hash key, are drawn from a pool that starts with pre-shared key and is
-refilled from each accepted session's output, so QKD acts as key growth: the session is only worth running if it
-returns more key than it spent.
+use"). Only a session that would otherwise be accepted is authenticated, so a rejected session spends nothing and an
+adversary cannot drain the pool by forcing rejections. Two pads per session, plus a hash key, are drawn from a pool
+that starts with pre-shared key and is topped back up from each accepted session's output, so QKD acts as key growth:
+a session is only worth running if it returns more key than it spent.
 """
 from __future__ import annotations
 

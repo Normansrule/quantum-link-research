@@ -54,13 +54,14 @@ Every input is a field of one frozen configuration; a run is fully described by 
 | `final_key_bits`, `secret_key_rate_bps`, `keys_delivered_256` | usable key | yes (secret key rate is a handoff "future" metric, implemented) |
 | `pa_removed_bits` | privacy-amplification reduction | future in the handoff, implemented |
 | `auth_mode`, `auth_bits_consumed`, `net_key_bits`, `net_key_rate_bps`, `forgery_probability` | authentication cost and the key the link actually grows | added in 0.45 |
+| `auth_bits_refilled`, `key_delivered_bits` | authentication key topped back up from the session's output, and the key left for the store; a rejected session spends and delivers nothing | added in 0.46 |
 | `source_model`, `gain_signal`, `gain_decoy`, `gain_vacuum`, `single_photon_fraction`, `e1_upper`, `y1_lower`, `decoy_gain_deviation_sd` | weak-coherent and decoy-state statistics, and the photon-number-splitting indicator | added in 0.45 |
 | `classical_messages`, `classical_bytes` | classical overhead | future in the handoff, implemented |
 | `events` | the monitor's time-ordered log | yes |
 
 **Simulation-only diagnostics** (an operator could never see these; they exist to validate the model): `qber_true` (error rate over all sifted bits), `residual_errors_before_verify`, `eve_known_key_bits` (key bits the adversary measured in the right basis, or held as split-off photons), `naive_key_bits` (the key an analysis that ignored multi-photon pulses would have kept).
 
-**Not implemented (future metrics).** Session latency including classical round trips; availability over days; composable finite-key length; afterpulsing and dead-time losses; detector-efficiency mismatch; error-correction efficiency against a production decoder (Cascade's measured efficiency, 1.1–1.4, is reported instead).
+**Not implemented (future metrics).** Session latency including classical round trips; availability over months (scenario 9 covers one scripted day); composable finite-key length; afterpulsing and dead-time losses; detector-efficiency mismatch; error-correction efficiency against a production decoder (Cascade's measured efficiency, 1.1–1.4, is reported instead).
 
 ## Per-run summary
 Every session prints and logs this block (`summary.txt`):

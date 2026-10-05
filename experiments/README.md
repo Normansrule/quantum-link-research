@@ -1,5 +1,7 @@
 # Experiments
 
+**The mission.** [`../systems/program/`](../systems/program/README.md) turns everything here into one phased plan, from two rooms to orbit, with costs, gates, and the experiments each phase builds on ([02](../systems/program/02_research_foundation.md) catalogues every file below).
+
 **Start with the three flagships**: [`flagship/README.md`](flagship/README.md) — F1 two computers in one city, F2 Earth to satellite, F3 Earth to Mars. Every protocol, landmark, and proposal below is a stage of one of them.
 
 Everything here involves hardware, a budget, a procedure, or a proposal. Theory lives in `../learn/`; unsettled science in `../research/`.
@@ -8,7 +10,7 @@ Everything here involves hardware, a budget, a procedure, or a proposal. Theory 
 flowchart LR
   B["bench/<br/>parts, vendors, budget tiers"] --> P["protocols/<br/>step-by-step procedures with safety and checklists"]
   P --> D["done/<br/>15 landmark experiments, each with a cheap recreation"]
-  D --> X["proposed/<br/>E1–E16: what nobody has run yet"]
+  D --> X["proposed/<br/>E1–E17: what nobody has run yet"]
   L["lessons/<br/>what failed, what scaled"] -.-> X
   X --> R["../research/thesis/BACKLOG.md — pick a task"]
 ```
@@ -17,12 +19,14 @@ flowchart LR
 |---|---|---|
 | [`flagship/`](flagship/README.md) | the three experiments the whole repository serves, each staged simulate → bench → field with pass numbers | [`flagship/F1_earth_to_earth.md`](flagship/F1_earth_to_earth.md) |
 | [`bench/`](bench/hardware_guide.md) | the hardware guide and the [P01 bill of materials](bench/P01_bill_of_materials.md): every part with a vendor link, three budget tiers ($500 weekend, $5–15k semester, turnkey), step-by-step accounts of how the NV and satellite experiments were run | [`bench/hardware_guide.md`](bench/hardware_guide.md) §5 |
-| [`protocols/`](protocols/README.md) | lab procedures you can follow line by line: ODMR on a $100 bench, pulsed NV control, SPDC Bell test, rooftop free-space link | [`protocols/P01_odmr_nv_bench.md`](protocols/P01_odmr_nv_bench.md) |
-| [`done/`](done/README.md) | ten experiments that made the field, each with Original · Physics · Simple recreation · What went wrong · Repo hook | [`done/04_odmr_nv.md`](done/04_odmr_nv.md) |
-| [`proposed/`](proposed/README.md) | E1–E16, each with gap · cheapest version · research version · requirement verified | [`proposed/E01…`](proposed/E01_delayed_classical_channel_teleportation.md) |
+| [`protocols/`](protocols/README.md) | lab procedures you can follow line by line, P01–P11: ODMR on a $100 bench, pulsed NV control, SPDC Bell test, rooftop free-space link, the Mars link on a table, the two-room single-photon link, the collapse code on a cloud processor | [`protocols/P01_odmr_nv_bench.md`](protocols/P01_odmr_nv_bench.md) |
+| [`done/`](done/README.md) | fifteen experiments that made the field, each with Original · Physics · Simple recreation · What went wrong · Repo hook | [`done/04_odmr_nv.md`](done/04_odmr_nv.md) |
+| [`proposed/`](proposed/README.md) | E1–E17, each with gap · cheapest version · research version · requirement verified | [`proposed/E01…`](proposed/E01_delayed_classical_channel_teleportation.md) |
 | [`lessons/`](lessons/01_contested_claims.md) | contested and retracted claims; what scaled and why; timelines that slipped; a reproducibility checklist; the QKD hacking cycle | [`lessons/02_what_scaled_and_why.md`](lessons/02_what_scaled_and_why.md) |
 
 ## The recommended order on a student budget
+For the quantum-link mission, follow its phases instead ([01](../systems/program/01_phases_and_milestones.md)): P11 and the fiber classical channel first, then P10. For the memory and spin path:
+
 1. **ODMR** ([done/04](done/04_odmr_nv.md), [P01](protocols/P01_odmr_nv_bench.md)) — $100–500, one weekend; you now own a working qubit readout.
 2. **Magnet splitting and the spin Hamiltonian** — $0; fit $D\pm\gamma_eB$.
 3. **Rabi / Ramsey / echo** ([done/05](done/05_rabi_ramsey_echo_nv.md), [P02](protocols/P02_pulsed_nv_control.md)) — ~$10k; you now have $T_1$, $T_2$ and can run proposal E2.

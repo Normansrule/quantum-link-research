@@ -32,7 +32,7 @@ each count entering through inverted Chernoff bounds [chernoff1952]. Without dec
 
 **Photon-number splitting** (`adversary.py`). The adversary keeps one photon of every multi-photon pulse, forwards the rest losslessly, and blocks single-photon pulses with the probability $b$ that restores the honest signal gain: $(1-b)P_1\eta_b + \sum_{n\ge2}P_n[1-(1-\eta_b)^{n-1}] = 1 - e^{-\mu T\eta_b}$.
 
-**Authentication** (`authentication.py`). Wegman–Carter tags $t = h_k(M) + r \bmod p$, $p = 2^{127}-1$, with $h_k$ a polynomial hash whose forgery probability is at most $(L+1)/p$ for $L$ blocks [stinson1994] [wegman1981]. Each site tags its view of the transcript once; a session spends a hash key and two pads, 381 bits, replaced from its output, so the **net key** is $\ell - 381$.
+**Authentication** (`authentication.py`). Wegman–Carter tags $t = h_k(M) + r \bmod p$, $p = 2^{127}-1$, with $h_k$ a polynomial hash whose forgery probability is at most $(L+1)/p$ for $L$ blocks [stinson1994] [wegman1981]. Each site tags its view of the transcript once; a session spends a hash key and two pads, 381 bits, replaced from its output, so the **net key** is $\ell - 381$. Only a session that has passed every other check is authenticated, so a session rejected for its error rate or its detections spends nothing: an adversary who blocks or disturbs the channel cannot drain the pool. The pool is then topped back up to its size from the new key before any key is delivered.
 
 **Key rate.** $R = \ell / (N / f_{\mathrm{pulse}})$ bits per second; the net rate uses the net key.
 

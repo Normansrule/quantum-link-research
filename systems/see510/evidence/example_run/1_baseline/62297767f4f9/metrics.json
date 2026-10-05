@@ -37,7 +37,9 @@
  "secret_key_rate_bps": 44396.0,
  "auth_mode": "wegman_carter",
  "auth_bits_consumed": 381,
+ "auth_bits_refilled": 381,
  "net_key_bits": 44015,
+ "key_delivered_bits": 44015,
  "net_key_rate_bps": 44015.0,
  "forgery_probability": 4.843271824257989e-34,
  "keys_delivered_256": 0,
@@ -46,6 +48,6 @@
  "eve_touched": 0,
  "eve_known_key_bits": 0,
  "pa_removed_bits": 27039,
- "execution_time_s": 0.41609449400004905,
- "timestamp_utc": "2026-10-02T01:42:26+00:00"
+ "execution_time_s": 0.314803209000047,
+ "timestamp_utc": "2026-10-05T18:34:34+00:00"
 }

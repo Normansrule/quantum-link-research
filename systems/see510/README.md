@@ -2,7 +2,7 @@
 
 **System of Interest.** A laboratory-scale link between Site A and Site B that establishes shared secret keys, transmits quantum states, identifies evidence of interception before affected key material is used, monitors itself, records reproducible evidence, and hands accepted keys to an external secure-communication application. This folder is the simulation phase: a credible model of that system built before, and alongside, the hardware. It is flagship F1 of this repository at laboratory scale.
 
-**What the simulation is, and is not.** It is a transparent Monte Carlo model of BB84 with an ideal single-photon source, a lossy fiber, imperfect detectors, a textbook intercept-and-resend adversary, a real error-correction protocol (Cascade), privacy amplification, and an authenticated classical channel. Every result comes from a recorded configuration and seed and is checked against closed-form expectations. It is **not** a measurement of hardware, **not** a proof of unconditional real-world security, and it does **not** identify, locate, or remove an adversary.
+**What the simulation is, and is not.** It is a transparent Monte Carlo model of BB84 with an ideal single-photon source or an attenuated laser with decoy states, a lossy fiber, imperfect detectors, two textbook adversaries (intercept-and-resend, and photon-number splitting), a real error-correction protocol (Cascade), privacy amplification, and a classical channel authenticated with Wegman–Carter tags. A scripted 24-hour operations day exercises the monitor against drift, attacks, and faults, and replays on the website's operations console. Every result comes from a recorded configuration and seed and is checked against closed-form expectations. It is **not** a measurement of hardware, **not** a proof of unconditional real-world security, and it does **not** identify, locate, or remove an adversary.
 
 ## Documents
 | # | Document | Handoff task |
@@ -17,7 +17,8 @@
 | 08 | [Development stages](08_development_stages.md): what each stage models, why, which need, what it proves and does not | 10–15 |
 | 09 | [Limitations and the transition to hardware](09_limitations_and_hardware.md) | 16 |
 | 10 | [**Real-world experiments**](10_real_world_experiments.md): a ladder from a $40 tabletop analogue to a deployed link, each tier predicted, logged, and processed by the same code | after 16 |
-| — | [**Evidence**](evidence/README.md): validation table, six scenarios, plots, per-run summaries | 11–14 |
+| — | [**Evidence**](evidence/README.md): validation table, scenarios 1–8, plots, per-run summaries; [scenario 9, the operations day](evidence/operations/README.md) | 11–14 |
+| — | [**Operations console**](https://normansrule.github.io/quantum-link-research/link/): a replay of the simulated day (status, error rate, key, store, pool, operator log) | SN-04 |
 
 ## Run it
 Python 3.10 or later with NumPy, matplotlib, and `cryptography` (all open source). From the repository root:
@@ -26,11 +27,12 @@ Python 3.10 or later with NumPy, matplotlib, and `cryptography` (all open source
 python -m qll.link.run session                                   # one baseline session, with its summary and events
 python -m qll.link.run session --set distance_km=25 eve_fraction=0.1 --out runs/   # any input, logged to a folder
 python -m qll.link.run validate                                  # the controlled cases against the closed-form models
-python -m qll.link.run scenarios                                 # scenarios 1-6 and the demo; rewrites evidence/ (~25 s)
+python -m qll.link.run scenarios                                 # scenarios 1-8 and the demo; rewrites evidence/ (~45 s)
 python -m qll.link.run demo                                      # deliver accepted keys to the demonstration application
+python -m qll.link.run operations                                # scenario 9: a simulated 24-hour day; rewrites evidence/operations/ (~25 s)
 python -m qll.link.bench_tier1 --out tier1.csv                   # Tier 1 bench (add --port COM5 for the real Arduino)
 python -m qll.link.run ingest tier1.csv --config systems/see510/hardware/tier1.json   # process an experiment's log
-python -m pytest tests/test_two_site_link.py                     # 32 fast tests (the full scenario run is marked slow)
+python -m pytest tests/test_two_site_link.py                     # 35 fast tests (the full scenario run is marked slow)
 ```
 
 ## Folder and file structure
@@ -40,7 +42,7 @@ qll/link/                     the simulation (one module per logical block of th
   models.py                   closed-form expectations used for validation and plots
   site_a.py  site_b.py        preparation; measurement and detection
   quantum_channel.py          fiber loss, with the adversary at its input
-  adversary.py                intercept-and-resend on a chosen fraction of pulses
+  adversary.py                intercept-and-resend on a chosen fraction of pulses; photon-number splitting
   classical_channel.py        authenticated public channel with a transcript
   codec.py                    compact encoding of bit arrays in messages
   reconciliation.py           Cascade error correction and hash verification
@@ -51,7 +53,8 @@ qll/link/                     the simulation (one module per logical block of th
   logger.py                   evidence folders and CSV tables
   key_store.py                key delivery (ETSI GS QKD 014-style get_key / get_key_with_ids)
   demo_app.py                 the external secure-communication demonstration (AES-256-GCM)
-  scenarios.py                scenarios 1-6, the demonstration, and the validation checks
+  scenarios.py                scenarios 1-8, the demonstration, and the validation checks
+  operations.py               scenario 9: a scripted operations day with persistent key stores and authentication pool
   hardware_log.py             experiment logs in, the same protocol out (run_from_log)
   bench_tier1.py              Tier 1 bench: its software twin, the Arduino serial driver, and the runner
   plots.py  run.py            evidence plots; the command-line runner
