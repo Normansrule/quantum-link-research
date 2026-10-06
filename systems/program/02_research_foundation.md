@@ -6,7 +6,7 @@ Nothing done so far is dropped. Each phase below lists the experiments it builds
 
 | Status | Count |
 |---|---|
-| replicable | 6 |
+| replicable | 7 |
 | procedure | 10 |
 | landmark | 15 |
 | proposed | 17 |
@@ -85,6 +85,7 @@ Nothing done so far is dropped. Each phase below lists the experiments it builds
 | [D13](../../experiments/done/13_bhaskar_2020_memory_enhanced_communication.md) | Bhaskar 2020: memory-enhanced communication | landmark | [`repeater_chain.py`](../../qll/network/repeater_chain.py) | [`test_phase4_network.py`](../../tests/test_phase4_network.py) | — | a memory beating direct transmission: the repeater idea in one node |
 | [D15](../../experiments/done/15_bluvstein_2024_logical_atom_processor.md) | Bluvstein 2024: logical atom processor | landmark | [`stabilizer_codes.py`](../../qll/circuits/stabilizer_codes.py) | [`test_computing_core.py`](../../tests/test_computing_core.py) | — | error-corrected memories without a cryostat |
 | [P11](../../experiments/protocols/P11_collapse_code_on_a_cloud_processor.md) | The collapse code on a cloud processor | replicable | [`collapse_signalling.py`](../../qll/circuits/collapse_signalling.py) | [`test_collapse_signalling.py`](../../tests/test_collapse_signalling.py) | $0 | the first paper: can the way a shared state collapses carry a message? Measured, with a bound |
+| [P12](../../experiments/protocols/P12_teleportation_and_superdense_coding_on_a_cloud_processor.md) | Teleportation and superdense coding on a cloud processor | replicable | [`teleport_cloud.py`](../../qll/circuits/teleport_cloud.py) | [`test_cloud_frontier.py`](../../tests/test_cloud_frontier.py) | $0 | what entanglement does deliver, each with the control that shows the classical channel is needed |
 | [E01](../../experiments/proposed/E01_delayed_classical_channel_teleportation.md) | Teleportation with a delayed classical channel | proposed | [`light_time_delay.py`](../../qll/channels/light_time_delay.py) | [`test_phase2_circuits.py`](../../tests/test_phase2_circuits.py) | — | teleportation waits for its bits; how long can it wait |
 | [E02](../../experiments/proposed/E02_memory_vs_temperature_vs_light_time.md) | Memory coherence versus temperature and light time | proposed | [`thermal.py`](../../qll/circuits/noise/thermal.py) | [`test_phase2_noise.py`](../../tests/test_phase2_noise.py) | $500-10k | — |
 | [E05](../../experiments/proposed/E05_fail_closed_messaging_20min_latency.md) | Fail-closed messaging under latency | proposed | [`messenger.py`](../../qll/app/messenger.py) | [`test_phase6_app.py`](../../tests/test_phase6_app.py) | — | the application the link serves |

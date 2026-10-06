@@ -1,5 +1,22 @@
 # Changelog
 
+## 0.48.0 — 2026-10-05 (the frontier on a free cloud processor, and paper 1's pipeline)
+- **Teleportation as an experiment** (`qll/circuits/teleport_cloud.py`, mission milestone M4.1).
+  - **Modes:** six cardinal states (a 2-design, so their mean is the average fidelity), each run three ways: with the two bits fed forward, with the corrections deferred, and with no bits.
+  - **Closed form:** with a depolarized pair, F = (1 + (1 - p)^2)/2, checked against an exact density-matrix calculation.
+  - **Rehearsal on a noisy copy of an IBM device:** 0.835 with feed-forward, 0.951 deferred, and 0.505 without the bits. The classical bits are necessary, and on that device copy the mid-circuit measurement costs fidelity.
+- **Superdense coding** (`qll/circuits/superdense_cloud.py`, M4.2). Two bits per transmitted qubit; if the qubit is kept, a guess succeeds 25 % of the time and carries zero bits. Rehearsal: 0.79 success (1.1 bits per use) on the device copy.
+- **`qll/circuits/cloud_run.py`:** one path for the ideal simulator, noisy device copies, and real devices (backend lookup, feed-forward support, coupling distance). P11's runner now records the qubit pair's coupling distance.
+- **New runner and protocol:** `experiments/bench/frontier/run_frontier.py` (teleport, superdense, analyze), and protocol P12 (catalogued as replicable).
+- **Paper 1 pipeline** (`qll/analysis/collapse_report.py`). The pre-registered analysis (Bonferroni-corrected tests, Clopper–Pearson rates, and the convexity bound on information per use) produces the results table and three figures from run files. Hardware data drops in unchanged.
+- **Paper 1 draft** (`research/papers/P1_collapse_code/`). Rehearsal on simulators and a device copy:
+  - six test runs, all null; tightest bound 1.1 × 10⁻⁴ bit per use;
+  - the leak control detected, with its bias matching −γ/2;
+  - the teleportation control as above.
+
+  Tests keep the results table and the numbers quoted in the draft in step with the data.
+- **Plan:** milestones now record progress (M1.1, M1.2, M4.1, M4.2).
+
 ## 0.47.0 — 2026-10-05 (the mission: from two rooms to orbit, on a student budget)
 - **A phased mission plan** (`systems/program/`).
   - **Phases:**

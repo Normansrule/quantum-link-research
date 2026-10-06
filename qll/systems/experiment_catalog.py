@@ -117,6 +117,10 @@ CATALOG: tuple[Experiment, ...] = (
                twin="qll/circuits/collapse_signalling.py", test="tests/test_collapse_signalling.py",
                procedure=P + "P11_collapse_code_on_a_cloud_processor.md", cost="0",
                role="the first paper: can the way a shared state collapses carry a message? Measured, with a bound"),
+    Experiment("P12", "Teleportation and superdense coding on a cloud processor", P + "P12_teleportation_and_superdense_coding_on_a_cloud_processor.md",
+               "replicable", (4,), twin="qll/circuits/teleport_cloud.py", test="tests/test_cloud_frontier.py",
+               procedure=P + "P12_teleportation_and_superdense_coding_on_a_cloud_processor.md", cost="0",
+               role="what entanglement does deliver, each with the control that shows the classical channel is needed"),
     # ---------------------------------------------------------------- the two-site link's hardware ladder
     Experiment("T1", "Tier 1: bright-light polarization analogue", "systems/see510/10_real_world_experiments.md", "replicable", (1,),
                twin="qll/link/bench_tier1.py", test="tests/test_two_site_link.py", procedure="systems/see510/10_real_world_experiments.md",

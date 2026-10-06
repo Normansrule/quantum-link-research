@@ -270,22 +270,14 @@ def run_aer(scheme: str, shots: int, leak: float = 0.0, seed: int = 0, noise_mod
 
 
 def run_on_backend(backend, scheme: str, shots: int, layout: tuple[int, int], repeats: int = 1, seed: int = 0):
-    """Hardware run with Qiskit Runtime's SamplerV2 on any backend (a real device, or a fake one for rehearsal).
+    """Hardware run through qll.circuits.cloud_run on any backend (a real device, or a fake one for rehearsal).
     `layout` = (Alice's physical qubit, Bob's). Circuits for x = 0 and x = 1 alternate in one job, repeated, so drift
     affects both equally. Returns {x: counts}."""
-    from qiskit import transpile
-    try:                                             # the client-side Sampler (qiskit-ibm-runtime 0.50 and later)
-        from qiskit_ibm_runtime.executor_sampler import Sampler
-    except ImportError:                              # older releases
-        from qiskit_ibm_runtime import SamplerV2 as Sampler
+    from qll.circuits.cloud_run import run_backend
 
     circs = [circuit(scheme, x) for _ in range(repeats) for x in (0, 1)]
-    isa = transpile(circs, backend=backend, initial_layout=list(layout), optimization_level=1, seed_transpiler=seed)
-    result = Sampler(mode=backend).run(isa, shots=shots).result()
     out: dict[int, dict[str, int]] = {0: {}, 1: {}}
-    for i, pub in enumerate(result):
-        x = i % 2
-        a = pub.data.c.get_bitstrings()
-        for s in a:
-            out[x][s] = out[x].get(s, 0) + 1
+    for i, counts in enumerate(run_backend(backend, circs, shots, list(layout), seed)):
+        for key, v in counts.items():
+            out[i % 2][key] = out[i % 2].get(key, 0) + v
     return out

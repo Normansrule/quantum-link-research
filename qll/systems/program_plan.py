@@ -34,6 +34,7 @@ class Milestone:
     builds_on: tuple[str, ...] = ()  # experiment_catalog ids it reuses
     done: bool = False
     outside: bool = False          # proceeds only with outside funding (a grant, partner, or award), never out of pocket
+    progress: str = ""             # what exists so far, for milestones under way
 
     @property
     def pert_mean(self) -> float:
@@ -63,9 +64,10 @@ MILESTONES: tuple[Milestone, ...] = (
               verify="Test: SN-01 to SN-15 traced; scenarios 1-9 reproduce", builds_on=("T1", "T2", "T3", "T4", "P09")),
     # ------------------------------------------------------------------------------------------------ Phase 1
     Milestone("M1.1", 1, "Fiber classical channel between the rooms (media converters, patch cord, authenticated frames)",
-              2, (40, 70, 150), ("M0.2",), trl=4, builds_on=("T2",),
+              2, (40, 70, 150), ("M0.2",), trl=4, builds_on=("T2",), progress="software ready (net_transport); hardware to buy",
               verify="Test: 10,000 frames with zero authentication failures; 99th-percentile round trip under 5 ms"),
     Milestone("M1.2", 1, "The collapse code on a cloud processor (P11) and paper 1", 6, (0, 0, 0), ("M0.1",), trl=3,
+              progress="analysis, figures, and draft rehearsed on simulators; hardware run next",
               builds_on=("P11", "E17", "E16", "D11"),
               verify="Analysis: information per use bounded below 1e-3 bit at 99 % on hardware; the leak control detected"),
     Milestone("M1.3", 1, "Tier 1 bright-light analogue across the rooms", 3, (40, 80, 120), ("M1.1",), trl=4, builds_on=("T1",),
@@ -105,9 +107,9 @@ MILESTONES: tuple[Milestone, ...] = (
               builds_on=("D09", "D14"), verify="Test: in-orbit entanglement and a downlink to the ground station", outside=True),
     # ------------------------------------------------------------------------------------------------ Phase 4
     Milestone("M4.1", 4, "Teleportation with feed-forward on a cloud processor", 4, (0, 0, 0), ("M1.2",), trl=3,
-              builds_on=("D07", "E01"), verify="Test: average fidelity above 2/3 with the two bits, 1/2 without"),
+              builds_on=("P12", "D07", "E01"), progress="circuits, runner, and device-copy rehearsal done; hardware run next", verify="Test: average fidelity above 2/3 with the two bits, 1/2 without"),
     Milestone("M4.2", 4, "Superdense coding on a cloud processor", 2, (0, 0, 0), ("M1.2",), trl=3,
-              builds_on=("D07",), verify="Test: two bits per transmitted qubit decoded above chance; none without sending the qubit"),
+              builds_on=("P12", "D07"), progress="circuits, runner, and device-copy rehearsal done; hardware run next", verify="Test: two bits per transmitted qubit decoded above chance; none without sending the qubit"),
     Milestone("M4.3", 4, "Teleportation with a delayed classical channel (E01)", 6, (0, 0, 0), ("M4.1",), trl=3,
               builds_on=("E01", "E02"), verify="Analysis: fidelity versus delay against the memory model"),
     Milestone("M4.4", 4, "Three-node entanglement-assisted key network (twin, then two rooms plus one)", 8, (0, 200, 2000), ("M2.3",), trl=4,

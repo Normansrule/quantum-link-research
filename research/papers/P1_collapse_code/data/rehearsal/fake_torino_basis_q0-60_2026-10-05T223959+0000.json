@@ -1,0 +1,45 @@
+{
+ "experiment": "E17 collapse code",
+ "utc": "2026-10-05T22:39:59+00:00",
+ "backend": "fake_torino",
+ "scheme": "basis",
+ "layout": [
+  0,
+  60
+ ],
+ "coupling_distance": 11,
+ "shots_per_circuit": 4000,
+ "repeats": 5,
+ "leak_injected": 0.0,
+ "seed": 3,
+ "counts": {
+  "0": {
+   "11": 7567,
+   "01": 2388,
+   "00": 7645,
+   "10": 2400
+  },
+  "1": {
+   "11": 4990,
+   "00": 4942,
+   "01": 5056,
+   "10": 5012
+  }
+ },
+ "verdict": {
+  "n": 40000,
+  "p1_given_x": [
+   0.49835,
+   0.5001
+  ],
+  "bias": 0.0017499999999999738,
+  "bias_interval_99": [
+   -0.018146945537512393,
+   0.021645964603795365
+  ],
+  "g": 0.12250035683175042,
+  "p_value": 0.7263383150843037,
+  "mi_upper_bits_per_use_99": 0.0003380129925082409,
+  "signalling_detected": false
+ }
+}

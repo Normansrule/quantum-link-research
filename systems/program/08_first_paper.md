@@ -1,5 +1,7 @@
 # 08 Papers: the first in detail, and the two after it
 
+*The draft, its generated results, and the rehearsal data are in [`research/papers/P1_collapse_code/`](../../research/papers/P1_collapse_code/paper.md).*
+
 ## Paper 1 (milestone M1.2): "Can the way a shared state collapses carry a message? A measured bound on a cloud quantum processor"
 
 **Research question.** Can a sender encode information in how she measures or acts on her half of an entangled pair, such that a receiver who hears nothing else can read it from his own outcomes? If not, how small is the bound a modest experiment can set, and what does a shared-chip processor do to the answer?

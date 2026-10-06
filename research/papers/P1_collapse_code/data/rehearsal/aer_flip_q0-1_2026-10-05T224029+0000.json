@@ -1,0 +1,41 @@
+{
+ "experiment": "E17 collapse code",
+ "utc": "2026-10-05T22:40:29+00:00",
+ "backend": "aer",
+ "scheme": "flip",
+ "layout": [
+  0,
+  1
+ ],
+ "coupling_distance": null,
+ "shots_per_circuit": 50000,
+ "repeats": 1,
+ "leak_injected": 0.0,
+ "seed": 13,
+ "counts": {
+  "0": {
+   "10": 24930,
+   "00": 25070
+  },
+  "1": {
+   "10": 24930,
+   "00": 25070
+  }
+ },
+ "verdict": {
+  "n": 100000,
+  "p1_given_x": [
+   0.4986,
+   0.4986
+  ],
+  "bias": 0.0,
+  "bias_interval_99": [
+   -0.012572827885826032,
+   0.012572827885826032
+  ],
+  "g": 0.0,
+  "p_value": 1.0,
+  "mi_upper_bits_per_use_99": 0.00011403162968692815,
+  "signalling_detected": false
+ }
+}

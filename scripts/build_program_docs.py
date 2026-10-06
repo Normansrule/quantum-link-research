@@ -60,7 +60,7 @@ def milestones_md() -> str:
                 "|---|---|---|---|---|---|---|---|---|"]
         for m in ms:
             a, b = s[m.id]
-            when = "done" if m.done else f"{a:g}–{b:g}"
+            when = "done" if m.done else f"{a:g}–{b:g}" + (f" · *{m.progress}*" if m.progress else "")
             cost = "—" if m.cost[2] == 0 else " / ".join(usd(c) for c in m.cost)
             flag = " *(outside funding)*" if m.outside else ""
             out.append(f"| {m.id} | {m.name}{flag} | {when} | {cost} | {usd(m.pert_mean) if m.cost[2] else '—'} | "

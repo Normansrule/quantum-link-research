@@ -22,12 +22,8 @@ from qll.circuits import collapse_signalling as C  # noqa: E402
 
 
 def _backend(name: str):
-    if name.startswith("fake_"):
-        import qiskit_ibm_runtime.fake_provider as fp
-        cls = "Fake" + name[5:].capitalize()
-        return getattr(fp, cls)()
-    from qiskit_ibm_runtime import QiskitRuntimeService
-    return QiskitRuntimeService().backend(name)
+    from qll.circuits.cloud_run import get_backend
+    return get_backend(name)
 
 
 def _verdict(counts) -> dict:
@@ -39,12 +35,16 @@ def _verdict(counts) -> dict:
 
 
 def cmd_run(a) -> Path:
+    from qll.circuits.cloud_run import coupling_distance
+    distance = None
     if a.backend == "aer":
         counts = C.run_aer(a.scheme, a.shots * a.repeats, leak=a.leak, seed=a.seed)
     else:
-        counts = C.run_on_backend(_backend(a.backend), a.scheme, a.shots, tuple(a.layout), a.repeats, a.seed)
+        backend = _backend(a.backend)
+        distance = coupling_distance(backend, *a.layout)
+        counts = C.run_on_backend(backend, a.scheme, a.shots, tuple(a.layout), a.repeats, a.seed)
     rec = {"experiment": "E17 collapse code", "utc": dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds"),
-           "backend": a.backend, "scheme": a.scheme, "layout": a.layout, "shots_per_circuit": a.shots,
+           "backend": a.backend, "scheme": a.scheme, "layout": a.layout, "coupling_distance": distance, "shots_per_circuit": a.shots,
            "repeats": a.repeats, "leak_injected": a.leak, "seed": a.seed, "counts": counts, "verdict": _verdict(counts)}
     out = Path(a.out); out.mkdir(parents=True, exist_ok=True)
     path = out / f"{a.backend}_{a.scheme}_q{a.layout[0]}-{a.layout[1]}_{rec['utc'].replace(':', '')}.json"
