@@ -19,3 +19,4 @@ Every file: **The idea · Equations · Status (with years) · What it would chan
 | T13 | [Quantum-secured time transfer](T13_quantum_secured_time_transfer.md) | tamper-evident clock synchronization riding on the entanglement channel | 4 |
 | T14 | [Error-corrected memories in space](T14_error_corrected_memories_in_space.md) | logical memories as the long-term alternative to rare-earth crystals | 2 |
 | T15 | [ML decoders and remote calibration](T15_machine_learning_decoders_and_remote_calibration.md) | autonomy at the node as the answer to 20-minute command loops | 3 |
+| T16 | [Measurement-only Majorana teleportation](T16_majorana_measurement_only_teleportation.md) | Crogman, Dang, and Erenso (2025, CSUDH): topologically protected nodes moved by parity measurements; reproduced, with points to raise | 2 |

@@ -1,5 +1,24 @@
 # Changelog
 
+## 0.49.0 — 2026-10-06 (Majorana measurement-only teleportation: Crogman, Dang, and Erenso 2025)
+- **The paper in the repository.** Crogman, H. T., Dang, T., & Erenso, D. (2025), *Quantum Reports 7*, 42, from CSUDH's physics department, replaces the placeholder bibliography entry. It is read, reproduced, and built into the mission as Phase 4 milestone M4.6.
+- **`qll/circuits/majorana_teleport.py`:** an exact fermionic model, with six Majorana operators on three modes (Jordan–Wigner) and parity projections.
+  - **Two-bit version:** the paper's Theorem A4 (two commuting parities, four Pauli corrections, each a Majorana bilinear) teleports exactly. Corrections are Clifford and conserve fermion parity, and the sender is left maximally mixed (Theorem A2).
+  - **One-bit version:** one parity measurement and one bit (the four steps of Section 4) reach at most the classical 2/3, and the correction as written gives 1/2.
+  - **No bits:** Bob holds I/2 for every input.
+  - **Entropy:** unchanged under ideal parity measurement of a commuting state, never lowered otherwise (Theorems A5, A6).
+  - **Lemma A1, in its precise form:** a single Majorana anticommutes with its pair parity. It cannot read the qubit but can flip it.
+- **`qll/circuits/majorana_cloud.py` and protocol P13.** Under Jordan–Wigner, P23 = −X_A X_B and P14 = Y_A Y_B, so the protocol is standard teleportation in a fermionic encoding; it is emulated on qubits after Huang et al. (2021).
+  - Four modes, with state-by-state agreement with the fermionic model tested.
+  - `run_frontier.py majorana`.
+  - Rehearsal on a noisy device copy: 0.835, 0.641, 0.505, and 0.495.
+- **`qll/hardware/majorana_error_budget.py`:** the paper's Equations 17–20 in dimensionless knobs (readout signal-to-noise, Δ/kT, poisoning per readout, L/ξ). The readout factor enters twice, because a full teleportation needs two parity measurements, and the hybridization exponent is a parameter.
+- **New documents:**
+  - **Theory note T16:** what was reproduced; five constructive points to raise with the authors (one bit or two, the no-feed-forward remark, Lemma A1's sign, conventions, parity superselection); an error-budget table; and where a Majorana node sits relative to the mission's photonic link.
+  - **E18 and P13:** proposal and protocol (both catalogued); milestone M4.6 and requirement MR-4.6.
+  - **Updates:** the learn file on topological qubits, the risk register (ask CSUDH Physics first about borrowing a source), the startup path, and thesis section 5.5.
+- **Bibliography:** Crogman et al. (2025), Kitaev (2001), Karzig et al. (2017), Bravyi and Kitaev (2002), Huang et al. (2021), Cheng et al. (2012), Rainis and Loss (2012), Plugge et al. (2017), Bonderson et al. (2008), Dvir et al. (2023), and Albrecht et al. (2016).
+
 ## 0.48.0 — 2026-10-05 (the frontier on a free cloud processor, and paper 1's pipeline)
 - **Teleportation as an experiment** (`qll/circuits/teleport_cloud.py`, mission milestone M4.1).
   - **Modes:** six cardinal states (a 2-design, so their mean is the average fidelity), each run three ways: with the two bits fed forward, with the corrections deferred, and with no bits.

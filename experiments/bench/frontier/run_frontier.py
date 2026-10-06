@@ -4,6 +4,7 @@ coding (M4.2), each with its control. Writes one JSON per run with the configura
     python experiments/bench/frontier/run_frontier.py teleport --backend aer
     python experiments/bench/frontier/run_frontier.py teleport --backend fake_torino --layout 0 1 2
     python experiments/bench/frontier/run_frontier.py superdense --backend ibm_torino --layout 0 1
+    python experiments/bench/frontier/run_frontier.py majorana --backend aer                       # M4.6, protocol P13
     python experiments/bench/frontier/run_frontier.py analyze results/*.json
 
 `aer` is the ideal simulator (add --noise 0.05 for a depolarized pair); `fake_<name>` a noisy local copy of a
@@ -20,6 +21,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[3]))
 from qll.circuits import cloud_run as R  # noqa: E402
+from qll.circuits import majorana_cloud as MC  # noqa: E402
 from qll.circuits import superdense_cloud as S  # noqa: E402
 from qll.circuits import teleport_cloud as T  # noqa: E402
 
@@ -57,6 +59,20 @@ def cmd_teleport(a) -> Path:
     return _save(a, "teleport (M4.1)", {"states": list(T.CARDINAL), "runs": runs})
 
 
+def cmd_majorana(a) -> Path:
+    ff = a.backend == "aer" or R.supports_feedforward(R.get_backend(a.backend))
+    runs = {}
+    for mode in MC.MODES:
+        if mode != "no_bits" and not ff:
+            runs[mode] = {"skipped": "backend has no feed-forward"}
+            continue
+        counts = _run(a, MC.circuits(mode))
+        v = T.analyze(counts, mode)
+        runs[mode] = {"counts": counts, "verdict": v.row(), "expected_ideal": MC.EXPECTED[mode]}
+        print(f"{mode:>14}: average fidelity {v.average:.4f} [{v.interval[0]:.4f}, {v.interval[1]:.4f}] (ideal {MC.EXPECTED[mode]:.3f})")
+    return _save(a, "majorana (M4.6)", {"states": list(T.CARDINAL), "runs": runs})
+
+
 def cmd_superdense(a) -> Path:
     runs = {}
     for mode in S.MODES:
@@ -73,7 +89,7 @@ def cmd_analyze(a) -> None:
         for mode, r in rec["runs"].items():
             if "skipped" in r:
                 print(f"{Path(f).name} {mode}: skipped ({r['skipped']})"); continue
-            if rec["experiment"].startswith("teleport"):
+            if rec["experiment"].startswith(("teleport", "majorana")):
                 v = T.analyze(r["counts"], mode)
                 print(f"{Path(f).name} {mode}: F = {v.average:.4f} [{v.interval[0]:.4f}, {v.interval[1]:.4f}]")
             else:
@@ -84,14 +100,14 @@ def cmd_analyze(a) -> None:
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest="cmd", required=True)
-    for name in ("teleport", "superdense"):
+    for name in ("teleport", "superdense", "majorana"):
         p = sub.add_parser(name)
         p.add_argument("--backend", default="aer"); p.add_argument("--shots", type=int, default=4000)
         p.add_argument("--layout", type=int, nargs="+", default=None); p.add_argument("--noise", type=float, default=0.0)
         p.add_argument("--seed", type=int, default=0); p.add_argument("--out", default="results")
     z = sub.add_parser("analyze"); z.add_argument("files", nargs="+")
     a = ap.parse_args(argv)
-    return {"teleport": cmd_teleport, "superdense": cmd_superdense, "analyze": cmd_analyze}[a.cmd](a)
+    return {"teleport": cmd_teleport, "superdense": cmd_superdense, "majorana": cmd_majorana, "analyze": cmd_analyze}[a.cmd](a)
 
 
 if __name__ == "__main__":

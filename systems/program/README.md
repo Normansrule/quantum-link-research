@@ -36,7 +36,7 @@ flowchart LR
 | 1 Two rooms | Can a student bench send quantum states between rooms and match its twin? Can collapse carry a message? | M1.1 fiber classical channel · M1.2 collapse code (paper 1) · M1.6 single-photon link (paper 2) | about $670 | 4 |
 | 2 Entanglement | Can two rooms share entangled photons and make a key from them? | M2.2 Bell test · M2.3 BBM92 key · M2.4 collapse code with photons (paper 3) | about $450 with a borrowed source | 4–5 |
 | 3 Outdoors to orbit | What do sky, distance, and pointing do, and who flies the source? | M3.1 satellite budgets from public data · M3.2–M3.3 free space · M3.4 ground station · M3.5 partner proposal · M3.6 CubeSat (funded) | about $4,300 before any satellite | 5–7 |
-| 4 Frontier | What can shared entanglement deliver beyond keys? | M4.1 teleportation · M4.2 superdense coding · M4.4 three-node network · M4.5 photonic teleportation (funded) | about $200 | 3–5 |
+| 4 Frontier | What can shared entanglement deliver beyond keys? | M4.1 teleportation · M4.2 superdense coding · M4.6 Majorana parity teleportation, with the CSUDH authors of [crogman2025] ([T16](../../research/theories/T16_majorana_measurement_only_teleportation.md)) · M4.4 three-node network · M4.5 photonic teleportation (funded) | about $200 | 3–5 |
 | Startup | Who pays, for what? | S1 discovery · S2 formation · S3 kit and twin software · S4 I-Corps and SBIR | about $3,100 | — |
 
 The exact numbers, schedule, critical path, and Monte Carlo cost risk are generated in [01](01_phases_and_milestones.md) from [`qll/systems/program_plan.py`](../../qll/systems/program_plan.py).

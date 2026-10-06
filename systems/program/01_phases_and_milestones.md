@@ -62,6 +62,7 @@ With outside funding: likely $600k (range $250k–$1.5M).
 | M4.2 | Superdense coding on a cloud processor | 6–8 · *circuits, runner, and device-copy rehearsal done; hardware run next* | — | — | M1.2 | 3 | Test: two bits per transmitted qubit decoded above chance; none without sending the qubit | [P12](../../experiments/protocols/P12_teleportation_and_superdense_coding_on_a_cloud_processor.md), [D07](../../experiments/done/07_teleportation_photonic.md) |
 | M4.3 | Teleportation with a delayed classical channel (E01) | 10–16 | — | — | M4.1 | 3 | Analysis: fidelity versus delay against the memory model | [E01](../../experiments/proposed/E01_delayed_classical_channel_teleportation.md), [E02](../../experiments/proposed/E02_memory_vs_temperature_vs_light_time.md) |
 | M4.4 | Three-node entanglement-assisted key network (twin, then two rooms plus one) | 39–47 | $0 / $200 / $2,000 | $467 | M2.3 | 4 | Test: keys between every pair through a trusted node and through swapping in the twin | [D08](../../experiments/done/08_nv_remote_entanglement_and_network.md), [D13](../../experiments/done/13_bhaskar_2020_memory_enhanced_communication.md) |
+| M4.6 | Majorana parity teleportation emulated on a cloud processor (with the CSUDH authors) | 10–14 · *exact fermionic model, circuits, error budget, and simulator rehearsal done; hardware run next* | — | — | M4.1 | 3 | Test: two-bit average fidelity above 2/3 on hardware; one-bit at or below 2/3; no-bits at 1/2 | [P13](../../experiments/protocols/P13_majorana_teleportation_on_a_cloud_processor.md), [E18](../../experiments/proposed/E18_majorana_parity_teleportation_emulated.md) |
 | M4.5 | Photonic teleportation between rooms *(outside funding)* | 33–59 | $2,000 / $8,000 / $30k | $11k | M2.2, M4.1 | 5 | Test: fidelity above 2/3 with Bell-state measurement and the classical bits | [D06](../../experiments/done/06_hong_ou_mandel.md), [D07](../../experiments/done/07_teleportation_photonic.md) |
 
 Out of pocket: likely $200, PERT mean $467 ± $333; Monte Carlo 50th percentile $656, 80th $1,141.
@@ -98,7 +99,7 @@ Money for a phase is committed only when the gate before it passes.
 |---|---|---|---|---|---|
 | Phase 1 (two rooms, quantum states shared) | $670 | $737 | $1,370 | week 25 | week 31 |
 | Phase 2 (entanglement between the rooms) | $1,120 | $3,795 | $18k | week 45 | week 61 |
-| Phases 3–4, out of pocket only | $5,620 | $9,328 | $32k | week 47 | week 125 |
+| Phases 3–4, out of pocket only | $5,620 | $9,328 | $32k | week 47 | week 129 |
 
 The critical-path calendar assumes independent milestones run side by side (with classmates, an advisor's student, or a collaborator). Alone at ten hours a week, take them one at a time: the last column.
 

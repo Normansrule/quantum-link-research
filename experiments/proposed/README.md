@@ -20,4 +20,5 @@ Each proposal answers the same five questions: the gap in the literature, the ch
 | [E14](E14_relativistic_timing_sanity_test.md) | Relativistic timing sanity test with two GPS-disciplined nodes | bench |
 | [E15](E15_radiation_screening.md) | Radiation screening of diamond, crystal, detectors | bench + facility |
 | [E16](E16_zz_crosstalk_on_a_cloud_processor.md) | ZZ crosstalk measured on a free cloud quantum processor | software + cloud |
+| [E18](E18_majorana_parity_teleportation_emulated.md) | Majorana parity teleportation, emulated: one bit or two? (Crogman, Dang, and Erenso 2025) | software + cloud ($0) | mission MR-4.6 |
 | [E17](E17_can_collapse_carry_a_message.md) | Can the way a shared state collapses carry a message? A measured bound, with controls | software + cloud ($0), then photons in two rooms | mission MR-1.2, MR-2.4, MR-X.1 |

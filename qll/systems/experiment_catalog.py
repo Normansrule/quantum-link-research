@@ -121,6 +121,10 @@ CATALOG: tuple[Experiment, ...] = (
                "replicable", (4,), twin="qll/circuits/teleport_cloud.py", test="tests/test_cloud_frontier.py",
                procedure=P + "P12_teleportation_and_superdense_coding_on_a_cloud_processor.md", cost="0",
                role="what entanglement does deliver, each with the control that shows the classical channel is needed"),
+    Experiment("P13", "Majorana parity teleportation on a cloud processor", P + "P13_majorana_teleportation_on_a_cloud_processor.md",
+               "replicable", (4,), twin="qll/circuits/majorana_cloud.py", test="tests/test_majorana_teleport.py",
+               procedure=P + "P13_majorana_teleportation_on_a_cloud_processor.md", cost="0",
+               role="the measurement-only teleportation of Crogman, Dang, and Erenso (2025), emulated: two parity bits teleport, one cannot"),
     # ---------------------------------------------------------------- the two-site link's hardware ladder
     Experiment("T1", "Tier 1: bright-light polarization analogue", "systems/see510/10_real_world_experiments.md", "replicable", (1,),
                twin="qll/link/bench_tier1.py", test="tests/test_two_site_link.py", procedure="systems/see510/10_real_world_experiments.md",
@@ -167,6 +171,9 @@ CATALOG: tuple[Experiment, ...] = (
     Experiment("E17", "Can collapse carry a message?", E + "E17_can_collapse_carry_a_message.md", "proposed", (1, 4),
                twin="qll/circuits/collapse_signalling.py", test="tests/test_collapse_signalling.py", cost="0",
                role="the mission's first paper"),
+    Experiment("E18", "Majorana parity teleportation, emulated: one bit or two?", E + "E18_majorana_parity_teleportation_emulated.md",
+               "proposed", (4,), twin="qll/circuits/majorana_teleport.py", test="tests/test_majorana_teleport.py", cost="0",
+               role="a concrete collaboration with the CSUDH authors: their protocol, emulated and set against their error budget"),
     # ---------------------------------------------------------------- flagships
     Experiment("F1", "Two computers on Earth", F + "F1_earth_to_earth.md", "flagship", (1, 2)),
     Experiment("F2", "A computer on Earth to a satellite", F + "F2_earth_to_satellite.md", "flagship", (3,)),

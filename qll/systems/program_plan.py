@@ -114,6 +114,9 @@ MILESTONES: tuple[Milestone, ...] = (
               builds_on=("E01", "E02"), verify="Analysis: fidelity versus delay against the memory model"),
     Milestone("M4.4", 4, "Three-node entanglement-assisted key network (twin, then two rooms plus one)", 8, (0, 200, 2000), ("M2.3",), trl=4,
               builds_on=("D08", "D13"), verify="Test: keys between every pair through a trusted node and through swapping in the twin"),
+    Milestone("M4.6", 4, "Majorana parity teleportation emulated on a cloud processor (with the CSUDH authors)", 4, (0, 0, 0), ("M4.1",), trl=3,
+              builds_on=("P13", "E18"), progress="exact fermionic model, circuits, error budget, and simulator rehearsal done; hardware run next",
+              verify="Test: two-bit average fidelity above 2/3 on hardware; one-bit at or below 2/3; no-bits at 1/2"),
     Milestone("M4.5", 4, "Photonic teleportation between rooms", 26, (2000, 8000, 30000), ("M2.2", "M4.1"), trl=5,
               builds_on=("D06", "D07"), verify="Test: fidelity above 2/3 with Bell-state measurement and the classical bits", outside=True),
     # ------------------------------------------------------------------------------------------------ startup track

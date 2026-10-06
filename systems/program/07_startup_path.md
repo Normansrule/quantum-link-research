@@ -10,6 +10,7 @@
 |---|---|---|---|
 | University physics and engineering teaching labs | quantum-optics teaching kits from established vendors cost thousands per station; few kits teach quantum key distribution end to end with real post-processing | the two-room kit (bill of materials under $1,000), the twin software, and lab procedures that match | labs say price is not the barrier, or that their existing kits already cover key distribution |
 | Community colleges and quantum workforce programs | they need hands-on quantum labs but have no optics expertise | a kit with a twin that tells a student what each reading should be, and a course | they want software-only labs |
+| Topological-qubit theory groups (for example, the CSUDH authors of the Majorana teleportation protocol in T16) | protocols need emulations and error budgets set against device knobs | the emulation and budget tools of P13 as a collaboration first, a service later | they have their own tools |
 | Research groups building testbeds | integrating sources, detectors, timing, and post-processing takes a student-year | open post-processing and twin software, integration help | they already have in-house pipelines |
 | Companies piloting quantum-safe networking | they need to understand what quantum key distribution would and would not do for them | assessments, simulations of their links, and training | they buy from established vendors directly |
 

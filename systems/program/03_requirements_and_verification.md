@@ -51,6 +51,7 @@ Mission needs (MN) come from the mission statement; each requirement (MR) is a v
 | MR-4.3 | Teleportation fidelity shall be measured against the delay of the classical channel. | MN-7 | 4 | Analysis | M4.3 |
 | MR-4.4 | A three-node network shall give keys between every pair of nodes in the twin, then with two rooms plus one. | MN-7 | 4 | Test | M4.4 |
 | MR-4.5 | Photonic teleportation between the rooms shall exceed fidelity 2/3. | MN-7 | 4 | Test | M4.5 |
+| MR-4.6 | The measurement-only Majorana teleportation protocol shall be emulated with two parity bits (average fidelity above 2/3) and with one (at or below 2/3), and compared with its error budget. | MN-5, MN-7 | 4 | Test | M4.6 |
 | MR-S.1 | At least 30 potential customers shall be interviewed before any money is spent on forming a company. | MN-6, MN-3 | startup | Inspection | S1 |
 | MR-S.2 | The company and its intellectual property shall be set up only after the university's intellectual-property policy has been checked. | MN-6 | startup | Inspection | S2 |
 | MR-S.3 | A pilot user shall run the kit and match its twin. | MN-6, MN-4 | startup | Demonstration | S3 |

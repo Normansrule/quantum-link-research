@@ -8,7 +8,7 @@ Likelihood (L) and consequence (C) on a 1–5 scale; the score is their product.
 |---|---|---|---|---|---|---|
 | MR-R1 | SiPM dark counts higher than the datasheet (light leaks, warm room), so the two-room error rate exceeds 11 % | 3 | 4 | 12 | measure in a dark box first (P10 stage 3); shorter gate; a $10 Peltier plate; work at night | M1.4; trigger: dark rate above 860 kHz |
 | MR-R2 | The four-diode source's diodes differ in wavelength, timing, or beam shape, so the states are partly distinguishable (a side channel) | 4 | 2 | 8 | state it as a limitation; match drive pulses; spatial filter through one pinhole; the paper claims a demonstration, not security | M1.6 (documented) |
-| MR-R3 | No entangled source can be borrowed | 3 | 4 | 12 | ask early (now); offer co-authorship; P03 build as fallback ($5k–15k), only with a grant | M2.1; trigger: no agreement by Gate G1 |
+| MR-R3 | No entangled source can be borrowed | 3 | 4 | 12 | ask early (now), starting with CSUDH's physics department, whose faculty publish on teleportation (T16); offer co-authorship; P03 build as fallback ($5k–15k), only with a grant | M2.1; trigger: no agreement by Gate G1 |
 | MR-R4 | The cloud processor's free allowance shrinks or changes | 2 | 2 | 4 | the analysis runs on any backend; simulator and fake-device results are publishable controls; other providers | M1.2 |
 | MR-R5 | A crosstalk "signal" on the processor is misread as signalling | 2 | 5 | 10 | controls in every run; distance dependence; E16 measured the same day; the paper's claim is a bound | M1.2 |
 | MR-R6 | Laser eye injury during alignment | 1 | 5 | 5 | 405 nm goggles, beam below eye level, alignment only at low power, sign on the door (P10, Safety) | every session |

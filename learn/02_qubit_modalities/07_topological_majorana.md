@@ -14,7 +14,7 @@ Kitaev chain $H=-\mu\sum_jc_j^\dagger c_j-\sum_j\left(t\,c_j^\dagger c_{j+1}+\De
 This modality is included because the thesis is about learning from failed iterations: it is the clearest case in the field where a compelling theory outran the evidence, and where the corrective mechanism (data sharing, replication, retraction) worked.
 
 ## What it means for a link
-Nothing yet: no photon interface, no demonstrated logical qubit, dilution-refrigerator temperatures.
+Nothing yet in hardware: no photon interface, no demonstrated logical qubit, dilution-refrigerator temperatures. On paper, a Majorana node would move logical states by parity measurements alone (measurement-only teleportation; Crogman, Dang, & Erenso, 2025, from CSUDH's physics department). [`research/theories/T16`](../../research/theories/T16_majorana_measurement_only_teleportation.md) reproduces their protocol in an exact fermionic model and shows that it needs two parity bits per teleported qubit, like any teleportation. Protocol [P13](../../experiments/protocols/P13_majorana_teleportation_on_a_cloud_processor.md) emulates it on a free cloud processor.
 
 ## Key papers
 - Kitaev, A. Y. (2001). Unpaired Majorana fermions in quantum wires. *Physics-Uspekhi*, 44, 131. arXiv:cond-mat/0010440
