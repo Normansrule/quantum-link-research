@@ -12,6 +12,7 @@ import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
 DOCS = ROOT / "docs"
+LAB_PAGES = [DOCS / "lab" / p for p in ("index.html", "link/index.html", "circuits/index.html")]
 pytestmark = pytest.mark.phase1
 sys.path.insert(0, str(ROOT / "scripts"))
 
@@ -53,19 +54,24 @@ def test_all_site_javascript_parses(tmp_path):
         target.write_text(src)
         r = subprocess.run([node, "--check", str(target)], capture_output=True, text=True)
         assert r.returncode == 0, f"{js.name}: {r.stderr}"
-    for page in (DOCS / "mars" / "index.html", DOCS / "teleport" / "index.html", DOCS / "monitor" / "index.html", DOCS / "link" / "index.html"):
-        for i, body in enumerate(re.findall(r"<script>(.*?)</script>", page.read_text(), re.S)):
-            f = tmp_path / f"inline_{i}.js"; f.write_text(body)
-            r = subprocess.run([node, "--check", str(f)], capture_output=True, text=True)
-            assert r.returncode == 0, r.stderr
+    for page in [DOCS / p for p in ("mars/index.html", "teleport/index.html", "monitor/index.html", "link/index.html")] + LAB_PAGES:
+        html = page.read_text()
+        for kind, ext in (("<script>", ".js"), ('<script type="module">', ".mjs")):
+            for i, body in enumerate(re.findall(re.escape(kind) + r"(.*?)</script>", html, re.S)):
+                f = tmp_path / f"inline_{i}{ext}"; f.write_text(body)
+                r = subprocess.run([node, "--check", str(f)], capture_output=True, text=True)
+                assert r.returncode == 0, f"{page}: {r.stderr}"
+    f = tmp_path / "sw.js"; f.write_text((DOCS / "lab" / "sw.js").read_text())
+    assert subprocess.run([node, "--check", str(f)], capture_output=True, text=True).returncode == 0
 
 
-@pytest.mark.parametrize("page", ["index.html", "mars/index.html", "teleport/index.html", "monitor/index.html", "link/index.html"])
+@pytest.mark.parametrize("page", ["index.html", "mars/index.html", "teleport/index.html", "monitor/index.html", "link/index.html",
+                                  "lab/index.html", "lab/link/index.html", "lab/circuits/index.html"])
 def test_local_links_resolve(page):
     path = DOCS / page
     html = path.read_text()
     for ref in re.findall(r'(?:href|src)="([^"]+)"', html):
-        if ref.startswith(("http", "#", "data:", "mailto:")) or ref.endswith("/") and ref.startswith("http"):
+        if ref.startswith(("http", "#", "data:", "mailto:")) or "${" in ref:
             continue
         target = (path.parent / ref.split("#")[0]).resolve()
         if ref.endswith("/"):
@@ -111,7 +117,8 @@ def test_js_buffer_rule_matches_messenger(tmp_path):
 
 
 def test_pages_need_no_cdn_and_vendored_files_exist():
-    for page in ("index.html", "mars/index.html", "teleport/index.html", "monitor/index.html", "link/index.html"):
+    for page in ("index.html", "mars/index.html", "teleport/index.html", "monitor/index.html", "link/index.html", "lab/index.html",
+                 "lab/link/index.html", "lab/circuits/index.html"):
         html = (DOCS / page).read_text()
         assert "cdn.jsdelivr" not in html and "unpkg.com" not in html, page
     for f in ("three/three.module.js", "three/three.core.js", "three/addons/controls/OrbitControls.js", "gsap/gsap.min.js",
@@ -240,3 +247,21 @@ def test_js_key_bank_matches_python(tmp_path):
         assert cap == pytest.approx(sequent_peak(key, dem), rel=1e-12)
         run = simulate(key, dem, 0.5 * cap)
         assert level == pytest.approx(list(run.level), rel=1e-12, abs=1e-6) and refused == run.refused_days
+
+
+def test_lab_app_manifest_and_offline_cache_point_at_real_files():
+    lab = DOCS / "lab"
+    m = json.loads((lab / "manifest.webmanifest").read_text())
+    assert m["display"] == "standalone" and m["start_url"] == "./"
+    for icon in m["icons"]:
+        assert (lab / icon["src"]).exists(), icon
+    sw = (lab / "sw.js").read_text()
+    core = re.search(r"const CORE = \[(.*?)\];", sw, re.S).group(1)
+    for ref in re.findall(r'"([^"]+)"', core):
+        target = (lab / ref).resolve()
+        assert (target / "index.html").exists() if ref.endswith("/") else target.exists(), ref
+    version = re.search(r'VERSION = "qll-lab-([\d.]+)"', sw).group(1)
+    pyproject = (DOCS.parent / "pyproject.toml").read_text()
+    assert f'version = "{version}"' in pyproject, "bump the service worker cache with the release"
+    for page in LAB_PAGES:
+        assert 'rel="manifest"' in page.read_text() and "registerApp" in page.read_text(), page

@@ -1,0 +1,934 @@
+{
+ "phases": {
+  "0": "Foundations: the simulation library and its evidence",
+  "1": "Two rooms: a fiber classical channel and a single-photon quantum link",
+  "2": "Entanglement between two rooms",
+  "3": "Outdoors and toward orbit",
+  "4": "Entanglement-assisted communication: the frontier"
+ },
+ "experiments": [
+  {
+   "id": "D01",
+   "title": "Stern–Gerlach: spin is quantized",
+   "path": "experiments/done/01_stern_gerlach.md",
+   "status": "landmark",
+   "phases": [
+    0
+   ],
+   "twin": "",
+   "test": "",
+   "procedure": "",
+   "cost": "",
+   "role": "measurement disturbs: the root of why collapse cannot be steered into a message",
+   "lab": []
+  },
+  {
+   "id": "D02",
+   "title": "Single-photon interference and anticorrelation",
+   "path": "experiments/done/02_single_photon_interference.md",
+   "status": "landmark",
+   "phases": [
+    1,
+    2
+   ],
+   "twin": "qll/hardware/photon_source.py",
+   "test": "tests/test_phase3_links.py",
+   "procedure": "",
+   "cost": "3k-4k",
+   "role": "proves a source is single-photon; the check the two-room link's weak pulses do not pass, hence decoys",
+   "lab": []
+  },
+  {
+   "id": "D03",
+   "title": "Bell test with entangled photons",
+   "path": "experiments/done/03_bell_test_spdc.md",
+   "status": "landmark",
+   "phases": [
+    2
+   ],
+   "twin": "qll/circuits/chsh.py",
+   "test": "tests/test_phase2_circuits.py",
+   "procedure": "",
+   "cost": "",
+   "role": "the Phase 2 pass criterion: CHSH above 2 between the rooms",
+   "lab": [
+    {
+     "page": "link/",
+     "tier": "tier4",
+     "title": "Entangled photons between the rooms (BBM92)",
+     "rung": "entangled"
+    }
+   ]
+  },
+  {
+   "id": "D04",
+   "title": "ODMR of NV centers",
+   "path": "experiments/done/04_odmr_nv.md",
+   "status": "landmark",
+   "phases": [
+    0
+   ],
+   "twin": "qll/hardware/nv_node.py",
+   "test": "tests/test_analysis_odmr.py",
+   "procedure": "",
+   "cost": "100-500",
+   "role": "a cheap spin qubit readout: the memory path, not the link path",
+   "lab": []
+  },
+  {
+   "id": "D05",
+   "title": "Rabi, Ramsey, Hahn echo",
+   "path": "experiments/done/05_rabi_ramsey_echo_nv.md",
+   "status": "landmark",
+   "phases": [
+    0
+   ],
+   "twin": "qll/viz/rabi_ramsey.py",
+   "test": "tests/test_phase1_viz.py",
+   "procedure": "",
+   "cost": "",
+   "role": "coherence times a quantum memory must exceed",
+   "lab": []
+  },
+  {
+   "id": "D06",
+   "title": "Hong–Ou–Mandel interference",
+   "path": "experiments/done/06_hong_ou_mandel.md",
+   "status": "landmark",
+   "phases": [
+    2,
+    4
+   ],
+   "twin": "qll/hardware/beam_splitter.py",
+   "test": "tests/test_phase3_links.py",
+   "procedure": "",
+   "cost": "",
+   "role": "the Bell-state measurement that teleportation and repeaters need (Phase 4)",
+   "lab": []
+  },
+  {
+   "id": "D07",
+   "title": "Photonic teleportation",
+   "path": "experiments/done/07_teleportation_photonic.md",
+   "status": "landmark",
+   "phases": [
+    4
+   ],
+   "twin": "qll/circuits/teleportation.py",
+   "test": "tests/test_phase2_circuits.py",
+   "procedure": "",
+   "cost": "",
+   "role": "two classical bits per qubit: the frontier's honest form",
+   "lab": [
+    {
+     "page": "circuits/",
+     "tier": "teleport",
+     "title": "Teleportation and superdense coding (P12)",
+     "rung": "cloud"
+    }
+   ]
+  },
+  {
+   "id": "D08",
+   "title": "NV remote entanglement and networks",
+   "path": "experiments/done/08_nv_remote_entanglement_and_network.md",
+   "status": "landmark",
+   "phases": [
+    4
+   ],
+   "twin": "",
+   "test": "",
+   "procedure": "",
+   "cost": "",
+   "role": "heralded entanglement between distant nodes: where the network goes after Phase 4",
+   "lab": []
+  },
+  {
+   "id": "D09",
+   "title": "Satellite QKD: Micius and Jinan-1",
+   "path": "experiments/done/09_satellite_qkd_micius_jinan.md",
+   "status": "landmark",
+   "phases": [
+    3
+   ],
+   "twin": "qll/channels/link_budget.py",
+   "test": "tests/test_phase3_links.py",
+   "procedure": "",
+   "cost": "",
+   "role": "the satellite link budget Phase 3 reproduces before building anything",
+   "lab": []
+  },
+  {
+   "id": "D10",
+   "title": "Error correction below threshold",
+   "path": "experiments/done/10_error_correction_below_threshold.md",
+   "status": "landmark",
+   "phases": [
+    4
+   ],
+   "twin": "",
+   "test": "",
+   "procedure": "",
+   "cost": "",
+   "role": "what long-lived memories for a network will rest on",
+   "lab": []
+  },
+  {
+   "id": "D11",
+   "title": "Aspect 1982: time-varying analyzers",
+   "path": "experiments/done/11_aspect_1982_time_varying_analyzers.md",
+   "status": "landmark",
+   "phases": [
+    2
+   ],
+   "twin": "qll/circuits/chsh.py",
+   "test": "tests/test_phase2_circuits.py",
+   "procedure": "",
+   "cost": "1k-3k",
+   "role": "switch settings faster than light can cross: the no-signalling check at its strictest",
+   "lab": []
+  },
+  {
+   "id": "D12",
+   "title": "Furusawa 1998: continuous-variable teleportation",
+   "path": "experiments/done/12_furusawa_1998_cv_teleportation.md",
+   "status": "landmark",
+   "phases": [
+    4
+   ],
+   "twin": "qll/circuits/oscillator_states.py",
+   "test": "tests/test_computing_core.py",
+   "procedure": "",
+   "cost": "50k-100k",
+   "role": "the other encoding for teleportation",
+   "lab": []
+  },
+  {
+   "id": "D13",
+   "title": "Bhaskar 2020: memory-enhanced communication",
+   "path": "experiments/done/13_bhaskar_2020_memory_enhanced_communication.md",
+   "status": "landmark",
+   "phases": [
+    4
+   ],
+   "twin": "qll/network/repeater_chain.py",
+   "test": "tests/test_phase4_network.py",
+   "procedure": "",
+   "cost": "",
+   "role": "a memory beating direct transmission: the repeater idea in one node",
+   "lab": []
+  },
+  {
+   "id": "D14",
+   "title": "Jinan-1 2025: microsatellite QKD",
+   "path": "experiments/done/14_jinan1_2025_microsatellite_qkd.md",
+   "status": "landmark",
+   "phases": [
+    3
+   ],
+   "twin": "qll/qkd/decoy_state.py",
+   "test": "tests/test_phase3_qkd.py",
+   "procedure": "",
+   "cost": "",
+   "role": "a small satellite and a portable ground station: the scale Phase 3 aims at",
+   "lab": []
+  },
+  {
+   "id": "D15",
+   "title": "Bluvstein 2024: logical atom processor",
+   "path": "experiments/done/15_bluvstein_2024_logical_atom_processor.md",
+   "status": "landmark",
+   "phases": [
+    4
+   ],
+   "twin": "qll/circuits/stabilizer_codes.py",
+   "test": "tests/test_computing_core.py",
+   "procedure": "",
+   "cost": "",
+   "role": "error-corrected memories without a cryostat",
+   "lab": []
+  },
+  {
+   "id": "P01",
+   "title": "ODMR on a $100–500 NV bench",
+   "path": "experiments/protocols/P01_odmr_nv_bench.md",
+   "status": "replicable",
+   "phases": [
+    0
+   ],
+   "twin": "qll/analysis/odmr_fit.py",
+   "test": "tests/test_analysis_odmr.py",
+   "procedure": "experiments/protocols/P01_odmr_nv_bench.md",
+   "cost": "100-500",
+   "role": "first hands-on qubit; practice for the twin-versus-measurement method",
+   "lab": []
+  },
+  {
+   "id": "P02",
+   "title": "Pulsed NV control",
+   "path": "experiments/protocols/P02_pulsed_nv_control.md",
+   "status": "replicable",
+   "phases": [
+    0
+   ],
+   "twin": "qll/analysis/relaxation_fit.py",
+   "test": "tests/test_analysis_relaxation.py",
+   "procedure": "experiments/protocols/P02_pulsed_nv_control.md",
+   "cost": "~10k",
+   "role": "memory coherence measured, not assumed",
+   "lab": []
+  },
+  {
+   "id": "P03",
+   "title": "SPDC source, HOM, CHSH, and BB84",
+   "path": "experiments/protocols/P03_spdc_bell_test.md",
+   "status": "procedure",
+   "phases": [
+    2
+   ],
+   "twin": "qll/circuits/chsh.py",
+   "test": "tests/test_phase2_circuits.py",
+   "procedure": "experiments/protocols/P03_spdc_bell_test.md",
+   "cost": "5k-15k",
+   "role": "the entangled source Phase 2 borrows or builds",
+   "lab": [
+    {
+     "page": "link/",
+     "tier": "tier4",
+     "title": "Entangled photons between the rooms (BBM92)",
+     "rung": "entangled"
+    }
+   ]
+  },
+  {
+   "id": "P04",
+   "title": "Rooftop free-space link",
+   "path": "experiments/protocols/P04_rooftop_free_space_link.md",
+   "status": "procedure",
+   "phases": [
+    3
+   ],
+   "twin": "qll/channels/free_space_diffraction.py",
+   "test": "tests/test_phase3_links.py",
+   "procedure": "experiments/protocols/P04_rooftop_free_space_link.md",
+   "cost": "",
+   "role": "Phase 3's first outdoor step: loss and daylight background",
+   "lab": []
+  },
+  {
+   "id": "P05",
+   "title": "Single-photon anticorrelation",
+   "path": "experiments/protocols/P05_single_photon_anticorrelation.md",
+   "status": "procedure",
+   "phases": [
+    2
+   ],
+   "twin": "qll/hardware/photon_source.py",
+   "test": "tests/test_phase3_links.py",
+   "procedure": "experiments/protocols/P05_single_photon_anticorrelation.md",
+   "cost": "300-3k",
+   "role": "certify a heralded source before trusting it",
+   "lab": []
+  },
+  {
+   "id": "P06",
+   "title": "Quantum eraser and delayed choice",
+   "path": "experiments/protocols/P06_quantum_eraser.md",
+   "status": "procedure",
+   "phases": [
+    2
+   ],
+   "twin": "qll/circuits/collapse_signalling.py",
+   "test": "tests/test_collapse_signalling.py",
+   "procedure": "experiments/protocols/P06_quantum_eraser.md",
+   "cost": "200-500",
+   "role": "the classic 'collapse at a distance' demonstration: fringes appear only after records are compared",
+   "lab": []
+  },
+  {
+   "id": "P07",
+   "title": "BB84 over a fiber spool",
+   "path": "experiments/protocols/P07_bb84_over_a_fiber_spool.md",
+   "status": "procedure",
+   "phases": [
+    1,
+    2
+   ],
+   "twin": "qll/link/protocol_bb84.py",
+   "test": "tests/test_two_site_link.py",
+   "procedure": "experiments/protocols/P07_bb84_over_a_fiber_spool.md",
+   "cost": "100-2k",
+   "role": "the fiber version of the two-room link",
+   "lab": [
+    {
+     "page": "link/",
+     "tier": "tier3",
+     "title": "Upgrade: avalanche-diode detectors and fiber",
+     "rung": "upgrade"
+    }
+   ]
+  },
+  {
+   "id": "P08",
+   "title": "Time-bin encoding and a fiber interferometer",
+   "path": "experiments/protocols/P08_time_bin_encoding.md",
+   "status": "procedure",
+   "phases": [
+    3
+   ],
+   "twin": "",
+   "test": "",
+   "procedure": "experiments/protocols/P08_time_bin_encoding.md",
+   "cost": "500-1k",
+   "role": "the encoding that survives long fiber; Phase 3 option",
+   "lab": []
+  },
+  {
+   "id": "P09",
+   "title": "The Mars link on a table",
+   "path": "experiments/protocols/P09_mars_link_on_a_table.md",
+   "status": "replicable",
+   "phases": [
+    1
+   ],
+   "twin": "qll/systems/bench_twin.py",
+   "test": "tests/test_bench_twin.py",
+   "procedure": "experiments/protocols/P09_mars_link_on_a_table.md",
+   "cost": "150-400",
+   "role": "the method this mission reuses: build, measure, and compare with a twin",
+   "lab": []
+  },
+  {
+   "id": "P10",
+   "title": "The two-room single-photon link",
+   "path": "experiments/protocols/P10_two_room_single_photon_link.md",
+   "status": "replicable",
+   "phases": [
+    1
+   ],
+   "twin": "qll/link/two_room.py",
+   "test": "tests/test_two_room.py",
+   "procedure": "experiments/protocols/P10_two_room_single_photon_link.md",
+   "cost": "530-1,180",
+   "role": "the mission's first quantum milestone: quantum states sent from one room to another",
+   "lab": [
+    {
+     "page": "link/",
+     "tier": "two_room",
+     "title": "The two-room single-photon link",
+     "rung": "main"
+    }
+   ]
+  },
+  {
+   "id": "P11",
+   "title": "The collapse code on a cloud processor",
+   "path": "experiments/protocols/P11_collapse_code_on_a_cloud_processor.md",
+   "status": "replicable",
+   "phases": [
+    1,
+    4
+   ],
+   "twin": "qll/circuits/collapse_signalling.py",
+   "test": "tests/test_collapse_signalling.py",
+   "procedure": "experiments/protocols/P11_collapse_code_on_a_cloud_processor.md",
+   "cost": "0",
+   "role": "the first paper: can the way a shared state collapses carry a message? Measured, with a bound",
+   "lab": [
+    {
+     "page": "circuits/",
+     "tier": "collapse",
+     "title": "Can collapse carry a message? (P11)",
+     "rung": "cloud"
+    }
+   ]
+  },
+  {
+   "id": "P12",
+   "title": "Teleportation and superdense coding on a cloud processor",
+   "path": "experiments/protocols/P12_teleportation_and_superdense_coding_on_a_cloud_processor.md",
+   "status": "replicable",
+   "phases": [
+    4
+   ],
+   "twin": "qll/circuits/teleport_cloud.py",
+   "test": "tests/test_cloud_frontier.py",
+   "procedure": "experiments/protocols/P12_teleportation_and_superdense_coding_on_a_cloud_processor.md",
+   "cost": "0",
+   "role": "what entanglement does deliver, each with the control that shows the classical channel is needed",
+   "lab": [
+    {
+     "page": "circuits/",
+     "tier": "teleport",
+     "title": "Teleportation and superdense coding (P12)",
+     "rung": "cloud"
+    }
+   ]
+  },
+  {
+   "id": "P13",
+   "title": "Majorana parity teleportation on a cloud processor",
+   "path": "experiments/protocols/P13_majorana_teleportation_on_a_cloud_processor.md",
+   "status": "replicable",
+   "phases": [
+    4
+   ],
+   "twin": "qll/circuits/majorana_cloud.py",
+   "test": "tests/test_majorana_teleport.py",
+   "procedure": "experiments/protocols/P13_majorana_teleportation_on_a_cloud_processor.md",
+   "cost": "0",
+   "role": "the measurement-only teleportation of Crogman, Dang, and Erenso (2025), emulated: two parity bits teleport, one cannot",
+   "lab": [
+    {
+     "page": "circuits/",
+     "tier": "majorana",
+     "title": "Majorana parity teleportation (P13)",
+     "rung": "device"
+    }
+   ]
+  },
+  {
+   "id": "T1",
+   "title": "Tier 1: bright-light polarization analogue",
+   "path": "systems/see510/10_real_world_experiments.md",
+   "status": "replicable",
+   "phases": [
+    1
+   ],
+   "twin": "qll/link/bench_tier1.py",
+   "test": "tests/test_two_site_link.py",
+   "procedure": "systems/see510/10_real_world_experiments.md",
+   "cost": "40-120",
+   "role": "the protocol on real hardware between the rooms before any single photons",
+   "lab": [
+    {
+     "page": "link/",
+     "tier": "tier1",
+     "title": "Starter: the bright-light analogue",
+     "rung": "starter"
+    }
+   ]
+  },
+  {
+   "id": "T2",
+   "title": "Tier 2: the fiber channel, characterized",
+   "path": "systems/see510/10_real_world_experiments.md",
+   "status": "procedure",
+   "phases": [
+    1
+   ],
+   "twin": "qll/link/models.py",
+   "test": "tests/test_two_site_link.py",
+   "procedure": "systems/see510/10_real_world_experiments.md",
+   "cost": "80-350",
+   "role": "loss and cross-talk of the fiber that carries the classical channel",
+   "lab": []
+  },
+  {
+   "id": "T3",
+   "title": "Tier 3: decoy-state BB84 at the single-photon level",
+   "path": "systems/see510/10_real_world_experiments.md",
+   "status": "procedure",
+   "phases": [
+    1
+   ],
+   "twin": "qll/link/decoy.py",
+   "test": "tests/test_two_site_link.py",
+   "procedure": "systems/see510/10_real_world_experiments.md",
+   "cost": "2k-8k",
+   "role": "the laboratory-grade version of P10",
+   "lab": [
+    {
+     "page": "link/",
+     "tier": "two_room",
+     "title": "The two-room single-photon link",
+     "rung": "main"
+    },
+    {
+     "page": "link/",
+     "tier": "tier3",
+     "title": "Upgrade: avalanche-diode detectors and fiber",
+     "rung": "upgrade"
+    }
+   ]
+  },
+  {
+   "id": "T4",
+   "title": "Tier 4: entanglement-based BBM92",
+   "path": "systems/see510/10_real_world_experiments.md",
+   "status": "procedure",
+   "phases": [
+    2
+   ],
+   "twin": "qll/qkd/e91.py",
+   "test": "tests/test_phase3_qkd.py",
+   "procedure": "systems/see510/10_real_world_experiments.md",
+   "cost": "15k-60k or a lent kit",
+   "role": "Phase 2: key from entangled pairs measured in two rooms",
+   "lab": [
+    {
+     "page": "link/",
+     "tier": "tier4",
+     "title": "Entangled photons between the rooms (BBM92)",
+     "rung": "entangled"
+    }
+   ]
+  },
+  {
+   "id": "T5",
+   "title": "Tier 5: a commercial or testbed link",
+   "path": "systems/see510/10_real_world_experiments.md",
+   "status": "procedure",
+   "phases": [
+    3
+   ],
+   "twin": "",
+   "test": "",
+   "procedure": "systems/see510/10_real_world_experiments.md",
+   "cost": "",
+   "role": "deployed fiber through a partner",
+   "lab": []
+  },
+  {
+   "id": "E01",
+   "title": "Teleportation with a delayed classical channel",
+   "path": "experiments/proposed/E01_delayed_classical_channel_teleportation.md",
+   "status": "proposed",
+   "phases": [
+    4
+   ],
+   "twin": "qll/channels/light_time_delay.py",
+   "test": "tests/test_phase2_circuits.py",
+   "procedure": "",
+   "cost": "",
+   "role": "teleportation waits for its bits; how long can it wait",
+   "lab": []
+  },
+  {
+   "id": "E02",
+   "title": "Memory coherence versus temperature and light time",
+   "path": "experiments/proposed/E02_memory_vs_temperature_vs_light_time.md",
+   "status": "proposed",
+   "phases": [
+    4
+   ],
+   "twin": "qll/circuits/noise/thermal.py",
+   "test": "tests/test_phase2_noise.py",
+   "procedure": "",
+   "cost": "500-10k",
+   "role": "",
+   "lab": []
+  },
+  {
+   "id": "E03",
+   "title": "Constellation scheduling on real pass data",
+   "path": "experiments/proposed/E03_constellation_scheduling_on_real_pass_data.md",
+   "status": "proposed",
+   "phases": [
+    3
+   ],
+   "twin": "qll/space/relay_constellation.py",
+   "test": "tests/test_phase5_space.py",
+   "procedure": "",
+   "cost": "0",
+   "role": "satellite work with public data, before hardware",
+   "lab": []
+  },
+  {
+   "id": "E04",
+   "title": "Daylight background at solar elongation",
+   "path": "experiments/proposed/E04_sun_angle_background.md",
+   "status": "proposed",
+   "phases": [
+    3
+   ],
+   "twin": "qll/channels/thermal_background.py",
+   "test": "tests/test_phase1_channels.py",
+   "procedure": "",
+   "cost": "",
+   "role": "",
+   "lab": []
+  },
+  {
+   "id": "E05",
+   "title": "Fail-closed messaging under latency",
+   "path": "experiments/proposed/E05_fail_closed_messaging_20min_latency.md",
+   "status": "proposed",
+   "phases": [
+    1,
+    4
+   ],
+   "twin": "qll/app/messenger.py",
+   "test": "tests/test_phase6_app.py",
+   "procedure": "",
+   "cost": "",
+   "role": "the application the link serves",
+   "lab": []
+  },
+  {
+   "id": "E06",
+   "title": "Quantum-random bases on a cheap bench",
+   "path": "experiments/proposed/E06_qrng_basis_choice_on_a_cheap_bench.md",
+   "status": "proposed",
+   "phases": [
+    1,
+    2
+   ],
+   "twin": "qll/hardware/randomness.py",
+   "test": "tests/test_phase3_qkd.py",
+   "procedure": "",
+   "cost": "",
+   "role": "the two-room link's basis choices",
+   "lab": []
+  },
+  {
+   "id": "E07",
+   "title": "Transduction-free hybrid link",
+   "path": "experiments/proposed/E07_transduction_free_hybrid_link.md",
+   "status": "proposed",
+   "phases": [
+    4
+   ],
+   "twin": "qll/hardware/transduction.py",
+   "test": "tests/test_simulations.py",
+   "procedure": "",
+   "cost": "",
+   "role": "",
+   "lab": []
+  },
+  {
+   "id": "E08",
+   "title": "Modality trade for a Mars memory node",
+   "path": "experiments/proposed/E08_modality_trade_study_mars_memory_node.md",
+   "status": "proposed",
+   "phases": [
+    4
+   ],
+   "twin": "",
+   "test": "",
+   "procedure": "",
+   "cost": "",
+   "role": "",
+   "lab": []
+  },
+  {
+   "id": "E09",
+   "title": "Multiplexing at AU-scale loss",
+   "path": "experiments/proposed/E09_multiplexing_at_au_scale_loss.md",
+   "status": "proposed",
+   "phases": [
+    4
+   ],
+   "twin": "",
+   "test": "",
+   "procedure": "",
+   "cost": "",
+   "role": "",
+   "lab": []
+  },
+  {
+   "id": "E10",
+   "title": "Device-independent certification under latency",
+   "path": "experiments/proposed/E10_device_independent_certification_under_latency.md",
+   "status": "proposed",
+   "phases": [
+    4
+   ],
+   "twin": "",
+   "test": "",
+   "procedure": "",
+   "cost": "",
+   "role": "",
+   "lab": []
+  },
+  {
+   "id": "E11",
+   "title": "Blind computation under latency",
+   "path": "experiments/proposed/E11_blind_computation_under_latency.md",
+   "status": "proposed",
+   "phases": [
+    4
+   ],
+   "twin": "",
+   "test": "",
+   "procedure": "",
+   "cost": "",
+   "role": "",
+   "lab": []
+  },
+  {
+   "id": "E12",
+   "title": "Erasure-aware atom repeater",
+   "path": "experiments/proposed/E12_erasure_aware_atom_repeater.md",
+   "status": "proposed",
+   "phases": [
+    4
+   ],
+   "twin": "",
+   "test": "",
+   "procedure": "",
+   "cost": "",
+   "role": "",
+   "lab": []
+  },
+  {
+   "id": "E13",
+   "title": "Frequency-multiplexed heralding",
+   "path": "experiments/proposed/E13_frequency_multiplexed_heralding.md",
+   "status": "proposed",
+   "phases": [
+    2
+   ],
+   "twin": "",
+   "test": "",
+   "procedure": "",
+   "cost": "300-1k",
+   "role": "",
+   "lab": []
+  },
+  {
+   "id": "E14",
+   "title": "Relativistic timing with two GPS-disciplined nodes",
+   "path": "experiments/proposed/E14_relativistic_timing_sanity_test.md",
+   "status": "proposed",
+   "phases": [
+    2,
+    3
+   ],
+   "twin": "qll/space/relativity.py",
+   "test": "tests/test_phase5_relativity_turbulence.py",
+   "procedure": "",
+   "cost": "100-300",
+   "role": "shared clocks for timing detections in separate rooms and at a ground station",
+   "lab": []
+  },
+  {
+   "id": "E15",
+   "title": "Radiation screening of bench parts",
+   "path": "experiments/proposed/E15_radiation_screening.md",
+   "status": "proposed",
+   "phases": [
+    3
+   ],
+   "twin": "",
+   "test": "",
+   "procedure": "",
+   "cost": "",
+   "role": "",
+   "lab": []
+  },
+  {
+   "id": "E16",
+   "title": "ZZ crosstalk on a cloud processor",
+   "path": "experiments/proposed/E16_zz_crosstalk_on_a_cloud_processor.md",
+   "status": "proposed",
+   "phases": [
+    1
+   ],
+   "twin": "qll/circuits/zz_ramsey.py",
+   "test": "tests/test_zz_ramsey.py",
+   "procedure": "",
+   "cost": "0",
+   "role": "the crosstalk that could fake a signal in P11; measure it on the same device",
+   "lab": [
+    {
+     "page": "circuits/",
+     "tier": "collapse",
+     "title": "Can collapse carry a message? (P11)",
+     "rung": "cloud"
+    }
+   ]
+  },
+  {
+   "id": "E17",
+   "title": "Can collapse carry a message?",
+   "path": "experiments/proposed/E17_can_collapse_carry_a_message.md",
+   "status": "proposed",
+   "phases": [
+    1,
+    4
+   ],
+   "twin": "qll/circuits/collapse_signalling.py",
+   "test": "tests/test_collapse_signalling.py",
+   "procedure": "",
+   "cost": "0",
+   "role": "the mission's first paper",
+   "lab": [
+    {
+     "page": "circuits/",
+     "tier": "collapse",
+     "title": "Can collapse carry a message? (P11)",
+     "rung": "cloud"
+    }
+   ]
+  },
+  {
+   "id": "E18",
+   "title": "Majorana parity teleportation, emulated: one bit or two?",
+   "path": "experiments/proposed/E18_majorana_parity_teleportation_emulated.md",
+   "status": "proposed",
+   "phases": [
+    4
+   ],
+   "twin": "qll/circuits/majorana_teleport.py",
+   "test": "tests/test_majorana_teleport.py",
+   "procedure": "",
+   "cost": "0",
+   "role": "a concrete collaboration with the CSUDH authors: their protocol, emulated and set against their error budget",
+   "lab": [
+    {
+     "page": "circuits/",
+     "tier": "majorana",
+     "title": "Majorana parity teleportation (P13)",
+     "rung": "device"
+    }
+   ]
+  },
+  {
+   "id": "F1",
+   "title": "Two computers on Earth",
+   "path": "experiments/flagship/F1_earth_to_earth.md",
+   "status": "flagship",
+   "phases": [
+    1,
+    2
+   ],
+   "twin": "",
+   "test": "",
+   "procedure": "",
+   "cost": "",
+   "role": "",
+   "lab": []
+  },
+  {
+   "id": "F2",
+   "title": "A computer on Earth to a satellite",
+   "path": "experiments/flagship/F2_earth_to_satellite.md",
+   "status": "flagship",
+   "phases": [
+    3
+   ],
+   "twin": "",
+   "test": "",
+   "procedure": "",
+   "cost": "",
+   "role": "",
+   "lab": []
+  },
+  {
+   "id": "F3",
+   "title": "Earth to Mars",
+   "path": "experiments/flagship/F3_earth_to_mars.md",
+   "status": "flagship",
+   "phases": [
+    4
+   ],
+   "twin": "",
+   "test": "",
+   "procedure": "",
+   "cost": "",
+   "role": "",
+   "lab": []
+  }
+ ]
+}

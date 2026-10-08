@@ -222,3 +222,77 @@ def test_operations_console_replays_the_committed_day(browser, server):
     page.wait_for_function("!document.getElementById('k-sess').textContent.startsWith('session 96 ')", timeout=10000)
     assert errors == []
     page.close()
+
+
+def _lab(browser, server, path):
+    page, errors = open_page(browser, server + path)
+    page.wait_for_function("document.body.dataset.ready === '1'", timeout=60000)
+    return page, errors
+
+
+def test_lab_gallery_lists_every_experiment_and_its_labs(browser, server):
+    from qll.systems.experiment_catalog import CATALOG
+
+    page, errors = _lab(browser, server, "/lab/")
+    ids = page.eval_on_selector_all(".exp", "els => els.map(e => e.dataset.id)")
+    assert ids == [e.id for e in CATALOG]
+    page.click("button[data-st='lab']")
+    with_lab = set(page.eval_on_selector_all(".exp", "els => els.map(e => e.dataset.id)"))
+    assert {"P10", "T1", "T3", "T4", "P11", "P12", "P13"} <= with_lab and "D01" not in with_lab
+    assert not errors, errors
+    page.close()                                   # WebGL pages left open starve the next one in software rendering
+
+
+def test_link_lab_terminal_matches_the_python_twin_and_tiers_change_the_build(browser, server):
+    from qll.link import two_room
+    from qll.link.expected_session import expected_session
+
+    page, errors = _lab(browser, server, "/lab/link/#two_room")
+    e = expected_session(two_room.config())
+    term = page.inner_text("#term")
+    assert f"{e['key_bits']:,} bits per 10 s session" in term and "[ma2005]" in term
+    assert page.evaluate("window.__twin.e.key_bits") == e["key_bits"]
+    assert page.evaluate("window.__twin.e.click_prob_per_pulse") == pytest.approx(e["click_prob_per_pulse"], rel=1e-12)
+    ids = set(page.evaluate("window.__lab.visibleIds()"))
+    assert {"diodeH", "bsAll", "nd", "sipmZ0", "hwp", "fpgaA", "mcA"} <= ids and "eveBS" not in ids
+    # a slider moves the twin exactly as the Python does
+    page.evaluate("""() => { const r = document.querySelector('.lab-slider[data-key="mu"] input'); r.value = 0.3; r.dispatchEvent(new Event('input')); }""")
+    e3 = expected_session(two_room.config(two_room.TwoRoomParts(mu=0.3)))
+    assert page.evaluate("window.__twin.e.key_bits") == e3["key_bits"]
+    # the build stages reveal the parts in order
+    page.evaluate("() => { const s = document.getElementById('stage'); s.value = 2; s.dispatchEvent(new Event('input')); }")
+    early = set(page.evaluate("window.__lab.visibleIds()"))
+    assert "mcA" in early and "sipmZ0" not in early and "diodeH" not in early
+    # a session sampled in the page passes the twin check
+    page.click("#run")
+    page.wait_for_function("document.getElementById('runlog').dataset.pass !== undefined", timeout=60000)
+    assert page.get_attribute("#runlog", "data-pass") == "true"
+    assert "pulse,alice_bit,alice_basis,alice_intensity" in page.inner_text("#runlog")
+    # the starter tier is a different build with its own math
+    page.click("button[data-tier='tier1']")
+    page.wait_for_function("window.__lab.visibleIds().includes('servoA')")
+    assert "Malus reading, aligned" in page.inner_text("#term") and "sipmZ0" not in page.evaluate("window.__lab.visibleIds()")
+    page.click("button[data-tier='tier4']")
+    page.wait_for_function("document.getElementById('term').innerText.includes('Bell value')")
+    assert page.locator("#build table.bom tbody tr").count() == 6
+    assert not errors, errors
+    page.close()                                   # WebGL pages left open starve the next one in software rendering
+
+
+def test_circuits_lab_shows_no_signalling_and_the_teleportation_limits(browser, server):
+    from qll.circuits.teleport_cloud import expected_feedforward_fidelity
+
+    page, errors = _lab(browser, server, "/lab/circuits/#collapse")
+    assert page.evaluate("window.__twin.metrics[3][1]").startswith("0.00e+0")
+    page.click("button[data-tier='teleport']")
+    page.wait_for_function("document.getElementById('title').textContent.includes('Teleportation')")
+    assert float(page.evaluate("window.__twin.metrics[1][1]")) == pytest.approx(expected_feedforward_fidelity(0.02), abs=1e-4)
+    page.select_option("select[data-k='mode']", "no_bits")
+    assert float(page.evaluate("window.__twin.metrics[1][1]")) == pytest.approx(0.5, abs=1e-4)
+    page.click("button[data-tier='majorana']")
+    page.wait_for_function("document.getElementById('title').textContent.includes('Majorana')")
+    assert float(page.evaluate("window.__twin.metrics[0][1]")) == pytest.approx(1.0)
+    page.select_option("select[data-k='scheme']", "one_bit_best")
+    assert float(page.evaluate("window.__twin.metrics[0][1]")) == pytest.approx(2 / 3, abs=1e-4)
+    assert not errors, errors
+    page.close()                                   # WebGL pages left open starve the next one in software rendering

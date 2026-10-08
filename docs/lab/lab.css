@@ -1,0 +1,101 @@
+/* The lab pages: a 3D view of the real build, its parameters, and a terminal with the exact math. Builds on space.css. */
+.lab-head { max-width: 1400px; margin: 0 auto; padding: 5.2rem 3vw .6rem }
+.lab-head h1 { font-size: clamp(1.6rem, 2.8vw, 2.3rem); margin: .3rem 0 .4rem; letter-spacing: -.01em }
+.lab-head .sub { margin: 0 0 .9rem; max-width: 90ch }
+.tiers { display: flex; gap: .5rem; flex-wrap: wrap; align-items: center }
+.tiers button { display: flex; flex-direction: column; align-items: flex-start; gap: .05rem; padding: .45rem .8rem; border-radius: 14px; border: 1px solid var(--line);
+  background: var(--glass); color: var(--ink); font: inherit; cursor: pointer; text-align: left; max-width: 280px }
+.tiers button small { color: var(--muted); font-size: .72rem; letter-spacing: .06em; text-transform: uppercase }
+.tiers button span { font-size: .84rem; font-weight: 600; line-height: 1.25 }
+.tiers button[aria-selected="true"] { border-color: rgba(94,242,224,.6); box-shadow: 0 0 0 1px rgba(94,242,224,.35) inset, 0 8px 30px rgba(94,242,224,.12) }
+.tiers .arrow { color: var(--faint) }
+.lab { max-width: 1400px; margin: 0 auto; padding: .4rem 3vw 3rem; display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 1rem }
+@media (max-width: 1050px) { .lab { grid-template-columns: 1fr } }
+.panel { border: 1px solid var(--line); border-radius: var(--radius); background: var(--glass); padding: .9rem 1rem }
+.view { position: relative; height: min(68vh, 640px); min-height: 380px; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; background: #05070d }
+.view canvas { width: 100% !important; height: 100% !important; display: block; touch-action: none }
+.view .overlay { position: absolute; left: .7rem; right: .7rem; bottom: .6rem; display: flex; gap: .5rem; flex-wrap: wrap; align-items: center; pointer-events: none }
+.view .overlay > * { pointer-events: auto }
+.view .cams button, .btn-s { font: 600 .78rem Inter, system-ui, sans-serif; color: var(--ink); background: rgba(10,15,28,.75); border: 1px solid var(--line); border-radius: 999px; padding: .3rem .7rem; cursor: pointer }
+.view .cams button:hover, .btn-s:hover { border-color: rgba(94,242,224,.5) }
+.btn-s.primary { background: linear-gradient(92deg, #3b82f6, #22d3ee); color: #04111f; border-color: transparent }
+.btn-s:disabled { opacity: .45; cursor: default }
+.stagebar { display: flex; align-items: center; gap: .5rem; background: rgba(10,15,28,.75); border: 1px solid var(--line); border-radius: 999px; padding: .25rem .8rem; font-size: .78rem; color: var(--muted) }
+.stagebar input { width: 160px; accent-color: #5ef2e0 }
+.stagebar b { color: var(--ink); font-weight: 600 }
+.legend { position: absolute; top: .6rem; left: .7rem; display: flex; gap: .7rem; flex-wrap: wrap; font-size: .72rem; color: var(--muted); background: rgba(10,15,28,.6); padding: .25rem .6rem; border-radius: 999px }
+.legend i { display: inline-block; width: 10px; height: 3px; border-radius: 2px; margin-right: .3rem; vertical-align: middle }
+.lab3d-tip { position: absolute; z-index: 3; pointer-events: none; background: rgba(10,15,28,.92); border: 1px solid var(--line); border-radius: 8px; padding: .2rem .5rem; font-size: .78rem; white-space: nowrap }
+.side { display: flex; flex-direction: column; gap: 1rem }
+.metrics { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem }
+.metric { border: 1px solid var(--line); border-radius: 12px; padding: .5rem .6rem; background: rgba(10,15,28,.4) }
+.metric .n { font: 700 1.15rem "JetBrains Mono", ui-monospace, monospace; font-variant-numeric: tabular-nums }
+.metric .l { color: var(--muted); font-size: .72rem }
+.metric.ok .n { color: var(--green) } .metric.bad .n { color: var(--warm) }
+.verdict { grid-column: span 2; font-size: .85rem; padding: .45rem .6rem; border-radius: 10px; background: rgba(69,224,160,.1); color: var(--green); border: 1px solid rgba(69,224,160,.3) }
+.verdict.bad { background: rgba(255,138,76,.1); color: var(--warm); border-color: rgba(255,138,76,.35) }
+.params { max-height: 46vh; overflow-y: auto; padding-right: .3rem }
+.lab-slider { display: block; margin: .15rem 0 .55rem }
+.lab-slider .hd { display: flex; justify-content: space-between; gap: .5rem; font-size: .8rem; color: var(--muted) }
+.lab-slider .hd b { color: var(--ink); font: 600 .78rem "JetBrains Mono", monospace }
+.lab-slider input { width: 100%; accent-color: #22d3ee }
+.ctl { display: flex; gap: .5rem; flex-wrap: wrap; align-items: center; margin-bottom: .6rem; font-size: .82rem; color: var(--muted) }
+.ctl select { background: var(--bg2); color: var(--ink); border: 1px solid var(--line); border-radius: 8px; padding: .25rem .4rem; font: inherit }
+.term-wrap { grid-column: 1 / -1 }
+.term-bar { display: flex; gap: .5rem; flex-wrap: wrap; align-items: center; margin-bottom: .5rem }
+.term-bar h3 { margin: 0 .5rem 0 0; font-size: 1rem }
+.term { background: #02040a; border: 1px solid #1c2840; border-radius: 14px; padding: .8rem 1rem; max-height: 560px; overflow: auto;
+  font: 12.5px/1.5 "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace; color: #c9d6ea }
+.term .tp { color: #5ef2e0; margin-bottom: .5rem; word-break: break-all } .term .ps { color: #45e0a0; margin-right: .3rem }
+.term .tl { padding: .25rem 0; border-bottom: 1px dashed #121c2e; transition: opacity .2s }
+.term .tl.hide, .term .tt.hide { opacity: 0 }
+.term .no { color: #5b6780 } .term .lb { color: #e8eef8; font-weight: 600 }
+.term .rf { float: right; color: #a78bfa; font-size: 11px } .term .rf a { color: #a78bfa }
+.term .fm { color: #93c5fd; margin-left: 2.6em } .term .sb { color: #93a1b8; margin-left: 2.6em }
+.term .vl { color: #fde68a; margin-left: 2.6em }
+.term .tl.chg .vl { animation: chg 1s ease-out }
+@keyframes chg { from { color: #5ef2e0; text-shadow: 0 0 8px #5ef2e0 } }
+.term .tx { white-space: pre-wrap; color: #c9d6ea; padding: .2rem 0 } .term .tx.ok { color: #45e0a0 } .term .tx.bad { color: #ff8a4c } .term .tx.dim { color: #5b6780 }
+.term .tt { margin-top: .6rem; color: #93a1b8 }
+.build { grid-column: 1 / -1 }
+.build h3 { font-size: 1rem; margin: .4rem 0 .5rem }
+.bp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem } @media (max-width: 900px) { .bp-grid { grid-template-columns: 1fr } }
+.stages { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: .3rem }
+.stages li { padding: .4rem .6rem; border: 1px solid var(--line); border-radius: 10px; cursor: pointer; opacity: .55; display: flex; flex-direction: column }
+.stages li.on { opacity: 1; border-color: rgba(94,242,224,.35) }
+.stages li b { font-size: .86rem } .stages li span { color: var(--muted); font-size: .8rem }
+.partcard { border: 1px solid var(--line); border-radius: 12px; padding: .6rem .8rem; background: rgba(10,15,28,.4); min-height: 110px }
+.partcard h4 { margin: 0 0 .3rem } .partcard p { margin: 0 0 .4rem; color: var(--muted); font-size: .88rem }
+.partcard dl { display: grid; grid-template-columns: auto 1fr; gap: .15rem .7rem; margin: 0; font-size: .82rem } .partcard dt { color: var(--faint) }
+.cmd { display: grid; grid-template-columns: 70px 1fr auto; gap: .5rem; align-items: start; margin: .3rem 0; font-size: .8rem }
+.cmd .k { color: var(--muted); text-transform: uppercase; font-size: .7rem; letter-spacing: .06em; padding-top: .2rem }
+.cmd code { background: #02040a; border: 1px solid #1c2840; padding: .25rem .45rem; border-radius: 8px; overflow-x: auto; white-space: nowrap; display: block }
+.cmd .cp { font-size: .72rem; background: transparent; color: var(--cyan); border: 1px solid var(--line); border-radius: 8px; cursor: pointer; padding: .2rem .5rem }
+.claim { margin-top: .6rem; font-size: .82rem; color: var(--warm) }
+.tablewrap { overflow-x: auto }
+table.bom { width: 100%; border-collapse: collapse; font-size: .85rem; min-width: 620px }
+table.bom th, table.bom td { padding: .45rem .5rem; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top }
+table.bom .num { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums } table.bom .tot td { font-weight: 700 }
+.who { display: flex; flex-wrap: wrap; gap: .25rem; margin-top: .3rem }
+.chip { font-size: .7rem; padding: .1rem .45rem; border-radius: 999px; border: 1px solid var(--line); background: transparent; color: var(--muted); cursor: pointer }
+.chip:hover { color: var(--ink); border-color: rgba(94,242,224,.4) }
+.muted { color: var(--muted) } .small { font-size: .8rem }
+.lab-gallery { max-width: 1400px; margin: 0 auto; padding: 0 3vw 4rem }
+.filters { display: flex; gap: .5rem; flex-wrap: wrap; align-items: center; margin: 0 0 1rem }
+.filters button { font: 600 .78rem Inter, system-ui; color: var(--muted); background: var(--glass); border: 1px solid var(--line); border-radius: 999px; padding: .3rem .8rem; cursor: pointer }
+.filters button[aria-pressed="true"] { color: var(--ink); border-color: rgba(94,242,224,.5) }
+.filters input { background: var(--bg2); color: var(--ink); border: 1px solid var(--line); border-radius: 999px; padding: .35rem .8rem; min-width: 220px; font: inherit }
+.exp-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: .9rem }
+.exp { border: 1px solid var(--line); border-radius: 16px; background: var(--glass); padding: .9rem 1rem; display: flex; flex-direction: column; gap: .4rem }
+.exp .id { font: 700 .78rem "JetBrains Mono", monospace; color: var(--cyan) } .exp h3 { margin: 0; font-size: 1rem }
+.exp .meta { display: flex; gap: .3rem; flex-wrap: wrap } .exp .meta span { font-size: .7rem; padding: .1rem .45rem; border-radius: 999px; background: rgba(94,168,255,.12); color: var(--blue) }
+.exp .meta span.st-replicable { background: rgba(69,224,160,.14); color: var(--green) } .exp .meta span.st-proposed { background: rgba(167,139,250,.14); color: var(--violet) }
+.exp .meta span.st-procedure { background: rgba(255,138,76,.14); color: var(--warm) }
+.exp p { margin: 0; color: var(--muted); font-size: .85rem }
+.exp .ladder { display: flex; gap: .3rem; flex-wrap: wrap; align-items: center; font-size: .75rem; color: var(--muted) }
+.exp .ladder a { padding: .15rem .5rem; border: 1px solid rgba(94,242,224,.35); border-radius: 999px }
+.exp .links { margin-top: auto; display: flex; gap: .8rem; font-size: .8rem }
+.mission { display: grid; grid-template-columns: repeat(5, 1fr); gap: .5rem; margin: 0 0 1.2rem } @media (max-width: 900px) { .mission { grid-template-columns: 1fr 1fr } }
+.mission a { display: block; border: 1px solid var(--line); border-radius: 14px; padding: .6rem .7rem; background: var(--glass); color: var(--ink); font-size: .82rem }
+.mission a b { display: block; color: var(--cyan); font-size: .72rem; letter-spacing: .08em; text-transform: uppercase }
+.install { display: none } .install.show { display: inline-flex }

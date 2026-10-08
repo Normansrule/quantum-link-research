@@ -83,9 +83,13 @@ This is the thesis question in one picture. A stored Bell pair decays toward the
 
 ## The website
 
-Nine interactive pages, all driven by the same tested numbers and tested themselves in headless Chromium on every push. The animations are recordings of the real pages ([`scripts/record_site.py`](scripts/record_site.py)); click one to open it.
+Nine interactive pages and an installable lab, all driven by the same tested numbers and tested themselves in headless Chromium on every push. The animations are recordings of the real pages ([`scripts/record_site.py`](scripts/record_site.py)); click one to open it.
 
 <table>
+<tr>
+<td width="50%" valign="top"><a href="https://Normansrule.github.io/quantum-link-research/lab/link/"><img src="docs/figures/lab_link.jpg" alt="Two-room link lab: room B's analyzer in 3D beside the twin's numbers" width="100%"></a><br><b>Two-room link lab</b> <sup>new</sup><br><sub>The main experiment as it would stand in the rooms, from the $40–120 starter to entangled photons: every part placed, priced, and tied to its build stage; sliders for the parts you will measure; a terminal printing every formula, substitution, and citation; and a session sampled in the browser that downloads as the two per-site logs the Python pipeline ingests.</sub></td>
+<td width="50%" valign="top"><a href="https://Normansrule.github.io/quantum-link-research/lab/circuits/"><img src="docs/figures/lab_circuits.jpg" alt="Cloud circuits lab: teleportation with Bob's Bloch vector" width="100%"></a><br><b>Cloud circuits lab</b> <sup>new</sup><br><sub>The collapse code (P11), teleportation and superdense coding (P12), and Majorana parity teleportation (P13) as exact density matrices, checked against Qiskit Aer, with the desk, the cloud, and the processor in 3D and the commands that run each one on hardware.</sub></td>
+</tr>
 <tr>
 <td width="50%" valign="top"><a href="https://Normansrule.github.io/quantum-link-research/mars/"><img src="docs/figures/anim_mars.gif" alt="Mars link simulator" width="100%"></a><br><b>Mars link simulator</b><br><sub>Orbits, conjunction, L4/L5 relays, and which memories outlive today's round trip.</sub></td>
 <td width="50%" valign="top"><a href="https://Normansrule.github.io/quantum-link-research/monitor/"><img src="docs/figures/anim_monitor.gif" alt="Link monitor dashboard" width="100%"></a><br><b>Link monitor</b><br><sub>Two synodic periods of light time and blackouts, and a fail-closed messenger that refuses to send when conjunction drains its key, until relays are switched on.</sub></td>
@@ -159,7 +163,7 @@ Twelve validation cases match closed-form models, and every run reproduces from 
 3. **Phase 3, outdoors and toward orbit.** Free space, a ground station, and a satellite only with a partner.
 4. **Phase 4, the frontier.** Entanglement-assisted communication: teleportation and superdense coding, each with its classical channel.
 
-Every experiment already in the repository is catalogued with the phase it feeds and what it takes to replicate it ([02](systems/program/02_research_foundation.md)).
+Every experiment already in the repository is catalogued with the phase it feeds and what it takes to replicate it ([02](systems/program/02_research_foundation.md)). The [lab](https://normansrule.github.io/quantum-link-research/lab/) lists all of them and opens the ones with a build in 3D, from a starter to the real-world option ([`qll/systems/lab_scenes.py`](qll/systems/lab_scenes.py)).
 
 <p align="center"><a href="systems/program/01_phases_and_milestones.md"><img src="systems/program/figures/budget.svg" alt="Out-of-pocket cost by phase" width="70%"></a></p>
 

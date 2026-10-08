@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cloud Circuits Lab · Quantum Link Research</title>
+<meta name="description" content="The collapse code, teleportation, superdense coding, and Majorana parity teleportation: exact density matrices in a terminal, the real setup in 3D, and the commands for a free cloud processor.">
+<meta name="theme-color" content="#05070d">
+<link rel="manifest" href="../manifest.webmanifest">
+<link rel="icon" href="../icon-192.png">
+<link rel="apple-touch-icon" href="../icon-192.png">
+<link rel="stylesheet" href="../../space.css">
+<link rel="stylesheet" href="../lab.css">
+<script src="../../js/lab_quantum.js"></script>
+<script src="../../js/lab_ui.js"></script>
+<script type="importmap">{ "imports": { "three": "../../vendor/three/three.module.js", "three/addons/": "../../vendor/three/addons/" } }</script>
+</head>
+<body>
+<div class="aurora"></div>
+<header class="top">
+  <a class="brand" href="../../"><span class="dot"></span>Quantum Link Research</a>
+  <nav><a href="../">Lab</a><a href="../link/">Two-room link</a><a href="./">Cloud circuits</a><a href="../../teleport/">Teleportation explainer</a><a class="gh" href="https://github.com/Normansrule/quantum-link-research">GitHub ↗</a></nav>
+</header>
+
+<section class="lab-head">
+  <div class="kicker">Phase 1 and Phase 4 · $0 on a free cloud processor</div>
+  <h1 id="title">Cloud circuits</h1>
+  <p class="sub" id="summary"></p>
+  <div class="tiers" id="tiers" role="tablist" aria-label="Experiments"></div>
+</section>
+
+<main class="lab">
+  <div>
+    <div class="view" id="view">
+      <div class="legend"><span><i style="background:#5ef2e0"></i>jobs and counts</span><span><i style="background:#ff8a4c"></i>Bloch x</span><span><i style="background:#5ea8ff"></i>Bloch y</span><span><i style="background:#45e0a0"></i>Bloch z</span></div>
+      <div class="overlay">
+        <div class="cams"><button data-cam="overview">Desk and processor</button></div>
+        <label class="stagebar">Rung <input type="range" id="stage" min="1" max="3" step="1" value="3"> <b id="stageName"></b></label>
+      </div>
+    </div>
+  </div>
+  <aside class="side">
+    <div class="panel"><div class="metrics" id="metrics"></div></div>
+    <div class="panel">
+      <div class="ctl" id="ctl"></div>
+      <div class="params" id="params"></div>
+      <button class="btn-s" id="reset">Reset</button>
+    </div>
+  </aside>
+  <section class="term-wrap panel">
+    <div class="term-bar">
+      <h3>Terminal: the exact density matrices</h3>
+      <button class="btn-s" id="copyPy">Copy the Python</button>
+      <span class="muted small">Same arithmetic as the tested Python and Qiskit Aer (tests/test_lab_js.py).</span>
+    </div>
+    <div class="term" id="term" aria-live="polite"></div>
+  </section>
+  <section class="build panel" id="build"></section>
+</main>
+
+<script type="module">
+import { createLab } from "../../js/lab3d.js";
+const Q = window.QLLQuantum, U = window.QLLLabUI;
+const data = await (await fetch("../scenes.json")).json();
+const tiers = data.circuits;
+const $ = (id) => document.getElementById(id);
+const lab = createLab($("view"));
+window.__lab = lab;
+let tier = null, values = {}, specs = [], ctl = {};
+const state = { stage: 3, pick: (p) => U.partCard($("build"), tier, p, specs) };
+lab.onPick((p) => state.pick(p));
+const STATES = ["0", "1", "+", "-", "+i", "-i"];
+const CTL = {
+  collapse: { scheme: [["basis", "measure at 0° or 45°"], ["measure", "measure or not"], ["flip", "apply X or not"]] },
+  teleport: { exp: [["teleport", "teleportation"], ["superdense", "superdense coding"]], state: STATES.map((s) => [s, `|${s}⟩`]),
+              mode: [["feedforward", "two bits, fed forward"], ["deferred", "two bits, deferred"], ["no_bits", "no bits"]], sd: [["send_qubit", "send the qubit"], ["keep_qubit", "keep the qubit"]] },
+  majorana: { state: STATES.map((s) => [s, `|${s}⟩`]), scheme: [["two_bit", "two parity bits"], ["one_bit_best", "one bit, best correction"], ["paper_one_bit", "one bit, paper's X_C"]] },
+};
+const DEF = { collapse: { scheme: "basis" }, teleport: { exp: "teleport", state: "+i", mode: "feedforward", sd: "send_qubit" }, majorana: { state: "+", scheme: "two_bit" } };
+const f4 = (x) => (+x.toFixed(4)).toString();
+
+function renderTabs() {
+  $("tiers").innerHTML = tiers.map((t) => `<button role="tab" data-tier="${t.id}" aria-selected="${t === tier}"><small>${U.esc(t.experiments.join(" · "))}</small><span>${U.esc(t.title)}</span><small>${U.esc(t.cost)}</small></button>`).join("");
+  $("tiers").querySelectorAll("button").forEach((b) => b.addEventListener("click", () => select(b.dataset.tier)));
+}
+function renderCtl() {
+  const c = CTL[tier.id];
+  $("ctl").innerHTML = Object.entries(c).filter(([k]) => tier.id !== "teleport" || (k === "exp") || (ctl.exp === "teleport" ? k !== "sd" : k === "sd"))
+    .map(([k, opts]) => `<label>${{ scheme: "Scheme", exp: "Experiment", state: "Input", mode: "Bits", sd: "Qubit" }[k]} <select data-k="${k}">${opts.map(([v, l]) => `<option value="${v}" ${ctl[k] === v ? "selected" : ""}>${U.esc(l)}</option>`).join("")}</select></label>`).join("");
+  $("ctl").querySelectorAll("select").forEach((s) => s.addEventListener("change", () => { ctl[s.dataset.k] = s.value; if (s.dataset.k === "exp") renderCtl(); update(true); }));
+}
+function twin() {
+  const v = values;
+  if (tier.id === "collapse") {
+    const e = Q.collapseExpected(ctl.scheme, v.visibility, v.leak), steps = Q.steps.collapse(ctl.scheme, v.visibility, v.leak);
+    const n = Q.usesToDetect(Math.max(Math.abs(e.delta), 0.01));
+    return { steps, prompt: `python -c "from qll.circuits import collapse_signalling as C; import numpy as np; V=${v.visibility}; rho=V*np.outer([1,0,0,1],[1,0,0,1])/2+(1-V)*np.eye(4)/4; print([C.bob_state_after(rho, C.instrument('${ctl.scheme}', x)) for x in (0, 1)])"`,
+      metrics: [["P(b=1 | x=0)", f4(e.p1[0]), true], ["P(b=1 | x=1)", f4(e.p1[1]), true], ["Bias δ", f4(e.delta), Math.abs(e.delta) < 1e-12], ["Information per use", `${e.mi.toExponential(2)} bits`, e.mi < 1e-12]],
+      verdict: [v.leak === 0, v.leak === 0 ? "Bob's state is I/2 whatever Alice does: no signalling." : `A physical leak of ${v.leak} is visible after about ${n.toLocaleString("en-US")} uses per bit: crosstalk, not a message through collapse.`],
+      bloch: [{ v: Q.blochOf(e.rhoB[0]), color: 0x5ef2e0, label: "Bob, x = 0" }, { v: Q.blochOf(e.rhoB[1]), color: 0xff8a4c, label: "" }] };
+  }
+  if (tier.id === "teleport") {
+    if (ctl.exp === "superdense") {
+      const r = Q.superdense(ctl.sd, v.p2);
+      return { steps: Q.steps.superdense(ctl.sd, v.p2), prompt: `python experiments/bench/frontier/run_frontier.py superdense --backend aer --noise ${v.p2}`,
+        metrics: [["Success", f4(r.success), r.success > 0.25], ["Bits per use", f4(r.bits_per_use), r.bits_per_use > 1], ["Qubits sent", ctl.sd === "send_qubit" ? "1" : "0", true], ["Bits per qubit, max", "2", true]],
+        verdict: [ctl.sd === "send_qubit", ctl.sd === "send_qubit" ? "Two bits ride on one qubit, because the qubit travels." : "Kept qubit: Bob's half alone carries nothing (no signalling)."], bloch: [] };
+    }
+    const r = Q.teleportRho(ctl.state, ctl.mode, v.p2), avg = Q.teleportAverage(ctl.mode, v.p2), psi = Q.CARDINAL[ctl.state];
+    return { steps: Q.steps.teleport(ctl.state, ctl.mode, v.p2), prompt: `python experiments/bench/frontier/run_frontier.py teleport --backend aer --noise ${v.p2}`,
+      metrics: [["Fidelity, this input", f4(r.fidelity), r.fidelity > 2 / 3], ["Average fidelity", f4(avg), avg > 2 / 3], ["Classical limit", "0.6667", true], ["Bits sent", ctl.mode === "no_bits" ? "0" : "2", true]],
+      verdict: [avg > 2 / 3, avg > 2 / 3 ? "Above the classical limit: the two bits did their job." : "At or below 2/3: without the bits, nothing is teleported."],
+      bloch: [{ v: Q.blochOf(Q.outer(psi)), color: 0x5ea8ff, label: "input" }, { v: Q.blochOf(r.bob), color: 0x5ef2e0, label: "Bob" }] };
+  }
+  const r = Q.majoranaTeleport(ctl.state, ctl.scheme), avg = Q.majoranaAverage(ctl.scheme), dev = Q.budgetFidelity(v.snr0, v.gap, v.poison, v.l);
+  return { steps: Q.steps.majorana(ctl.state, ctl.scheme, v), prompt: `python -c "from qll.circuits import majorana_teleport as M; from qll.hardware import majorana_error_budget as B; print(M.average_fidelity('${ctl.scheme}'), B.teleport_fidelity(${v.snr0}, ${v.gap}, ${v.poison}, ${v.l}))"`,
+    metrics: [["Average fidelity", f4(avg), avg > 2 / 3], ["This input", f4(r.average), r.average > 2 / 3], ["Device bound (2 readouts)", f4(dev), dev > 2 / 3], ["Bits sent", String(r.bits_sent), true]],
+    verdict: [avg > 2 / 3, avg > 2 / 3 ? "Two parity bits: perfect teleportation in the ideal device." : "One parity bit cannot beat 2/3: the second bit is required."],
+    bloch: Object.entries(r.outcomes).map(([k, o], i) => ({ v: o.bloch, color: [0x5ef2e0, 0xff8a4c, 0xa78bfa, 0x45e0a0][i], label: i ? "" : "Bob" })) };
+}
+let animateNext = true;
+function update(anim) {
+  const r = twin();
+  U.terminal($("term"), r.prompt, r.steps, { animate: anim || animateNext }); animateNext = false;
+  $("metrics").innerHTML = r.metrics.map(([l, n, ok]) => `<div class="metric ${ok ? "ok" : "bad"}"><div class="n">${n}</div><div class="l">${U.esc(l)}</div></div>`).join("") + `<div class="verdict ${r.verdict[0] ? "" : "bad"}" id="verdict">${U.esc(r.verdict[1])}</div>`;
+  lab.setBloch(r.bloch); window.__twin = r;
+}
+function setStage(n) { state.stage = n; $("stage").value = n; lab.setStage(n); $("stageName").textContent = `${n}. ${tier.stages[n - 1][0]}`; U.markStage($("build"), n); }
+function select(id) {
+  tier = tiers.find((t) => t.id === id) || tiers[0]; history.replaceState(null, "", "#" + tier.id);
+  specs = tier.sliders; values = {}; specs.forEach((s) => (values[s.key] = s.value)); ctl = Object.assign({}, DEF[tier.id]);
+  $("title").textContent = tier.title; $("summary").textContent = tier.summary;
+  renderTabs(); renderCtl();
+  U.sliders($("params"), specs, values, () => update(), (k) => lab.setFocus(k));
+  lab.setTier(tier); U.buildPanel($("build"), tier, state, setStage); setStage(3);
+  animateNext = true; update();
+}
+$("stage").addEventListener("input", () => setStage(+$("stage").value));
+document.querySelector("[data-cam]").addEventListener("click", () => lab.view("overview"));
+$("reset").addEventListener("click", () => select(tier.id));
+$("copyPy").addEventListener("click", (e) => U.copy(window.__twin.prompt, e.target));
+select(location.hash.slice(1) || "collapse");
+U.registerApp();
+document.body.dataset.ready = "1";
+</script>
+</body>
+</html>

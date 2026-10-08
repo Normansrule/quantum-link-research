@@ -61,3 +61,15 @@ def rounds_for_positive_di_key(S: float, Q: float, eps: float = 1e-10, n_max: in
         else:
             lo = mid + 1
     return lo
+
+
+def chsh_from_visibility(V: float) -> float:
+    """CHSH value of polarization pairs with correlator E(a, b) = V cos 2(a - b) at the optimal settings 0, 45 and
+    22.5, 67.5 degrees: S = 2 sqrt 2 V [clauser1969] [aspect1982]. In BBM92 the sifted error rate is Q = (1 - V)/2."""
+    return 2 * math.sqrt(2) * V
+
+
+def chsh_std(V: float, pairs_per_setting: float) -> float:
+    """Standard error of S from n coincidences per setting pair: each correlator has variance (1 - E^2)/n with
+    E^2 = V^2/2, and the four add [casella2002]: sigma_S = 2 sqrt((1 - V^2/2)/n)."""
+    return 2 * math.sqrt((1 - V * V / 2) / pairs_per_setting)

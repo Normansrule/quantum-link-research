@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Two-Room Link Lab · Quantum Link Research</title>
+<meta name="description" content="The main experiment, from a $40 starter to entangled photons: a 3D model of the real build, every part and its cost, live parameters, and a terminal that shows the exact math.">
+<meta name="theme-color" content="#05070d">
+<link rel="manifest" href="../manifest.webmanifest">
+<link rel="icon" href="../icon-192.png">
+<link rel="apple-touch-icon" href="../icon-192.png">
+<link rel="stylesheet" href="../../space.css">
+<link rel="stylesheet" href="../lab.css">
+<script src="../../js/lab_twin.js"></script>
+<script src="../../js/lab_ui.js"></script>
+<script type="importmap">{ "imports": { "three": "../../vendor/three/three.module.js", "three/addons/": "../../vendor/three/addons/" } }</script>
+</head>
+<body>
+<div class="aurora"></div>
+<header class="top">
+  <a class="brand" href="../../"><span class="dot"></span>Quantum Link Research</a>
+  <nav><a href="../">Lab</a><a href="./">Two-room link</a><a href="../circuits/">Cloud circuits</a><a href="../../systems/">Traceability</a><a class="gh" href="https://github.com/Normansrule/quantum-link-research">GitHub ↗</a></nav>
+</header>
+
+<section class="lab-head">
+  <div class="kicker" id="kicker">Main experiment</div>
+  <h1 id="title">The two-room link</h1>
+  <p class="sub" id="summary"></p>
+  <div class="tiers" id="tiers" role="tablist" aria-label="Tiers, from starter to real world"></div>
+</section>
+
+<main class="lab">
+  <div>
+    <div class="view" id="view">
+      <div class="legend" id="legend"></div>
+      <div class="overlay">
+        <div class="cams" id="cams"></div>
+        <label class="stagebar">Build stage <input type="range" id="stage" min="0" max="8" step="1" value="8"> <b id="stageName"></b></label>
+      </div>
+    </div>
+  </div>
+  <aside class="side">
+    <div class="panel">
+      <div class="metrics" id="metrics"></div>
+    </div>
+    <div class="panel">
+      <h3 style="margin:.1rem 0 .6rem;font-size:1rem">Parameters <span class="muted small">(hover to see the part)</span></h3>
+      <div class="params" id="params"></div>
+      <button class="btn-s" id="reset">Reset to the planning values</button>
+    </div>
+  </aside>
+
+  <section class="term-wrap panel">
+    <div class="term-bar">
+      <h3>Terminal: the twin, line by line</h3>
+      <button class="btn-s primary" id="run">Run a session in the browser</button>
+      <button class="btn-s" id="dlA" disabled>Download room_a.csv</button>
+      <button class="btn-s" id="dlB" disabled>Download room_b.csv</button>
+      <button class="btn-s" id="copyPy">Copy the Python</button>
+      <span class="muted small">Same formulas as the tested Python (tests/test_lab_js.py); logs load with <code>python -m qll.link.run ingest room_a.csv --bob room_b.csv</code>.</span>
+    </div>
+    <div class="term" id="term" aria-live="polite"></div>
+    <div class="term" id="runlog" style="margin-top:.6rem;max-height:320px" hidden></div>
+  </section>
+
+  <section class="build panel" id="build"></section>
+</main>
+
+<script type="module">
+import { createLab } from "../../js/lab3d.js";
+const T = window.QLLTwin, U = window.QLLLabUI;
+const data = await (await fetch("../scenes.json")).json();
+const tiers = data.link;
+const $ = (id) => document.getElementById(id);
+const lab = createLab($("view"));
+window.__lab = lab;
+let tier = null, values = {}, specs = [], lastSample = null, setters = {};
+const state = { stage: 8, pick: (p) => { U.partCard($("build"), tier, p, specs); } };
+lab.onPick((p) => state.pick(p));
+
+const LEGEND = { tier1: [["#ff3b3b", "650 nm bright beam"], ["#5ea8ff", "USB serial"]],
+  two_room: [["#8b5cf6", "405 nm weak pulses"], ["#f5c518", "fiber classical channel"], ["#9aa4b2", "clock coax"]],
+  tier3: [["#ff6fb5", "850 nm pulses (invisible; drawn pink)"], ["#f5c518", "classical channel"], ["#9aa4b2", "clock"]],
+  tier4: [["#7c3aed", "405 nm pump"], ["#ff9f43", "810 nm photon pairs"], ["#f5c518", "classical channel"], ["#9aa4b2", "shared clock"]] };
+const CAMS = { true: [["overview", "Overview"], ["roomA", "Room A"], ["hallway", "Hallway"], ["roomB", "Room B"]], false: [["overview", "Bench"], ["bench", "Close up"]] };
+
+function renderTabs() {
+  $("tiers").innerHTML = tiers.map((t, i) => `${i ? '<span class="arrow">→</span>' : ""}<button role="tab" data-tier="${t.id}" aria-selected="${t === tier}"><small>${U.esc(t.rung === "main" ? "main · real world" : t.rung)}</small><span>${U.esc(t.title)}</span><small>${U.esc(t.cost.split(" (")[0])}</small></button>`).join("");
+  $("tiers").querySelectorAll("button").forEach((b) => b.addEventListener("click", () => select(b.dataset.tier)));
+}
+function twin() {
+  const v = values;
+  if (tier.twin === "tier1") {
+    const r = T.tier1Expected(v);
+    return { steps: T.steps.tier1(v), prompt: `python -c "from qll.link.bench_tier1 import *; b = MalusBench(i0=${v.i0}, leakage=${v.leakage}, ambient=${v.ambient}, noise=${v.noise}); print(expected_error(b, None, ${v.eve_fraction}))"`,
+      metrics: [["Error rate (sifted)", U.esc(T.pct(r.qber)), r.qber < 0.11], ["Sifted bits", `${T.fmt(r.sifted_per_s)} /s`, true], ["Bit 0 above", `${T.fmt(r.thresholds.high)}`, true], ["Bit 1 below", `${T.fmt(r.thresholds.low)}`, true]],
+      verdict: [r.qber < 0.11, r.qber < 0.11 ? "Processing chain runs; no security meaning (bright light)." : "Error rate above 11 %: the session would be rejected."],
+      rates: { photons: 10, transmit: 1, beam: v.i0 / 800, dark: 4 * v.ambient / Math.max(50, v.i0) + v.noise / 60, packets: 0.6 } };
+  }
+  let c, steps, prompt;
+  if (tier.twin === "two_room") {
+    const parts = Object.assign({}, v); delete parts.eve_fraction;
+    c = Object.assign(T.twoRoomConfig(parts), { eve_fraction: v.eve_fraction || 0 });
+    steps = T.steps.twoRoom(parts, { eve_fraction: v.eve_fraction || 0 });
+    const changed = Object.keys(parts).filter((k) => k in T.TWO_ROOM && parts[k] !== T.TWO_ROOM[k]).map((k) => `${k}=${parts[k]}`).join(", ");
+    prompt = `python -c "from qll.link import two_room as T; print(T.predict(T.TwoRoomParts(${changed})))"`;
+  } else if (tier.twin === "tier3") {
+    c = T.tier3Config(v); steps = T.steps.tier3(c);
+    prompt = `python -m qll.link.run session --config systems/see510/hardware/tier3.json --set ${Object.entries(v).map(([k, x]) => `${k}=${x}`).join(" ")}`;
+  } else {
+    c = T.tier4Config(v); steps = T.steps.tier4(c);
+    prompt = `python -m qll.link.run session --config systems/see510/hardware/tier4.json --set misalignment_error=${+c.misalignment_error.toPrecision(4)} distance_km=${c.distance_km} detector_efficiency=${c.detector_efficiency} dark_count_prob=${c.dark_count_prob} pulse_rate_hz=${c.pulse_rate_hz} n_pulses=${c.n_pulses}`;
+  }
+  const e = T.expectedSession(c), tEta = T.signalClickProb(c), mu = c.source_model === "single_photon" ? 1 : c.mu_signal;
+  const m = [["Clicks", `${T.fmt(e.click_prob_per_pulse * c.pulse_rate_hz, 3)} /s`, e.click_prob_per_pulse > 0], ["Error rate", T.pct(e.qber), e.signal_qber <= c.qber_threshold],
+    ["Sifted key bits", T.fmt(Math.round(e.sifted_bits)), e.sifted_bits > 0], ["Secret key", e.accepted ? `${T.fmt(e.key_bits)} bits` : "0", e.accepted]];
+  if (tier.twin === "tier4") { const b = T.tier4Bell(c, e); m.push(["Bell value S", `${b.S.toFixed(3)} ± ${b.sd.toFixed(3)}`, b.sigmas >= 5], ["Above 2 by", `${b.sigmas.toFixed(1)} σ`, b.sigmas >= 5]); }
+  else if (c.source_model === "weak_coherent_decoy") m.push(["Single-photon share", T.pct(e.single_fraction, 1), e.single_fraction > 0], ["e₁ upper bound", T.pct(e.e1_upper), e.e1_upper < 0.11]);
+  const arrive = 8 * mu * tEta, signalClicks = Math.max(1e-9, e.click_prob_per_pulse - T.backgroundClickProb(c));
+  return { steps, prompt, c, e, metrics: m, verdict: [e.accepted, e.accepted ? `Session accepted: ${T.fmt(e.key_bits)} secret bits per ${T.fmt(c.n_pulses / c.pulse_rate_hz, 3)} s.` : `Rejected: ${e.reason}.`],
+    rates: { photons: 8 * Math.min(2, mu), transmit: Math.min(1, tEta), beam: Math.min(1, mu * 1.4), dark: Math.min(6, arrive * T.backgroundClickProb(c) / signalClicks), packets: 0.8 } };
+}
+let animateNext = true;
+function update() {
+  const r = twin();
+  U.terminal($("term"), r.prompt, r.steps, { animate: animateNext }); animateNext = false;
+  $("metrics").innerHTML = r.metrics.map(([l, n, ok]) => `<div class="metric ${ok ? "ok" : "bad"}"><div class="n">${n}</div><div class="l">${U.esc(l)}</div></div>`).join("") +
+    `<div class="verdict ${r.verdict[0] ? "" : "bad"}" id="verdict">${U.esc(r.verdict[1])}</div>`;
+  lab.setValues(values, r.rates);
+  window.__twin = r;
+}
+function setStage(n) { state.stage = n; $("stage").value = n; lab.setStage(n); $("stageName").textContent = n === 0 ? "rooms only" : `${n}. ${tier.stages[n - 1][0]}`; U.markStage($("build"), n); }
+function select(id, keepValues) {
+  tier = tiers.find((t) => t.id === id) || tiers.find((t) => t.rung === "main");
+  history.replaceState(null, "", "#" + tier.id);
+  specs = tier.sliders; if (!keepValues) { values = {}; specs.forEach((s) => (values[s.key] = s.value)); }
+  $("title").textContent = tier.title; $("summary").textContent = tier.summary;
+  $("kicker").textContent = ({ starter: "Starter · build it this month", main: "Main experiment · Phase 1", upgrade: "Upgrade · Phase 1 with outside funds", entangled: "Phase 2 · entanglement between the rooms" }[tier.rung] || "") + " · " + tier.experiments.join(", ") + " · milestones " + tier.milestones.join(", ");
+  renderTabs();
+  setters = U.sliders($("params"), specs, values, () => update(), (k) => lab.setFocus(k));
+  $("legend").innerHTML = (LEGEND[tier.id] || []).map(([c, l]) => `<span><i style="background:${c}"></i>${U.esc(l)}</span>`).join("") + `<span class="muted">optics drawn 2× size</span>`;
+  $("cams").innerHTML = CAMS[!!tier.rooms].map(([k, l]) => `<button data-cam="${k}">${l}</button>`).join("");
+  $("cams").querySelectorAll("button").forEach((b) => b.addEventListener("click", () => lab.view(b.dataset.cam)));
+  lab.setTier(tier);
+  $("stage").max = tier.stages.length;
+  U.buildPanel($("build"), tier, state, setStage);
+  setStage(tier.stages.length);
+  lastSample = null; $("dlA").disabled = $("dlB").disabled = true; $("runlog").hidden = true; $("runlog").innerHTML = "";
+  $("dlA").textContent = tier.twin === "tier1" ? "Download tier1_a.csv" : "Download room_a.csv"; $("dlB").textContent = tier.twin === "tier1" ? "Download tier1_b.csv" : "Download room_b.csv";
+  animateNext = true; update();
+}
+$("stage").addEventListener("input", () => setStage(+$("stage").value));
+$("reset").addEventListener("click", () => { specs.forEach((s) => setters[s.key](s.value)); animateNext = true; update(); });
+$("copyPy").addEventListener("click", (e) => U.copy(window.__twin.prompt, e.target));
+$("run").addEventListener("click", () => {
+  const log = $("runlog"); log.hidden = false; log.innerHTML = "";
+  const seed = (Date.now() % 100000) | 0;
+  let s, pred;
+  if (tier.twin === "tier1") {
+    const n = 4000; s = T.sample.tier1(values, n, seed); pred = T.tier1Expected(values);
+    U.print(log, `$ python -m qll.link.bench_tier1 --pulses ${n} --seed ${seed} --eve ${values.eve_fraction} --out tier1.csv   (twin, in the browser)`, "dim");
+    U.print(log, `first readings (ADC counts): ${s.readings.slice(0, 12).map((x) => x.toFixed(0)).join(", ")}`);
+    U.print(log, `${s.sifted} sifted bits, ${s.errors} errors → measured ${T.pct(s.qber)}; twin ${T.pct(pred.qber)}`, Math.abs(s.qber - pred.qber) < 0.03 ? "ok" : "bad");
+  } else {
+    const r = window.__twin, n = Math.min(r.c.n_pulses, 2000000);
+    s = T.sample.link(r.c, n, seed); pred = r.e;
+    U.print(log, `$ sampling ${n.toLocaleString("en-US")} pulses (seed ${seed}) with the twin's probabilities…`, "dim");
+    const csv = T.siteCsv(s);
+    U.print(log, "room_a.csv\n" + csv.alice.split("\n").slice(0, 5).join("\n") + "\n…");
+    U.print(log, "room_b.csv\n" + csv.bob.split("\n").slice(0, 5).join("\n") + "\n…");
+    const chk = T.checkAgainstTwin(s, pred);
+    chk.rows.forEach((row) => U.print(log, `${row.pass ? "PASS " : "CHECK"}  ${row.quantity}: twin ${T.fmt(row.predicted, 4)}, session ${T.fmt(row.measured, 4)}${row.pass ? "" : "  → " + row.hint}`, row.pass ? "ok" : "bad"));
+    U.print(log, `${s.clicks.toLocaleString("en-US")} clicks, ${s.sifted.toLocaleString("en-US")} sifted signal bits. The full protocol (estimation, Cascade, amplification) runs on these files in Python:`, "dim");
+    U.print(log, `python -m qll.link.run ingest room_a.csv --bob room_b.csv --config ${tier.twin === "two_room" ? "systems/see510/hardware/two_room.json" : "systems/see510/hardware/" + tier.twin + ".json"}`);
+    log.dataset.pass = String(chk.all_pass);
+  }
+  lastSample = s; $("dlA").disabled = $("dlB").disabled = false;
+});
+$("dlA").addEventListener("click", () => lastSample && U.download(tier.twin === "tier1" ? "tier1_a.csv" : "room_a.csv", T.siteCsv(lastSample).alice));
+$("dlB").addEventListener("click", () => lastSample && U.download(tier.twin === "tier1" ? "tier1_b.csv" : "room_b.csv", T.siteCsv(lastSample).bob));
+select(location.hash.slice(1) || "two_room");
+U.registerApp();
+document.body.dataset.ready = "1";
+</script>
+</body>
+</html>

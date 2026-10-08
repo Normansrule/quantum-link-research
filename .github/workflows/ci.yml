@@ -29,7 +29,7 @@ jobs:
         env:
           MPLBACKEND: Agg
       - run: python scripts/build_reference_index.py
-      - run: python scripts/build_site_data.py && python scripts/make_banner.py && python scripts/make_readme_art.py && python scripts/build_systems_docs.py && python scripts/build_program_docs.py
+      - run: python scripts/build_site_data.py && python scripts/make_banner.py && python scripts/make_readme_art.py && python scripts/build_systems_docs.py && python scripts/build_program_docs.py && python scripts/build_lab.py
   pages:
     name: website (headless Chromium)
     runs-on: ubuntu-latest

@@ -114,6 +114,43 @@ def calibrate(bench, repeats: int = 5) -> Thresholds:
     return Thresholds(dark + 0.75 * span, dark + 0.25 * span)
 
 
+def mean_reading(bench, pol_deg: float, analyzer_deg: float) -> float:
+    """The noise-free Malus reading I0 [eps + (1 - 2 eps) cos^2] + I_amb."""
+    c2 = math.cos(math.radians(pol_deg - analyzer_deg)) ** 2
+    return bench.i0 * (bench.leakage + (1 - 2 * bench.leakage) * c2) + bench.ambient
+
+
+def ideal_thresholds(bench) -> Thresholds:
+    """What `calibrate` converges to with many repeats: 75 % and 25 % of the noise-free span."""
+    bright, dark = mean_reading(bench, 0, 0), mean_reading(bench, 90, 0)
+    return Thresholds(dark + 0.75 * (bright - dark), dark + 0.25 * (bright - dark))
+
+
+def p_decide_zero(mean: float, noise: float, th: Thresholds) -> float:
+    """P(decision 0) for a Gaussian reading of the given mean: above `high`, plus half of the ambiguous band."""
+    if noise <= 0:
+        return 1.0 if mean >= th.high else 0.0 if mean <= th.low else 0.5
+    cdf = lambda v: 0.5 * (1 + math.erf((v - mean) / (noise * math.sqrt(2))))
+    above = 1 - cdf(th.high)
+    return above + 0.5 * (cdf(th.high) - cdf(th.low))
+
+
+def expected_error(bench, th: Thresholds | None = None, eve_fraction: float = 0.0) -> float:
+    """Expected error rate on the sifted pulses (matched bases) of `run`, in closed form. Without the station a sent 0
+    is misread with probability e0 = 1 - P(0 | bright) and a sent 1 with e1 = P(0 | dark), so e = (e0 + e1)/2. An
+    intercepted pulse is read by the station in its own basis. In the right one, a sent 0 reaches Site B wrong with
+    (1 - e0) e0 + e0 (1 - e1) and a sent 1 with (1 - e1) e1 + e1 (1 - e0); their mean is
+        e_R = e0 + e1 - (e0^2 + e1^2)/2 - e0 e1        (= 2 e (1 - e) when e0 = e1 = e).
+    In the wrong one Site B's analyzer sits at 45 degrees to the resent polarization, its decision no longer depends on
+    Alice's bit, and its error is exactly 1/2 on average over her bits [bennett1984]. Hence
+        Q = (1 - f) e + f (e_R / 2 + 1/4)."""
+    th = th or ideal_thresholds(bench)
+    e0 = 1 - p_decide_zero(mean_reading(bench, 0, 0), bench.noise, th)
+    e1 = p_decide_zero(mean_reading(bench, 90, 0), bench.noise, th)
+    e_r = e0 + e1 - (e0 ** 2 + e1 ** 2) / 2 - e0 * e1
+    return (1 - eve_fraction) * (e0 + e1) / 2 + eve_fraction * (e_r / 2 + 0.25)
+
+
 def run(bench, n: int, seed: int, eve_fraction: float = 0.0, thresholds: Thresholds | None = None) -> QuantumRecord:
     """Drive n pulses with random bits and bases (seeded here; a real Site A should use a certified random source),
     optionally through an intercept-resend station on a fraction of them, and return the quantum record."""

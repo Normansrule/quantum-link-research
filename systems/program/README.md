@@ -73,6 +73,7 @@ Five rules hold in every phase:
 | 07 | [The startup path](07_startup_path.md) | who might pay, what to sell first, and the steps from a bench to a company |
 | 08 | [Papers](08_first_paper.md) | the first paper's plan in detail, and the two after it |
 | — | [Gate reviews](reviews/README.md) | the record of each gate |
+| — | [The lab](https://normansrule.github.io/quantum-link-research/lab/) ([source](../../docs/lab/)) | every experiment in one gallery; the two-room link and the cloud circuits in 3D, tier by tier, with the twin's math in a terminal and every part priced ([`qll/systems/lab_scenes.py`](../../qll/systems/lab_scenes.py)) |
 | — | [Paper drafts](../../research/papers/README.md) | each paper's draft, generated results, figures, and data (paper 1 rehearsed on simulators) |
 
 **Run it.** `python scripts/build_program_docs.py` regenerates 01, 02, 05, and the figures. `python -m pytest tests/test_program_plan.py tests/test_two_room.py tests/test_collapse_signalling.py` checks the plan, the two-room twin, and the collapse code.

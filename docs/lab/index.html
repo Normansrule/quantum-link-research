@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quantum Link Lab · Quantum Link Research</title>
+<meta name="description" content="Every experiment in the mission, with a lab for each build: starter to real world, a 3D model of every part, live parameters, and the exact math in a terminal.">
+<meta name="theme-color" content="#05070d">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="stylesheet" href="../space.css">
+<link rel="stylesheet" href="lab.css">
+<script src="../js/lab_ui.js"></script>
+</head>
+<body>
+<div class="aurora"></div>
+<header class="top">
+  <a class="brand" href="../"><span class="dot"></span>Quantum Link Research</a>
+  <nav><a href="./">Lab</a><a href="link/">Two-room link</a><a href="circuits/">Cloud circuits</a><a href="../systems/">Traceability</a><a class="gh" href="https://github.com/Normansrule/quantum-link-research">GitHub ↗</a></nav>
+</header>
+<section class="lab-head">
+  <div class="kicker">The lab · web and installable app</div>
+  <h1>Build it in the browser first, then in the rooms</h1>
+  <p class="sub">Each lab shows the real build in 3D with every part placed where it stands and paid for by a line of the bill of materials, the parameters that matter as sliders, and a terminal that prints the exact math, line by line, from the same formulas the Python test suite checks. Every lab climbs from a starter you can build this month to the real-world option. <button class="btn-s primary install" id="install">Install the app</button></p>
+</section>
+<section class="lab-gallery">
+  <div class="bento" style="margin-bottom:1.2rem">
+    <a class="card c4" href="link/#two_room"><span class="tag green">MAIN EXPERIMENT</span><h3>The two-room link</h3>
+      <p>Starter bright-light analogue ($40–120) → single photons between two rooms ($530–1,180) → avalanche-diode upgrade → entangled photons. Weak 405 nm pulses, decoys, four SiPMs, FPGA gating, and a fiber classical channel, with the twin's prediction for every knob.</p>
+      <div class="pass" id="ladderLink"></div></a>
+    <a class="card c2" href="circuits/#collapse"><span class="tag violet">$0 · CLOUD</span><h3>Cloud circuits</h3>
+      <p>The collapse code (P11), teleportation and superdense coding (P12), and Majorana parity teleportation (P13): exact density matrices, the processor in 3D, and the commands for real hardware.</p></a>
+  </div>
+  <div class="mission" id="mission"></div>
+  <div class="filters" id="filters"><input id="q" type="search" placeholder="Search experiments" aria-label="Search experiments"></div>
+  <div class="exp-grid" id="grid"></div>
+  <p class="muted small" style="margin-top:1.4rem">Generated from <code>qll/systems/experiment_catalog.py</code> and <code>qll/systems/lab_scenes.py</code> by <code>scripts/build_lab.py</code>. Experiments without a lab yet open their procedure; each one still has a twin, a test, and a data format.</p>
+</section>
+<script>
+(async () => {
+  const U = window.QLLLabUI, esc = U.esc;
+  const [cat, scenes] = await Promise.all([fetch("catalog.json").then((r) => r.json()), fetch("scenes.json").then((r) => r.json())]);
+  document.getElementById("ladderLink").textContent = scenes.link.map((t) => t.title.split(":")[0]).join(" → ");
+  const M = document.getElementById("mission");
+  M.innerHTML = Object.entries(cat.phases).map(([k, v]) => `<a href="#" data-phase="${k}"><b>Phase ${k}</b>${esc(v)}</a>`).join("");
+  const statuses = [...new Set(cat.experiments.map((e) => e.status))];
+  const F = document.getElementById("filters");
+  F.insertAdjacentHTML("afterbegin", `<button aria-pressed="true" data-st="">All ${cat.experiments.length}</button><button aria-pressed="false" data-st="lab">With a lab</button>` +
+    statuses.map((s) => `<button aria-pressed="false" data-st="${s}">${esc(s)}</button>`).join(""));
+  let st = "", phase = "", q = "";
+  const GH = U.GH;
+  function render() {
+    const items = cat.experiments.filter((e) => (!st || (st === "lab" ? e.lab.length : e.status === st)) && (!phase || e.phases.includes(+phase)) &&
+      (!q || (e.id + " " + e.title + " " + e.role).toLowerCase().includes(q)));
+    document.getElementById("grid").innerHTML = items.map((e) => `
+      <article class="exp" data-id="${esc(e.id)}"><div class="id">${esc(e.id)}</div><h3>${esc(e.title)}</h3>
+        <div class="meta"><span class="st-${esc(e.status)}">${esc(e.status)}</span>${e.phases.map((p) => `<span>phase ${p}</span>`).join("")}${e.cost ? `<span>$${esc(e.cost)}</span>` : ""}</div>
+        <p>${esc(e.role || "")}</p>
+        ${e.lab.length ? `<div class="ladder">Lab: ${e.lab.map((l) => `<a href="${l.page}#${l.tier}">${esc(l.rung)}: ${esc(l.title.split(":")[0].split(" (")[0])}</a>`).join("")}</div>` : ""}
+        <div class="links"><a href="${GH + esc(e.path)}" target="_blank" rel="noopener">Procedure ↗</a>${e.twin ? `<a href="${GH + esc(e.twin)}" target="_blank" rel="noopener">Twin ↗</a>` : ""}${e.test ? `<a href="${GH + esc(e.test)}" target="_blank" rel="noopener">Test ↗</a>` : ""}</div>
+      </article>`).join("");
+  }
+  F.addEventListener("click", (ev) => { const b = ev.target.closest("button"); if (!b) return; st = b.dataset.st; F.querySelectorAll("button").forEach((x) => x.setAttribute("aria-pressed", String(x === b))); render(); });
+  M.addEventListener("click", (ev) => { const a = ev.target.closest("a"); if (!a) return; ev.preventDefault(); phase = phase === a.dataset.phase ? "" : a.dataset.phase; M.querySelectorAll("a").forEach((x) => (x.style.borderColor = x.dataset.phase === phase ? "rgba(94,242,224,.6)" : "")); render(); });
+  document.getElementById("q").addEventListener("input", (ev) => { q = ev.target.value.toLowerCase(); render(); });
+  render();
+  let deferred = null; const btn = document.getElementById("install");
+  addEventListener("beforeinstallprompt", (e) => { e.preventDefault(); deferred = e; btn.classList.add("show"); });
+  btn.addEventListener("click", async () => { if (!deferred) return; deferred.prompt(); await deferred.userChoice; deferred = null; btn.classList.remove("show"); });
+  U.registerApp();
+  document.body.dataset.ready = "1";
+})();
+</script>
+</body>
+</html>

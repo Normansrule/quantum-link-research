@@ -29,7 +29,7 @@ The numbers regenerate in [`systems/program/05_feasibility.md`](../../systems/pr
 | Two laptops, an Ethernet cable each | the sites | owned |
 | Four 405 nm laser diodes (5 mW class) with a nanosecond pulse driver | the four BB84 states, one diode per state, fired at random per pulse | $40–120 |
 | Film polarizers, a half-wave retarder, neutral-density filters (optical density 1–4) | encoding and attenuation | $50–120 |
-| Three non-polarizing beamsplitters (two to combine the diodes, one at room B) and two polarizing beamsplitters | combining and analysis | $100–250 |
+| Four non-polarizing beamsplitters (three to combine the four diodes, one at room B) and two polarizing beamsplitters | combining and analysis | $100–250 |
 | Four onsemi MicroFC-30035 SiPMs ($48.61 each at Newark, October 2026) [onsemi2022microfc], breakout boards, a 30 V boost module, four fast comparators | detection | $230–350 |
 | Two small FPGA boards (one per room) for pulse generation, gating, and counting | timing | $30–80 |
 | A coaxial cable or second fiber for the pulse clock between the rooms | synchronization (public) | $10–30 |
@@ -44,6 +44,8 @@ The [Tier 1 bench](../../systems/see510/10_real_world_experiments.md) ($40–120
 1. `python -c "from qll.link import two_room as T; print(T.predict())"` prints what the default bench should show. Change a field (`T.TwoRoomParts(sipm_dark_hz=500e3)`) to see what each part does.
 2. Write a synthetic run as the two rooms will: `python -c "from qll.link import two_room as T; from qll.link.hardware_log import simulate_quantum, write_site_logs; write_site_logs(simulate_quantum(T.config()), 'room_a.csv', 'room_b.csv')"`.
 3. Process it: `python -m qll.link.run ingest room_a.csv --bob room_b.csv --config systems/see510/hardware/two_room.json`.
+
+4. Or do all three in the browser: the [two-room lab](https://normansrule.github.io/quantum-link-research/lab/link/#two_room) runs the same twin with a slider per part, prints every formula, samples a session, and downloads `room_a.csv` and `room_b.csv` for step 3. Its 3D view shows each stage of this procedure being built.
 
 **Pass.** The session is accepted, and you can say why the fiber variant and the no-decoy variant are not.
 
@@ -62,7 +64,7 @@ Run [Tier 1](../../systems/see510/10_real_world_experiments.md) with the transmi
 **Pass.** Dark rate inside the datasheet's 300–860 kHz at 2.5 V overvoltage and about 21 °C; afterpulsing below 1 %. If the dark rate is higher, the box leaks light: tape every seam and try again in a dark room.
 
 ## Stage 4 — The source and its mean photon number (two weekends; M1.5)
-**Build.** Four diodes, each behind a film polarizer at 0°, 90°, 45°, or 135°, combined by two beamsplitters into one beam. The FPGA fires one diode per 1 µs slot, chosen at random, at one of two drive currents (signal or decoy), or none (vacuum), and logs the choice. Seed its generator from a quantum random source if you have one (E06).
+**Build.** Four diodes, each behind a film polarizer at 0°, 90°, 45°, or 135°, combined by three beamsplitters into one beam (two pairs, then the pairs). The FPGA fires one diode per 1 µs slot, chosen at random, at one of two drive currents (signal or decoy), or none (vacuum), and logs the choice. Seed its generator from a quantum random source if you have one (E06).
 **Measure.** With no filters, measure the average power $P$ of each diode at each current with a photodiode; the pulse energy is $E = P/f$. Choose the filters with `T.attenuation_for(0.5, E, 405e-9)` and install them.
 **Pass.** With the filters in, the ratio of SiPM count rates for signal and decoy pulses equals the ratio of mean photon numbers (0.5 : 0.1) within 10 %.
 
