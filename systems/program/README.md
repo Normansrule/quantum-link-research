@@ -14,14 +14,16 @@ The far horizon you described is a language in which the way shared entangled st
 
 So the mission's frontier is entanglement-assisted communication: keys and quantum states shared between any two points, every message riding on a classical channel. The first experiment (P11) puts the collapse-language idea itself to a measurement, because a careful null result with a stated bound is publishable, and building it teaches every tool the later phases need.
 
+**Quantum channels, not only classical ones.** The hallway already carries qubits. [09](09_quantum_channels.md) turns it into a certified, mapped quantum channel (P14, milestone M1.8), then builds quantum channels by entanglement and teleportation, with superdense coding sending more than one bit per photon through the hallway (E19, M2.6). Classical channels stay: they herald which photons arrived and carry teleportation's two bits.
+
 ## Phases
 
 ```mermaid
 flowchart LR
   P0["Phase 0 — Foundations<br/>simulation library, SEE 510 link,<br/>experiment catalog<br/><b>done</b>"] --> G0{G0}
-  G0 --> P1["Phase 1 — Two rooms<br/>fiber classical channel; collapse code (P11);<br/>single-photon BB84 between rooms (P10)<br/>~$670 likely"]
+  G0 --> P1["Phase 1 — Two rooms<br/>fiber classical channel; collapse code (P11);<br/>single-photon BB84 between rooms (P10);<br/>the hallway certified as a quantum channel (P14)<br/>~$690 likely"]
   P1 --> G1{G1}
-  G1 --> P2["Phase 2 — Entanglement between rooms<br/>borrowed source; Bell test; BBM92 key;<br/>collapse code with photons<br/>~$450 likely"]
+  G1 --> P2["Phase 2 — Entanglement between rooms<br/>borrowed source; Bell test; BBM92 key;<br/>collapse code with photons;<br/>superdense coding through the hallway (E19)<br/>~$1,050 likely"]
   P2 --> G2{G2}
   G2 --> P3["Phase 3 — Outdoors and toward orbit<br/>rooftop, building to building, ground station;<br/>satellite partner or CubeSat (funded)"]
   G2 --> P4["Phase 4 — The frontier<br/>teleportation, superdense coding,<br/>three-node entanglement-assisted network"]
@@ -33,10 +35,10 @@ flowchart LR
 | Phase | Question it answers | Key milestones | Out of pocket (likely) | Technology readiness |
 |---|---|---|---|---|
 | 0 Foundations | What does the physics allow, and what does each choice cost? | M0.1–M0.2 (done) | $0 | 3 |
-| 1 Two rooms | Can a student bench send quantum states between rooms and match its twin? Can collapse carry a message? | M1.1 fiber classical channel · M1.2 collapse code (paper 1) · M1.6 single-photon link (paper 2) | about $670 | 4 |
-| 2 Entanglement | Can two rooms share entangled photons and make a key from them? | M2.2 Bell test · M2.3 BBM92 key · M2.4 collapse code with photons (paper 3) | about $450 with a borrowed source | 4–5 |
+| 1 Two rooms | Can a student bench send quantum states between rooms and match its twin? Can collapse carry a message? | M1.1 fiber classical channel · M1.2 collapse code (paper 1) · M1.6 single-photon link (paper 2) · M1.8 the hallway as a quantum channel | about $690 | 4 |
+| 2 Entanglement | Can two rooms share entangled photons and make a key from them? | M2.2 Bell test · M2.3 BBM92 key · M2.4 collapse code with photons (paper 3) · M2.6 superdense coding through the hallway | about $1,050 with a borrowed source | 4–5 |
 | 3 Outdoors to orbit | What do sky, distance, and pointing do, and who flies the source? | M3.1 satellite budgets from public data · M3.2–M3.3 free space · M3.4 ground station · M3.5 partner proposal · M3.6 CubeSat (funded) | about $4,300 before any satellite | 5–7 |
-| 4 Frontier | What can shared entanglement deliver beyond keys? | M4.1 teleportation · M4.2 superdense coding · M4.6 Majorana parity teleportation, with the CSUDH authors of [crogman2025] ([T16](../../research/theories/T16_majorana_measurement_only_teleportation.md)) · M4.4 three-node network · M4.5 photonic teleportation (funded) | about $200 | 3–5 |
+| 4 Frontier | What can shared entanglement deliver beyond keys? | M4.1 teleportation · M4.2 superdense coding · M4.7 teleportation as a quantum channel · M4.6 Majorana parity teleportation, with the CSUDH authors of [crogman2025] ([T16](../../research/theories/T16_majorana_measurement_only_teleportation.md)) · M4.4 three-node network · M4.5 photonic teleportation (funded) | about $200 | 3–5 |
 | Startup | Who pays, for what? | S1 discovery · S2 formation · S3 kit and twin software · S4 I-Corps and SBIR | about $3,100 | — |
 
 The exact numbers, schedule, critical path, and Monte Carlo cost risk are generated in [01](01_phases_and_milestones.md) from [`qll/systems/program_plan.py`](../../qll/systems/program_plan.py).
@@ -72,6 +74,7 @@ Five rules hold in every phase:
 | 06 | [Risks and trade studies](06_risks_and_trades.md) | the risk register and the design choices, scored |
 | 07 | [The startup path](07_startup_path.md) | who might pay, what to sell first, and the steps from a bench to a company |
 | 08 | [Papers](08_first_paper.md) | the first paper's plan in detail, and the two after it |
+| 09 | [From classical links to quantum channels](09_quantum_channels.md) | three ways to build a quantum channel, how each is certified, mapped, and measured, and the ladder from the hallway to a network |
 | — | [Gate reviews](reviews/README.md) | the record of each gate |
 | — | [The lab](https://normansrule.github.io/quantum-link-research/lab/) ([source](../../docs/lab/)) | every experiment in one gallery; the two-room link and the cloud circuits in 3D, tier by tier, with the twin's math in a terminal and every part priced ([`qll/systems/lab_scenes.py`](../../qll/systems/lab_scenes.py)) |
 | — | [Paper drafts](../../research/papers/README.md) | each paper's draft, generated results, figures, and data (paper 1 rehearsed on simulators) |

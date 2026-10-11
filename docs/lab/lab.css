@@ -99,3 +99,19 @@ table.bom .num { text-align: right; white-space: nowrap; font-variant-numeric: t
 .mission a { display: block; border: 1px solid var(--line); border-radius: 14px; padding: .6rem .7rem; background: var(--glass); color: var(--ink); font-size: .82rem }
 .mission a b { display: block; color: var(--cyan); font-size: .72rem; letter-spacing: .08em; text-transform: uppercase }
 .install { display: none } .install.show { display: inline-flex }
+
+/* plain-language notes under each terminal line, shown when the terminal has .explain */
+.term .wy { display: none; margin: .15rem 0 .1rem 2.6em; color: #b9c7dd; font: 12.5px/1.45 Inter, system-ui, sans-serif; border-left: 2px solid rgba(94,242,224,.35); padding-left: .55rem }
+.term.explain .wy { display: block }
+/* charts */
+.charts { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1rem }
+.chartcard { border: 1px solid var(--line); border-radius: var(--radius); background: var(--glass); padding: .8rem .9rem }
+.chartcard h3 { margin: 0 0 .15rem; font-size: .98rem } .chartcard p.cap { margin: 0 0 .5rem; color: var(--muted); font-size: .8rem }
+svg.chart { width: 100%; height: auto; display: block; font-family: Inter, system-ui, sans-serif }
+/* how it works */
+.how { max-width: 1400px; margin: 0 auto; padding: 0 3vw .6rem; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: .55rem }
+@media (max-width: 1050px) { .how { grid-template-columns: repeat(3, minmax(0, 1fr)) } } @media (max-width: 600px) { .how { grid-template-columns: repeat(2, minmax(0, 1fr)) } }
+.how .step { border: 1px solid var(--line); border-radius: 14px; background: var(--glass); padding: .55rem .65rem; font-size: .8rem; color: var(--muted); display: flex; flex-direction: column; gap: .3rem }
+.how .step b { color: var(--ink); font-size: .84rem } .how .step svg { width: 100%; height: 46px }
+.how .step.q { border-color: rgba(167,139,250,.45) } .how .step.c { border-color: rgba(245,197,24,.45) }
+.how .tag { font-size: .66rem; letter-spacing: .07em; text-transform: uppercase; font-weight: 700 } .how .q .tag { color: #a78bfa } .how .c .tag { color: #f5c518 } .how .l .tag { color: var(--cyan) }

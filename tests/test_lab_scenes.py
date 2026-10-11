@@ -13,7 +13,11 @@ from qll.systems.experiment_catalog import CATALOG
 
 pytestmark = pytest.mark.phase1
 ROOT = Path(__file__).resolve().parents[1]
-TIERS = L.link_tiers() + L.circuit_tiers()
+from qll.systems.lab_channel_scenes import channel_tiers
+from qll.systems.lab_frontier_scenes import frontier_tiers
+from qll.systems.lab_messenger_scenes import messenger_tiers
+from qll.systems.lab_outdoor_scenes import outdoor_tiers
+TIERS = L.link_tiers() + L.circuit_tiers() + channel_tiers() + outdoor_tiers() + frontier_tiers() + messenger_tiers()
 
 
 def test_two_room_bill_of_materials_matches_P10_exactly():
@@ -84,4 +88,32 @@ def test_committed_json_is_current():
     cat = json.loads((ROOT / "docs" / "lab" / "catalog.json").read_text())
     assert [e["id"] for e in cat["experiments"]] == [e.id for e in CATALOG]
     assert cat == json.loads(json.dumps(build_lab.catalog(), ensure_ascii=False))
-    assert {x["tier"] for x in next(e for e in cat["experiments"] if e["id"] == "P10")["lab"]} == {"two_room"}
+    assert {x["tier"] for x in next(e for e in cat["experiments"] if e["id"] == "P10")["lab"]} == {"two_room", "hallway", "rooftop", "rooms"}
+
+
+def test_channel_lab_adds_the_tomography_parts_and_prices_them():
+    from qll.systems.lab_channel_scenes import hallway, superdense
+    h = hallway()
+    assert {"qwpSource", "qwpFlip"} <= {p.id for p in h.parts} and L.bom_total(h) == (540, 1210)
+    assert L.bom_total(superdense()) == (200, 1500)
+    assert sum(b.main for t in TIERS for b in t.beams) == sum(any(b.main for b in t.beams) for t in TIERS)   # at most one animated beam per tier
+
+
+def test_outdoor_bills_match_the_mission_costs():
+    from qll.systems import program_plan as P
+    by = {m.id: m for m in P.MILESTONES}
+    for t in outdoor_tiers():
+        m = by[t.milestones[0]]
+        assert L.bom_total(t) == (m.cost[0], m.cost[2]), (t.id, m.id)
+
+
+def test_frontier_bills_match_the_mission_costs():
+    from qll.systems import program_plan as P
+    by = {m.id: m for m in P.MILESTONES}
+    for t in frontier_tiers():
+        m = by[t.milestones[0]]
+        if t.id in ("network", "rooms"):
+            assert L.bom_total(t) == (m.cost[0], m.cost[2]), (t.id, m.id)
+        else:
+            assert L.bom_total(t) == (0, 0), t.id
+        assert all(any(p.bom == i for p in t.parts) for i in range(len(t.bom)) if t.bom[i][3] > 0), t.id   # every paid row pays for a part

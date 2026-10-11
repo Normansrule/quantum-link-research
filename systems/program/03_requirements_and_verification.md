@@ -35,11 +35,13 @@ Mission needs (MN) come from the mission statement; each requirement (MR) is a v
 | MR-1.6 | The two-room link shall produce an accepted session whose click probability is within 15 % and whose error rate is within 1.5 percentage points of the twin's prediction for the measured parts. | MN-1, MN-2 | 1 | Test | M1.6 |
 | MR-1.7 | Data, code, configuration, and analysis of Phase 1 shall be published so that an outside reader can repeat the analysis from the files alone. | MN-4, MN-6 | 1 | Inspection | M1.7 |
 | MR-1.8 | Phase 1 cash spending shall not exceed $1,400. | MN-3 | 1 | Inspection | M1.6 |
+| MR-1.9 | The two-room quantum channel shall be certified not entanglement breaking (entanglement-fidelity lower bound above 1/2 at 99 % confidence) and its Pauli transfer matrix reported against the twin. | MN-1, MN-2, MN-5 | 1 | Test | M1.8 |
 | MR-2.1 | An entangled-photon source shall be available to the project by loan or partnership before any purchase over $1,000. | MN-3 | 2 | Inspection | M2.1 |
 | MR-2.2 | The two rooms shall share entangled photons with a CHSH value above 2 by at least five standard deviations. | MN-1 | 2 | Test | M2.2 |
 | MR-2.3 | An entanglement-based key (BBM92) shall be accepted from photons measured in the two rooms, with its error rate inside the twin's interval. | MN-1, MN-2 | 2 | Test | M2.3 |
 | MR-2.4 | Bob's records alone shall show no dependence on Alice's analyzer setting beyond the reported bound, and the correlation shall appear when the records are compared. | MN-5 | 2 | Analysis | M2.4 |
 | MR-2.5 | Phase 2 results shall be published with data. | MN-4, MN-6 | 2 | Inspection | M2.5 |
+| MR-2.6 | Superdense coding through the hallway shall decode more than one bit per detected photon, with its interval, under a stated fair-sampling assumption. | MN-7 | 2 | Test | M2.6 |
 | MR-3.1 | The repository's link budget shall reproduce the published Micius and Jinan-1 channel losses within 3 dB, and give pass schedules for a chosen ground site. | MN-7 | 3 | Analysis | M3.1 |
 | MR-3.2 | The Phase 1 link shall run outdoors, with measured loss and daylight background compared with the twin. | MN-2, MN-7 | 3 | Test | M3.2 |
 | MR-3.3 | A key shall be accepted over a 0.5–2 km free-space path at night. | MN-7 | 3 | Test | M3.3 |
@@ -51,7 +53,9 @@ Mission needs (MN) come from the mission statement; each requirement (MR) is a v
 | MR-4.3 | Teleportation fidelity shall be measured against the delay of the classical channel. | MN-7 | 4 | Analysis | M4.3 |
 | MR-4.4 | A three-node network shall give keys between every pair of nodes in the twin, then with two rooms plus one. | MN-7 | 4 | Test | M4.4 |
 | MR-4.5 | Photonic teleportation between the rooms shall exceed fidelity 2/3. | MN-7 | 4 | Test | M4.5 |
+| MR-4.7 | Teleportation on a cloud processor shall be certified a quantum channel with its two classical bits, and shown entanglement breaking without them. | MN-5, MN-7 | 4 | Test | M4.7 |
 | MR-4.6 | The measurement-only Majorana teleportation protocol shall be emulated with two parity bits (average fidelity above 2/3) and with one (at or below 2/3), and compared with its error budget. | MN-5, MN-7 | 4 | Test | M4.6 |
+| MR-4.8 | The Majorana parity teleportation shall be emulated along chains of at least three lengths, the fidelity per hop fitted, the no-bits control shown at 1/2, and the readout and poisoning a target chain needs derived from the error budget. | MN-5, MN-7 | 4 | Analysis | M4.8 |
 | MR-S.1 | At least 30 potential customers shall be interviewed before any money is spent on forming a company. | MN-6, MN-3 | startup | Inspection | S1 |
 | MR-S.2 | The company and its intellectual property shall be set up only after the university's intellectual-property policy has been checked. | MN-6 | startup | Inspection | S2 |
 | MR-S.3 | A pilot user shall run the kit and match its twin. | MN-6, MN-4 | startup | Demonstration | S3 |

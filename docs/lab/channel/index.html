@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quantum Channel Lab · Quantum Link Research</title>
+<meta name="description" content="The hallway, a fiber, teleportation, and superdense coding as quantum channels: what each does to a qubit, a certificate that it is quantum, what it can carry, and the build that measures it.">
+<meta name="theme-color" content="#05070d">
+<link rel="manifest" href="../manifest.webmanifest">
+<link rel="icon" href="../icon-192.png">
+<link rel="apple-touch-icon" href="../icon-192.png">
+<link rel="stylesheet" href="../../space.css">
+<link rel="stylesheet" href="../lab.css">
+<script src="../../js/lab_twin.js"></script>
+<script src="../../js/lab_channel.js"></script>
+<script src="../../js/lab_ui.js"></script>
+<script type="importmap">{ "imports": { "three": "../../vendor/three/three.module.js", "three/addons/": "../../vendor/three/addons/" } }</script>
+</head>
+<body>
+<div class="aurora"></div>
+<header class="top">
+  <a class="brand" href="../../"><span class="dot"></span>Quantum Link Research</a>
+  <nav><a href="../">Lab</a><a href="../link/">Two-room link</a><a href="./">Quantum channels</a><a href="../outdoor/">Outdoors and orbit</a><a href="../frontier/">Frontier</a><a href="../messenger/">Messenger</a><a href="../circuits/">Cloud circuits</a><a class="gh" href="https://github.com/Normansrule/quantum-link-research">GitHub ↗</a></nav>
+</header>
+
+<section class="lab-head">
+  <div class="kicker" id="kicker">Quantum channels · P14, E19</div>
+  <h1 id="title">Quantum channels</h1>
+  <p class="sub" id="summary"></p>
+  <div class="tiers" id="tiers" role="tablist" aria-label="Channels, from starter to real world"></div>
+</section>
+
+<section class="how" aria-label="How to read this page">
+  <div class="step l"><span class="tag">1 · the qubit</span><b>A photon's polarization</b>
+    <svg viewBox="0 0 120 46"><circle cx="60" cy="23" r="18" fill="none" stroke="#5ea8ff" stroke-dasharray="3 3"/><line x1="60" y1="23" x2="74" y2="10" stroke="#fde68a" stroke-width="2.5"/><circle cx="74" cy="10" r="3" fill="#fde68a"/></svg>
+    Every polarization is a point on a sphere (the Bloch sphere).</div>
+  <div class="step q"><span class="tag">2 · the channel</span><b>What the trip does to it</b>
+    <svg viewBox="0 0 120 46"><circle cx="34" cy="23" r="17" fill="none" stroke="#5ea8ff"/><path d="M56 23 h12" stroke="#a78bfa" stroke-width="2" marker-end="url(#a)"/><defs><marker id="a" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 z" fill="#a78bfa"/></marker></defs><ellipse cx="92" cy="23" rx="14" ry="9" fill="rgba(94,242,224,.25)" stroke="#5ef2e0"/></svg>
+    The sphere of inputs becomes an ellipsoid of outputs: shrunk by noise, turned by drift.</div>
+  <div class="step l"><span class="tag">3 · the certificate</span><b>Is it still quantum?</b>
+    <svg viewBox="0 0 120 46"><rect x="8" y="18" width="104" height="10" rx="5" fill="rgba(148,170,210,.16)"/><rect x="8" y="18" width="52" height="10" rx="5" fill="rgba(255,138,76,.35)"/><line x1="60" y1="12" x2="60" y2="34" stroke="#ff8a4c"/><circle cx="98" cy="23" r="6" fill="#5ef2e0"/></svg>
+    Above 0.5, no classical relay (measure, then resend) could do it.</div>
+  <div class="step l"><span class="tag">4 · what it carries</span><b>Bits, qubits, secrets</b>
+    <svg viewBox="0 0 120 46"><rect x="8" y="6" width="90" height="8" rx="3" fill="#5ef2e0"/><rect x="8" y="19" width="104" height="8" rx="3" fill="#a78bfa"/><rect x="8" y="32" width="60" height="8" rx="3" fill="#45e0a0"/></svg>
+    Capacities: the most a channel can carry per use, of each kind.</div>
+  <div class="step c"><span class="tag">5 · with a classical channel</span><b>Heralding and bits</b>
+    <svg viewBox="0 0 120 46"><path d="M8 30 H112" stroke="#f5c518" stroke-width="3"/><rect x="40" y="25" width="12" height="10" fill="#f5c518"/><path d="M8 14 H112" stroke="#a78bfa" stroke-width="2" stroke-dasharray="5 4"/></svg>
+    Lost photons are announced over the classical fiber; teleportation needs two bits. Both channels work together.</div>
+  <div class="step l"><span class="tag">6 · measure it</span><b>Tomography in the rooms</b>
+    <svg viewBox="0 0 120 46"><rect x="10" y="10" width="26" height="26" rx="4" fill="rgba(94,242,224,.5)"/><rect x="40" y="10" width="26" height="26" rx="4" fill="rgba(94,242,224,.15)"/><rect x="70" y="10" width="26" height="26" rx="4" fill="rgba(94,168,255,.3)"/></svg>
+    Send five polarizations, measure three ways, fit the map: P14 with two $10 waveplates.</div>
+</section>
+
+<main class="lab">
+  <div>
+    <div class="view" id="view">
+      <div class="legend" id="legend"></div>
+      <div class="overlay">
+        <div class="cams" id="cams"></div>
+        <label class="stagebar">Build stage <input type="range" id="stage" min="0" max="4" step="1" value="4"> <b id="stageName"></b></label>
+      </div>
+    </div>
+  </div>
+  <aside class="side">
+    <div class="panel"><div class="metrics" id="metrics"></div></div>
+    <div class="panel">
+      <h3 style="margin:.1rem 0 .6rem;font-size:1rem">Parameters</h3>
+      <div class="ctl" id="ctl"></div>
+      <div class="params" id="params"></div>
+      <button class="btn-s" id="reset">Reset</button>
+    </div>
+  </aside>
+  <section class="charts" id="charts"></section>
+  <section class="term-wrap panel">
+    <div class="term-bar">
+      <h3>Terminal: the channel, line by line</h3>
+      <button class="btn-s" id="explain">Explain each line</button>
+      <button class="btn-s primary" id="run">Run tomography in the browser</button>
+      <button class="btn-s" id="dl" disabled>Download tomography.csv</button>
+      <button class="btn-s" id="copyPy">Copy the Python</button>
+      <span class="muted small">Same arithmetic as <code>qll/circuits/qubit_channel.py</code> (tests/test_lab_js.py); the log loads with <code>channel_tomography.read_log</code>.</span>
+    </div>
+    <div class="term" id="term" aria-live="polite"></div>
+    <div class="term" id="runlog" style="margin-top:.6rem;max-height:340px" hidden></div>
+  </section>
+  <section class="build panel" id="build"></section>
+</main>
+
+<script type="module">
+import { createLab } from "../../js/lab3d.js";
+const C = window.QLLChannel, U = window.QLLLabUI;
+const data = await (await fetch("../scenes.json")).json();
+const tiers = data.channel;
+const $ = (id) => document.getElementById(id);
+const lab = createLab($("view"));
+window.__lab = lab;
+let tier = null, values = {}, specs = [], ctl = { mode: "feedforward" }, lastCounts = null, labelsOn = false;
+const state = { stage: 4, pick: (p) => U.partCard($("build"), tier, p, specs) };
+lab.onPick((p) => state.pick(p));
+U.explainToggle($("explain"), $("term"));
+const f3 = (x) => (x === null || x === undefined ? "n/a" : (+x.toFixed(3)).toString());
+const PAULI = ["I", "X", "Y", "Z"];
+const deg = Math.PI / 180;
+
+function channel() {
+  const v = values;
+  if (tier.twin === "zoo") return { R: C.compose(C.depolarizing(v.p_dep), C.phaseDamping(v.lam_deph), C.amplitudeDamping(v.gamma), C.rotation(v.theta * deg, [1, 0, 1]), C.interceptResend(v.f_ir)),
+    prompt: `python -c "from qll.circuits import qubit_channel as Q; from qll.circuits.noise.phase_damping import phase_damping; from qll.circuits.noise.amplitude_damping import amplitude_damping; import math; R = Q.compose(Q.depolarizing_ptm(${v.p_dep}), Q.ptm(phase_damping(${v.lam_deph})), Q.ptm(amplitude_damping(${v.gamma})), Q.rotation_ptm(math.radians(${v.theta}), (1, 0, 1)), Q.intercept_resend_ptm(${v.f_ir})); print(R, Q.entanglement_fidelity(R), Q.quantum_capacity_lower(R))"` };
+  if (tier.twin === "hallway") {
+    const parts = {}; for (const k of ["polarizer_extinction", "waveplate_error", "sipm_dark_hz", "free_space_loss_db", "sipm_pde"]) parts[k] = v[k];
+    const info = C.hallway(parts, v.eve_fraction);
+    return { R: info.ptm, info, prompt: `python -c "from qll.link.hallway_channel import hallway_channel; from qll.link.two_room import TwoRoomParts; print(hallway_channel(TwoRoomParts(${Object.entries(parts).map(([k, x]) => `${k}=${x}`).join(", ")}), eve_fraction=${v.eve_fraction}))"` };
+  }
+  if (tier.twin === "fiber") {
+    const axis = [Math.sin(v.tilt * deg), 0, Math.cos(v.tilt * deg)];
+    return { R: C.compose(C.rotation(v.theta * (1 - v.correction) * deg, axis), C.depolarizing(v.p_dep)),
+      prompt: `python -c "from qll.circuits import qubit_channel as Q; import math; R = Q.compose(Q.rotation_ptm(math.radians(${v.theta * (1 - v.correction)}), (${axis.map((x) => +x.toFixed(4)).join(", ")})), Q.depolarizing_ptm(${v.p_dep})); print(Q.basis_errors(R), Q.entanglement_fidelity(R))"` };
+  }
+  if (tier.twin === "teleport") return { R: C.teleportChannel(v.p2, ctl.mode), prompt: `python -c "from qll.circuits import teleport_channel_cloud as TC; from qll.circuits.cloud_run import run_aer; from qll.circuits.teleport_cloud import noise_model_depolarizing; from qll.link import channel_tomography as CT; k, c = TC.circuits('${ctl.mode}'); n = TC.counts_to_tomography(k, run_aer(c, 20000, noise_model=noise_model_depolarizing(${v.p2}))); print(CT.estimate(n), CT.certify(n))"` };
+  return null;
+}
+function metric(l, n, ok) { return `<div class="metric ${ok ? "ok" : "bad"}"><div class="n">${n}</div><div class="l">${U.esc(l)}</div></div>`; }
+function update(anim) {
+  const at = tier.rooms ? [0, 2.05, -0.4] : tier.id === "zoo" ? [0.6, 1.45, 0.4] : [1.45, 1.45, 1.15];
+  if (tier.twin === "superdense") {
+    const V = values.visibility, h = values.v_hom, bits = C.sdBits(V, h), Cm = C.sdConfusion(V, h);
+    U.terminal($("term"), `python -c "from qll.circuits import superdense_photonic as SP; print(SP.bits_per_photon(${V}, ${h}), SP.confusion(${V}, ${h}))"`, C.stepsSuperdense(V, h), { animate: anim });
+    $("metrics").innerHTML = metric("Bits per detected photon", f3(bits), bits > 1) + metric("One photon alone, at most", "1", true) + metric("Linear-optics ideal", "1.585", true) + metric("Correct decodes", f3(Cm.reduce((s, r, i) => s + r[i === 2 ? 2 : i], 0) / 3), true) +
+      `<div class="verdict ${bits > 1 ? "" : "bad"}" id="verdict">${bits > 1 ? "More than one bit per photon: the shared pair is doing work no single photon can." : "At or below one bit: improve the pair visibility or the two-photon interference."}</div>`;
+    const hs = Array.from({ length: 41 }, (_, k) => 0.3 + 0.7 * k / 40);
+    $("charts").innerHTML = card("Bob's decoding, message by message", "Rows: what Alice sent. Columns: what the detectors said. Perfect would be the identity.", U.grid(Cm, { rows: ["Ψ⁻ sent", "Ψ⁺ sent", "Φ⁺ sent"], cols: ["Ψ⁻", "Ψ⁺", "Φ"], cell: 62, labelWidth: 78 })) +
+      card("Bits per photon against the limits", "One photon's polarization alone carries at most 1 bit; with a shared pair and linear optics, up to 1.585.", U.bars([{ label: "this setup", value: bits, color: bits > 1 ? U.C.green : U.C.warm }, { label: "one photon, no pair", value: 1, color: U.C.faint }, { label: "linear optics, ideal", value: Math.log2(3), color: U.C.violet }, { label: "complete Bell measurement", value: 2, color: U.C.blue }], { max: 2, marks: [{ at: 1, label: "1 bit" }] })) +
+      card("How good must the interference be?", "Bits per photon against the two-photon interference visibility, at your pair visibility.", U.line(hs, [{ ys: hs.map((x) => C.sdBits(V, x)), color: U.C.cyan, label: `pair visibility ${V}` }, { ys: hs.map(() => 1), color: U.C.gold, label: "one-bit limit" }], { xticks: [0.3, 0.5, 0.7, 0.9, 1], yticks: [0, 0.5, 1, 1.5], xlabel: "two-photon interference visibility", ylabel: "bits per photon", ymin: 0, ymax: 1.7, marker: { x: h, y: bits, label: "you" } }));
+    lab.setEllipsoid(null); lab.setValues(values, { photons: 6, transmit: 0.8, beam: 0.7, dark: 0.3, packets: 0.8 }); window.__twin = { bits, prompt: "" };
+    return;
+  }
+  const ch = channel(), R = ch.R, info = ch.info, e = C.basisErrors(R), Fe = C.entanglementFidelity(R), cert = C.certifiedFe(e.z, e.x), eb = C.isEntanglementBreaking(R), cap = C.capacities(R);
+  U.terminal($("term"), ch.prompt, C.steps(R, info), { animate: anim });
+  let m = metric("Entanglement fidelity", f3(Fe), Fe > 0.5) + metric("Certified from Z, X errors", f3(cert), cert > 0.5) + metric("Error rate Z / X / Y", `${(100 * e.z).toFixed(1)} / ${(100 * e.x).toFixed(1)} / ${(100 * e.y).toFixed(1)} %`, e.z < 0.11) + metric("Quantum capacity ≥", `${f3(cap.quantum)} qubits`, cap.quantum > 0);
+  if (info) m += metric("Photons that click", `${(100 * info.eta).toFixed(1)} %`, true) + metric("Qubits per photon, heralded", f3(info.quantum_heralded), info.quantum_heralded > 0);
+  m += `<div class="verdict ${eb ? "bad" : ""}" id="verdict">${eb ? "Entanglement breaking: a measure-and-resend relay could imitate this channel. Nothing quantum gets through." : cert > 0.5 ? "Certified quantum: the Z and X error rates alone rule out every classical relay." : "Quantum, but the Z and X error rates alone cannot prove it; full tomography can."}</div>`;
+  $("metrics").innerHTML = m;
+  const capRows = [{ label: "classical bits", value: cap.classical ?? 0, text: cap.classical === null ? "n/a (non-unital)" : undefined, color: U.C.cyan }, { label: "bits, with shared pairs", value: cap.entanglement_assisted, color: U.C.violet },
+    { label: "qubits (lower bound)", value: cap.quantum, color: U.C.green }, { label: "secret bits (BB84)", value: cap.private_bb84, color: U.C.gold }];
+  let html = card("The channel's map", "The Pauli transfer matrix: column j is what happens to input direction j. The diagonal X, Y, Z entries are how much each direction survives.", U.grid(R, { rows: PAULI, cols: PAULI, cell: 58 })) +
+    card("Is it quantum?", "Entanglement fidelity against the 0.5 a classical relay can reach; the green bar is the bound from the Z and X error rates alone.", U.gauge(Fe, { lower: cert, valueLabel: "F_e", thresholdLabel: "classical relay limit 0.5" })) +
+    card("What it can carry, per use", "Per qubit that arrives. One qubit carries at most 1 bit alone, 2 with a shared pair.", U.bars(capRows, { max: 2, marks: [{ at: 1, label: "1 per qubit" }] }));
+  if (info) html += card("Per photon sent: why the classical channel matters", "86 % of photons are lost and Bob knows which (no click). Without announcing arrivals, nothing quantum survives; with heralding, a rate proportional to η does.",
+    U.bars([{ label: "one-way, no heralding", value: info.quantum_one_way, color: U.C.warm, text: f3(info.quantum_one_way) }, { label: "heralded over the fiber", value: info.quantum_heralded, color: U.C.green }, { label: "repeaterless bound", value: info.plob, color: U.C.blue }], { max: Math.max(0.3, info.plob * 1.2) }));
+  $("charts").innerHTML = html;
+  lab.setEllipsoid(R, at, tier.rooms ? 0.5 : tier.id === "zoo" ? 0.6 : 0.45);
+  lab.setValues(values, info ? { photons: 8, transmit: info.eta, beam: 0.6, dark: 0.4, packets: 0.8 } : { photons: 6, transmit: 0.7, beam: 0.6, dark: 0.3, packets: 0.8 });
+  window.__twin = { R, Fe, cert, eb, cap, info, prompt: ch.prompt };
+}
+const card = (h, cap, body) => `<div class="chartcard"><h3>${U.esc(h)}</h3><p class="cap">${U.esc(cap)}</p>${body}</div>`;
+function renderTabs() {
+  $("tiers").innerHTML = tiers.map((t, i) => `${i ? '<span class="arrow">→</span>' : ""}<button role="tab" data-tier="${t.id}" aria-selected="${t === tier}"><small>${U.esc(t.rung === "main" ? "main · real world" : t.rung)}</small><span>${U.esc(t.title)}</span><small>${U.esc(t.cost.split(" (")[0])}</small></button>`).join("");
+  $("tiers").querySelectorAll("button").forEach((b) => b.addEventListener("click", () => select(b.dataset.tier)));
+}
+function setStage(n) { state.stage = n; $("stage").value = n; lab.setStage(n); $("stageName").textContent = n === 0 ? "rooms only" : `${n}. ${tier.stages[n - 1][0]}`; U.markStage($("build"), n); }
+function select(id) {
+  tier = tiers.find((t) => t.id === id) || tiers.find((t) => t.rung === "main"); history.replaceState(null, "", "#" + tier.id);
+  specs = tier.sliders; values = {}; specs.forEach((s) => (values[s.key] = s.value));
+  $("title").textContent = tier.title; $("summary").textContent = tier.summary;
+  $("kicker").textContent = `Quantum channels · ${tier.experiments.join(", ")} · milestone ${tier.milestones.join(", ")}`;
+  renderTabs();
+  $("ctl").innerHTML = tier.twin === "teleport" ? `<label>Classical bits <select id="mode"><option value="feedforward">two bits, fed forward</option><option value="deferred">two bits, deferred</option><option value="no_bits">no bits</option></select></label>` : "";
+  if ($("mode")) { $("mode").value = ctl.mode; $("mode").addEventListener("change", () => { ctl.mode = $("mode").value; update(true); }); }
+  U.sliders($("params"), specs, values, () => update(), (k) => lab.setFocus(k));
+  $("legend").innerHTML = `<span><i style="background:#5ef2e0"></i>output ellipsoid</span><span><i style="background:#fde68a"></i>where H, V, D, A, R, L land</span>` + (tier.rooms ? `<span><i style="background:#a78bfa"></i>quantum channel</span><span><i style="background:#f5c518"></i>classical channel</span>` : "");
+  $("cams").innerHTML = (tier.rooms ? [["overview", "Overview"], ["roomA", "Room A"], ["hallway", "Hallway"], ["roomB", "Room B"]] : tier.id === "zoo" ? [["sphere", "Sphere"], ["desk", "Desk"]] : [["desk", "Desk"]]).map(([k, l]) => `<button data-cam="${k}">${l}</button>`).join("") + `<button id="labels" aria-pressed="${labelsOn}">Labels</button>`;
+  $("cams").querySelectorAll("[data-cam]").forEach((b) => b.addEventListener("click", () => lab.view(b.dataset.cam)));
+  $("labels").addEventListener("click", () => { labelsOn = !labelsOn; lab.setLabels(labelsOn); $("labels").setAttribute("aria-pressed", String(labelsOn)); });
+  lab.setTier(tier); lab.setLabels(labelsOn); lab.view(tier.rooms ? "hallway" : tier.id === "zoo" ? "sphere" : "desk", true);
+  $("stage").max = tier.stages.length; U.buildPanel($("build"), tier, state, setStage); setStage(tier.stages.length);
+  $("run").disabled = tier.twin === "superdense"; $("dl").disabled = true; lastCounts = null; $("runlog").hidden = true;
+  update(true);
+}
+$("stage").addEventListener("input", () => setStage(+$("stage").value));
+$("reset").addEventListener("click", () => select(tier.id));
+$("copyPy").addEventListener("click", (e) => U.copy(window.__twin.prompt, e.target));
+$("run").addEventListener("click", () => {
+  const R = window.__twin.R, shots = Math.round(values.shots || 5000), seed = (Date.now() % 100000) | 0, log = $("runlog");
+  log.hidden = false; log.innerHTML = "";
+  const counts = C.simulateCounts(R, shots, ["H", "V", "D", "A", "R"], ["X", "Y", "Z"], seed), est = C.estimate(counts), cert = C.certify(counts);
+  U.print(log, `$ simulating ${shots.toLocaleString("en-US")} clicks for each of 5 inputs × 3 bases (seed ${seed}), as the four P14 sessions would record`, "dim");
+  U.print(log, "input  basis   n0      n1\n" + Object.entries(counts).map(([k, [a, b]]) => `${k.split(",")[0].padEnd(6)} ${k.split(",")[1].padEnd(6)} ${String(a).padStart(6)}  ${String(b).padStart(6)}`).join("\n"));
+  U.print(log, `estimated map (least squares):\n${est.map((r, i) => `${PAULI[i]}  ` + r.map((x) => x.toFixed(3).padStart(7)).join(" ")).join("\n")}`);
+  const dev = Math.max(...est.flatMap((r, i) => r.map((x, j) => Math.abs(x - R[i][j]))));
+  U.print(log, `largest deviation from the twin's map: ${dev.toFixed(4)} (statistics shrink as 1/√n)`, dev < 4 / Math.sqrt(shots) ? "ok" : "bad");
+  U.print(log, `certificate at ${(100 * cert.confidence).toFixed(0)} % confidence: e_Z ≤ ${(100 * cert.e_z_upper).toFixed(2)} %, e_X ≤ ${(100 * cert.e_x_upper).toFixed(2)} % → F_e ≥ ${cert.fe_lower.toFixed(3)} ${cert.certified_quantum ? "> 0.5: certified quantum" : "≤ 0.5: not certified"}`, cert.certified_quantum ? "ok" : "bad");
+  U.print(log, "python -c \"from qll.link import channel_tomography as CT; n = CT.read_log('tomography.csv'); print(CT.estimate(n), CT.certify(n))\"");
+  log.dataset.certified = String(cert.certified_quantum); lastCounts = counts; $("dl").disabled = false;
+  $("charts").insertAdjacentHTML("beforeend", card("Tomography result", "The map estimated from the simulated counts; compare it with the twin's map above.", U.grid(est, { rows: PAULI, cols: PAULI, cell: 58 })));
+});
+$("dl").addEventListener("click", () => lastCounts && U.download("tomography.csv", C.tomographyCsv(lastCounts)));
+select(location.hash.slice(1) || "hallway");
+U.registerApp();
+document.body.dataset.ready = "1";
+</script>
+</body>
+</html>

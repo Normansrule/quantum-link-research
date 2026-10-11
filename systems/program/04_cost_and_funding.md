@@ -7,7 +7,7 @@
 - **Out of pocket and outside funding are kept apart.** A milestone marked *outside funding* (the CubeSat mission, photonic teleportation between rooms) never enters the out-of-pocket budget. It goes ahead only with a grant, partner, or award.
 - **Time is counted, not priced.** Weeks assume about ten hours a week of your own time; nothing in the plan pays for labor. A real company would price that labor, and [07](07_startup_path.md) does.
 
-The numbers are in [01](01_phases_and_milestones.md). In short: sharing quantum states between two rooms is about $670 likely ($1,370 if everything goes wrong). Entanglement between the rooms adds about $450 with a borrowed source. Everything up to a ground-station prototype stays under about $6,000 likely, spread over more than a year.
+The numbers are in [01](01_phases_and_milestones.md). In short: sharing quantum states between two rooms is about $690 likely ($1,400 if everything goes wrong, exactly the cap of MR-1.8). Entanglement between the rooms adds about $1,050 with a borrowed source, most of it the superdense-coding interferometer (M2.6). Everything up to a ground-station prototype stays under about $6,000 likely, spread over more than a year.
 
 ## How costs are controlled
 

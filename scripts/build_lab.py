@@ -17,7 +17,7 @@ OUT = ROOT / "docs" / "lab"
 from qll.systems import lab_scenes  # noqa: E402
 from qll.systems.experiment_catalog import CATALOG, PHASES  # noqa: E402
 
-PAGE = {"link": "link/", "circuits": "circuits/"}
+PAGE = {"link": "link/", "circuits": "circuits/", "channel": "channel/", "outdoor": "outdoor/", "frontier": "frontier/", "messenger": "messenger/"}
 
 
 def catalog() -> dict:

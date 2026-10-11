@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Outdoor and Orbit Lab · Quantum Link Research</title>
+<meta name="description" content="Phase 3: the link between two roofs, two buildings, and a ground station tracking a satellite, with the sky's background, the losses, and the key, line by line.">
+<meta name="theme-color" content="#05070d">
+<link rel="manifest" href="../manifest.webmanifest">
+<link rel="icon" href="../icon-192.png">
+<link rel="apple-touch-icon" href="../icon-192.png">
+<link rel="stylesheet" href="../../space.css">
+<link rel="stylesheet" href="../lab.css">
+<script src="../../js/lab_twin.js"></script>
+<script src="../../js/lab_outdoor.js"></script>
+<script src="../../js/lab_ui.js"></script>
+<script type="importmap">{ "imports": { "three": "../../vendor/three/three.module.js", "three/addons/": "../../vendor/three/addons/" } }</script>
+</head>
+<body>
+<div class="aurora"></div>
+<header class="top">
+  <a class="brand" href="../../"><span class="dot"></span>Quantum Link Research</a>
+  <nav><a href="../">Lab</a><a href="../link/">Two-room link</a><a href="../channel/">Quantum channels</a><a href="./">Outdoors and orbit</a><a href="../frontier/">Frontier</a><a href="../messenger/">Messenger</a><a href="../circuits/">Cloud circuits</a><a class="gh" href="https://github.com/Normansrule/quantum-link-research">GitHub ↗</a></nav>
+</header>
+<section class="lab-head">
+  <div class="kicker" id="kicker">Phase 3 · outdoors and toward orbit</div>
+  <h1 id="title">Outdoors and toward orbit</h1>
+  <p class="sub" id="summary"></p>
+  <div class="tiers" id="tiers" role="tablist" aria-label="From the roof to orbit"></div>
+</section>
+<section class="how" id="how" aria-label="What changes outdoors"></section>
+<main class="lab">
+  <div>
+    <div class="view" id="view">
+      <div class="legend" id="legend"></div>
+      <div class="overlay">
+        <div class="cams" id="cams"></div>
+        <button class="btn-s" id="play" hidden>Play the pass</button>
+      </div>
+    </div>
+  </div>
+  <aside class="side">
+    <div class="panel"><div class="metrics" id="metrics"></div></div>
+    <div class="panel">
+      <h3 style="margin:.1rem 0 .6rem;font-size:1rem">Parameters</h3>
+      <div class="ctl" id="ctl"></div>
+      <div class="params" id="params"></div>
+      <button class="btn-s" id="reset">Reset</button>
+    </div>
+  </aside>
+  <section class="charts" id="charts"></section>
+  <section class="term-wrap panel">
+    <div class="term-bar">
+      <h3>Terminal: the outdoor link, line by line</h3>
+      <button class="btn-s" id="explain">Explain each line</button>
+      <button class="btn-s" id="copyPy">Copy the Python</button>
+      <span class="muted small">Same arithmetic as <code>qll/link/outdoor_link.py</code> and <code>qll/link/satellite_pass.py</code> (tests/test_lab_js.py).</span>
+    </div>
+    <div class="term" id="term" aria-live="polite"></div>
+  </section>
+  <section class="build panel" id="build"></section>
+</main>
+<script type="module">
+import { createLab } from "../../js/lab3d.js";
+const O = window.QLLOutdoor, T = window.QLLTwin, U = window.QLLLabUI;
+const data = await (await fetch("../scenes.json")).json();
+const tiers = data.outdoor;
+const $ = (id) => document.getElementById(id);
+const lab = createLab($("view"));
+window.__lab = lab;
+let tier = null, values = {}, specs = [], ctl = {}, labelsOn = false, playing = null;
+const state = { stage: 3, pick: (p) => U.partCard($("build"), tier, p, specs) };
+lab.onPick((p) => state.pick(p));
+U.explainToggle($("explain"), $("term"));
+const card = (h, cap, body) => `<div class="chartcard"><h3>${U.esc(h)}</h3><p class="cap">${U.esc(cap)}</p>${body}</div>`;
+const metric = (l, n, ok) => `<div class="metric ${ok ? "ok" : "bad"}"><div class="n">${n}</div><div class="l">${U.esc(l)}</div></div>`;
+const db = (x) => (-10 * Math.log10(x)).toFixed(2);
+const RV = 15, sci = (x) => (x >= 1e4 ? x.toExponential(2) : (+x.toPrecision(3)).toString());
+
+function renderHow() {
+  const pass = tier.twin === "pass";
+  const steps = pass ? [["l", "1 · the orbit", "500 km up, 7.6 km/s", "A low orbit passes overhead in about six minutes above 15°."], ["q", "2 · the downlink", "a beam metres wide", "From hundreds of kilometres the beam spreads to metres; the telescope catches a sliver."],
+    ["q", "3 · the air", "thin straight up", "Most of the atmosphere is in the lowest 10 km; low passes look through more of it."], ["l", "4 · tracking", "microradians", "The telescope follows the satellite; the satellite steers its beam onto the telescope."],
+    ["c", "5 · timing", "GPS on both ends", "Clicks are matched to pulses by time, so both ends keep GPS time to nanoseconds."], ["c", "6 · key", "one pass at a time", "Each pass gives a block of key; keys pile up pass by pass."]]
+    : [["l", "1 · same hardware", "the P10 source and receiver", "The two-room bench moves onto the roofs, boxed against weather and light."], ["q", "2 · telescopes", "beams that spread", "A wider sending beam spreads less; a bigger receiving lens catches more."],
+      ["q", "3 · the air", "scattering and wobble", "Violet light scatters in air; the tripods and heat shimmer move the spot around."], ["l", "4 · the sky", "a glowing background", "Daylight is a hundred million times brighter than a city night: filters and a small field fight it."],
+      ["c", "5 · classical channel", "fiber or radio", "Bases and corrections cross between buildings over an ordinary link, authenticated."], ["c", "6 · key", "night, then day", "The twin says when a key is possible: detectors, distance, and sky decide."]];
+  $("how").innerHTML = steps.map(([k, tag, b, t]) => `<div class="step ${k}"><span class="tag">${tag}</span><b>${U.esc(b)}</b>${U.esc(t)}</div>`).join("");
+}
+function outdoorParts() { const p = {}; for (const s of specs) p[s.key] = values[s.key]; p.receiver = O.RECEIVERS[ctl.receiver || "sipm"]; return p; }
+function downlink() { return Object.assign({}, O.PRESETS[ctl.preset || "micius"], { min_elevation_deg: values.min_elevation_deg, y0: values.y0, mu: values.mu, e_det: values.e_det }); }
+function update(anim) {
+  if (tier.twin === "outdoor") {
+    const p = outdoorParts(), r = O.predict(p), s = r.session, c = r.config, rx = p.receiver ? Object.assign({}, T.TWO_ROOM, p.receiver) : T.TWO_ROOM;
+    const changed = Object.entries(p).filter(([k]) => k !== "receiver").map(([k, v]) => `${k}=${v}`).join(", ");
+    U.terminal($("term"), `python -c "from qll.link import outdoor_link as O; print(O.predict(O.OutdoorParts(${changed}, receiver=O.RECEIVERS['${ctl.receiver || "sipm"}'])))"`, O.stepsOutdoor(p), { animate: anim });
+    $("metrics").innerHTML = metric("Path loss", `${r.path_loss_db.toFixed(1)} dB`, true) + metric("Sky photons", `${sci(r.sky_counts_per_s)} /s`, r.sky_counts_per_s < 1e5) +
+      metric("Error rate", `${(100 * r.qber).toFixed(2)} %`, r.qber < 0.11) + metric("Secret key", s.accepted ? `${s.key_bits.toLocaleString("en-US")} bits` : "0", s.accepted) +
+      `<div class="verdict ${s.accepted ? "" : "bad"}" id="verdict">${s.accepted ? `A key across ${values.distance_m} m: ${s.key_bits.toLocaleString("en-US")} bits per ${c.n_pulses / c.pulse_rate_hz} s session.` : r.qber > 0.11 ? "No key: the error rate is above 11 %. Darker sky, a narrower filter, a smaller field, or quieter detectors." : `No key: ${s.reason}.`}</div>`;
+    const Ls = Array.from({ length: 60 }, (_, k) => Math.pow(10, 1.3 + k * (3.7 - 1.3) / 59));
+    const keyAt = (L, extra) => O.predict(Object.assign({}, p, { distance_m: L }, extra || {})).key_bits;
+    const night = Ls.map((L) => keyAt(L, { sky_radiance: 1e-6 })), cur = Ls.map((L) => keyAt(L)), sipm = Ls.map((L) => keyAt(L, { receiver: O.RECEIVERS.sipm, sky_radiance: 1e-6 })), spad = Ls.map((L) => keyAt(L, { receiver: O.RECEIVERS.spad, sky_radiance: 1e-6 }));
+    const lgx = Ls.map((L) => Math.log10(L)), pos = (a) => a.map((k) => (k > 0 ? k : NaN)), ymax = Math.max(100, ...spad, ...cur) * 2;
+    const pd1 = 1 - Math.exp(-rx.sipm_dark_hz * rx.gate_s), skyPair = 1 - Math.exp(-r.sky_counts_per_s / 2 * rx.gate_s), sig = s.classes[0].p_sig;
+    $("charts").innerHTML =
+      card("The loss budget", "Each factor in decibels; every 3 dB halves the light.", U.bars([{ label: "beam spreading", value: -10 * Math.log10(r.geometric), text: db(r.geometric) + " dB", color: U.C.violet },
+        { label: "pointing jitter", value: -10 * Math.log10(r.pointing), text: db(r.pointing) + " dB", color: U.C.blue }, { label: "air", value: -10 * Math.log10(r.air), text: db(r.air) + " dB", color: U.C.cyan },
+        { label: "coupling", value: -10 * Math.log10(r.coupling), text: db(r.coupling) + " dB", color: U.C.gold }, { label: "total path", value: r.path_loss_db, text: r.path_loss_db.toFixed(2) + " dB", color: U.C.warm }], { max: Math.max(10, r.path_loss_db * 1.1) })) +
+      card("What fires in a 5 ns gate", "Chance per gate of a real photon click against detector noise and skylight (log scale). Noise must stay well below signal.",
+        U.bars([{ label: "photon click (signal pulse)", value: Math.max(0, Math.log10(sig) + 9), text: sig.toExponential(2), color: U.C.green }, { label: "detector dark click, one basis", value: Math.max(0, Math.log10(1 - (1 - pd1) ** 2) + 9), text: (1 - (1 - pd1) ** 2).toExponential(2), color: U.C.warm },
+          { label: "skylight click, one basis", value: Math.max(0, Math.log10(Math.max(skyPair, 1e-12)) + 9), text: skyPair.toExponential(2), color: U.C.blue }], { max: 9, labelWidth: 200 })) +
+      card("Secret key against distance", "Key per session (log scale) at your settings, and at night with each receiver. The SiPMs of P10 never make a key outdoors; avalanche-diode modules reach about 2 km at night.",
+        U.line(lgx, [{ ys: pos(cur), color: U.C.gold, label: "your settings" }, { ys: pos(spad), color: U.C.green, label: "avalanche diodes, night" }, { ys: pos(sipm), color: U.C.warm, label: "SiPMs, night" }],
+          { logY: true, ymin: 10, ymax, xticks: [1.5, 2, 2.5, 3, 3.5], yticks: [10, 100, 1e3, 1e4, 1e5].filter((y) => y < ymax), yfmt: (y) => (y >= 1e3 ? y / 1e3 + "k" : String(y)), xlabel: "distance: 10^x metres", marker: { x: Math.log10(values.distance_m), y: s.key_bits || NaN, label: "you" } }));
+    lab.setSky(values.sky_radiance);
+    const w0 = values.tx_waist_m, w = r.beam_radius_m, vis = (m) => Math.min(1.2, Math.max(0.03, m * 12));
+    lab.setCone([-6.1, 6.9, 0], [6.1, 6.9, 0], vis(w0), vis(w), 0x8b5cf6);
+    lab.setValues(values, { photons: 6, transmit: Math.min(1, s.classes[0].p_sig / 0.5), beam: 0.6, dark: Math.min(6, 2 + Math.log10(1 + r.sky_counts_per_s)), packets: 0.8 });
+    window.__twin = { r, receiver: ctl.receiver || "sipm", prompt: `python -c "from qll.link import outdoor_link as O; print(O.predict(O.OutdoorParts(${changed}, receiver=O.RECEIVERS['${ctl.receiver || "sipm"}'])))"` };
+    return;
+  }
+  const d = downlink(), t = values.t, now = O.atTime(d, t), sm = O.passSummary(d);
+  U.terminal($("term"), `python -c "from qll.link import satellite_pass as S; from dataclasses import replace; d = replace(S.PRESETS['${ctl.preset}'], min_elevation_deg=${d.min_elevation_deg}, y0=${d.y0}, mu=${d.mu}, e_det=${d.e_det}); print(S.at_time(d, ${t}), S.pass_summary(d)['key_bits'])"`, O.stepsPass(d, t), { animate: anim });
+  const up = now.elevation_deg > d.min_elevation_deg;
+  $("metrics").innerHTML = metric("Elevation now", `${now.elevation_deg.toFixed(1)}°`, up) + metric("Range now", isFinite(now.range_m) ? `${(now.range_m / 1000).toFixed(0)} km` : "—", up) +
+    metric("Loss now", isFinite(now.loss_db) ? `${now.loss_db.toFixed(1)} dB` : "—", up) + metric("Key over the pass", `${sci(sm.key_bits)} bits`, sm.key_bits > 0) +
+    `<div class="verdict ${sm.key_bits > 0 ? "" : "bad"}" id="verdict">${sm.key_bits > 0 ? `A ${(sm.duration_s / 60).toFixed(1)}-minute pass above ${d.min_elevation_deg}°, losing ${sm.min_loss_db.toFixed(0)}–${sm.max_loss_db.toFixed(0)} dB: up to ${sci(sm.key_bits)} key bits (asymptotic upper estimate).` : "No key over this pass: the background is too high for the light that arrives."}</div>`;
+  const ts = sm.rows.map((r) => r.t_s), rates = sm.rows.map((r) => r.key_per_pulse * d.rep_rate_hz), rpos = rates.filter((v) => v > 0);
+  const rmin = rpos.length ? Math.pow(10, Math.floor(Math.log10(Math.min(...rpos)))) : 1, rmax = rpos.length ? Math.pow(10, Math.ceil(Math.log10(Math.max(...rpos)))) : 10;
+  $("charts").innerHTML =
+    card("Loss through the pass", "One downlink's total loss, second by second; lowest overhead, highest near the horizon. The marker is the moment you picked.",
+      U.line(ts, [{ ys: sm.rows.map((r) => r.loss_db), color: U.C.violet, label: "loss (dB)" }], { xticks: [-180, -90, 0, 90, 180].filter((x) => x >= ts[0] && x <= ts.at(-1)), yticks: [20, 25, 30, 35, 40, 45, 50].filter((y) => y >= Math.floor(sm.min_loss_db / 5) * 5 - 2 && y <= Math.ceil(sm.max_loss_db / 5) * 5 + 2), xlabel: "seconds from overhead", ymin: Math.floor(sm.min_loss_db / 5) * 5 - 2, ymax: Math.ceil(sm.max_loss_db / 5) * 5 + 2, marker: up ? { x: t, y: now.loss_db, label: "now" } : null })) +
+    card("Key rate through the pass", "Secret bits per second at each moment (log scale): most of the key comes while the satellite is high.",
+      U.line(ts, [{ ys: rates.map((v) => (v > 0 ? v : NaN)), color: U.C.green, label: "key bits per second" }], { logY: true, ymin: rmin, ymax: rmax, xticks: [-180, -90, 0, 90, 180].filter((x) => x >= ts[0] && x <= ts.at(-1)), yticks: [1, 10, 100, 1e3, 1e4, 1e5, 1e6].filter((y) => y >= rmin && y <= rmax), yfmt: (y) => (y >= 1e3 ? y / 1e3 + "k" : String(y)), xlabel: "seconds from overhead", marker: up ? { x: t, y: now.key_per_pulse * d.rep_rate_hz, label: "now" } : null })) +
+    (now.factors ? card("Where the light goes now", "Each loss in decibels at this moment of the pass.", U.bars(Object.entries({ "beam spreading": now.factors.geo, "air mass": now.factors.atm, pointing: now.factors.point, optics: now.factors.optics, detector: now.factors.det }).map(([k, v], i) => ({ label: k, value: -10 * Math.log10(v), text: db(v) + " dB", color: [U.C.violet, U.C.cyan, U.C.blue, U.C.gold, U.C.green][i] })), { max: 40 })) : "");
+  const e = Math.max(now.elevation_deg, -5) * Math.PI / 180, side = t < 0 ? -1 : 1, sat = [side * Math.cos(e) * RV, Math.max(0.5, Math.sin(e) * RV), -3];
+  lab.movePart("sat", sat); lab.aimPart("scope", up ? sat : [side * 5, 3, -3]);
+  lab.setCone(up ? sat : null, [0, 2.3, 0], 0.04, Math.min(2.5, 0.4 + (now.range_m || 0) / 600e3), 0xff6fb5);
+  lab.setSky(1e-7);
+  window.__twin = { now, sm, prompt: `python -c "from qll.link import satellite_pass as S; from dataclasses import replace; d = replace(S.PRESETS['${ctl.preset}'], min_elevation_deg=${d.min_elevation_deg}, y0=${d.y0}, mu=${d.mu}, e_det=${d.e_det}); print(S.at_time(d, ${t}), S.pass_summary(d)['key_bits'])"` };
+}
+function renderTabs() {
+  $("tiers").innerHTML = tiers.map((t, i) => `${i ? '<span class="arrow">→</span>' : ""}<button role="tab" data-tier="${t.id}" aria-selected="${t === tier}"><small>${U.esc(t.milestones.join(", "))}</small><span>${U.esc(t.title)}</span><small>${U.esc(t.cost.split(";")[0])}</small></button>`).join("");
+  $("tiers").querySelectorAll("button").forEach((b) => b.addEventListener("click", () => select(b.dataset.tier)));
+}
+function select(id) {
+  tier = tiers.find((t) => t.id === id) || tiers[0]; history.replaceState(null, "", "#" + tier.id);
+  specs = tier.sliders; values = {}; specs.forEach((s) => (values[s.key] = s.value));
+  ctl = tier.twin === "outdoor" ? { receiver: tier.id === "building" ? "spad" : "sipm" } : { preset: tier.id === "microsat" ? "jinan1" : "micius" };
+  if (tier.id === "building") values.distance_m = 1000;
+  $("title").textContent = tier.title; $("summary").textContent = tier.summary; $("kicker").textContent = `Phase 3 · ${tier.experiments.join(", ")} · milestones ${tier.milestones.join(", ")}`;
+  renderTabs(); renderHow();
+  $("ctl").innerHTML = tier.twin === "outdoor" ? `<label>Detectors <select id="receiver"><option value="sipm">silicon photomultipliers (P10)</option><option value="spad">avalanche-diode modules (used)</option></select></label><label>Sky <select id="sky">${Object.entries(O.SKY).map(([k, v]) => `<option value="${v}">${k}</option>`).join("")}</select></label>`
+    : `<label>Satellite and station <select id="preset"><option value="micius">Micius class (1.2 m receiver)</option><option value="jinan1">Jinan-1 class (28 cm receiver)</option></select></label>`;
+  if ($("receiver")) { $("receiver").value = ctl.receiver; $("receiver").addEventListener("change", () => { ctl.receiver = $("receiver").value; update(true); }); }
+  if ($("sky")) { $("sky").value = String(values.sky_radiance); $("sky").addEventListener("change", () => { setters.sky_radiance(+$("sky").value); update(true); }); }
+  if ($("preset")) { $("preset").value = ctl.preset; $("preset").addEventListener("change", () => { ctl.preset = $("preset").value; update(true); }); }
+  setters = U.sliders($("params"), specs, values, () => update(), (k) => lab.setFocus(k));
+  $("legend").innerHTML = tier.twin === "outdoor" ? `<span><i style="background:#8b5cf6"></i>405 nm beam, widening</span><span><i style="background:#f5c518"></i>classical channel</span><span class="muted">distances not to scale</span>` : `<span><i style="background:#ff6fb5"></i>downlink beam</span><span class="muted">orbit not to scale</span>`;
+  const cams = tier.twin === "outdoor" ? [["roofs", "Both roofs"], ["sendRoof", "Sending roof"], ["recvRoof", "Receiving roof"]] : [["station", "Station"], ["sky", "Sky"]];
+  $("cams").innerHTML = cams.map(([k, l]) => `<button data-cam="${k}">${l}</button>`).join("") + `<button id="labels" aria-pressed="${labelsOn}">Labels</button>`;
+  $("cams").querySelectorAll("[data-cam]").forEach((b) => b.addEventListener("click", () => lab.view(b.dataset.cam)));
+  $("labels").addEventListener("click", () => { labelsOn = !labelsOn; lab.setLabels(labelsOn); $("labels").setAttribute("aria-pressed", String(labelsOn)); });
+  lab.setTier(tier); lab.setLabels(labelsOn); lab.view(cams[0][0], true);
+  if (tier.twin === "outdoor") { lab.aimPart("txScope", [9, 6.9, 0]); lab.aimPart("rxScope", [-9, 6.9, 0]); }
+  U.buildPanel($("build"), tier, state, (n) => { lab.setStage(n); U.markStage($("build"), n); });
+  $("play").hidden = tier.twin !== "pass"; if (playing) { clearInterval(playing); playing = null; $("play").textContent = "Play the pass"; }
+  update(true);
+}
+let setters = {};
+$("play").addEventListener("click", () => {
+  if (playing) { clearInterval(playing); playing = null; $("play").textContent = "Play the pass"; return; }
+  $("play").textContent = "Pause";
+  playing = setInterval(() => { let t = values.t + 4; if (t > 200) t = -200; setters.t(t); update(); }, 120);
+});
+$("reset").addEventListener("click", () => select(tier.id));
+$("copyPy").addEventListener("click", (e) => U.copy(window.__twin.prompt, e.target));
+select(location.hash.slice(1) || "rooftop");
+U.registerApp();
+document.body.dataset.ready = "1";
+</script>
+</body>
+</html>

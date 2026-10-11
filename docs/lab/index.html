@@ -16,7 +16,7 @@
 <div class="aurora"></div>
 <header class="top">
   <a class="brand" href="../"><span class="dot"></span>Quantum Link Research</a>
-  <nav><a href="./">Lab</a><a href="link/">Two-room link</a><a href="circuits/">Cloud circuits</a><a href="../systems/">Traceability</a><a class="gh" href="https://github.com/Normansrule/quantum-link-research">GitHub ↗</a></nav>
+  <nav><a href="./">Lab</a><a href="link/">Two-room link</a><a href="channel/">Quantum channels</a><a href="outdoor/">Outdoors and orbit</a><a href="frontier/">Frontier</a><a href="messenger/">Messenger</a><a href="circuits/">Cloud circuits</a><a href="../systems/">Traceability</a><a class="gh" href="https://github.com/Normansrule/quantum-link-research">GitHub ↗</a></nav>
 </header>
 <section class="lab-head">
   <div class="kicker">The lab · web and installable app</div>
@@ -25,10 +25,20 @@
 </section>
 <section class="lab-gallery">
   <div class="bento" style="margin-bottom:1.2rem">
-    <a class="card c4" href="link/#two_room"><span class="tag green">MAIN EXPERIMENT</span><h3>The two-room link</h3>
+    <a class="card c6" href="link/#two_room"><span class="tag green">MAIN EXPERIMENT</span><h3>The two-room link</h3>
       <p>Starter bright-light analogue ($40–120) → single photons between two rooms ($530–1,180) → avalanche-diode upgrade → entangled photons. Weak 405 nm pulses, decoys, four SiPMs, FPGA gating, and a fiber classical channel, with the twin's prediction for every knob.</p>
       <div class="pass" id="ladderLink"></div></a>
-    <a class="card c2" href="circuits/#collapse"><span class="tag violet">$0 · CLOUD</span><h3>Cloud circuits</h3>
+    <a class="card c3" href="channel/#hallway"><span class="tag violet">NEW · QUANTUM CHANNELS</span><h3>The hallway as a quantum channel</h3>
+      <p>What the trip between the rooms does to a qubit, drawn as the sphere of polarizations turning into an ellipsoid; a certificate from the BB84 counts that no classical relay could do it; what the channel can carry; teleportation as a channel; and superdense coding through the hallway, more than one bit per photon.</p></a>
+    <a class="card c3" href="outdoor/#rooftop"><span class="tag warm">NEW · PHASE 3</span><h3>Outdoors and toward orbit</h3>
+      <p>The same link between two roofs, then two buildings at night, then a ground station tracking a satellite for six minutes: the beam spreading, the air, the sky's glow, and the key, with the twin saying when each one works.</p>
+      <div class="pass" id="ladderOut"></div></a>
+    <a class="card c3" href="frontier/#delay"><span class="tag green">NEW · PHASE 4</span><h3>The frontier: teleportation across a distance</h3>
+      <p>Teleport on a free cloud processor with the two bits delayed, then through a swapping node, between the rooms with a fiber delay line, and from Earth to Mars with entanglement banked in memories: a spacetime diagram shows that nothing outruns the light time.</p>
+      <div class="pass" id="ladderFrontier"></div></a>
+    <a class="card c3" href="messenger/#rooms"><span class="tag violet">NEW · THE APPLICATION</span><h3>A messenger keyed by the link</h3>
+      <p>Send real encrypted messages in the browser with the key each link makes: a one-time pad with a Wegman–Carter tag, link-keyed AES, or the hybrid. See how many a day each link can key, how big a bank never refuses, and why a Mars messenger starts by carrying its key.</p></a>
+    <a class="card c6" href="circuits/#collapse"><span class="tag violet">$0 · CLOUD</span><h3>Cloud circuits</h3>
       <p>The collapse code (P11), teleportation and superdense coding (P12), and Majorana parity teleportation (P13): exact density matrices, the processor in 3D, and the commands for real hardware.</p></a>
   </div>
   <div class="mission" id="mission"></div>
@@ -41,6 +51,8 @@
   const U = window.QLLLabUI, esc = U.esc;
   const [cat, scenes] = await Promise.all([fetch("catalog.json").then((r) => r.json()), fetch("scenes.json").then((r) => r.json())]);
   document.getElementById("ladderLink").textContent = scenes.link.map((t) => t.title.split(":")[0]).join(" → ");
+  document.getElementById("ladderFrontier").textContent = scenes.frontier.map((t) => t.title.split(":")[0].split("(")[0].trim()).join(" → ");
+  document.getElementById("ladderOut").textContent = scenes.outdoor.map((t) => t.title.split("(")[0].trim()).join(" → ");
   const M = document.getElementById("mission");
   M.innerHTML = Object.entries(cat.phases).map(([k, v]) => `<a href="#" data-phase="${k}"><b>Phase ${k}</b>${esc(v)}</a>`).join("");
   const statuses = [...new Set(cat.experiments.map((e) => e.status))];

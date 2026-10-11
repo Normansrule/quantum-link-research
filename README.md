@@ -12,6 +12,8 @@
   <a href="https://Normansrule.github.io/quantum-link-research/coupler/"><img src="https://img.shields.io/badge/Coupler_lab-ff8a4c?style=for-the-badge" alt="Coupler lab"></a>
   <a href="https://Normansrule.github.io/quantum-link-research/qec/"><img src="https://img.shields.io/badge/QEC_lab-ffd166?style=for-the-badge" alt="QEC lab"></a>
   <a href="research/thesis/THESIS_DRAFT.md"><img src="https://img.shields.io/badge/Read_the_thesis-45e0a0?style=for-the-badge" alt="Thesis draft"></a>
+  <a href="#build-the-main-experiment-phase-1"><img src="https://img.shields.io/badge/Build_Phase_1:_bill_of_materials-fde68a?style=for-the-badge" alt="Build Phase 1: bill of materials"></a>
+  <a href="#scale-the-majorana-research-from-one-hop-to-a-chain"><img src="https://img.shields.io/badge/Scale_the_Majorana_research-ff6fb5?style=for-the-badge" alt="Scale the Majorana research"></a>
 </p>
 
 <p align="center">
@@ -83,12 +85,24 @@ This is the thesis question in one picture. A stored Bell pair decays toward the
 
 ## The website
 
-Nine interactive pages and an installable lab, all driven by the same tested numbers and tested themselves in headless Chromium on every push. The animations are recordings of the real pages ([`scripts/record_site.py`](scripts/record_site.py)); click one to open it.
+Nine interactive pages and an installable lab with six builds, all driven by the same tested numbers and tested themselves in headless Chromium on every push. The animations are recordings of the real pages ([`scripts/record_site.py`](scripts/record_site.py)); click one to open it. Every lab opens with a six-step picture of how the experiment works, shows where the photons go and where the decibels are lost, labels every part in 3D on request, and adds a plain-language note under every line of the math terminal.
 
 <table>
 <tr>
 <td width="50%" valign="top"><a href="https://Normansrule.github.io/quantum-link-research/lab/link/"><img src="docs/figures/lab_link.jpg" alt="Two-room link lab: room B's analyzer in 3D beside the twin's numbers" width="100%"></a><br><b>Two-room link lab</b> <sup>new</sup><br><sub>The main experiment as it would stand in the rooms, from the $40–120 starter to entangled photons: every part placed, priced, and tied to its build stage; sliders for the parts you will measure; a terminal printing every formula, substitution, and citation; and a session sampled in the browser that downloads as the two per-site logs the Python pipeline ingests.</sub></td>
 <td width="50%" valign="top"><a href="https://Normansrule.github.io/quantum-link-research/lab/circuits/"><img src="docs/figures/lab_circuits.jpg" alt="Cloud circuits lab: teleportation with Bob's Bloch vector" width="100%"></a><br><b>Cloud circuits lab</b> <sup>new</sup><br><sub>The collapse code (P11), teleportation and superdense coding (P12), and Majorana parity teleportation (P13) as exact density matrices, checked against Qiskit Aer, with the desk, the cloud, and the processor in 3D and the commands that run each one on hardware.</sub></td>
+</tr>
+<tr>
+<td width="50%" valign="top"><a href="https://Normansrule.github.io/quantum-link-research/lab/channel/"><img src="docs/figures/lab_channel.jpg" alt="Quantum channel lab: the Bloch sphere turned into an ellipsoid by noise" width="100%"></a><br><b>Quantum channel lab</b> <sup>new</sup><br><sub>What the trip does to a qubit, drawn as the sphere of polarizations becoming an ellipsoid; a certificate from the BB84 error rates that no classical relay could match; what the channel can carry (bits, qubits, secret key); a tomography run whose log loads into the Python; teleportation as a channel; and superdense coding through the hallway at more than one bit per photon.</sub></td>
+<td width="50%" valign="top"><a href="https://Normansrule.github.io/quantum-link-research/lab/outdoor/"><img src="docs/figures/lab_outdoor.jpg" alt="Outdoor and orbit lab: a ground station tracking a satellite during a pass" width="100%"></a><br><b>Outdoors and orbit lab</b> <sup>new</sup><br><sub>The link between two roofs, then two buildings at night, then a ground station tracking a Micius-class satellite: the beam spreading, pointing jitter, the air, and the sky's glow as a loss budget and a signal-to-noise chart, the key against distance for each receiver, and a pass you can play second by second.</sub></td>
+</tr>
+<tr>
+<td width="50%" valign="top"><a href="https://Normansrule.github.io/quantum-link-research/lab/frontier/"><img src="docs/figures/lab_frontier.jpg" alt="Frontier lab: Earth and Mars with banked entanglement and the light time" width="100%"></a><br><b>Frontier lab</b> <sup>new</sup><br><sub>Teleportation across a distance, honestly timed: a free cloud-processor run with the two bits delayed, a swapping node that learns nothing, photonic teleportation between the rooms, and Earth to Mars with entanglement banked in memories, each drawn as a spacetime diagram in which nothing outruns the light time.</sub></td>
+<td width="50%" valign="top"><b>Teleportation never beats light</b><br><sub>What it does instead: the pairs are sent ahead and banked, so at the moment of sending nothing quantum has to survive the trip, only two classical bits that travel at light speed. The frontier lab shows which memories last long enough for which distance, from 1 ms atomic ensembles (a city) to hour-long trapped ions (Mars).</sub></td>
+</tr>
+<tr>
+<td width="50%" valign="top"><a href="https://Normansrule.github.io/quantum-link-research/lab/messenger/"><img src="docs/figures/lab_messenger.jpg" alt="Messenger lab: messages encrypted with a one-time pad, in flight to Mars" width="100%"></a><br><b>Messenger lab</b> <sup>new</sup><br><sub>The application on every link: real messages encrypted in the browser with the key each link makes (a one-time pad with a Wegman–Carter tag, link-keyed AES-256-GCM, or the hybrid with ML-KEM), a key bank sized so it never refuses, a messenger that fails closed when it is empty, and the light time on every message.</sub></td>
+<td width="50%" valign="top"><b>Security, stated plainly</b><br><sub>A one-time pad is unbreakable but spends a key bit per message bit; the two-room link keys about 60,000 short messages a day that way, and a satellite pass about 2,000. AES under link key has 128-bit security against a quantum computer and keys millions. Today's public-key messengers need no key bank, but a recording can be decrypted later by a large quantum computer. A first Mars messenger can be keyed today by carrying the key: a terabyte of pad lasts tens of thousands of years of texting.</sub></td>
 </tr>
 <tr>
 <td width="50%" valign="top"><a href="https://Normansrule.github.io/quantum-link-research/mars/"><img src="docs/figures/anim_mars.gif" alt="Mars link simulator" width="100%"></a><br><b>Mars link simulator</b><br><sub>Orbits, conjunction, L4/L5 relays, and which memories outlive today's round trip.</sub></td>
@@ -158,10 +172,14 @@ Twelve validation cases match closed-form models, and every run reproduces from 
 
 [`systems/program/`](systems/program/README.md) turns the research into one phased plan, with gates, three-point costs, a critical-path schedule, a risk register, trade studies, and a path to a company:
 
-1. **Phase 1, two rooms (about $670 likely).** A fiber classical channel between two rooms. Single-photon BB84 with decoys across a hallway, using four silicon photomultipliers ([P10](experiments/protocols/P10_two_room_single_photon_link.md)), matched line by line to a digital twin. The collapse code on a free cloud processor ([P11](experiments/protocols/P11_collapse_code_on_a_cloud_processor.md)): a measured bound on whether the way a shared state collapses can carry a message (quantum mechanics says it carries none).
-2. **Phase 2, entanglement between the rooms.** A borrowed source, a Bell test, and an entanglement-based key.
-3. **Phase 3, outdoors and toward orbit.** Free space, a ground station, and a satellite only with a partner.
-4. **Phase 4, the frontier.** Entanglement-assisted communication: teleportation and superdense coding, each with its classical channel.
+1. **Phase 1, two rooms (about $690 likely).** A fiber classical channel between two rooms. Single-photon BB84 with decoys across a hallway, using four silicon photomultipliers ([P10](experiments/protocols/P10_two_room_single_photon_link.md)), matched line by line to a digital twin. The collapse code on a free cloud processor ([P11](experiments/protocols/P11_collapse_code_on_a_cloud_processor.md)): a measured bound on whether the way a shared state collapses can carry a message (quantum mechanics says it carries none).
+2. **Phase 2, entanglement between the rooms.** A borrowed source, a Bell test, an entanglement-based key, and superdense coding through the hallway: more than one bit per photon ([E19](experiments/proposed/E19_superdense_coding_through_the_hallway.md)).
+3. **Phase 3, outdoors and toward orbit.** Free space between roofs and buildings, a ground station, and a satellite only with a partner. The [outdoor lab](https://normansrule.github.io/quantum-link-research/lab/outdoor/) shows what to expect: the SiPMs of P10 make no key outdoors, avalanche-diode modules reach about 2 km at night, daylight swamps a 405 nm receiver, and a Micius-class pass loses 26–39 dB ([`qll/link/outdoor_link.py`](qll/link/outdoor_link.py), [`qll/link/satellite_pass.py`](qll/link/satellite_pass.py)).
+4. **Phase 4, the frontier.** Entanglement-assisted communication: teleportation and superdense coding, each with its classical channel. The first step is free: teleportation on a cloud processor with the two bits delayed, whose fidelity follows the qubit's own T₁ and T₂ down through 2/3 after about 110 µs ([E01](experiments/proposed/E01_delayed_classical_channel_teleportation.md)). The [frontier lab](https://normansrule.github.io/quantum-link-research/lab/frontier/) carries the same timing to a swapping node, the rooms, and Mars ([`qll/network/teleport_across.py`](qll/network/teleport_across.py)).
+
+**The application.** [P15](experiments/protocols/P15_messages_keyed_by_the_link.md) spends the link's key on messages and measures how many a day each link can key and how big a key bank keeps the messenger from refusing ([`qll/link/keyed_messaging.py`](qll/link/keyed_messaging.py)); the [messenger lab](https://normansrule.github.io/quantum-link-research/lab/messenger/) does it live in the browser.
+
+**Quantum channels.** The hallway already carries qubits, not just key bits. [P14](experiments/protocols/P14_the_hallway_as_a_quantum_channel.md) certifies it as a quantum channel from the BB84 counts (no classical relay could match them), maps it by process tomography with two $10 quarter-wave plates, and computes what it can carry; the same analysis shows that teleportation is a quantum channel only with its two classical bits ([09](systems/program/09_quantum_channels.md)).
 
 Every experiment already in the repository is catalogued with the phase it feeds and what it takes to replicate it ([02](systems/program/02_research_foundation.md)). The [lab](https://normansrule.github.io/quantum-link-research/lab/) lists all of them and opens the ones with a build in 3D, from a starter to the real-world option ([`qll/systems/lab_scenes.py`](qll/systems/lab_scenes.py)).
 
@@ -307,3 +325,85 @@ The website and these README images re-implement ideas from twelve open-source p
 ## Contributing and credits
 
 Six rules in [CONTRIBUTING.md](CONTRIBUTING.md): physics correct · established libraries · every formula cited · every module tested · one idea per file · commit only green. Cite with [CITATION.cff](CITATION.cff). Session history is in [docs/SESSION_LOG.md](docs/SESSION_LOG.md) and decisions in [research/thesis/DESIGN_PROCESS.md](research/thesis/DESIGN_PROCESS.md).
+
+<!-- build-guide:start -->
+
+## Build the main experiment: Phase 1
+
+The main experiment is [P10](experiments/protocols/P10_two_room_single_photon_link.md): single photons between two rooms. Weak 405 nm pulses at about half a photon each carry four polarizations across a hallway, decoy pulses guard against photon-number attacks, and four silicon photomultipliers read them in the other room. A fiber classical channel carries the authenticated protocol. The digital twin predicts the run before you buy a part: a click on 5.85 % of pulses, an error rate of 3.7 %, and an expected 12,000 or so secret bits from each ten-second session. The [link lab](https://normansrule.github.io/quantum-link-research/lab/link/#two_room) shows every part in 3D at the price below.
+
+**Bill of materials (planning prices, October 2026; verify before buying)**
+
+| Item | For | Cost |
+|---|---|---|
+| Two laptops with Ethernet | the two sites | owned |
+| Two fiber media converters and a 10–30 m duplex patch cord | classical channel (M1.1) | $40–150 |
+| Four 405 nm laser diodes (5 mW class) with a nanosecond pulse driver | the four BB84 states | $40–120 |
+| Film polarizers, a half-wave retarder, neutral-density filters (OD 1–4) | encoding and attenuation | $50–120 |
+| Four non-polarizing beamsplitters and two polarizing beamsplitters | combining and analysis | $100–250 |
+| Four onsemi MicroFC-30035 SiPMs, breakouts, a 30 V boost module, four fast comparators | detection | $230–350 |
+| Two small FPGA boards | timing | $30–80 |
+| A coaxial cable or second fiber for the pulse clock | synchronization | $10–30 |
+| 3D-printed mounts, black tubes, lens pairs, black card, felt | mechanics | $30–80 |
+| **Total** | | **$530–1,180** |
+
+**Phase 1 budget by milestone** (low, likely, and high, from [`qll/systems/program_plan.py`](qll/systems/program_plan.py)). The milestones count what each step adds, including the $40–120 bright-light analogue that comes first and the open-access fee for the paper. The likely total is $690, and the high case stays within $1,400.
+
+| Milestone | What | Low | Likely | High |
+|---|---|---|---|---|
+| M1.1 | Fiber classical channel between the rooms (media converters, patch cord, authenticated frames) | $40 | $70 | $150 |
+| M1.2 | The collapse code on a cloud processor (P11) and paper 1 | $0 | $0 | $0 |
+| M1.3 | Tier 1 bright-light analogue across the rooms | $40 | $80 | $120 |
+| M1.4 | Silicon photomultiplier receiver, characterized against its datasheet | $150 | $250 | $400 |
+| M1.5 | Pulsed 405 nm source with decoy drive, mean photon number calibrated | $80 | $150 | $300 |
+| M1.6 | Two-room single-photon BB84 with decoys (P10), matched to its twin | $60 | $120 | $250 |
+| M1.8 | The hallway certified and mapped as a quantum channel (P14) | $10 | $20 | $30 |
+| M1.7 | Paper 2: a twin-validated single-photon link for under $1,000 | $0 | $0 | $150 |
+| **Phase 1** | | **$380** | **$690** | **$1,400** |
+
+**Build order.** Each stage is checked against the twin before the next one starts.
+
+0. **Simulate first.** Predict the bench and write a synthetic run ($0).
+1. **Classical channel.** Laptops, media converters, fiber through the door (M1.1).
+2. **Bright analogue across rooms.** Tier 1 down the hallway (M1.3).
+3. **Single-photon receiver.** SiPMs, comparators, dark box; measure dark counts (M1.4).
+4. **Source.** Four diodes, polarizers, combiners, filters to μ = 0.5 (M1.5).
+5. **Receiver optics.** Passive basis choice, PBS arms, waveplate at 22.5°.
+6. **Sessions.** Clock over coax, gated counting, logs, twin check (M1.6).
+7. **Eavesdropper.** Optional intercept-resend station in the hallway.
+
+```
+python -m qll.link.run session --config systems/see510/hardware/two_room.json         # predict and write a synthetic run ($0)
+python -m qll.link.run ingest room_a.csv --bob room_b.csv --config systems/see510/hardware/two_room.json   # your real logs
+```
+
+## Scale the Majorana research: from one hop to a chain
+
+Crogman, Dang, and Erenso (2025) teleport a qubit between Majorana-encoded qubits using joint parity measurements alone. The repository emulates their protocol on a free cloud processor, then scales it from one hop to a chain of hops. Each hop is the same local Bell measurement wherever it sits in the chain, because the Jordan–Wigner strings of neighbouring modes cancel, and each hop needs its own two classical bits. The chain's fidelity falls as $F_N = \tfrac12(1 + k\,s^N)$, and the paper's error budget turns a target chain length into a requirement on the device.
+
+| Step | What | Hardware | Cost | Status |
+|---|---|---|---|---|
+| 1. [P13](experiments/protocols/P13_majorana_teleportation_on_a_cloud_processor.md) (M4.6) | The paper's protocol, one hop: two parity bits against one | 3 qubits on a free cloud processor | $0 | device-copy rehearsal: 0.835 with two bits, 0.641 with one; hardware run next |
+| 2. [E20](experiments/proposed/E20_majorana_parity_teleportation_chain.md) (M4.8) | The same protocol along 1, 2, 3, … hops; fit the loss per hop | 2N + 1 qubits in a line | $0 | device-copy rehearsal: 0.837, 0.797, 0.796 for 1–3 hops; *s* ≈ 0.94, *k* ≈ 0.70, about 11 hops above 2/3; hardware run next |
+| 3. Device requirement | Readout and poisoning a chain of N hops needs | the error budget | $0 | table below |
+| 4. Tetron devices | Four Majorana modes per qubit at fixed parity, with the CSUDH authors and a device group | a partner's dilution refrigerator | outside funding | research version of E18 and E20 |
+
+**What a Majorana chain needs.** Assume a gap Δ/*kT* = 5, poisoning 0.001 per readout window, and *L*/ξ = 6. The table gives the smallest parity-readout signal-to-noise ratio μ₀/σ that keeps the chain above each fidelity:
+
+| Hops | Above 2/3 | Above 0.9 | Above 0.99 |
+|---|---|---|---|
+| 1 | 0.92 | 1.66 | 2.65 |
+| 4 | 1.56 | 2.25 | 3.21 |
+| 16 | 2.17 | 2.79 | not reachable |
+| 64 | 2.71 | 3.42 | not reachable |
+| 128 | 2.98 | not reachable | not reachable |
+
+Where a cell says "not reachable", poisoning alone caps every hop and no readout can compensate. Scaling the protocol therefore asks first for longer quasiparticle-poisoning times, and only then for better readout.
+
+```
+python experiments/bench/frontier/run_frontier.py majorana --backend aer                      # one hop (P13)
+python experiments/bench/frontier/run_frontier.py chain --backend aer --hops 1 2 3            # the chain (E20)
+python experiments/bench/frontier/run_frontier.py chain --backend ibm_torino --layout 0 1 2 3 4 5 6 7 8 --hops 1 2 3 4
+```
+
+<!-- build-guide:end -->

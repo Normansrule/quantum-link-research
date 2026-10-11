@@ -12,7 +12,7 @@ import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
 DOCS = ROOT / "docs"
-LAB_PAGES = [DOCS / "lab" / p for p in ("index.html", "link/index.html", "circuits/index.html")]
+LAB_PAGES = [DOCS / "lab" / p for p in ("index.html", "link/index.html", "circuits/index.html", "channel/index.html", "outdoor/index.html", "frontier/index.html", "messenger/index.html")]
 pytestmark = pytest.mark.phase1
 sys.path.insert(0, str(ROOT / "scripts"))
 
@@ -66,7 +66,7 @@ def test_all_site_javascript_parses(tmp_path):
 
 
 @pytest.mark.parametrize("page", ["index.html", "mars/index.html", "teleport/index.html", "monitor/index.html", "link/index.html",
-                                  "lab/index.html", "lab/link/index.html", "lab/circuits/index.html"])
+                                  "lab/index.html", "lab/link/index.html", "lab/circuits/index.html", "lab/channel/index.html", "lab/outdoor/index.html", "lab/frontier/index.html", "lab/messenger/index.html"])
 def test_local_links_resolve(page):
     path = DOCS / page
     html = path.read_text()
@@ -118,7 +118,7 @@ def test_js_buffer_rule_matches_messenger(tmp_path):
 
 def test_pages_need_no_cdn_and_vendored_files_exist():
     for page in ("index.html", "mars/index.html", "teleport/index.html", "monitor/index.html", "link/index.html", "lab/index.html",
-                 "lab/link/index.html", "lab/circuits/index.html"):
+                 "lab/link/index.html", "lab/circuits/index.html", "lab/channel/index.html", "lab/outdoor/index.html", "lab/frontier/index.html", "lab/messenger/index.html"):
         html = (DOCS / page).read_text()
         assert "cdn.jsdelivr" not in html and "unpkg.com" not in html, page
     for f in ("three/three.module.js", "three/three.core.js", "three/addons/controls/OrbitControls.js", "gsap/gsap.min.js",

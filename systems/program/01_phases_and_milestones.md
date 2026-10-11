@@ -23,9 +23,10 @@ Each milestone is small enough to finish on its own and ends in a verification w
 | M1.4 | Silicon photomultiplier receiver, characterized against its datasheet | 5–9 | $150 / $250 / $400 | $258 | M1.3 | 4 | Test: dark-count rate, relative efficiency, and afterpulsing measured and written into the twin | [P10](../../experiments/protocols/P10_two_room_single_photon_link.md), [T3](../../systems/see510/10_real_world_experiments.md) |
 | M1.5 | Pulsed 405 nm source with decoy drive, mean photon number calibrated | 9–13 | $80 / $150 / $300 | $163 | M1.4 | 4 | Test: mean photon number within 10 % of target from power and repetition rate | [P10](../../experiments/protocols/P10_two_room_single_photon_link.md), [D02](../../experiments/done/02_single_photon_interference.md) |
 | M1.6 | Two-room single-photon BB84 with decoys (P10), matched to its twin | 13–19 | $60 / $120 / $250 | $132 | M1.5, M1.1 | 4 | Test: measured click rate and error rate inside the twin's prediction intervals; a session accepted | [P10](../../experiments/protocols/P10_two_room_single_photon_link.md), [T3](../../systems/see510/10_real_world_experiments.md), [E06](../../experiments/proposed/E06_qrng_basis_choice_on_a_cheap_bench.md) |
+| M1.8 | The hallway certified and mapped as a quantum channel (P14) | 19–21 | $10 / $20 / $30 | $20 | M1.6 | 4 | Test: entanglement-fidelity lower bound above 1/2 at 99 % confidence from measured counts; Pauli transfer matrix against the twin | [P14](../../experiments/protocols/P14_the_hallway_as_a_quantum_channel.md), [P10](../../experiments/protocols/P10_two_room_single_photon_link.md) |
 | M1.7 | Paper 2: a twin-validated single-photon link for under $1,000 | 19–25 | $0 / $0 / $150 | $25 | M1.6 | 4 | Inspection: data, code, and twin published; an outside reader repeats the analysis from the files | — |
 
-Out of pocket: likely $670, PERT mean $737 ± $72; Monte Carlo 50th percentile $799, 80th $881.
+Out of pocket: likely $690, PERT mean $757 ± $72; Monte Carlo 50th percentile $820, 80th $901.
 
 ## Phase 2: Entanglement between two rooms
 
@@ -35,9 +36,10 @@ Out of pocket: likely $670, PERT mean $737 ± $72; Monte Carlo 50th percentile $
 | M2.2 | Bell test across the rooms through fiber | 27–33 | $100 / $300 / $800 | $350 | M2.1, M1.1 | 4 | Test: CHSH above 2 by at least five standard deviations | [D03](../../experiments/done/03_bell_test_spdc.md), [D11](../../experiments/done/11_aspect_1982_time_varying_analyzers.md), [P03](../../experiments/protocols/P03_spdc_bell_test.md) |
 | M2.3 | Entanglement-based key (BBM92) across the rooms, same protocol code | 33–39 | $0 / $100 / $300 | $117 | M2.2 | 5 | Test: key accepted; measured error rate inside the twin's interval | [T4](../../systems/see510/10_real_world_experiments.md) |
 | M2.4 | The collapse code with photons in two rooms | 33–37 | $0 / $50 / $200 | $67 | M2.2 | 4 | Analysis: information per use bounded; correlations appear only after the records are compared | [P11](../../experiments/protocols/P11_collapse_code_on_a_cloud_processor.md), [P06](../../experiments/protocols/P06_quantum_eraser.md), [D11](../../experiments/done/11_aspect_1982_time_varying_analyzers.md) |
+| M2.6 | Superdense coding through the hallway: more than one bit per photon (E19) | 33–39 | $200 / $600 / $1,500 | $683 | M2.2 | 4 | Test: information per detected photon above 1 bit with its 99 % interval, against the twin | [E19](../../experiments/proposed/E19_superdense_coding_through_the_hallway.md), [P12](../../experiments/protocols/P12_teleportation_and_superdense_coding_on_a_cloud_processor.md), [D06](../../experiments/done/06_hong_ou_mandel.md) |
 | M2.5 | Paper 3: entanglement between two rooms on a student budget | 39–45 | $0 / $0 / $150 | $25 | M2.3, M2.4 | 5 | Inspection: data and analysis published | — |
 
-Out of pocket: likely $450, PERT mean $3,058 ± $2,504; Monte Carlo 50th percentile $5,009, 80th $8,889.
+Out of pocket: likely $1,050, PERT mean $3,742 ± $2,513; Monte Carlo 50th percentile $5,856, 80th $9,744.
 
 ## Phase 3: Outdoors and toward orbit
 
@@ -50,7 +52,7 @@ Out of pocket: likely $450, PERT mean $3,058 ± $2,504; Monte Carlo 50th percent
 | M3.5 | Satellite partnership or hosted-payload proposal | 33–45 | $0 / $200 / $1,000 | $300 | M3.1, M2.2 | 5 | Inspection: proposal submitted (CubeSat Launch Initiative with a university team, or ground-station time on an operating mission) | [D09](../../experiments/done/09_satellite_qkd_micius_jinan.md), [D14](../../experiments/done/14_jinan1_2025_microsatellite_qkd.md) |
 | M3.6 | CubeSat entangled-source mission (only with outside funding) *(outside funding)* | 45–149 | $250k / $600k / $1.5M | $692k | M3.5, M3.4 | 7 | Test: in-orbit entanglement and a downlink to the ground station | [D09](../../experiments/done/09_satellite_qkd_micius_jinan.md), [D14](../../experiments/done/14_jinan1_2025_microsatellite_qkd.md) |
 
-Out of pocket: likely $4,300, PERT mean $5,067 ± $1,218; Monte Carlo 50th percentile $5,663, 80th $7,233.
+Out of pocket: likely $4,300, PERT mean $5,067 ± $1,218; Monte Carlo 50th percentile $5,677, 80th $7,206.
 
 With outside funding: likely $600k (range $250k–$1.5M).
 
@@ -60,12 +62,14 @@ With outside funding: likely $600k (range $250k–$1.5M).
 |---|---|---|---|---|---|---|---|---|
 | M4.1 | Teleportation with feed-forward on a cloud processor | 6–10 · *circuits, runner, and device-copy rehearsal done; hardware run next* | — | — | M1.2 | 3 | Test: average fidelity above 2/3 with the two bits, 1/2 without | [P12](../../experiments/protocols/P12_teleportation_and_superdense_coding_on_a_cloud_processor.md), [D07](../../experiments/done/07_teleportation_photonic.md), [E01](../../experiments/proposed/E01_delayed_classical_channel_teleportation.md) |
 | M4.2 | Superdense coding on a cloud processor | 6–8 · *circuits, runner, and device-copy rehearsal done; hardware run next* | — | — | M1.2 | 3 | Test: two bits per transmitted qubit decoded above chance; none without sending the qubit | [P12](../../experiments/protocols/P12_teleportation_and_superdense_coding_on_a_cloud_processor.md), [D07](../../experiments/done/07_teleportation_photonic.md) |
-| M4.3 | Teleportation with a delayed classical channel (E01) | 10–16 | — | — | M4.1 | 3 | Analysis: fidelity versus delay against the memory model | [E01](../../experiments/proposed/E01_delayed_classical_channel_teleportation.md), [E02](../../experiments/proposed/E02_memory_vs_temperature_vs_light_time.md) |
+| M4.3 | Teleportation with a delayed classical channel (E01) | 10–16 · *delayed-teleportation circuits, runner, and device-copy rehearsal done; hardware run next* | — | — | M4.1 | 3 | Analysis: fidelity versus delay against the memory model | [E01](../../experiments/proposed/E01_delayed_classical_channel_teleportation.md), [E02](../../experiments/proposed/E02_memory_vs_temperature_vs_light_time.md) |
 | M4.4 | Three-node entanglement-assisted key network (twin, then two rooms plus one) | 39–47 | $0 / $200 / $2,000 | $467 | M2.3 | 4 | Test: keys between every pair through a trusted node and through swapping in the twin | [D08](../../experiments/done/08_nv_remote_entanglement_and_network.md), [D13](../../experiments/done/13_bhaskar_2020_memory_enhanced_communication.md) |
 | M4.6 | Majorana parity teleportation emulated on a cloud processor (with the CSUDH authors) | 10–14 · *exact fermionic model, circuits, error budget, and simulator rehearsal done; hardware run next* | — | — | M4.1 | 3 | Test: two-bit average fidelity above 2/3 on hardware; one-bit at or below 2/3; no-bits at 1/2 | [P13](../../experiments/protocols/P13_majorana_teleportation_on_a_cloud_processor.md), [E18](../../experiments/proposed/E18_majorana_parity_teleportation_emulated.md) |
+| M4.8 | Majorana parity teleportation along a chain: scaling P13 to N hops (E20) | 14–18 · *chain circuits, scaling fit, readout requirement, and device-copy rehearsal done; hardware run next* | — | — | M4.6 | 3 | Analysis: fidelity per hop fitted over at least three lengths; no-bits at 1/2 at the longest; readout requirement for a target chain | [E20](../../experiments/proposed/E20_majorana_parity_teleportation_chain.md), [P13](../../experiments/protocols/P13_majorana_teleportation_on_a_cloud_processor.md), [E18](../../experiments/proposed/E18_majorana_parity_teleportation_emulated.md) |
+| M4.7 | Teleportation as a quantum channel: process tomography on a cloud processor | 10–12 · *circuits, estimator, and simulator rehearsal done; hardware run next* | — | — | M4.1 | 3 | Test: teleportation channel certified quantum with the two bits; entanglement breaking without them | [P14](../../experiments/protocols/P14_the_hallway_as_a_quantum_channel.md), [P12](../../experiments/protocols/P12_teleportation_and_superdense_coding_on_a_cloud_processor.md) |
 | M4.5 | Photonic teleportation between rooms *(outside funding)* | 33–59 | $2,000 / $8,000 / $30k | $11k | M2.2, M4.1 | 5 | Test: fidelity above 2/3 with Bell-state measurement and the classical bits | [D06](../../experiments/done/06_hong_ou_mandel.md), [D07](../../experiments/done/07_teleportation_photonic.md) |
 
-Out of pocket: likely $200, PERT mean $467 ± $333; Monte Carlo 50th percentile $656, 80th $1,141.
+Out of pocket: likely $200, PERT mean $467 ± $333; Monte Carlo 50th percentile $660, 80th $1,146.
 
 With outside funding: likely $8,000 (range $2,000–$30k).
 
@@ -78,7 +82,7 @@ With outside funding: likely $8,000 (range $2,000–$30k).
 | S3 | First product: the two-room kit and its twin software for teaching labs | 25–41 | $500 / $1,500 / $4,000 | $1,750 | S1, M1.7 | 6 | Demonstration: a pilot course or lab runs the kit and matches the twin | [P10](../../experiments/protocols/P10_two_room_single_photon_link.md), [T1](../../systems/see510/10_real_world_experiments.md), [P09](../../experiments/protocols/P09_mars_link_on_a_table.md) |
 | S4 | National I-Corps and SBIR Phase I applications | 41–53 | $0 / $500 / $2,000 | $667 | S2, S3 | 6 | Inspection: project pitch and proposals submitted | — |
 
-Out of pocket: likely $3,100, PERT mean $3,833 ± $844; Monte Carlo 50th percentile $4,507, 80th $5,466.
+Out of pocket: likely $3,100, PERT mean $3,833 ± $844; Monte Carlo 50th percentile $4,525, 80th $5,481.
 
 ## Gates
 
@@ -97,9 +101,9 @@ Money for a phase is committed only when the gate before it passes.
 
 | Through | Likely cash | PERT mean | If everything goes wrong | Calendar, in parallel | Calendar, one milestone at a time |
 |---|---|---|---|---|---|
-| Phase 1 (two rooms, quantum states shared) | $670 | $737 | $1,370 | week 25 | week 31 |
-| Phase 2 (entanglement between the rooms) | $1,120 | $3,795 | $18k | week 45 | week 61 |
-| Phases 3–4, out of pocket only | $5,620 | $9,328 | $32k | week 47 | week 129 |
+| Phase 1 (two rooms, quantum states shared) | $690 | $757 | $1,400 | week 25 | week 33 |
+| Phase 2 (entanglement between the rooms) | $1,740 | $4,498 | $19k | week 45 | week 69 |
+| Phases 3–4, out of pocket only | $6,240 | $10k | $33k | week 47 | week 143 |
 
 The critical-path calendar assumes independent milestones run side by side (with classmates, an advisor's student, or a collaborator). Alone at ten hours a week, take them one at a time: the last column.
 

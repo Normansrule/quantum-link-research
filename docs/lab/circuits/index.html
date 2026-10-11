@@ -18,7 +18,7 @@
 <div class="aurora"></div>
 <header class="top">
   <a class="brand" href="../../"><span class="dot"></span>Quantum Link Research</a>
-  <nav><a href="../">Lab</a><a href="../link/">Two-room link</a><a href="./">Cloud circuits</a><a href="../../teleport/">Teleportation explainer</a><a class="gh" href="https://github.com/Normansrule/quantum-link-research">GitHub ↗</a></nav>
+  <nav><a href="../">Lab</a><a href="../link/">Two-room link</a><a href="../channel/">Quantum channels</a><a href="../outdoor/">Outdoors and orbit</a><a href="../frontier/">Frontier</a><a href="../messenger/">Messenger</a><a href="./">Cloud circuits</a><a href="../../teleport/">Teleportation explainer</a><a class="gh" href="https://github.com/Normansrule/quantum-link-research">GitHub ↗</a></nav>
 </header>
 
 <section class="lab-head">
@@ -49,6 +49,7 @@
   <section class="term-wrap panel">
     <div class="term-bar">
       <h3>Terminal: the exact density matrices</h3>
+      <button class="btn-s" id="explain">Explain each line</button>
       <button class="btn-s" id="copyPy">Copy the Python</button>
       <span class="muted small">Same arithmetic as the tested Python and Qiskit Aer (tests/test_lab_js.py).</span>
     </div>
@@ -68,6 +69,7 @@ window.__lab = lab;
 let tier = null, values = {}, specs = [], ctl = {};
 const state = { stage: 3, pick: (p) => U.partCard($("build"), tier, p, specs) };
 lab.onPick((p) => state.pick(p));
+U.explainToggle($("explain"), $("term"));
 const STATES = ["0", "1", "+", "-", "+i", "-i"];
 const CTL = {
   collapse: { scheme: [["basis", "measure at 0° or 45°"], ["measure", "measure or not"], ["flip", "apply X or not"]] },

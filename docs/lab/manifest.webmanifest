@@ -13,6 +13,10 @@
   ],
   "shortcuts": [
     { "name": "Two-room link", "url": "link/" },
+    { "name": "Quantum channels", "url": "channel/" },
+    { "name": "Outdoors and orbit", "url": "outdoor/" },
+    { "name": "Frontier", "url": "frontier/" },
+    { "name": "Messenger", "url": "messenger/" },
     { "name": "Cloud circuits", "url": "circuits/" }
   ]
 }

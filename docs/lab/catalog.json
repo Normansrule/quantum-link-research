@@ -104,7 +104,14 @@
    "procedure": "",
    "cost": "",
    "role": "the Bell-state measurement that teleportation and repeaters need (Phase 4)",
-   "lab": []
+   "lab": [
+    {
+     "page": "frontier/",
+     "tier": "rooms",
+     "title": "Photonic teleportation between the rooms (M4.5)",
+     "rung": "upgrade"
+    }
+   ]
   },
   {
    "id": "D07",
@@ -125,6 +132,12 @@
      "tier": "teleport",
      "title": "Teleportation and superdense coding (P12)",
      "rung": "cloud"
+    },
+    {
+     "page": "frontier/",
+     "tier": "rooms",
+     "title": "Photonic teleportation between the rooms (M4.5)",
+     "rung": "upgrade"
     }
    ]
   },
@@ -141,7 +154,14 @@
    "procedure": "",
    "cost": "",
    "role": "heralded entanglement between distant nodes: where the network goes after Phase 4",
-   "lab": []
+   "lab": [
+    {
+     "page": "frontier/",
+     "tier": "network",
+     "title": "Three nodes: a swapping node between two labs (M4.4)",
+     "rung": "main"
+    }
+   ]
   },
   {
    "id": "D09",
@@ -156,7 +176,26 @@
    "procedure": "",
    "cost": "",
    "role": "the satellite link budget Phase 3 reproduces before building anything",
-   "lab": []
+   "lab": [
+    {
+     "page": "outdoor/",
+     "tier": "station",
+     "title": "Ground station and a satellite pass (Micius class)",
+     "rung": "upgrade"
+    },
+    {
+     "page": "outdoor/",
+     "tier": "microsat",
+     "title": "A microsatellite partner (Jinan-1 class)",
+     "rung": "device"
+    },
+    {
+     "page": "messenger/",
+     "tier": "satellite",
+     "title": "Messages keyed by a satellite pass",
+     "rung": "upgrade"
+    }
+   ]
   },
   {
    "id": "D10",
@@ -216,7 +255,14 @@
    "procedure": "",
    "cost": "",
    "role": "a memory beating direct transmission: the repeater idea in one node",
-   "lab": []
+   "lab": [
+    {
+     "page": "frontier/",
+     "tier": "network",
+     "title": "Three nodes: a swapping node between two labs (M4.4)",
+     "rung": "main"
+    }
+   ]
   },
   {
    "id": "D14",
@@ -231,7 +277,14 @@
    "procedure": "",
    "cost": "",
    "role": "a small satellite and a portable ground station: the scale Phase 3 aims at",
-   "lab": []
+   "lab": [
+    {
+     "page": "outdoor/",
+     "tier": "microsat",
+     "title": "A microsatellite partner (Jinan-1 class)",
+     "rung": "device"
+    }
+   ]
   },
   {
    "id": "D15",
@@ -313,7 +366,26 @@
    "procedure": "experiments/protocols/P04_rooftop_free_space_link.md",
    "cost": "",
    "role": "Phase 3's first outdoor step: loss and daylight background",
-   "lab": []
+   "lab": [
+    {
+     "page": "outdoor/",
+     "tier": "rooftop",
+     "title": "Rooftop link with the Phase 1 hardware (P04)",
+     "rung": "starter"
+    },
+    {
+     "page": "outdoor/",
+     "tier": "building",
+     "title": "Building to building at night (0.5–2 km)",
+     "rung": "main"
+    },
+    {
+     "page": "messenger/",
+     "tier": "buildings",
+     "title": "Messages between buildings (key made at night)",
+     "rung": "upgrade"
+    }
+   ]
   },
   {
    "id": "P05",
@@ -364,6 +436,12 @@
      "page": "link/",
      "tier": "tier3",
      "title": "Upgrade: avalanche-diode detectors and fiber",
+     "rung": "upgrade"
+    },
+    {
+     "page": "channel/",
+     "tier": "fiber",
+     "title": "Through a fiber spool: drift is a rotation",
      "rung": "upgrade"
     }
    ]
@@ -417,6 +495,24 @@
      "tier": "two_room",
      "title": "The two-room single-photon link",
      "rung": "main"
+    },
+    {
+     "page": "channel/",
+     "tier": "hallway",
+     "title": "The hallway, certified and mapped as a quantum channel",
+     "rung": "main"
+    },
+    {
+     "page": "outdoor/",
+     "tier": "rooftop",
+     "title": "Rooftop link with the Phase 1 hardware (P04)",
+     "rung": "starter"
+    },
+    {
+     "page": "messenger/",
+     "tier": "rooms",
+     "title": "Messages between the rooms (P10's key)",
+     "rung": "main"
     }
    ]
   },
@@ -462,6 +558,18 @@
      "tier": "teleport",
      "title": "Teleportation and superdense coding (P12)",
      "rung": "cloud"
+    },
+    {
+     "page": "channel/",
+     "tier": "teleport",
+     "title": "Teleportation is a quantum channel (with its two bits)",
+     "rung": "cloud"
+    },
+    {
+     "page": "frontier/",
+     "tier": "delay",
+     "title": "Teleport with the bits delayed, on a cloud processor (E01)",
+     "rung": "cloud"
     }
    ]
   },
@@ -483,6 +591,88 @@
      "page": "circuits/",
      "tier": "majorana",
      "title": "Majorana parity teleportation (P13)",
+     "rung": "device"
+    }
+   ]
+  },
+  {
+   "id": "P14",
+   "title": "The hallway as a quantum channel: certify, map, and measure what it carries",
+   "path": "experiments/protocols/P14_the_hallway_as_a_quantum_channel.md",
+   "status": "procedure",
+   "phases": [
+    1,
+    4
+   ],
+   "twin": "qll/link/hallway_channel.py",
+   "test": "tests/test_quantum_channels.py",
+   "procedure": "experiments/protocols/P14_the_hallway_as_a_quantum_channel.md",
+   "cost": "10-30",
+   "role": "turns the link into a certified quantum channel: entanglement-fidelity bound from BB84 counts, process tomography, capacities; teleportation's channel on a cloud processor",
+   "lab": [
+    {
+     "page": "channel/",
+     "tier": "zoo",
+     "title": "Starter: build a channel from five noise processes",
+     "rung": "starter"
+    },
+    {
+     "page": "channel/",
+     "tier": "hallway",
+     "title": "The hallway, certified and mapped as a quantum channel",
+     "rung": "main"
+    },
+    {
+     "page": "channel/",
+     "tier": "fiber",
+     "title": "Through a fiber spool: drift is a rotation",
+     "rung": "upgrade"
+    },
+    {
+     "page": "channel/",
+     "tier": "teleport",
+     "title": "Teleportation is a quantum channel (with its two bits)",
+     "rung": "cloud"
+    }
+   ]
+  },
+  {
+   "id": "P15",
+   "title": "Messages keyed by the link: how many a day, and how big a key bank",
+   "path": "experiments/protocols/P15_messages_keyed_by_the_link.md",
+   "status": "procedure",
+   "phases": [
+    1,
+    3
+   ],
+   "twin": "qll/link/keyed_messaging.py",
+   "test": "tests/test_keyed_messaging.py",
+   "procedure": "experiments/protocols/P15_messages_keyed_by_the_link.md",
+   "cost": "0",
+   "role": "the application: a messenger that spends the link's key by one-time pad, link-keyed AES, or the hybrid, sized by the sequent-peak bank, failing closed",
+   "lab": [
+    {
+     "page": "messenger/",
+     "tier": "rooms",
+     "title": "Messages between the rooms (P10's key)",
+     "rung": "main"
+    },
+    {
+     "page": "messenger/",
+     "tier": "buildings",
+     "title": "Messages between buildings (key made at night)",
+     "rung": "upgrade"
+    },
+    {
+     "page": "messenger/",
+     "tier": "satellite",
+     "title": "Messages keyed by a satellite pass",
+     "rung": "upgrade"
+    },
+    {
+     "page": "messenger/",
+     "tier": "mars",
+     "title": "Messages to Mars (key carried on the lander)",
      "rung": "device"
     }
    ]
@@ -549,6 +739,18 @@
      "tier": "tier3",
      "title": "Upgrade: avalanche-diode detectors and fiber",
      "rung": "upgrade"
+    },
+    {
+     "page": "channel/",
+     "tier": "fiber",
+     "title": "Through a fiber spool: drift is a rotation",
+     "rung": "upgrade"
+    },
+    {
+     "page": "outdoor/",
+     "tier": "building",
+     "title": "Building to building at night (0.5–2 km)",
+     "rung": "main"
     }
    ]
   },
@@ -570,6 +772,12 @@
      "page": "link/",
      "tier": "tier4",
      "title": "Entangled photons between the rooms (BBM92)",
+     "rung": "entangled"
+    },
+    {
+     "page": "channel/",
+     "tier": "superdense",
+     "title": "Superdense coding through the hallway (E19)",
      "rung": "entangled"
     }
    ]
@@ -602,7 +810,26 @@
    "procedure": "",
    "cost": "",
    "role": "teleportation waits for its bits; how long can it wait",
-   "lab": []
+   "lab": [
+    {
+     "page": "frontier/",
+     "tier": "delay",
+     "title": "Teleport with the bits delayed, on a cloud processor (E01)",
+     "rung": "cloud"
+    },
+    {
+     "page": "frontier/",
+     "tier": "mars",
+     "title": "Earth to Mars with banked entanglement (E01, research version)",
+     "rung": "device"
+    },
+    {
+     "page": "messenger/",
+     "tier": "mars",
+     "title": "Messages to Mars (key carried on the lander)",
+     "rung": "device"
+    }
+   ]
   },
   {
    "id": "E02",
@@ -617,7 +844,14 @@
    "procedure": "",
    "cost": "500-10k",
    "role": "",
-   "lab": []
+   "lab": [
+    {
+     "page": "frontier/",
+     "tier": "mars",
+     "title": "Earth to Mars with banked entanglement (E01, research version)",
+     "rung": "device"
+    }
+   ]
   },
   {
    "id": "E03",
@@ -632,7 +866,14 @@
    "procedure": "",
    "cost": "0",
    "role": "satellite work with public data, before hardware",
-   "lab": []
+   "lab": [
+    {
+     "page": "outdoor/",
+     "tier": "station",
+     "title": "Ground station and a satellite pass (Micius class)",
+     "rung": "upgrade"
+    }
+   ]
   },
   {
    "id": "E04",
@@ -800,7 +1041,14 @@
    "procedure": "",
    "cost": "100-300",
    "role": "shared clocks for timing detections in separate rooms and at a ground station",
-   "lab": []
+   "lab": [
+    {
+     "page": "outdoor/",
+     "tier": "station",
+     "title": "Ground station and a satellite pass (Micius class)",
+     "rung": "upgrade"
+    }
+   ]
   },
   {
    "id": "E15",
@@ -885,6 +1133,44 @@
    ]
   },
   {
+   "id": "E20",
+   "title": "Scaling Majorana parity teleportation: from one hop to a chain",
+   "path": "experiments/proposed/E20_majorana_parity_teleportation_chain.md",
+   "status": "proposed",
+   "phases": [
+    4
+   ],
+   "twin": "qll/circuits/majorana_chain.py",
+   "test": "tests/test_majorana_chain.py",
+   "procedure": "",
+   "cost": "0",
+   "role": "scales the CSUDH authors' protocol to N hops: fidelity per hop on a cloud processor, and the readout and poisoning a long Majorana chain needs",
+   "lab": []
+  },
+  {
+   "id": "E19",
+   "title": "Superdense coding through the hallway: more than one bit per photon",
+   "path": "experiments/proposed/E19_superdense_coding_through_the_hallway.md",
+   "status": "proposed",
+   "phases": [
+    2,
+    4
+   ],
+   "twin": "qll/circuits/superdense_photonic.py",
+   "test": "tests/test_quantum_channels.py",
+   "procedure": "",
+   "cost": "200-1,500",
+   "role": "the photon crossing the quantum channel is the message, and carries more than one bit because its partner was shared",
+   "lab": [
+    {
+     "page": "channel/",
+     "tier": "superdense",
+     "title": "Superdense coding through the hallway (E19)",
+     "rung": "entangled"
+    }
+   ]
+  },
+  {
    "id": "F1",
    "title": "Two computers on Earth",
    "path": "experiments/flagship/F1_earth_to_earth.md",
@@ -928,7 +1214,20 @@
    "procedure": "",
    "cost": "",
    "role": "",
-   "lab": []
+   "lab": [
+    {
+     "page": "frontier/",
+     "tier": "mars",
+     "title": "Earth to Mars with banked entanglement (E01, research version)",
+     "rung": "device"
+    },
+    {
+     "page": "messenger/",
+     "tier": "mars",
+     "title": "Messages to Mars (key carried on the lander)",
+     "rung": "device"
+    }
+   ]
   }
  ]
 }

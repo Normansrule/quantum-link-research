@@ -12,7 +12,7 @@
 | The simulation reproduces every analytic case it implements | the full test suite passes; validation V1–V15 of the two-site link | pass |
 | The evidence regenerates from configurations and seeds | `python -m qll.link.run scenarios` and `operations` reproduce the committed numbers (slow tests) | pass |
 | Mission needs and requirements are written and verifiable | [03](../03_requirements_and_verification.md); every milestone verifies a requirement (tested) | pass |
-| Phase 1 is feasible on paper within its budget | the twin accepts a ten-second session across a hallway with the planned parts; Phase 1 likely cost $670, against a cap of $1,400 (MR-1.8) | pass |
+| Phase 1 is feasible on paper within its budget | the twin accepts a ten-second session across a hallway with the planned parts; Phase 1 likely cost $670 at the review (now $690 with the quantum-channel milestone M1.8), against a cap of $1,400 (MR-1.8) | pass |
 | The physical limits are stated, and no requirement depends on signalling | MR-X.1; [05](../05_feasibility.md); `test_no_milestone_depends_on_signalling_through_collapse` | pass |
 
 **Decision.** Proceed to Phase 1.

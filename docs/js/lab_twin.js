@@ -172,7 +172,46 @@
     return Number(x.toPrecision(d)).toString();
   }
   const pct = (x, d = 2) => (100 * x).toFixed(d) + " %";
-  const S = (label, formula, sub, value, ref) => ({ label, formula, sub, value, ref: ref || "" });
+  /* Plain-language notes for each terminal line (shown with "Explain each line"). */
+  const WHY = {
+    "Malus reading, aligned": "Light through two polarizers set the same way: the photodiode sees almost everything (bit 0).",
+    "Malus reading, crossed": "Polarizers at right angles block almost all the light (bit 1); what leaks through is the extinction limit.",
+    "Malus reading, wrong basis": "At 45 degrees half the light gets through: the reading is ambiguous, which is what a wrong basis looks like.",
+    "Thresholds": "Readings above the top line count as 0, below the bottom line as 1, and in between Bob flips a coin.",
+    "Misread a 0": "How often noise drags a bright reading below the threshold.",
+    "Misread a 1": "How often noise lifts a dark reading above the threshold.",
+    "Wrong-basis decision": "Mismatched bases give coin flips; sifting throws those pulses away.",
+    "Interception adds": "An eavesdropper who measures and resends guesses the basis wrong half the time and then causes an error half of those times: about 25 %.",
+    "Sifted rate": "Half the pulses survive sifting, the ones where Alice's and Bob's bases happened to match.",
+    "Security meaning": "Bright light can be tapped without disturbing it, so this tier teaches the processing chain, not security.",
+    "Photon energy": "One violet photon carries this much energy; dividing a pulse's energy by it counts the photons.",
+    "Path loss": "The fraction of light lost between the rooms, in decibels: every 3 dB halves it.",
+    "Dark click per SiPM per gate": "Even in the dark a silicon photomultiplier fires now and then; a short gate makes such a false click rare.",
+    "Dark click per basis pair": "Either of the two detectors in an arm can fire falsely in a gate.",
+    "Afterpulses": "A detector that just fired sometimes fires again on its own; a small extra background.",
+    "Misalignment": "Imperfect polarizers and waveplates send a few photons to the wrong detector: the floor of the error rate.",
+    "Loss to the detector": "All the losses added up between the source and the detectors.",
+    "Single-photon click": "The chance that one photon leaving room A makes a detector in room B fire.",
+    "Background per gate": "The chance of a click with no photon at all: dark counts plus afterpulses.",
+    "Optical error": "The chance a photon that does arrive lands in the wrong detector.",
+    "Gain": "The fraction of pulses of this brightness that produce a click.",
+    "Error": "The fraction of those clicks that carry the wrong bit.",
+    "Click probability per pulse": "Averaged over signal, decoy, and empty pulses: what the counter in room B will show.",
+    "Error rate, all clicks": "The quantum bit error rate: above 11 % no secret key can be made.",
+    "Sifted key bits": "Clicks where the bases matched, from signal pulses only: the raw material of the key.",
+    "Error-rate bound": "A sample of the sifted bits is revealed to estimate the error rate; this is its upper limit with the margin for chance.",
+    "Single-photon yield": "Decoy pulses reveal how often single photons get through, which an eavesdropper splitting multi-photon pulses cannot fake.",
+    "Single-photon share": "The part of the signal clicks that certainly came from single photons: only these carry secret bits.",
+    "Single-photon error": "An upper limit on the error rate of those single photons.",
+    "Secret key": "What is left after paying for error correction, authentication, and privacy amplification.",
+    "Pair visibility": "How cleanly the source makes entangled pairs; 1 is perfect.",
+    "Effective visibility": "Accidental coincidences in the counting window lower the visibility the rooms actually see.",
+    "Bell value": "Above 2 no local, classical model can explain the correlations: the pairs are entangled.",
+    "Bell uncertainty": "How many standard deviations the measured value sits above 2, from the number of coincidences.",
+    "Device-independent rate": "Key that would be secure even with untrusted devices, if the Bell test closed every loophole."
+    };
+  const whyOf = (label) => WHY[label] || WHY[label.replace(/ \(.*\)$/, "")] || WHY[label.split(",")[0]] || WHY[label.replace(/^Outcome .*/, "Outcome")] || "";
+  const S = (label, formula, sub, value, ref) => ({ label, formula, sub, value, ref: ref || "", why: whyOf(label) });
 
   function stepsTier1(params) {
     const b = Object.assign({}, TIER1, params || {}), r = tier1Expected(b), th = r.thresholds;

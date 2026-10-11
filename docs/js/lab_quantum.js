@@ -245,7 +245,42 @@
   const cstr = (z) => { const re = Math.abs(z[0]) < 5e-13 ? 0 : z[0], im = Math.abs(z[1]) < 5e-13 ? 0 : z[1]; return im === 0 ? f4(re) : re === 0 ? `${f4(im)}i` : `${f4(re)}${im < 0 ? "−" : "+"}${f4(Math.abs(im))}i`; };
   const mstr = (A) => { const rows = []; for (let i = 0; i < A.n; i++) { const r = []; for (let j = 0; j < A.n; j++) r.push(cstr([A.re[i * A.n + j], A.im[i * A.n + j]])); rows.push("[" + r.join(", ") + "]"); } return "[" + rows.join(", ") + "]"; };
   const vstr = (v) => `${cstr(v[0])}|0⟩ + ${cstr(v[1])}|1⟩`;
-  const S = (label, formula, sub, value, ref) => ({ label, formula, sub, value, ref: ref || "" });
+  /* Plain-language notes for each terminal line (shown with "Explain each line"). */
+  const WHY = {
+    "Shared pairs": "Alice and Bob each hold one photon of an entangled pair.",
+    "Alice's action, bit 1": "What Alice does to her own photon to 'send' a 1: measure it, or apply a gate.",
+    "Bob's state, bit 0": "Bob's photon on its own, when Alice sends 0.",
+    "Bob's state, bit 1": "The same matrix as for 0: nothing Alice does changes Bob's half (no-signalling).",
+    "Bob's click statistics": "Bob's chance of a 1 for each message bit; equal numbers mean he learns nothing.",
+    "Bias": "The difference Bob would need to read a message.",
+    "Information per use": "Bits of message per pair Bob could extract: zero without a physical leak.",
+    "Uses to detect δ": "Pairs per message bit needed to notice a bias of this size: the statistics of the experiment.",
+    "With a classical channel": "With two classical bits, teleportation delivers the bit exactly.",
+    "Verdict": "Collapse changes correlations, not Bob's own statistics; a signal needs something to travel.",
+    "Input": "The qubit Alice wants to send.",
+    "Shared pair": "A pair entangled in advance; gate noise lowers its quality.",
+    "Alice's Bell rotation": "Alice entangles her input with her half of the pair, then measures both: two random bits.",
+    "Outcome": "For each of Alice's four results, Bob's qubit is the input with a known flip; he cannot tell which without her bits.",
+    "Two classical bits travel": "The bits go over an ordinary channel, at light speed or slower; only then can Bob fix his qubit.",
+    "Bob's state": "Bob's qubit after the correction (or without it).",
+    "Fidelity, this input": "How close Bob's qubit is to what Alice sent; 1 is perfect.",
+    "Average over six states": "The average over six test states equals the average over all states.",
+    "Classical limit": "Measuring and describing the state classically can reach 2/3 at best.",
+    "Alice encodes": "Alice turns the shared pair into one of four Bell states with a gate on her half.",
+    "Alice sends her qubit": "The qubit itself travels; that is why two bits fit.",
+    "Alice keeps her qubit": "Without the qubit traveling, Bob's half alone carries nothing.",
+    "Confusion matrix": "Rows: what Alice sent; columns: what Bob decoded.",
+    "Success": "How often Bob decodes the right message.",
+    "Six Majorana modes": "Three fermionic modes, each split into two Majorana operators, mapped onto three qubits.",
+    "Parity measurements": "Measuring the joint parity of two Majoranas is the only operation; it replaces the Bell measurement.",
+    "Average fidelity, this input": "Averaged over the measurement outcomes.",
+    "Readout fidelity": "How reliably the device reads a parity, set by its signal-to-noise and temperature.",
+    "Poisoning": "A stray quasiparticle during the readout randomizes it.",
+    "Hybridization": "Majoranas too close together leak into each other; separation suppresses it exponentially.",
+    "Device bound": "Two readouts and hybridization together set the teleportation fidelity a real device could reach."
+    };
+  const whyOf = (label) => WHY[label] || WHY[label.replace(/ \(.*\)$/, "")] || WHY[label.split(",")[0]] || WHY[label.replace(/^Outcome .*/, "Outcome")] || "";
+  const S = (label, formula, sub, value, ref) => ({ label, formula, sub, value, ref: ref || "", why: whyOf(label) });
 
   function stepsCollapse(scheme, V, leak) {
     const e = collapseExpected(scheme, V, leak), K = instrument(scheme, 1);

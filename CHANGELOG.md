@@ -1,5 +1,219 @@
 # Changelog
 
+## 0.55.0 — 2026-10-11 (build it: the Phase 1 bill of materials, and scaling the Majorana research)
+- **The README now ends with a build guide, generated from the code by [`scripts/build_readme_build.py`](scripts/build_readme_build.py)** and checked by `tests/test_readme_build.py`, so its prices and results cannot drift.
+  - **Build the main experiment: Phase 1.**
+    - P10 with the twin's predictions: 5.85 % clicks, a 3.7 % error rate, and about 12,000 secret bits per ten-second session.
+    - The bill of materials item by item: $530–1,180.
+    - The Phase 1 budget by milestone: $380 low, $690 likely, $1,400 high.
+    - The build order, and the simulate and ingest commands.
+  - **Scale the Majorana research: from one hop to a chain.**
+    - The ladder from P13, one hop (M4.6), to E20, a chain (M4.8), to a requirement on the device, to tetron hardware with a partner.
+    - The latest device-copy rehearsals.
+    - The parity-readout signal-to-noise ratio each chain length needs.
+  - Two badges at the top of the README jump to the guide. The generator runs in the pre-commit hook and in CI.
+- **`qll/circuits/majorana_chain.py`: the measurement-only teleportation of Crogman, Dang, and Erenso (2025) along N hops (proposal [E20](experiments/proposed/E20_majorana_parity_teleportation_chain.md), milestone M4.8, requirement MR-4.8).**
+  - **Each hop is the same local Bell measurement.** Its parities $i\gamma_{2k+2}\gamma_{2k+3} = -X_kX_{k+1}$ and $i\gamma_{2k+1}\gamma_{2k+4} = Y_kY_{k+1}$ hold at every position, checked on the fermionic operators for 3, 5, and 7 modes. Each hop needs its own two classical bits.
+  - **The scaling law:** $F_N = \tfrac12(1 + k s^N)$.
+    - With a two-qubit gate error p₂, the shrink per hop is s = (1 − p₂)². A 1 % gate error allows 54 hops above 2/3.
+    - In Qiskit Aer the chain follows the law for 1–3 hops, and the no-bits control stays at ½ at every length.
+  - **From chain length to device requirement:** the paper's error budget sets the smallest readout signal-to-noise ratio for each length and target fidelity.
+    - With 0.001 poisoning per readout, no readout keeps a 16-hop chain above 0.99, nor a 128-hop chain above 0.9.
+    - So scaling the protocol asks first for longer poisoning times.
+- **`run_frontier.py chain`:** runs the chain on 2N + 1 qubits in a line and fits s and k over the lengths run.
+  - The committed fake-Torino rehearsal gives 0.837, 0.797, and 0.796 for 1–3 hops, with 0.505 for no bits.
+  - The fit gives s ≈ 0.94 and k ≈ 0.70, about 11 hops above 2/3.
+  - The flat step from two hops to three shows that qubit quality varies along the line, which the hardware run should map.
+- **Smaller changes:**
+  - the catalog has an E20 entry, and the proposals index has a row for it;
+  - the 03 requirements document gains MR-4.8, and the program plan gains M4.8.
+
+## 0.54.0 — 2026-10-10 (the application: a messenger keyed by the link)
+- **`qll/link/keyed_messaging.py`: how many messages a day each link can key, and how big a key bank keeps the messenger from refusing.**
+  - **Supply, from each link's own twin:**
+    - the two rooms around the clock: 13 MB of key a day;
+    - two buildings at 1 km with avalanche-diode modules, for 8 night hours: 3.1 MB;
+    - one Micius-class satellite pass a night: 0.48 MB, an asymptotic upper estimate;
+    - a Mars lander with key loaded before launch.
+  - **Spending, per message of b bytes:**
+
+    | Policy | Key per message | Security |
+    |---|---|---|
+    | One-time pad with a Wegman–Carter tag | 8b + 127 bits | information-theoretic (Shannon 1949; Wegman and Carter 1981) |
+    | Link-keyed AES-256-GCM | 256/n bits | 128-bit security against a quantum computer (Grover 1996) |
+    | Hybrid ML-KEM + link key | 256/n bits | secure if either the link key or ML-KEM holds (FIPS 203) |
+    | Conventional ECDHE | no link key | recordable for later decryption (Shor 1997) |
+
+  - **The bank:** the sequent-peak capacity of the hourly supply against the waking-hours demand, checked by simulation to never refuse.
+  - **Failing closed:** a demand above the daily supply is refused, never downgraded.
+  - **A CLI:** `python -m qll.link.keyed_messaging` prints the plan, and accepts a measured daily key from P10.
+  - **What it shows:**
+    - with a one-time pad, the two rooms key about 60,000 200-byte messages a day and a satellite pass about 2,200;
+    - AES or the hybrid keys millions;
+    - a night-only link needs a bank of one day's demand;
+    - a terabyte of pad carried to Mars lasts about 25,000 years at 500 messages a day.
+- **Protocol [P15](experiments/protocols/P15_messages_keyed_by_the_link.md) and its catalog entry:**
+  - plan with the twin;
+  - measure the day's key from the P10 ingest reports and replan with it;
+  - send with `python -m qll.link.run demo`;
+  - drain the bank on purpose and check the time it takes against bank ÷ shortfall.
+- **The messenger lab ([`docs/lab/messenger/`](docs/lab/messenger/)).**
+  - **Four tiers:** the rooms, the buildings, a satellite pass, and a Mars lander. Each reuses its link's 3D scene from the other labs and adds only software.
+  - **Real messages, encrypted in the browser:**
+    - a one-time pad with a Wegman–Carter tag over GF(2¹²⁷ − 1), computed with BigInt and checked against `qll/link/authentication.py`;
+    - AES-256-GCM through Web Crypto;
+    - the hybrid through HKDF over a simulated ML-KEM secret and the link key.
+  - **Delivery and the bank:** each message arrives after the light time, at a selectable speed, and Bob checks the tag before decrypting. The bank fills on the link's schedule and drains with each message; when it is empty, the messenger refuses.
+  - **Charts:** the bank through a day, messages a day for every link and policy, and what protects each message.
+  - **Checked against Python:** `docs/js/lab_messenger.js` under node, and in headless Chromium the page encrypts, delivers, and then fails closed.
+- **Smaller changes:**
+  - the Grover (1996) reference was added;
+  - the messenger is linked from every lab page, the gallery, the app's shortcuts, the offline cache, the README, and the landing page;
+  - the gallery's circuits card now spans a full row.
+
+## 0.53.0 — 2026-10-09 (the frontier: teleportation across a distance, honestly timed)
+- **`qll/circuits/teleport_delay_cloud.py`: teleportation with the classical channel delayed, on a cloud processor (milestone M4.3, the free version of E01).**
+  - **The setup:** Bob's qubit idles between Alice's Bell measurement and the feed-forward corrections, standing in for the bits' transit time.
+  - **The closed form:** the average fidelity is F(t) = ½ + (1 − p₂)²(2e^(−t/T₂) + e^(−t/T₁))/6 (Krantz et al. 2019; Nielsen 2002).
+  - **Checks:**
+    - it equals the idle channel's average fidelity from its Pauli transfer matrix;
+    - it matches Qiskit Aer with the idle inserted as a thermal-relaxation map;
+    - the no-bits control is ½ at every delay.
+  - **On hardware:** a real delay instruction lets the device's own qubit do the decaying.
+- **`run_frontier.py delay`: a sweep from zero to about twice T₂ on the simulator, a local device copy, or a real device.**
+  - **On a device:** it reads Bob's qubit's calibrated T₁ and T₂, and takes the gate and readout errors from the zero-delay point.
+  - **The committed fake-Torino rehearsal follows the calibrated decay within its confidence intervals:**
+    - fidelity 0.831, 0.732, 0.662, and 0.608 at 0, 60, 120, and 180 µs, against the model's 0.831, 0.727, 0.655, and 0.606;
+    - it crosses 2/3 near 110 µs, about 33 km of light travel;
+    - the no-bits control gives 0.498.
+- **`qll/network/teleport_across.py`: teleportation from entanglement banked in memories (milestones M4.3 to M4.5).**
+  - **Timed by light:** Bob's half waits the banking time plus the light time, and the Werner parameter decays on both halves.
+  - **What it gives:**
+    - the fidelity when the bits arrive;
+    - the longest a banked pair stays useful;
+    - the shortest memory lifetime a distance allows, T_mem > t_c / ln(4f₀ − 1): 1.24 s for the Moon and 21.6 min for Mars at its farthest;
+    - the success per use.
+  - **A swapping node halfway:**
+    - multiplies Werner parameters (Żukowski et al. 1993);
+    - makes both ends wait for its announcement;
+    - learns nothing about a key, unlike a trusted relay;
+    - pays off against sending one photon all the way only past a crossover distance (thirtyfold fewer attempts at 200 km).
+  - **Memories against distances:**
+    - a 1 ms atomic ensemble reaches a city;
+    - a 1 s silicon-vacancy spin reaches low Earth orbit but not the Moon;
+    - a 60 s NV register reaches the Moon;
+    - an hour-long trapped ion reaches Mars at its farthest.
+- **The frontier lab ([`docs/lab/frontier/`](docs/lab/frontier/)).**
+  - **Four tiers:**
+    - the delayed teleportation on a cloud processor ($0);
+    - three nodes with a swapping node ($0–2,000);
+    - photonic teleportation between the rooms ($2,000–30,000, outside funding);
+    - Earth to Mars with banked entanglement (research).
+  - **The spacetime diagram:** a new chart type in the lab's chart kit draws when Bob has the state. The bits travel along a light-speed line, Bob's half waits in its memory, and the light cone is shaded.
+  - **Other charts:**
+    - fidelity against delay and against distance;
+    - how long memories hold against how long distances need;
+    - attempts per pair with and without the node;
+    - a table of which memory survives which distance.
+  - **3D:** planets for the Mars tier, three benches for the network, and the rooms with a Bell-state analyzer, fiber delay line, and Pockels cell.
+  - **Checked against Python:** `docs/js/lab_frontier.js` under node, and the page itself in headless Chromium.
+- **E01 gained the cloud-processor version and a digital-twin section.** Its memory note now counts trapped ions alongside rare-earth crystals, and M4.3 records its progress.
+- **Smaller changes:**
+  - sliders now read in µs, ms, minutes, or hours, and in km or AU, as the value needs;
+  - space scenes no longer draw a floor grid;
+  - the frontier lab is linked from every lab page, the gallery, the app's shortcuts, the offline cache, the README, and the landing page.
+
+## 0.52.0 — 2026-10-09 (outdoors and toward orbit)
+- **`qll/link/outdoor_link.py`: the P10 link carried onto the roofs (milestones M3.2 and M3.3).**
+  - **Path loss:** the product of beam spreading, pointing jitter, air extinction, and receiver coupling (Bourgoin et al. 2013). With no outdoor path it reduces exactly to the two-room twin.
+  - **Sky background:** skylight through the receiving telescope, from its spectral radiance, aperture, field of view, and filter, added to each gate's dark clicks.
+  - **What it predicts:**
+    - the P10 SiPMs make no key outdoors, though they measure loss and background well;
+    - used avalanche-diode modules give a key at night to about 2 km (31,000 bits at 300 m, 1,300 at 2 km per session);
+    - twilight and daylight swamp a 405 nm receiver.
+- **`qll/link/satellite_pass.py`: a ground station and a satellite pass (milestones M3.4 and M3.5).**
+  - **Pass geometry:** the orbit's angular rate √(GM/(R + h)³) and the elevation, range, and duration of an overhead pass, tested against closed forms.
+  - **Losses:** second by second from the link budget that reproduces Micius's published losses (26–39 dB for a 500 km pass above 15°).
+  - **Key over the pass:** about 3.9 × 10⁶ bits for a Micius-class station and 7.5 × 10⁵ for a Jinan-1-class microsatellite with a 28 cm receiver, labeled as asymptotic upper estimates. A daylight-like background gives none.
+- **The outdoor lab ([`docs/lab/outdoor/`](docs/lab/outdoor/)).**
+  - **Four tiers:** two roofs ($100–800), two buildings at night ($300–2,000), a ground station ($1,000–8,000), and a microsatellite partner (partner time).
+  - **The roof tiers:**
+    - two buildings in 3D, with telescopes that aim at each other and a beam drawn widening across the gap;
+    - a sky that brightens with the radiance slider;
+    - a detector choice;
+    - charts of the loss budget, of signal against detector noise and skylight per gate, and of the key against distance for each receiver.
+  - **The pass tiers:**
+    - a satellite crossing the sky, with the dome's telescope tracking it;
+    - a "Play the pass" button;
+    - charts of loss and key rate through the pass, and of where the light goes at each moment.
+  - **The math terminal:** prints every line with its citation and a plain-language note.
+  - **Checked against Python:** `docs/js/lab_outdoor.js` under node, and the page itself in headless Chromium.
+- **P04 gained a digital-twin section** with the predicted error rate and key for each sky, receiver, and distance.
+- **Smaller changes:**
+  - the outdoor lab is linked from every lab page, the gallery, the app's shortcuts, the offline cache, the README, and the landing page;
+  - time sliders now read in seconds;
+  - the teleportation page test waits for its scroll triggers before scrolling, which removes a race.
+
+## 0.51.0 — 2026-10-08 (quantum channels: certify, map, and carry; a lab that explains itself)
+- **Quantum channels, alongside the classical ones.** [`systems/program/09_quantum_channels.md`](systems/program/09_quantum_channels.md) sets out the framework:
+  - **Three ways to build a quantum channel:** send the photon, teleport it, or chain it through repeaters.
+  - **One way to prove each is quantum and measure what it carries.**
+  - **The ladder of milestones** from the hallway to a network.
+  - **The physics boundary**, stated plainly:
+    - the photon is the message, at light speed or slower;
+    - one qubit carries at most one bit alone, or two with a shared pair;
+    - quantum channels need classical ones, both to herald lost photons and to carry teleportation's bits.
+- **`qll/circuits/qubit_channel.py`:** a qubit channel as its Pauli transfer matrix and Choi state, with:
+  - **Fidelities:** entanglement and average fidelity.
+  - **The certificate:** F_e ≥ 1 − e_Z − e_X, checked on 200 random channels. It turns BB84 error rates into proof that a channel is not a measure-and-resend relay (Horodecki, Shor, and Ruskai 2003).
+  - **Entanglement-breaking test:** by the partial transpose of the Choi state.
+  - **Capacities, each tested against its closed form:**
+    - classical (King 2002);
+    - entanglement-assisted (Bennett et al. 2002);
+    - quantum: coherent information and the hashing bound (Bennett et al. 1996; Devetak 2005), with the amplitude-damping capacity exact (Giovannetti and Fazio 2005);
+    - erasure (Bennett, DiVincenzo, and Smolin 1997);
+    - private, from BB84 error rates.
+- **`qll/link/hallway_channel.py`:** the P10 parts as a quantum channel, consistent with the link twin.
+  - **Erasure:** 13.8 % of single photons click, and the rest are heralded erasures.
+  - **The click-conditioned channel:** a 2.1 % error rate and entanglement fidelity 0.968.
+  - **Single-photon certificate:** at least 0.83 from the decoy bound.
+  - **One-way quantum capacity:** zero.
+  - **With heralding over the classical channel:** 0.10 qubits per photon sent, under the repeaterless bound of 0.215.
+  - **Full interception:** makes the channel entanglement breaking, and the certificate fails, as it must.
+- **Protocol [P14](experiments/protocols/P14_the_hallway_as_a_quantum_channel.md), the hallway as a quantum channel (milestone M1.8, requirement MR-1.9):**
+  - **Part A:** certifies the channel from BB84 counts, with Clopper–Pearson confidence.
+  - **Part B:** two $10 quarter-wave plates add a circular input and a circular measurement, so process tomography maps the channel.
+  - **Part C:** the same on teleportation over a free cloud processor (M4.7, MR-4.7).
+  - **`qll/link/channel_tomography.py`:** least-squares estimate, certificate, and a click log (`input, basis, outcome`).
+  - **`qll/circuits/teleport_channel_cloud.py`:** checked against Qiskit Aer. Teleportation is a certified quantum channel with its two bits (Bloch shrink (1 − p₂)², or (1 − p₂)³ deferred) and entanglement breaking without them.
+- **Proposal [E19](experiments/proposed/E19_superdense_coding_through_the_hallway.md), superdense coding through the hallway (milestone M2.6, requirement MR-2.6):**
+  - **The idea:** the photon crossing the quantum channel is the message.
+  - **The model:** `qll/circuits/superdense_photonic.py` gives log₂3 = 1.585 bits ideal with linear optics. A pair visibility of 0.94 and two-photon interference of 0.9 give 1.16 bits, above the one-bit limit of any single photon alone.
+- **The quantum channel lab** (`docs/lab/channel/`), a ladder of five tiers:
+  - a channel zoo built from five noise processes;
+  - the hallway, certified and mapped, with its two waveplates in 3D;
+  - fiber drift as a rotation;
+  - teleportation as a channel;
+  - superdense coding through the hallway.
+
+  The Bloch sphere deforms into the channel's output ellipsoid in 3D, showing where H, V, D, A, R, and L land. The page also has:
+  - **Charts:** the transfer matrix as a heat grid, a certificate gauge, and capacity bars, with a per-photon chart showing why heralding over the classical channel matters.
+  - **Tomography in the browser:** a run whose log loads into the Python.
+
+  `docs/js/lab_channel.js` matches the Python to 1e-9 or better (tests/test_lab_js.py).
+- **Presentation, much easier to follow:**
+  - **How it works:** every lab opens with a six-step illustrated strip, with the quantum and classical channels color-coded.
+  - **New charts on the link lab:** where the photons go each second (log scale), the loss budget in decibels, and secret key against channel loss with your operating point marked. The starter tier draws the photodiode's reading distributions against Bob's thresholds.
+  - **In 3D:** a Labels toggle names every part, and each photon now carries a bar showing its polarization (H, V, D, or A) as it travels.
+  - **In the terminal:** every line has a plain-language note ("Explain each line"), and a test requires one on every line.
+- **Mission:**
+  - **New milestones:** M1.8 ($10–30), M2.6 ($200–1,500 with a borrowed kit), and M4.7 ($0).
+  - **New requirements:** MR-1.9, MR-2.6, and MR-4.7.
+  - **Budgets:** Phase 1 is $690 likely, and its high case is exactly the $1,400 cap. Phase 2 is $1,050 likely.
+  - **Catalog:** P14 and E19 are added.
+- **Browser tests:** each test now closes the previous page, so all 14 run in one process within memory.
+- **References:** seven new entries (horodecki2003eb, king2002, bennett2002, devetak2005q, bennett1996mixed, giovannetti2005, bennett1997erasure). Their arXiv identifiers were checked; the erasure DOI was verified.
+
 ## 0.50.0 — 2026-10-08 (the lab: every build in 3D, the math in a terminal, as a web page and an installable app)
 - **`docs/lab/`, a lab for the main experiment and the cloud circuits.** Each page shows the real build in 3D with every part where it would stand, a slider for every part you will measure, headline numbers, and a terminal that prints each formula, its substitution, its value, and its citation. Each climbs a ladder from a starter you can build this month to the real-world option.
   - **Two-room link** (`lab/link/`): starter bright-light analogue (T1, $40–120) → the two-room single-photon link (P10, $530–1,180) → avalanche-diode and fiber upgrade (T3) → entangled photons between the rooms (T4, BBM92 with a Bell test). The 3D view shows both rooms, the hallway, the four 405 nm diodes behind their polarizers, the three combining cubes, the pinhole and filters, room B's basis cube, polarizing cubes, half-wave plate and four SiPMs in their dark box, both FPGAs, the laptops, media converters, the fiber classical channel, the clock coax, and the optional eavesdropper's cart. Photons travel and are lost at the rate the twin predicts, and dark counts flash at the detectors.

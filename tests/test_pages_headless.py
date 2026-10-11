@@ -40,8 +40,17 @@ def browser():
         b.close()
 
 
+_OPEN = []
+
+
 def open_page(browser, url):
+    while _OPEN:                                   # one live WebGL page at a time keeps software rendering within memory
+        try:
+            _OPEN.pop().close()
+        except Exception:
+            pass
     page = browser.new_page(viewport={"width": 1280, "height": 860})
+    _OPEN.append(page)
     errors = []
     page.on("pageerror", lambda e: errors.append(str(e)))
     page.on("console", lambda m: errors.append(m.text) if m.type == "error" else None)
@@ -63,6 +72,7 @@ def test_landing_page_renders_data_equations_and_matrix(browser, server):
 
 def test_teleportation_explainer_reaches_unit_fidelity(browser, server):
     page, errors = open_page(browser, server + "/teleport/")
+    page.wait_for_function("window.ScrollTrigger && ScrollTrigger.getAll().length > 0", timeout=30000)   # triggers exist only after site_data loads
     page.evaluate("document.documentElement.style.scrollBehavior='auto'; document.querySelector('[data-step=\"5\"]').scrollIntoView({block:'center'})")
     page.wait_for_function("document.getElementById('bob').textContent.includes('fidelity')", timeout=30000)
     text = page.locator("#bob").inner_text()
@@ -296,3 +306,104 @@ def test_circuits_lab_shows_no_signalling_and_the_teleportation_limits(browser, 
     assert float(page.evaluate("window.__twin.metrics[0][1]")) == pytest.approx(2 / 3, abs=1e-4)
     assert not errors, errors
     page.close()                                   # WebGL pages left open starve the next one in software rendering
+
+
+def test_channel_lab_certifies_the_hallway_and_breaks_with_eve(browser, server):
+    from qll.link.hallway_channel import hallway_channel
+    from qll.circuits import superdense_photonic as SP
+
+    page, errors = _lab(browser, server, "/lab/channel/#hallway")
+    h = hallway_channel()
+    assert page.evaluate("window.__twin.Fe") == pytest.approx(h["entanglement_fidelity"], abs=1e-12)
+    assert page.evaluate("window.__twin.info.quantum_heralded") == pytest.approx(h["quantum_heralded"], abs=1e-12)
+    assert "Certified quantum" in page.inner_text("#verdict") and "Entanglement fidelity" in page.inner_text("#term")
+    assert page.locator("#term .wy").first.is_visible()                               # plain-language notes on by default
+    assert {"qwpSource", "qwpFlip"} <= set(page.evaluate("window.__lab.visibleIds()"))
+    page.click("#run")
+    page.wait_for_function("document.getElementById('runlog').dataset.certified !== undefined", timeout=60000)
+    assert page.get_attribute("#runlog", "data-certified") == "true"
+    page.evaluate("""() => { const r = document.querySelector('.lab-slider[data-key="eve_fraction"] input'); r.value = 1; r.dispatchEvent(new Event('input')); }""")
+    assert page.evaluate("window.__twin.eb") is True and "Entanglement breaking" in page.inner_text("#verdict")
+    page.click("button[data-tier='teleport']")
+    page.wait_for_function("document.getElementById('title').textContent.includes('Teleportation')")
+    page.select_option("#mode", "no_bits")
+    assert page.evaluate("window.__twin.Fe") == pytest.approx(0.25, abs=1e-12)
+    page.click("button[data-tier='superdense']")
+    page.wait_for_function("document.getElementById('title').textContent.includes('Superdense')")
+    assert page.evaluate("window.__twin.bits") == pytest.approx(SP.bits_per_photon(0.94, 0.9), abs=1e-12)
+    assert not errors, errors
+    page.close()
+
+
+def test_outdoor_lab_matches_the_outdoor_and_pass_twins(browser, server):
+    from qll.link import outdoor_link as O
+    from qll.link import satellite_pass as S
+
+    page, errors = _lab(browser, server, "/lab/outdoor/#rooftop")
+    assert page.evaluate("window.__twin.r.key_bits") == 0 == O.predict(O.OutdoorParts())["key_bits"]   # SiPMs: no key outdoors
+    assert page.evaluate("window.__twin.r.path_loss_db") == pytest.approx(O.path_loss_db(O.OutdoorParts()), rel=1e-9)
+    assert "Beam after the sending telescope" in page.inner_text("#term")
+    page.click("button[data-tier='building']")
+    page.wait_for_function("window.__twin.receiver === 'spad'")
+    py = O.predict(O.OutdoorParts(distance_m=1000, receiver=O.RECEIVERS["spad"]))
+    assert py["key_bits"] > 0 and page.evaluate("window.__twin.r.key_bits") == py["key_bits"]
+    assert page.evaluate("window.__twin.r.qber") == pytest.approx(py["qber"], rel=1e-9)
+    page.select_option("#sky", str(O.SKY["sunlit day"]))
+    assert page.evaluate("window.__twin.r.key_bits") == 0                                          # daylight: no key
+    page.click("button[data-tier='station']")
+    page.wait_for_function("document.getElementById('title').textContent.includes('satellite')")
+    s = S.pass_summary(S.PRESETS["micius"])
+    assert page.evaluate("window.__twin.sm.key_bits") == pytest.approx(s["key_bits"], rel=1e-9)
+    assert page.evaluate("window.__twin.now.loss_db") == pytest.approx(S.at_time(S.PRESETS["micius"], -60)["loss_db"], rel=1e-9)
+    assert "asymptotic upper estimate" in page.inner_text("#verdict")
+    assert not errors, errors
+    page.close()
+
+
+def test_frontier_lab_matches_the_delay_link_and_swap_twins(browser, server):
+    from qll.circuits import teleport_delay_cloud as D
+    from qll.network import teleport_across as X
+
+    page, errors = _lab(browser, server, "/lab/frontier/#delay")
+    assert page.evaluate("window.__twin.F") == pytest.approx(D.average_fidelity(60, 200, 150, 0.01), abs=1e-12)
+    assert page.evaluate("window.__twin.crossover_us") == pytest.approx(D.crossover_delay_us(200, 150, 0.01), abs=1e-6)
+    assert "Without the bits" in page.inner_text("#term")
+    page.click("button[data-tier='network']")
+    page.wait_for_function("window.__twin.kind === 'swap'")
+    s = X.swap(X.Swap(distance_m=20000))
+    assert page.evaluate("window.__twin.r.fidelity_with_bits") == pytest.approx(s["fidelity_with_bits"], rel=1e-12)
+    assert page.evaluate("window.__twin.r.attempts_swapped") == pytest.approx(s["attempts_swapped"], rel=1e-12)
+    page.click("button[data-tier='mars']")
+    page.wait_for_function("window.__twin.kind === 'link'")
+    m = X.for_scenario("Mars at its farthest", "171Yb+ hyperfine")
+    assert page.evaluate("window.__twin.r.light_time_s") == pytest.approx(m["light_time_s"], rel=1e-9)
+    assert page.evaluate("window.__twin.r.fidelity_with_bits") == pytest.approx(m["fidelity_with_bits"], rel=1e-9)
+    page.select_option("#memory", "SiV nuclear spin in cavity")
+    assert page.evaluate("window.__twin.r.beats_classical") is False and "no better than guessing" in page.inner_text("#verdict")
+    assert not errors, errors
+    page.close()
+
+
+def test_messenger_lab_encrypts_delivers_and_fails_closed(browser, server):
+    from qll.link import keyed_messaging as K
+
+    page, errors = _lab(browser, server, "/lab/messenger/#rooms")
+    py = K.plan("two rooms (P10)", "one-time pad", 500, 200, 100, 10.0)
+    assert page.evaluate("window.__twin.r.messages_per_day_max") == pytest.approx(py["messages_per_day_max"], rel=1e-9)
+    page.click("#send"); page.click("#send")
+    page.wait_for_function("window.__chat.delivered === 2", timeout=20000)          # one-time pad with a Wegman-Carter tag, verified at Bob
+    page.select_option("#policy", "hybrid ML-KEM + QKD")
+    page.click("#send")
+    page.wait_for_function("window.__chat.delivered === 1", timeout=20000)          # Web Crypto HKDF + AES-256-GCM
+    assert page.evaluate("window.__chat.rejected") == 0
+    page.click("button[data-tier='mars']")
+    page.wait_for_function("window.__twin.source.startsWith('a Mars lander')")
+    page.evaluate("""() => { const r = document.querySelector('.lab-slider[data-key="preloaded_bits"] input'); r.value = r.min; r.dispatchEvent(new Event('input')); }""")
+    page.select_option("#policy", "one-time pad")
+    page.fill("#text", "x" * 390)                                                     # 3,247 bits of pad per message: about 300 empty a 1 Mbit bank
+    for _ in range(8):
+        page.click("#burst")
+    page.wait_for_function("window.__chat.refused > 0", timeout=60000)
+    assert page.evaluate("window.__chat.refused") > 0 and "Refused" in page.inner_text("#msgsA")   # an empty bank refuses; no weaker fallback
+    assert not errors, errors
+    page.close()

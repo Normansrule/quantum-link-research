@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Messenger Lab · Quantum Link Research</title>
+<meta name="description" content="The application: a messenger that spends the key each link makes, by one-time pad, link-keyed AES, or the hybrid, with a key bank that never refuses and the light time on every message.">
+<meta name="theme-color" content="#05070d">
+<link rel="manifest" href="../manifest.webmanifest">
+<link rel="icon" href="../icon-192.png">
+<link rel="apple-touch-icon" href="../icon-192.png">
+<link rel="stylesheet" href="../../space.css">
+<link rel="stylesheet" href="../lab.css">
+<style>
+  .chat { grid-column: 1 / -1; display: grid; grid-template-columns: 1fr 1fr; gap: 1rem }
+  .chat .side-a, .chat .side-b { border: 1px solid var(--line); border-radius: 14px; padding: .7rem .8rem; background: rgba(10,15,28,.45); min-height: 260px; display: flex; flex-direction: column; gap: .5rem }
+  .chat h4 { margin: 0; font-size: .9rem } .chat .who { color: var(--muted); font-size: .75rem }
+  .msgs { display: flex; flex-direction: column; gap: .45rem; max-height: 330px; overflow-y: auto; flex: 1 }
+  .bubble { border: 1px solid var(--line); border-radius: 12px; padding: .45rem .6rem; font-size: .82rem; background: rgba(5,8,16,.7) }
+  .bubble .ct { font: .7rem "JetBrains Mono", ui-monospace, monospace; color: #93a1b8; word-break: break-all; margin-top: .2rem }
+  .bubble .st { font-size: .7rem; margin-top: .2rem } .bubble.ok { border-color: rgba(69,224,160,.45) } .bubble.wait { border-color: rgba(253,230,138,.4) } .bubble.bad { border-color: rgba(255,138,76,.55) }
+  .compose { display: flex; gap: .4rem } .compose input { flex: 1; background: #02040a; color: var(--ink); border: 1px solid var(--line); border-radius: 10px; padding: .45rem .6rem; font: inherit }
+  .bankbar { height: 10px; border-radius: 6px; background: #1a2336; overflow: hidden } .bankbar i { display: block; height: 100%; background: linear-gradient(90deg, #45e0a0, #5ef2e0) }
+  .chatbar { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: center; gap: .8rem; font-size: .8rem; color: var(--muted) }
+  table.sec { width: 100%; border-collapse: collapse; font-size: .78rem } table.sec th, table.sec td { padding: .35rem .3rem; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top }
+  table.sec tr.sel td { background: rgba(94,242,224,.08) }
+  .chartcard.wide { grid-column: 1 / -1 }
+  @media (max-width: 760px) { .chat { grid-template-columns: 1fr } }
+</style>
+<script src="../../js/lab_twin.js"></script>
+<script src="../../js/lab_outdoor.js"></script>
+<script src="../../js/lab_messenger.js"></script>
+<script src="../../js/lab_ui.js"></script>
+<script type="importmap">{ "imports": { "three": "../../vendor/three/three.module.js", "three/addons/": "../../vendor/three/addons/" } }</script>
+</head>
+<body>
+<div class="aurora"></div>
+<header class="top">
+  <a class="brand" href="../../"><span class="dot"></span>Quantum Link Research</a>
+  <nav><a href="../">Lab</a><a href="../link/">Two-room link</a><a href="../channel/">Quantum channels</a><a href="../outdoor/">Outdoors and orbit</a><a href="../frontier/">Frontier</a><a href="./">Messenger</a><a href="../circuits/">Cloud circuits</a><a class="gh" href="https://github.com/Normansrule/quantum-link-research">GitHub ↗</a></nav>
+</header>
+<section class="lab-head">
+  <div class="kicker" id="kicker">The application · P15</div>
+  <h1 id="title">A messenger keyed by the link</h1>
+  <p class="sub" id="summary"></p>
+  <div class="tiers" id="tiers" role="tablist" aria-label="Which link keys the messenger"></div>
+</section>
+<section class="how" id="how" aria-label="How the messenger uses the key"></section>
+<main class="lab">
+  <div>
+    <div class="view" id="view">
+      <div class="legend" id="legend"></div>
+      <div class="overlay"><div class="cams" id="cams"></div></div>
+    </div>
+  </div>
+  <aside class="side">
+    <div class="panel"><div class="metrics" id="metrics"></div></div>
+    <div class="panel">
+      <h3 style="margin:.1rem 0 .6rem;font-size:1rem">Parameters</h3>
+      <div class="ctl"><label>Encryption <select id="policy"></select></label></div>
+      <div class="params" id="params"></div>
+      <button class="btn-s" id="reset">Reset</button>
+    </div>
+  </aside>
+  <section class="panel chat" id="chatbox" aria-label="Try the messenger">
+    <div class="chatbar"><b style="color:var(--ink)">Try it:</b> messages are really encrypted in your browser (Web Crypto AES-256-GCM, or a one-time pad with a Wegman–Carter tag), spend key from the bank, and arrive after the light time.
+      <label>Time runs <select id="speed"><option value="1">in real time</option><option value="60">60× faster</option><option value="600" selected>600× faster</option></select></label>
+      <span id="clock"></span></div>
+    <div class="side-a"><h4 id="nameA">Alice</h4><div class="who">Key bank: <span id="bankText"></span></div><div class="bankbar"><i id="bankBar" style="width:100%"></i></div>
+      <div class="msgs" id="msgsA"></div>
+      <div class="compose"><input id="text" maxlength="400" value="Meet at the lab at nine." aria-label="Message"><button class="btn-s primary" id="send">Send</button><button class="btn-s" id="burst" title="Send fifty at once to drain the bank">Send 50</button></div></div>
+    <div class="side-b"><h4 id="nameB">Bob</h4><div class="who">Receives after the light time, then decrypts and checks the tag</div><div class="msgs" id="msgsB"></div></div>
+  </section>
+  <section class="charts" id="charts"></section>
+  <section class="term-wrap panel">
+    <div class="term-bar">
+      <h3>Terminal: the messenger's key budget, line by line</h3>
+      <button class="btn-s" id="explain">Explain each line</button>
+      <button class="btn-s" id="copyPy">Copy the Python</button>
+      <span class="muted small">Same arithmetic as <code>qll/link/keyed_messaging.py</code> (tests/test_lab_js.py).</span>
+    </div>
+    <div class="term" id="term" aria-live="polite"></div>
+  </section>
+  <section class="build panel" id="build"></section>
+</main>
+<script type="module">
+import { createLab } from "../../js/lab3d.js";
+const M = window.QLLMessenger, U = window.QLLLabUI;
+const data = await (await fetch("../scenes.json")).json();
+const tiers = data.messenger;
+const $ = (id) => document.getElementById(id);
+const lab = createLab($("view"));
+window.__lab = lab;
+const SOURCE = { rooms: "two rooms (P10)", buildings: "two buildings at night, 1 km", satellite: "one satellite pass a night", mars: "a Mars lander (key loaded before launch)" };
+const DIST = { rooms: 10, buildings: 1000, satellite: 1e6, mars: 4.0092e11 };
+const NAMES = { rooms: ["Alice (room A)", "Bob (room B)"], buildings: ["Alice (building A)", "Bob (building B)"], satellite: ["Ground station", "Partner station"], mars: ["Mission control (Earth)", "Lander (Mars)"] };
+let tier = null, values = {}, specs = [], setters = {}, policy = "one-time pad", labelsOn = false;
+const state = { stage: 9, pick: (p) => U.partCard($("build"), tier, p, specs) };
+lab.onPick((p) => state.pick(p));
+U.explainToggle($("explain"), $("term"));
+$("policy").innerHTML = M.POLICIES.map((p) => `<option>${U.esc(p)}</option>`).join("");
+const card = (h, cap, body, wide) => `<div class="chartcard${wide ? " wide" : ""}"><h3>${U.esc(h)}</h3><p class="cap">${U.esc(cap)}</p>${body}</div>`;
+const metric = (l, n, ok) => `<div class="metric ${ok ? "ok" : "bad"}"><div class="n">${n}</div><div class="l">${U.esc(l)}</div></div>`;
+const num = (x) => (!isFinite(x) ? "unlimited" : x >= 1e6 ? x.toExponential(2) : Math.round(x).toLocaleString("en-US"));
+const opts = () => ({ messages_per_day: values.messages_per_day, msg_bytes: Math.round(values.msg_bytes), rekey_every: Math.max(1, Math.round(values.rekey_every)),
+  distance_m: tier.id === "mars" ? values.distance_m : DIST[tier.id], preloaded_bits: tier.id === "mars" ? values.preloaded_bits : 0 });
+const lightText = (s) => (s < 1e-3 ? `${(s * 1e9).toFixed(0)} ns` : s < 1 ? `${(s * 1e3).toFixed(2)} ms` : s < 120 ? `${s.toFixed(1)} s` : `${(s / 60).toFixed(1)} min`);
+
+function renderHow() {
+  const steps = [["q", "1 · the link", tier.id === "mars" ? "no link yet" : "makes key", tier.id === "mars" ? "Key is loaded before launch and carried." : "Its own lab builds it; here it only distils secret key."],
+    ["l", "2 · the key bank", "stored at both ends", "Identical key sits at both ends, handed out once, by identifier."], ["c", "3 · encrypt", "spend key by policy", "A one-time pad spends a bit per bit; AES spends 256 bits per session key."],
+    ["c", "4 · send", "an ordinary network", "The ciphertext travels over any network at light speed or slower."], ["q", "5 · decrypt and check", "tag first", "Bob checks the tag, then decrypts; a changed message is rejected."],
+    ["l", "6 · fail closed", "no weaker fallback", "An empty bank refuses to send rather than encrypt with less."]];
+  $("how").innerHTML = steps.map(([k, tag, b, s]) => `<div class="step ${k}"><span class="tag">${tag}</span><b>${U.esc(b)}</b>${U.esc(s)}</div>`).join("");
+}
+
+function update(anim) {
+  const o = opts(), src = SOURCE[tier.id], r = M.plan(src, policy, o);
+  U.terminal($("term"), `python -c "from qll.link import keyed_messaging as K; print(K.plan('${src}', '${policy}', ${o.messages_per_day}, ${o.msg_bytes}, ${o.rekey_every}, ${o.distance_m}, ${o.preloaded_bits}))"`, M.steps(src, policy, o), { animate: anim });
+  const isMars = tier.id === "mars";
+  $("metrics").innerHTML = metric("Key per message", r.bits_per_message >= 1e4 ? r.bits_per_message.toExponential(2) + " bits" : `${+r.bits_per_message.toPrecision(4)} bits`, true) +
+    metric(isMars ? "Preloaded key lasts" : "Messages a day, at most", isMars ? M.daysText(r.preload_days) : num(r.messages_per_day_max), isMars ? r.preload_days > 365 : r.sustainable) +
+    metric(isMars ? "Key on board" : "Bank that never refuses", isMars ? M.bitsText(o.preloaded_bits) : M.bitsText(r.bank_bits), isMars || r.sustainable) + metric("Light time, one way", lightText(r.one_way_s), true) +
+    `<div class="verdict ${r.sustainable || (isMars && r.preload_days > 365) ? "" : "bad"}" id="verdict">${policy.startsWith("conventional") ? "Today's messengers need no key bank, but a recording of this conversation could be decrypted by a large quantum computer later." :
+      isMars ? `With ${M.bitsText(o.preloaded_bits)} of key on board, ${num(o.messages_per_day)} messages a day last ${M.daysText(r.preload_days)}; each takes ${lightText(r.one_way_s)} to arrive.` :
+      r.sustainable ? `The link keys up to ${num(r.messages_per_day_max)} messages a day; your ${num(o.messages_per_day)} need a bank of ${M.bitsText(r.bank_bits)}.` : `Your ${num(o.messages_per_day)} messages a day need more key than the link makes: the messenger refuses rather than encrypt with less. Use AES or the hybrid, or send less.`}</div>`;
+  // charts: the bank through a day, messages per day by link and policy, security
+  const sup = M.sources()[src].hourly_bits, dem = M.demandHourly(o.messages_per_day, r.bits_per_message), C = isMars ? o.preloaded_bits : r.bank_bits;
+  let L = isFinite(C) ? C : 0; const lev = [], hrs = [...Array(25).keys()];
+  lev.push(L); for (let h = 0; h < 24; h++) { L = Math.min(isFinite(C) ? C : Infinity, Math.max(0, L + sup[h] - dem[h])); lev.push(L); }
+  const top = Math.max(1, ...lev.filter(isFinite));
+  const caps = Object.entries(SOURCE).filter(([k]) => k !== "mars").flatMap(([k, s]) => ["one-time pad", "QKD-keyed AES-256-GCM"].map((p) => ({ label: `${k}, ${p === "one-time pad" ? "pad" : "AES"}`, value: Math.log10(Math.max(1, M.plan(s, p, o).messages_per_day_max)), text: num(M.plan(s, p, o).messages_per_day_max), color: p === "one-time pad" ? U.C.violet : U.C.cyan })));
+  const sec = `<table class="sec"><tr><th>Policy</th><th>Key per message</th><th>What protects it</th></tr>${M.POLICIES.map((p) => `<tr class="${p === policy ? "sel" : ""}"><td>${U.esc(p)}</td><td>${num(M.bitsPerMessage(p, o.msg_bytes, o.rekey_every))} bits</td><td>${U.esc(M.SECURITY[p][0])} <span class="muted">[${M.SECURITY[p][1]}]</span></td></tr>`).join("")}</table>`;
+  $("charts").innerHTML =
+    card(isMars ? "The preloaded bank through a day" : "The key bank through a day", isMars ? "Nothing refills it; each day's messages take their share." : "Key arrives on the link's schedule and is spent from 08:00 to 22:00. A bank of the size shown never runs dry.",
+      U.line(hrs, [{ ys: lev.map((v) => v / top), color: U.C.green, label: "bank level" }, { ys: [...sup, sup[23]].map((v) => Math.min(1, v / Math.max(1e-30, ...sup, ...dem))), color: U.C.violet, label: "key arriving" }, { ys: [...dem, dem[23]].map((v) => Math.min(1, v / Math.max(1e-30, ...sup, ...dem))), color: U.C.warm, label: "key spent" }],
+        { ymin: 0, ymax: 1.05, yticks: [0, 0.5, 1], yfmt: (y) => (y === 1 ? "full" : y === 0 ? "0" : "½"), xticks: [0, 6, 12, 18, 24], xlabel: "hour of the day" })) +
+    card("Messages a day each link can key", "Log scale, for your message size. A one-time pad spends a key bit per message bit; AES spends one session key per many messages.",
+      U.bars(caps, { max: Math.max(...caps.map((c) => c.value)) * 1.05, labelWidth: 150, marks: [{ at: Math.log10(Math.max(1, o.messages_per_day)), label: "your demand" }] })) +
+    card("What protects each message", "If someone records everything on the wire today and keeps it for decades.", sec);
+  lab.setValues(values, { photons: 5, transmit: 0.6, beam: 0.6, dark: 1, packets: Math.min(1, 0.2 + Math.log10(1 + o.messages_per_day) / 6) });
+  window.__twin = { kind: "messenger", source: src, policy, r, prompt: `python -m qll.link.keyed_messaging --messages ${o.messages_per_day} --bytes ${o.msg_bytes} --rekey ${o.rekey_every}` };
+  chat.reconfigure(r, o, sup, isMars);
+}
+
+/* ------------------------------------------------------------------ the live messenger */
+const chat = (() => {
+  const enc = new TextEncoder(), dec = new TextDecoder(), hex = (b) => [...b].map((x) => x.toString(16).padStart(2, "0")).join("");
+  const rand = (n) => crypto.getRandomValues(new Uint8Array(n));
+  let bank = 0, cap = 1, supply = [], oneWay = 0, simT = 9 * 3600, last = performance.now(), sessionLeft = 0, sessionKey = null, n = 0, plan = null, o = null, mars = false;
+  const stats = { sent: 0, delivered: 0, refused: 0, rejected: 0 }; window.__chat = stats;
+  const inflight = [];
+  function bankUI() {
+    $("bankText").textContent = `${M.bitsText(bank)} of ${M.bitsText(cap)}${policy.startsWith("conventional") ? " (not used: public-key exchange)" : ""}`;
+    $("bankBar").style.width = `${Math.max(0, Math.min(100, 100 * bank / cap))}%`;
+    const h = Math.floor(simT / 3600) % 24, m = Math.floor(simT / 60) % 60; $("clock").textContent = `Simulated time ${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`;
+  }
+  function reconfigure(r, oo, sup, isMars) {
+    plan = r; o = oo; supply = sup; oneWay = r.one_way_s; mars = isMars;
+    const want = isMars ? oo.preloaded_bits : Math.max(isFinite(r.bank_bits) ? r.bank_bits : 0, 50 * r.bits_per_message, 4096);
+    if (want !== cap) { cap = want; bank = want; }
+    sessionLeft = 0; bankUI();
+  }
+  async function encrypt(text) {
+    const pt = enc.encode(text);
+    if (policy === "one-time pad") {
+      const pad = rand(pt.length), ct = pt.map((x, i) => x ^ pad[i]), k = M.bigFromBytes(rand(15)) % (M.P127 - 1n) + 1n, r = M.bigFromBytes(rand(16)) % M.P127;
+      return { ct, open: async (c, t) => (M.tag(k, r, c) === t ? dec.decode(c.map((x, i) => x ^ pad[i])) : null), tag: M.tag(k, r, ct), label: `pad ${pt.length * 8} + tag 127 bits` };
+    }
+    if (sessionLeft <= 0 || !sessionKey) {
+      let raw = rand(32);
+      if (policy === "hybrid ML-KEM + QKD") {                          // HKDF over (ML-KEM secret ‖ link key); the KEM secret is simulated here, real in qll/app/hybrid_kem.py
+        const ikm = new Uint8Array([...rand(32), ...raw]), base = await crypto.subtle.importKey("raw", ikm, "HKDF", false, ["deriveBits"]);
+        raw = new Uint8Array(await crypto.subtle.deriveBits({ name: "HKDF", hash: "SHA-256", salt: new Uint8Array(32), info: enc.encode("qll hybrid session") }, base, 256));
+      }
+      sessionKey = await crypto.subtle.importKey("raw", raw, "AES-GCM", false, ["encrypt", "decrypt"]); sessionLeft = o.rekey_every;
+    }
+    sessionLeft--;
+    const iv = rand(12), key = sessionKey, ct = new Uint8Array(await crypto.subtle.encrypt({ name: "AES-GCM", iv }, key, pt));
+    return { ct, open: async (c) => { try { return dec.decode(await crypto.subtle.decrypt({ name: "AES-GCM", iv }, key, c)); } catch (e) { return null; } }, tag: null, label: "AES-256-GCM" };
+  }
+  function bubble(host, cls, html) { const d = document.createElement("div"); d.className = `bubble ${cls}`; d.innerHTML = html; host.prepend(d); return d; }
+  async function send(text) {
+    if (!text.trim()) return;
+    const conv = policy.startsWith("conventional"), cost = conv ? 0 : policy === "one-time pad" ? M.bitsPerMessage(policy, enc.encode(text).length) : (sessionLeft <= 0 ? 256 : 0);
+    if (cost > bank) { stats.refused++; bubble($("msgsA"), "bad", `<b>Refused.</b> ${U.esc(text)}<div class="st">The bank holds ${M.bitsText(bank)}; this message needs ${M.bitsText(cost)}. The messenger fails closed rather than encrypt with less.</div>`); return; }
+    bank -= cost; bankUI();
+    const box = await encrypt(text), id = ++n, eta = simT + oneWay;
+    stats.sent++;
+    const a = bubble($("msgsA"), "wait", `${U.esc(text)}<div class="ct">${hex(box.ct).slice(0, 96)}${box.ct.length > 48 ? "…" : ""}</div><div class="st">#${id} · ${box.label} · ${conv ? "no link key" : M.bitsText(cost) + " of key"} · in flight, ${lightText(oneWay)}</div>`);
+    inflight.push({ id, eta, box, a, text });
+  }
+  function tick() {
+    const now = performance.now(), dt = (now - last) / 1000 * +$("speed").value; last = now;
+    if (!mars && !policy.startsWith("conventional")) { let t = simT, left = dt; while (left > 0) { const h = Math.floor(t / 3600) % 24, step = Math.min(left, 3600 - (t % 3600)); bank = Math.min(cap, bank + supply[h] * step / 3600); t += step; left -= step; } }
+    simT += dt;
+    for (let i = inflight.length - 1; i >= 0; i--) {
+      const m = inflight[i];
+      if (simT >= m.eta) {
+        inflight.splice(i, 1);
+        m.box.open(m.box.ct, m.box.tag).then((plain) => {
+          const ok = plain === m.text; ok ? stats.delivered++ : stats.rejected++;
+          bubble($("msgsB"), ok ? "ok" : "bad", ok ? `${U.esc(plain)}<div class="st">#${m.id} · ${policy === "one-time pad" ? "tag verified, " : "GCM tag verified, "}decrypted after ${lightText(oneWay)}</div>` : `<b>Rejected</b> #${m.id}: tag check failed`);
+          m.a.className = "bubble ok"; const st = m.a.querySelector(".st"); st.textContent = st.textContent.replace(/in flight.*$/, `delivered after ${lightText(oneWay)}`);
+        });
+      } else {
+        const left = m.eta - simT; m.a.querySelector(".st").textContent = m.a.querySelector(".st").textContent.replace(/in flight.*$/, `in flight, ${lightText(left)} to go`);
+      }
+    }
+    bankUI(); requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+  $("send").addEventListener("click", () => send($("text").value));
+  $("text").addEventListener("keydown", (e) => { if (e.key === "Enter") send($("text").value); });
+  $("burst").addEventListener("click", async () => { for (let i = 0; i < 50; i++) await send(`${$("text").value} (${i + 1})`); });
+  return { reconfigure, send, clear: () => { $("msgsA").innerHTML = ""; $("msgsB").innerHTML = ""; inflight.length = 0; Object.assign(stats, { sent: 0, delivered: 0, refused: 0, rejected: 0 }); cap = -1; } };
+})();
+
+function renderTabs() {
+  $("tiers").innerHTML = tiers.map((t, i) => `${i ? '<span class="arrow">→</span>' : ""}<button role="tab" data-tier="${t.id}" aria-selected="${t === tier}"><small>${U.esc(t.milestones.join(", "))}</small><span>${U.esc(t.title)}</span><small>${U.esc(t.cost)}</small></button>`).join("");
+  $("tiers").querySelectorAll("button").forEach((b) => b.addEventListener("click", () => select(b.dataset.tier)));
+}
+function select(id) {
+  tier = tiers.find((t) => t.id === id) || tiers[0]; history.replaceState(null, "", "#" + tier.id);
+  specs = tier.sliders; values = {}; specs.forEach((s) => (values[s.key] = s.value));
+  $("title").textContent = tier.title; $("summary").textContent = tier.summary; $("kicker").textContent = `The application · ${tier.experiments.join(", ")} · keyed by milestone ${tier.milestones.join(", ")}`;
+  [$("nameA").textContent, $("nameB").textContent] = NAMES[tier.id];
+  renderTabs(); renderHow();
+  setters = U.sliders($("params"), specs, values, () => update(), (k) => lab.setFocus(k));
+  $("legend").innerHTML = `<span class="muted">the link from its own lab; this page adds only software</span>`;
+  const cams = { rooms: [["overview", "Both rooms"], ["roomA", "Alice"], ["roomB", "Bob"]], buildings: [["roofs", "Both roofs"], ["sendRoof", "Sending roof"]], satellite: [["station", "Station"], ["sky", "Sky"]], mars: [["planets", "Earth and Mars"], ["earth", "Earth"]] }[tier.id];
+  $("cams").innerHTML = cams.map(([k, l]) => `<button data-cam="${k}">${l}</button>`).join("") + `<button id="labels" aria-pressed="${labelsOn}">Labels</button>`;
+  $("cams").querySelectorAll("[data-cam]").forEach((b) => b.addEventListener("click", () => lab.view(b.dataset.cam)));
+  $("labels").addEventListener("click", () => { labelsOn = !labelsOn; lab.setLabels(labelsOn); $("labels").setAttribute("aria-pressed", String(labelsOn)); });
+  lab.setTier(tier); lab.setLabels(labelsOn); lab.view(cams[0][0], true);
+  if (tier.id === "buildings") { lab.aimPart("txScope", [9, 6.9, 0]); lab.aimPart("rxScope", [-9, 6.9, 0]); lab.setSky(1e-6); }
+  if (tier.id === "satellite") { lab.aimPart("scope", [-12, 12, -3]); lab.setCone([-12, 12, -3], [0, 2.3, 0], 0.04, 1.2, 0xff6fb5); lab.setSky(1e-7); }
+  if (tier.id === "mars") lab.setSky(1e-9);
+  U.buildPanel($("build"), tier, state, (n) => { lab.setStage(n); U.markStage($("build"), n); });
+  chat.clear();
+  update(true);
+}
+$("policy").addEventListener("change", () => { policy = $("policy").value; chat.clear(); update(true); });
+$("reset").addEventListener("click", () => select(tier.id));
+$("copyPy").addEventListener("click", (e) => U.copy(window.__twin.prompt, e.target));
+select(location.hash.slice(1) || "rooms");
+U.registerApp();
+document.body.dataset.ready = "1";
+</script>
+</body>
+</html>

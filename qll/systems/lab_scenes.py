@@ -35,6 +35,7 @@ class Beam:
     points: tuple[tuple[float, float, float], ...]
     label: str = ""
     stage: int = 0
+    main: bool = False               # the beam whose photons the 3D view animates
 
 
 @dataclass(frozen=True)
@@ -108,7 +109,7 @@ def tier1() -> Tier:
         Part("breadboard", "supply", "5 V supply and breadboard", _t(-5.55, 0.32), "Servos draw more than USB gives; join the grounds.", 5, 2),
         Part("laptopA", "laptop", "Laptop", _t(-4.5, 0.3), "python -m qll.link.bench_tier1 --port COM5 --out tier1.csv", None, 1),
     ]
-    beams = (Beam("red", (_t(-5.75, z, 0.14), _t(-4.4, z, 0.14)), "650 nm, bright", 2), Beam("usb", (_t(-5.2, 0.32, 0.01), _t(-4.5, 0.3, 0.01)), "USB serial", 2))
+    beams = (Beam("red", (_t(-5.75, z, 0.14), _t(-4.4, z, 0.14)), "650 nm, bright", 2, main=True), Beam("usb", (_t(-5.2, 0.32, 0.01), _t(-4.5, 0.3, 0.01)), "USB serial", 2))
     return Tier("tier1", "Starter: the bright-light analogue", "starter", ("T1",), ("M1.3",), "tier1", "$40–120",
                 "BB84's whole processing chain on light you can see: bits, bases, sifting, error rates, and an intercept station, on one desk.",
                 "systems/see510/10_real_world_experiments.md", TIER1_BOM,
@@ -195,7 +196,7 @@ def two_room_parts(channel: str = "free_space") -> tuple[list[Part], list[Beam]]
              Beam("violet", (_t(-5.78, 0.0, y), _t(-5.4, 0.0, y)), "", 5), Beam("violet", (_t(-5.4, -0.26, y), _t(-5.4, 0.0, y)), "", 5),
              Beam("violet", (_t(-5.45, 0.25, y), _t(-5.05, 0.25, y)), "", 5), Beam("violet", (_t(-5.05, 0.42, y), _t(-5.05, 0.25, y)), "", 5),
              Beam("violet", (_t(-5.4, 0.0, y), _t(-5.05, 0.0, y)), "", 5), Beam("violet", (_t(-5.05, 0.25, y), _t(-5.05, 0.0, y)), "", 5),
-             Beam("violet", (_t(-5.05, 0.0, y), _t(-0.15, 0.0, y), _t(4.18, 0.0, y), _t(4.35, 0.0, y), _t(4.8, 0.0, y), _t(5.15, 0.0, y)), "weak pulses, 0.5 photons", 5),
+             Beam("violet", (_t(-5.05, 0.0, y), _t(-0.15, 0.0, y), _t(4.18, 0.0, y), _t(4.35, 0.0, y), _t(4.8, 0.0, y), _t(5.15, 0.0, y)), "weak pulses, 0.5 photons", 5, main=True),
              Beam("violet", (_t(4.8, 0.0, y), _t(4.8, 0.3, y)), "", 6),
              Beam("violet", (_t(4.35, 0.0, y), _t(4.35, -0.2, y), _t(4.35, -0.4, y), _t(4.35, -0.6, y)), "", 6),
              Beam("violet", (_t(4.35, -0.4, y), _t(4.7, -0.4, y)), "", 6)]
@@ -267,7 +268,7 @@ def tier3() -> Tier:
     bm = [Beam("nir" if b.kind == "violet" else b.kind, b.points, b.label, b.stage) for b in bm]
     y = 0.14
     bm.append(Beam("nir", (_t(-5.05, 0.0, y), _t(-4.6, 0.0, y), (-4.4, 0.4, 1.2), (0.0, 0.4, 1.2), (3.4, 0.4, 1.2), _t(3.6, 0.35, y), _t(4.18, 0.0, y),
-                           _t(4.35, 0.0, y), _t(4.8, 0.0, y), _t(5.15, 0.0, y)), "850 nm weak pulses through fiber", 5))
+                           _t(4.35, 0.0, y), _t(4.8, 0.0, y), _t(5.15, 0.0, y)), "850 nm weak pulses through fiber", 5, main=True))
     return Tier("tier3", "Upgrade: avalanche-diode detectors and fiber", "upgrade", ("T3", "P07"), ("M1.6",), "tier3", "$2,000–8,000 planning (itemized rows span $1,800–10,800)",
                 "The same protocol with used single-photon avalanche diode modules at 850 nm and a fiber spool: far fewer dark counts, so the key survives kilometres of fiber.",
                 "systems/see510/10_real_world_experiments.md", TIER3_BOM, P10_STAGES[:7], tuple(up), tuple(bm),
@@ -313,7 +314,7 @@ def tier4() -> Tier:
     beams = (Beam("pump", (_t(-5.7, -0.25, y), _t(-5.25, -0.25, y)), "405 nm pump", 2),
              Beam("pair", (_t(-5.25, -0.25, y), _t(-5.0, -0.1, y), _t(-4.75, 0.15, y), _t(-4.55, 0.15, y), _t(-4.3, 0.15, y)), "photon A", 2),
              Beam("pair", (_t(-4.55, 0.15, y), _t(-4.55, 0.42, y)), "", 3),
-             Beam("pair", (_t(-5.25, -0.25, y), _t(-5.0, -0.4, y), (-4.6, 0.3, 1.2), (0.0, 0.3, 1.2), (3.6, 0.3, 1.2), _t(4.3, 0.0, y), _t(4.6, 0.0, y), _t(4.95, 0.0, y)), "photon B through fiber", 2),
+             Beam("pair", (_t(-5.25, -0.25, y), _t(-5.0, -0.4, y), (-4.6, 0.3, 1.2), (0.0, 0.3, 1.2), (3.6, 0.3, 1.2), _t(4.3, 0.0, y), _t(4.6, 0.0, y), _t(4.95, 0.0, y)), "photon B through fiber", 2, main=True),
              Beam("pair", (_t(4.6, 0.0, y), _t(4.6, 0.32, y)), "", 3),
              Beam("classical", ((-4.25, TABLE_Y + 0.03, -0.35), (-4.25, 2.4, -0.35), (4.3, 2.4, 0.5), (4.3, TABLE_Y + 0.03, 0.5)), "classical channel", 1),
              Beam("sync", ((-5.75, TABLE_Y + 0.05, 0.3), (-5.75, 2.3, 0.3), (5.5, 2.3, -0.3), (5.5, TABLE_Y + 0.05, -0.3)), "shared clock", 4))
@@ -398,4 +399,10 @@ def export() -> dict:
         d = asdict(t)
         d["bom_total"] = bom_total(t)
         return d
-    return {"link": [tier(t) for t in link_tiers()], "circuits": [tier(t) for t in circuit_tiers()]}
+    from qll.systems.lab_channel_scenes import channel_tiers
+    from qll.systems.lab_frontier_scenes import frontier_tiers
+    from qll.systems.lab_messenger_scenes import messenger_tiers
+    from qll.systems.lab_outdoor_scenes import outdoor_tiers
+    return {"link": [tier(t) for t in link_tiers()], "circuits": [tier(t) for t in circuit_tiers()], "channel": [tier(t) for t in channel_tiers()],
+            "outdoor": [tier(t) for t in outdoor_tiers()], "frontier": [tier(t) for t in frontier_tiers()],
+            "messenger": [tier(t) for t in messenger_tiers()]}

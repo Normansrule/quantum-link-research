@@ -344,7 +344,8 @@
       ]
      ],
      "label": "650 nm, bright",
-     "stage": 2
+     "stage": 2,
+     "main": true
     },
     {
      "kind": "usb",
@@ -361,7 +362,8 @@
       ]
      ],
      "label": "USB serial",
-     "stage": 2
+     "stage": 2,
+     "main": false
     }
    ],
    "sliders": [
@@ -1236,7 +1238,8 @@
       ]
      ],
      "label": "duplex fiber: authenticated classical channel",
-     "stage": 2
+     "stage": 2,
+     "main": false
     },
     {
      "kind": "sync",
@@ -1263,7 +1266,8 @@
       ]
      ],
      "label": "clock coax: one edge per slot",
-     "stage": 7
+     "stage": 7,
+     "main": false
     },
     {
      "kind": "violet",
@@ -1280,7 +1284,8 @@
       ]
      ],
      "label": "",
-     "stage": 5
+     "stage": 5,
+     "main": false
     },
     {
      "kind": "violet",
@@ -1297,7 +1302,8 @@
       ]
      ],
      "label": "",
-     "stage": 5
+     "stage": 5,
+     "main": false
     },
     {
      "kind": "violet",
@@ -1314,7 +1320,8 @@
       ]
      ],
      "label": "",
-     "stage": 5
+     "stage": 5,
+     "main": false
     },
     {
      "kind": "violet",
@@ -1331,7 +1338,8 @@
       ]
      ],
      "label": "",
-     "stage": 5
+     "stage": 5,
+     "main": false
     },
     {
      "kind": "violet",
@@ -1348,7 +1356,8 @@
       ]
      ],
      "label": "",
-     "stage": 5
+     "stage": 5,
+     "main": false
     },
     {
      "kind": "violet",
@@ -1365,7 +1374,8 @@
       ]
      ],
      "label": "",
-     "stage": 5
+     "stage": 5,
+     "main": false
     },
     {
      "kind": "violet",
@@ -1402,7 +1412,8 @@
       ]
      ],
      "label": "weak pulses, 0.5 photons",
-     "stage": 5
+     "stage": 5,
+     "main": true
     },
     {
      "kind": "violet",
@@ -1419,7 +1430,8 @@
       ]
      ],
      "label": "",
-     "stage": 6
+     "stage": 6,
+     "main": false
     },
     {
      "kind": "violet",
@@ -1446,7 +1458,8 @@
       ]
      ],
      "label": "",
-     "stage": 6
+     "stage": 6,
+     "main": false
     },
     {
      "kind": "violet",
@@ -1463,7 +1476,8 @@
       ]
      ],
      "label": "",
-     "stage": 6
+     "stage": 6,
+     "main": false
     }
    ],
    "sliders": [
@@ -2332,7 +2346,8 @@
       ]
      ],
      "label": "duplex fiber: authenticated classical channel",
-     "stage": 2
+     "stage": 2,
+     "main": false
     },
     {
      "kind": "sync",
@@ -2359,7 +2374,8 @@
       ]
      ],
      "label": "clock coax: one edge per slot",
-     "stage": 7
+     "stage": 7,
+     "main": false
     },
     {
      "kind": "nir",
@@ -2376,7 +2392,8 @@
       ]
      ],
      "label": "",
-     "stage": 5
+     "stage": 5,
+     "main": false
     },
     {
      "kind": "nir",
@@ -2393,7 +2410,8 @@
       ]
      ],
      "label": "",
-     "stage": 5
+     "stage": 5,
+     "main": false
     },
     {
      "kind": "nir",
@@ -2410,7 +2428,8 @@
       ]
      ],
      "label": "",
-     "stage": 5
+     "stage": 5,
+     "main": false
     },
     {
      "kind": "nir",
@@ -2427,7 +2446,8 @@
       ]
      ],
      "label": "",
-     "stage": 5
+     "stage": 5,
+     "main": false
     },
     {
      "kind": "nir",
@@ -2444,7 +2464,8 @@
       ]
      ],
      "label": "",
-     "stage": 5
+     "stage": 5,
+     "main": false
     },
     {
      "kind": "nir",
@@ -2461,7 +2482,8 @@
       ]
      ],
      "label": "",
-     "stage": 5
+     "stage": 5,
+     "main": false
     },
     {
      "kind": "nir",
@@ -2478,7 +2500,8 @@
       ]
      ],
      "label": "",
-     "stage": 6
+     "stage": 6,
+     "main": false
     },
     {
      "kind": "nir",
@@ -2505,7 +2528,8 @@
       ]
      ],
      "label": "",
-     "stage": 6
+     "stage": 6,
+     "main": false
     },
     {
      "kind": "nir",
@@ -2522,7 +2546,8 @@
       ]
      ],
      "label": "",
-     "stage": 6
+     "stage": 6,
+     "main": false
     },
     {
      "kind": "nir",
@@ -2579,7 +2604,8 @@
       ]
      ],
      "label": "850 nm weak pulses through fiber",
-     "stage": 5
+     "stage": 5,
+     "main": true
     }
    ],
    "sliders": [
@@ -3193,7 +3219,8 @@
       ]
      ],
      "label": "405 nm pump",
-     "stage": 2
+     "stage": 2,
+     "main": false
     },
     {
      "kind": "pair",
@@ -3225,7 +3252,8 @@
       ]
      ],
      "label": "photon A",
-     "stage": 2
+     "stage": 2,
+     "main": false
     },
     {
      "kind": "pair",
@@ -3242,7 +3270,8 @@
       ]
      ],
      "label": "",
-     "stage": 3
+     "stage": 3,
+     "main": false
     },
     {
      "kind": "pair",
@@ -3289,7 +3318,8 @@
       ]
      ],
      "label": "photon B through fiber",
-     "stage": 2
+     "stage": 2,
+     "main": true
     },
     {
      "kind": "pair",
@@ -3306,7 +3336,8 @@
       ]
      ],
      "label": "",
-     "stage": 3
+     "stage": 3,
+     "main": false
     },
     {
      "kind": "classical",
@@ -3333,7 +3364,8 @@
       ]
      ],
      "label": "classical channel",
-     "stage": 1
+     "stage": 1,
+     "main": false
     },
     {
      "kind": "sync",
@@ -3360,7 +3392,8 @@
       ]
      ],
      "label": "shared clock",
-     "stage": 4
+     "stage": 4,
+     "main": false
     }
    ],
    "sliders": [
@@ -3589,7 +3622,8 @@
       ]
      ],
      "label": "jobs out, counts back",
-     "stage": 2
+     "stage": 2,
+     "main": false
     },
     {
      "kind": "cloud",
@@ -3606,7 +3640,8 @@
       ]
      ],
      "label": "",
-     "stage": 2
+     "stage": 2,
+     "main": false
     }
    ],
    "sliders": [
@@ -3793,7 +3828,8 @@
       ]
      ],
      "label": "jobs out, counts back",
-     "stage": 2
+     "stage": 2,
+     "main": false
     },
     {
      "kind": "cloud",
@@ -3810,7 +3846,8 @@
       ]
      ],
      "label": "",
-     "stage": 2
+     "stage": 2,
+     "main": false
     }
    ],
    "sliders": [
@@ -3970,7 +4007,8 @@
       ]
      ],
      "label": "control and readout",
-     "stage": 3
+     "stage": 3,
+     "main": false
     }
    ],
    "sliders": [
@@ -4021,6 +4059,8304 @@
    },
    "rooms": false,
    "claim": "An emulation on qubits; a topological device needs a partner (T16).",
+   "bom_total": [
+    0,
+    0
+   ]
+  }
+ ],
+ "channel": [
+  {
+   "id": "zoo",
+   "title": "Starter: build a channel from five noise processes",
+   "rung": "starter",
+   "experiments": [
+    "P14"
+   ],
+   "milestones": [
+    "M1.8"
+   ],
+   "twin": "zoo",
+   "cost": "$0",
+   "summary": "Stack depolarizing noise, dephasing, energy loss, a rotation, and a measure-and-resend relay, and watch what each does to the sphere of polarizations, whether the channel stays quantum, and what it can still carry.",
+   "procedure": "systems/program/09_quantum_channels.md",
+   "bom": [
+    [
+     "A laptop",
+     "owned",
+     0,
+     0
+    ]
+   ],
+   "stages": [
+    [
+     "Pick the noise",
+     "Sliders compose five channels in order."
+    ]
+   ],
+   "parts": [
+    {
+     "id": "table",
+     "kind": "table",
+     "label": "Desk",
+     "pos": [
+      2.2,
+      0.0,
+      0.0
+     ],
+     "note": "",
+     "bom": null,
+     "stage": 1,
+     "rot": 0.0,
+     "param": "",
+     "size": [
+      1.2,
+      0.7
+     ]
+    },
+    {
+     "id": "laptop",
+     "kind": "laptop",
+     "label": "Your laptop",
+     "pos": [
+      2.2,
+      0.88,
+      0.0
+     ],
+     "note": "Every channel here is computed exactly, as in qll/circuits/qubit_channel.py.",
+     "bom": 0,
+     "stage": 1,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    }
+   ],
+   "beams": [],
+   "sliders": [
+    {
+     "key": "p_dep",
+     "label": "Depolarizing p",
+     "lo": 0,
+     "hi": 1,
+     "step": 0.01,
+     "value": 0.0,
+     "unit": "",
+     "log": false
+    },
+    {
+     "key": "lam_deph",
+     "label": "Dephasing λ",
+     "lo": 0,
+     "hi": 1,
+     "step": 0.01,
+     "value": 0.0,
+     "unit": "",
+     "log": false
+    },
+    {
+     "key": "gamma",
+     "label": "Amplitude damping γ (energy loss)",
+     "lo": 0,
+     "hi": 1,
+     "step": 0.01,
+     "value": 0.0,
+     "unit": "",
+     "log": false
+    },
+    {
+     "key": "theta",
+     "label": "Rotation angle (degrees)",
+     "lo": 0,
+     "hi": 180,
+     "step": 1,
+     "value": 0.0,
+     "unit": "",
+     "log": false
+    },
+    {
+     "key": "f_ir",
+     "label": "Measure-and-resend fraction",
+     "lo": 0,
+     "hi": 1,
+     "step": 0.01,
+     "value": 0.0,
+     "unit": "",
+     "log": false
+    }
+   ],
+   "commands": {
+    "simulate": "python -c \"from qll.circuits import qubit_channel as Q; R = Q.compose(Q.depolarizing_ptm(0.1), Q.rotation_ptm(0.3)); print(Q.entanglement_fidelity(R), Q.is_entanglement_breaking(R), Q.hashing_bound(R))\""
+   },
+   "rooms": false,
+   "claim": "Exact channel arithmetic; no hardware.",
+   "bom_total": [
+    0,
+    0
+   ]
+  },
+  {
+   "id": "hallway",
+   "title": "The hallway, certified and mapped as a quantum channel",
+   "rung": "main",
+   "experiments": [
+    "P14",
+    "P10"
+   ],
+   "milestones": [
+    "M1.8"
+   ],
+   "twin": "hallway",
+   "cost": "$10–30 on top of P10",
+   "summary": "The P10 link, seen as a quantum channel: the BB84 error rates certify it is not a classical relay, two quarter-wave plates add the third direction for full tomography, and the measured map gives what the hallway can carry: bits, qubits, and secret key.",
+   "procedure": "experiments/protocols/P14_the_hallway_as_a_quantum_channel.md",
+   "bom": [
+    [
+     "The two-room P10 build (see the two-room lab)",
+     "source, hallway, receiver, timing",
+     530,
+     1180
+    ],
+    [
+     "Two quarter-wave retarders cut from one film sheet, and a printed flip mount",
+     "a circular input and a circular measurement",
+     10,
+     30
+    ]
+   ],
+   "stages": [
+    [
+     "Certify from BB84 counts",
+     "No new parts: e_Z and e_X bound the entanglement fidelity."
+    ],
+    [
+     "Add a circular input",
+     "Quarter-wave plate behind the 45° polarizer: that diode sends R."
+    ],
+    [
+     "Add a circular measurement",
+     "Flip a quarter-wave plate into the X arm: it measures Y."
+    ],
+    [
+     "Tomography sessions",
+     "Four ten-second sessions, every click logged as input, basis, outcome."
+    ]
+   ],
+   "parts": [
+    {
+     "id": "roomA",
+     "kind": "room",
+     "label": "Room A (Alice)",
+     "pos": [
+      -5.0,
+      0.0,
+      0.0
+     ],
+     "note": "A lab or office; blackout the window and keep the door open on the beam line.",
+     "bom": null,
+     "stage": 0,
+     "rot": 0.0,
+     "param": "",
+     "size": [
+      6.0,
+      5.0
+     ]
+    },
+    {
+     "id": "roomB",
+     "kind": "room",
+     "label": "Room B (Bob)",
+     "pos": [
+      5.0,
+      0.0,
+      0.0
+     ],
+     "note": "The receiving room, 10 m along the beam from room A's source.",
+     "bom": null,
+     "stage": 0,
+     "rot": 0.0,
+     "param": "",
+     "size": [
+      6.0,
+      5.0
+     ]
+    },
+    {
+     "id": "tableA",
+     "kind": "table",
+     "label": "Bench A",
+     "pos": [
+      -5.0,
+      0.0,
+      0.0
+     ],
+     "note": "Any sturdy desk; bolt or tape the mounts down.",
+     "bom": null,
+     "stage": 0,
+     "rot": 0.0,
+     "param": "",
+     "size": [
+      1.8,
+      1.0
+     ]
+    },
+    {
+     "id": "tableB",
+     "kind": "table",
+     "label": "Bench B",
+     "pos": [
+      5.0,
+      0.0,
+      0.0
+     ],
+     "note": "Any sturdy desk, at least 1.3 m deep for the two analyzer arms.",
+     "bom": null,
+     "stage": 0,
+     "rot": 0.0,
+     "param": "",
+     "size": [
+      1.8,
+      1.3
+     ]
+    },
+    {
+     "id": "hall",
+     "kind": "hallway",
+     "label": "Hallway",
+     "pos": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "note": "Free-space path between the two open doors; keep the beam below eye level.",
+     "bom": null,
+     "stage": 0,
+     "rot": 0.0,
+     "param": "",
+     "size": [
+      4.0,
+      2.2
+     ]
+    },
+    {
+     "id": "laptopA",
+     "kind": "laptop",
+     "label": "Laptop A",
+     "pos": [
+      -4.5,
+      0.88,
+      0.3
+     ],
+     "note": "Runs Site A's half of the protocol; static address on the link subnet.",
+     "bom": null,
+     "stage": 1,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "laptopB",
+     "kind": "laptop",
+     "label": "Laptop B",
+     "pos": [
+      5.45,
+      0.88,
+      0.45
+     ],
+     "note": "Runs Site B's half.",
+     "bom": null,
+     "stage": 1,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "mcA",
+     "kind": "mediaconv",
+     "label": "Media converter A",
+     "pos": [
+      -4.25,
+      0.88,
+      -0.35
+     ],
+     "note": "Ethernet to fiber; the authenticated classical channel (qll/link/net_transport.py).",
+     "bom": 0,
+     "stage": 1,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "mcB",
+     "kind": "mediaconv",
+     "label": "Media converter B",
+     "pos": [
+      4.3,
+      0.88,
+      0.5
+     ],
+     "note": "Fiber back to Ethernet in room B.",
+     "bom": 0,
+     "stage": 1,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "darkbox",
+     "kind": "box",
+     "label": "Light-tight receiver box",
+     "pos": [
+      4.7,
+      0.9,
+      -0.12
+     ],
+     "note": "Felt and black card around the receiver: every leak is a dark count.",
+     "bom": 0,
+     "stage": 1,
+     "rot": 0.0,
+     "param": "sipm_dark_hz",
+     "size": [
+      1.3,
+      0.28,
+      1.15
+     ]
+    },
+    {
+     "id": "boost",
+     "kind": "supply",
+     "label": "30 V boost module",
+     "pos": [
+      5.7,
+      0.88,
+      0.05
+     ],
+     "note": "Biases the SiPMs at breakdown plus 2.5 V (about 27 V).",
+     "bom": 0,
+     "stage": 1,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "fpgaB",
+     "kind": "fpga",
+     "label": "FPGA B (gate and count)",
+     "pos": [
+      5.6,
+      0.88,
+      -0.45
+     ],
+     "note": "Opens a 5 ns gate per clock pulse and logs which detector fired.",
+     "bom": 0,
+     "stage": 1,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "sipmZ0",
+     "kind": "sipm",
+     "label": "SiPM Z0 (H)",
+     "pos": [
+      5.15,
+      0.88,
+      0.0
+     ],
+     "note": "MicroFC-30035: 31 % efficient at 420 nm, 300 kHz dark at 21 °C.",
+     "bom": 0,
+     "stage": 1,
+     "rot": 0.0,
+     "param": "sipm_pde",
+     "size": []
+    },
+    {
+     "id": "sipmZ1",
+     "kind": "sipm",
+     "label": "SiPM Z1 (V)",
+     "pos": [
+      4.8,
+      0.88,
+      0.3
+     ],
+     "note": "Second detector of the Z arm.",
+     "bom": 0,
+     "stage": 1,
+     "rot": 90,
+     "param": "sipm_pde",
+     "size": []
+    },
+    {
+     "id": "sipmX0",
+     "kind": "sipm",
+     "label": "SiPM X0 (D)",
+     "pos": [
+      4.35,
+      0.88,
+      -0.6
+     ],
+     "note": "First detector of the X arm.",
+     "bom": 0,
+     "stage": 1,
+     "rot": 90,
+     "param": "sipm_pde",
+     "size": []
+    },
+    {
+     "id": "sipmX1",
+     "kind": "sipm",
+     "label": "SiPM X1 (A)",
+     "pos": [
+      4.7,
+      0.88,
+      -0.4
+     ],
+     "note": "Second detector of the X arm.",
+     "bom": 0,
+     "stage": 1,
+     "rot": 0.0,
+     "param": "sipm_pde",
+     "size": []
+    },
+    {
+     "id": "diodeH",
+     "kind": "laser",
+     "label": "405 nm diode (H)",
+     "pos": [
+      -5.78,
+      0.88,
+      0.0
+     ],
+     "note": "Fired at random, one per 1 µs slot, at the signal or decoy current, or not at all (vacuum).",
+     "bom": 0,
+     "stage": 1,
+     "rot": 0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "diodeV",
+     "kind": "laser",
+     "label": "405 nm diode (V)",
+     "pos": [
+      -5.4,
+      0.88,
+      -0.26
+     ],
+     "note": "Enters the H+V cube from the side.",
+     "bom": 0,
+     "stage": 1,
+     "rot": 90,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "diodeD",
+     "kind": "laser",
+     "label": "405 nm diode (D)",
+     "pos": [
+      -5.45,
+      0.88,
+      0.25
+     ],
+     "note": "Enters the D+A cube through its face.",
+     "bom": 0,
+     "stage": 1,
+     "rot": 0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "diodeA",
+     "kind": "laser",
+     "label": "405 nm diode (A)",
+     "pos": [
+      -5.05,
+      0.88,
+      0.42
+     ],
+     "note": "Enters the D+A cube from the side.",
+     "bom": 0,
+     "stage": 1,
+     "rot": -90,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "polH",
+     "kind": "polarizer",
+     "label": "Film polarizer at 0°",
+     "pos": [
+      -5.6,
+      0.88,
+      0.0
+     ],
+     "note": "Fixed polarizer in front of its diode.",
+     "bom": 0,
+     "stage": 1,
+     "rot": 0.0,
+     "param": "polarizer_extinction",
+     "size": []
+    },
+    {
+     "id": "polV",
+     "kind": "polarizer",
+     "label": "Film polarizer at 90°",
+     "pos": [
+      -5.4,
+      0.88,
+      -0.13
+     ],
+     "note": "Fixed polarizer in front of its diode.",
+     "bom": 0,
+     "stage": 1,
+     "rot": 90,
+     "param": "polarizer_extinction",
+     "size": []
+    },
+    {
+     "id": "polD",
+     "kind": "polarizer",
+     "label": "Film polarizer at 45°",
+     "pos": [
+      -5.25,
+      0.88,
+      0.25
+     ],
+     "note": "Fixed polarizer in front of its diode.",
+     "bom": 0,
+     "stage": 1,
+     "rot": 0.0,
+     "param": "polarizer_extinction",
+     "size": []
+    },
+    {
+     "id": "polA",
+     "kind": "polarizer",
+     "label": "Film polarizer at 135°",
+     "pos": [
+      -5.05,
+      0.88,
+      0.33
+     ],
+     "note": "Fixed polarizer in front of its diode.",
+     "bom": 0,
+     "stage": 1,
+     "rot": 90,
+     "param": "polarizer_extinction",
+     "size": []
+    },
+    {
+     "id": "bsHV",
+     "kind": "bs",
+     "label": "Combiner H+V",
+     "pos": [
+      -5.4,
+      0.88,
+      0.0
+     ],
+     "note": "50/50 cube: H through the face, V from the side.",
+     "bom": 0,
+     "stage": 1,
+     "rot": 45,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "bsDA",
+     "kind": "bs",
+     "label": "Combiner D+A",
+     "pos": [
+      -5.05,
+      0.88,
+      0.25
+     ],
+     "note": "50/50 cube: D through the face, A from the side; the pair leaves toward the third cube.",
+     "bom": 0,
+     "stage": 1,
+     "rot": 45,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "bsAll",
+     "kind": "bs",
+     "label": "Combiner, all four",
+     "pos": [
+      -5.05,
+      0.88,
+      0.0
+     ],
+     "note": "Joins the two pairs onto one beam line.",
+     "bom": 0,
+     "stage": 1,
+     "rot": 45,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "pinhole",
+     "kind": "iris",
+     "label": "Pinhole spatial filter",
+     "pos": [
+      -4.85,
+      0.88,
+      0.0
+     ],
+     "note": "Makes the four diodes' beams look alike (side channel MR-R2).",
+     "bom": 0,
+     "stage": 1,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "nd",
+     "kind": "nd",
+     "label": "Neutral-density filters",
+     "pos": [
+      -4.68,
+      0.88,
+      0.0
+     ],
+     "note": "Attenuate each pulse to a mean of 0.5 photons (signal) or 0.1 (decoy).",
+     "bom": 0,
+     "stage": 1,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "fpgaA",
+     "kind": "fpga",
+     "label": "FPGA A (pulse and clock)",
+     "pos": [
+      -5.65,
+      0.88,
+      -0.33
+     ],
+     "note": "Chooses state and intensity per slot, drives the diodes, sends the clock.",
+     "bom": 0,
+     "stage": 1,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "tubes",
+     "kind": "tube",
+     "label": "Black tubes",
+     "pos": [
+      3.95,
+      0.88,
+      0.0
+     ],
+     "note": "Shield the beam line from room light.",
+     "bom": 0,
+     "stage": 1,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "lensB",
+     "kind": "lens",
+     "label": "Collection lens",
+     "pos": [
+      4.18,
+      0.88,
+      0.0
+     ],
+     "note": "Focuses the beam into the analyzer.",
+     "bom": 0,
+     "stage": 1,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "bsB",
+     "kind": "bs",
+     "label": "Basis beamsplitter",
+     "pos": [
+      4.35,
+      0.88,
+      0.0
+     ],
+     "note": "Passive, random basis choice: half the photons go to Z, half to X.",
+     "bom": 0,
+     "stage": 1,
+     "rot": 45,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "pbsZ",
+     "kind": "pbs",
+     "label": "PBS, Z arm",
+     "pos": [
+      4.8,
+      0.88,
+      0.0
+     ],
+     "note": "Sends H to one SiPM and V to the other.",
+     "bom": 0,
+     "stage": 1,
+     "rot": 45,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "hwp",
+     "kind": "hwp",
+     "label": "Half-wave plate at 22.5°",
+     "pos": [
+      4.35,
+      0.88,
+      -0.2
+     ],
+     "note": "Turns the diagonal basis into the rectilinear one for the X arm.",
+     "bom": 0,
+     "stage": 1,
+     "rot": 90,
+     "param": "waveplate_error",
+     "size": []
+    },
+    {
+     "id": "pbsX",
+     "kind": "pbs",
+     "label": "PBS, X arm",
+     "pos": [
+      4.35,
+      0.88,
+      -0.4
+     ],
+     "note": "Sends D to one SiPM and A to the other.",
+     "bom": 0,
+     "stage": 1,
+     "rot": 45,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "coax",
+     "kind": "coaxend",
+     "label": "Clock coax",
+     "pos": [
+      -5.65,
+      0.75,
+      -0.42
+     ],
+     "note": "Room A's FPGA sends one clock edge per slot; timing is public.",
+     "bom": 0,
+     "stage": 1,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "eveTable",
+     "kind": "table",
+     "label": "Eavesdropper's cart",
+     "pos": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "note": "Optional: an intercept-resend station halfway down the hallway.",
+     "bom": null,
+     "stage": 1,
+     "rot": 0.0,
+     "param": "",
+     "size": [
+      0.7,
+      0.5
+     ]
+    },
+    {
+     "id": "eveBS",
+     "kind": "pbs",
+     "label": "Eve's analyzer",
+     "pos": [
+      -0.15,
+      0.88,
+      0.0
+     ],
+     "note": "Measures each pulse in a random basis...",
+     "bom": 0,
+     "stage": 1,
+     "rot": 45,
+     "param": "eve_fraction",
+     "size": []
+    },
+    {
+     "id": "eveDet",
+     "kind": "sipm",
+     "label": "Eve's detector",
+     "pos": [
+      -0.15,
+      0.88,
+      0.18
+     ],
+     "note": "...with her own detector...",
+     "bom": 0,
+     "stage": 1,
+     "rot": 90,
+     "param": "eve_fraction",
+     "size": []
+    },
+    {
+     "id": "eveLaser",
+     "kind": "laser",
+     "label": "Eve's resend diodes",
+     "pos": [
+      0.15,
+      0.88,
+      0.0
+     ],
+     "note": "...and re-sends what she saw: about 25 % errors where she guessed the basis wrong.",
+     "bom": 0,
+     "stage": 1,
+     "rot": 0,
+     "param": "eve_fraction",
+     "size": []
+    },
+    {
+     "id": "qwpSource",
+     "kind": "qwp",
+     "label": "Quarter-wave plate (makes R)",
+     "pos": [
+      -5.16,
+      0.88,
+      0.25
+     ],
+     "note": "Behind the 45° polarizer of the D diode, fast axis horizontal: that diode now sends circular light.",
+     "bom": 1,
+     "stage": 2,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "qwpFlip",
+     "kind": "qwp",
+     "label": "Flip-in quarter-wave plate (measures Y)",
+     "pos": [
+      4.35,
+      0.88,
+      -0.11
+     ],
+     "note": "Fast axis horizontal, in front of the X arm's half-wave plate: flipped in, the X arm measures Y.",
+     "bom": 1,
+     "stage": 3,
+     "rot": 90,
+     "param": "",
+     "size": []
+    }
+   ],
+   "beams": [
+    {
+     "kind": "classical",
+     "points": [
+      [
+       -4.25,
+       0.8300000000000001,
+       -0.35
+      ],
+      [
+       -4.25,
+       2.4,
+       -0.35
+      ],
+      [
+       4.3,
+       2.4,
+       0.5
+      ],
+      [
+       4.3,
+       0.8300000000000001,
+       0.5
+      ]
+     ],
+     "label": "duplex fiber: authenticated classical channel",
+     "stage": 1,
+     "main": false
+    },
+    {
+     "kind": "sync",
+     "points": [
+      [
+       -5.65,
+       0.8200000000000001,
+       -0.42
+      ],
+      [
+       -5.65,
+       2.3,
+       -0.42
+      ],
+      [
+       5.6,
+       2.3,
+       -0.45
+      ],
+      [
+       5.6,
+       0.8200000000000001,
+       -0.45
+      ]
+     ],
+     "label": "clock coax: one edge per slot",
+     "stage": 1,
+     "main": false
+    },
+    {
+     "kind": "violet",
+     "points": [
+      [
+       -5.78,
+       0.9400000000000001,
+       0.0
+      ],
+      [
+       -5.4,
+       0.9400000000000001,
+       0.0
+      ]
+     ],
+     "label": "",
+     "stage": 1,
+     "main": false
+    },
+    {
+     "kind": "violet",
+     "points": [
+      [
+       -5.4,
+       0.9400000000000001,
+       -0.26
+      ],
+      [
+       -5.4,
+       0.9400000000000001,
+       0.0
+      ]
+     ],
+     "label": "",
+     "stage": 1,
+     "main": false
+    },
+    {
+     "kind": "violet",
+     "points": [
+      [
+       -5.45,
+       0.9400000000000001,
+       0.25
+      ],
+      [
+       -5.05,
+       0.9400000000000001,
+       0.25
+      ]
+     ],
+     "label": "",
+     "stage": 1,
+     "main": false
+    },
+    {
+     "kind": "violet",
+     "points": [
+      [
+       -5.05,
+       0.9400000000000001,
+       0.42
+      ],
+      [
+       -5.05,
+       0.9400000000000001,
+       0.25
+      ]
+     ],
+     "label": "",
+     "stage": 1,
+     "main": false
+    },
+    {
+     "kind": "violet",
+     "points": [
+      [
+       -5.4,
+       0.9400000000000001,
+       0.0
+      ],
+      [
+       -5.05,
+       0.9400000000000001,
+       0.0
+      ]
+     ],
+     "label": "",
+     "stage": 1,
+     "main": false
+    },
+    {
+     "kind": "violet",
+     "points": [
+      [
+       -5.05,
+       0.9400000000000001,
+       0.25
+      ],
+      [
+       -5.05,
+       0.9400000000000001,
+       0.0
+      ]
+     ],
+     "label": "",
+     "stage": 1,
+     "main": false
+    },
+    {
+     "kind": "violet",
+     "points": [
+      [
+       -5.05,
+       0.9400000000000001,
+       0.0
+      ],
+      [
+       -0.15,
+       0.9400000000000001,
+       0.0
+      ],
+      [
+       4.18,
+       0.9400000000000001,
+       0.0
+      ],
+      [
+       4.35,
+       0.9400000000000001,
+       0.0
+      ],
+      [
+       4.8,
+       0.9400000000000001,
+       0.0
+      ],
+      [
+       5.15,
+       0.9400000000000001,
+       0.0
+      ]
+     ],
+     "label": "weak pulses, 0.5 photons",
+     "stage": 1,
+     "main": true
+    },
+    {
+     "kind": "violet",
+     "points": [
+      [
+       4.8,
+       0.9400000000000001,
+       0.0
+      ],
+      [
+       4.8,
+       0.9400000000000001,
+       0.3
+      ]
+     ],
+     "label": "",
+     "stage": 1,
+     "main": false
+    },
+    {
+     "kind": "violet",
+     "points": [
+      [
+       4.35,
+       0.9400000000000001,
+       0.0
+      ],
+      [
+       4.35,
+       0.9400000000000001,
+       -0.2
+      ],
+      [
+       4.35,
+       0.9400000000000001,
+       -0.4
+      ],
+      [
+       4.35,
+       0.9400000000000001,
+       -0.6
+      ]
+     ],
+     "label": "",
+     "stage": 1,
+     "main": false
+    },
+    {
+     "kind": "violet",
+     "points": [
+      [
+       4.35,
+       0.9400000000000001,
+       -0.4
+      ],
+      [
+       4.7,
+       0.9400000000000001,
+       -0.4
+      ]
+     ],
+     "label": "",
+     "stage": 1,
+     "main": false
+    }
+   ],
+   "sliders": [
+    {
+     "key": "polarizer_extinction",
+     "label": "Polarizer extinction ratio",
+     "lo": 20,
+     "hi": 2000,
+     "step": 10,
+     "value": 500,
+     "unit": "",
+     "log": true
+    },
+    {
+     "key": "waveplate_error",
+     "label": "Waveplate error",
+     "lo": 0,
+     "hi": 0.05,
+     "step": 0.001,
+     "value": 0.01,
+     "unit": "",
+     "log": false
+    },
+    {
+     "key": "sipm_dark_hz",
+     "label": "SiPM dark rate",
+     "lo": 10000.0,
+     "hi": 2000000.0,
+     "step": 10000.0,
+     "value": 300000.0,
+     "unit": "Hz",
+     "log": true
+    },
+    {
+     "key": "free_space_loss_db",
+     "label": "Path loss",
+     "lo": 0,
+     "hi": 12,
+     "step": 0.1,
+     "value": 2.0,
+     "unit": "dB",
+     "log": false
+    },
+    {
+     "key": "sipm_pde",
+     "label": "SiPM detection efficiency",
+     "lo": 0.05,
+     "hi": 0.6,
+     "step": 0.01,
+     "value": 0.31,
+     "unit": "",
+     "log": false
+    },
+    {
+     "key": "eve_fraction",
+     "label": "Measure-and-resend fraction (Eve)",
+     "lo": 0,
+     "hi": 1,
+     "step": 0.05,
+     "value": 0.0,
+     "unit": "",
+     "log": false
+    },
+    {
+     "key": "shots",
+     "label": "Clicks per tomography setting",
+     "lo": 200,
+     "hi": 50000,
+     "step": 100,
+     "value": 5000,
+     "unit": "",
+     "log": true
+    }
+   ],
+   "commands": {
+    "simulate": "python -c \"from qll.link.hallway_channel import hallway_channel; print(hallway_channel())\"",
+    "real": "python -c \"from qll.link import channel_tomography as CT; n = CT.read_log('tomography.csv'); print(CT.estimate(n), CT.certify(n))\""
+   },
+   "rooms": true,
+   "claim": "Certifies the click-conditioned channel and, with decoys, its single-photon part; it does not certify the devices themselves.",
+   "bom_total": [
+    540,
+    1210
+   ]
+  },
+  {
+   "id": "fiber",
+   "title": "Through a fiber spool: drift is a rotation",
+   "rung": "upgrade",
+   "experiments": [
+    "P14",
+    "T3",
+    "P07"
+   ],
+   "milestones": [
+    "M1.8"
+   ],
+   "twin": "fiber",
+   "cost": "$100–400 for the spool and paddles",
+   "summary": "In fiber, temperature and stress rotate the polarization slowly: the channel is a rotation of the sphere, which the error rates see as noise until the paddles turn it back. The map from tomography tells you exactly how to set them.",
+   "procedure": "experiments/protocols/P07_bb84_over_a_fiber_spool.md",
+   "bom": [
+    [
+     "Fiber spool, 780HP class, and polarization paddles",
+     "the channel",
+     100,
+     400
+    ]
+   ],
+   "stages": [
+    [
+     "Rotate",
+     "Drift tilts the sphere."
+    ],
+    [
+     "Measure",
+     "Tomography finds the rotation."
+    ],
+    [
+     "Correct",
+     "Paddles undo it."
+    ]
+   ],
+   "parts": [
+    {
+     "id": "roomA",
+     "kind": "room",
+     "label": "Room A (Alice)",
+     "pos": [
+      -5.0,
+      0.0,
+      0.0
+     ],
+     "note": "A lab or office; blackout the window and keep the door open on the beam line.",
+     "bom": null,
+     "stage": 0,
+     "rot": 0.0,
+     "param": "",
+     "size": [
+      6.0,
+      5.0
+     ]
+    },
+    {
+     "id": "roomB",
+     "kind": "room",
+     "label": "Room B (Bob)",
+     "pos": [
+      5.0,
+      0.0,
+      0.0
+     ],
+     "note": "The receiving room, 10 m along the beam from room A's source.",
+     "bom": null,
+     "stage": 0,
+     "rot": 0.0,
+     "param": "",
+     "size": [
+      6.0,
+      5.0
+     ]
+    },
+    {
+     "id": "tableA",
+     "kind": "table",
+     "label": "Bench A",
+     "pos": [
+      -5.0,
+      0.0,
+      0.0
+     ],
+     "note": "Any sturdy desk; bolt or tape the mounts down.",
+     "bom": null,
+     "stage": 0,
+     "rot": 0.0,
+     "param": "",
+     "size": [
+      1.8,
+      1.0
+     ]
+    },
+    {
+     "id": "tableB",
+     "kind": "table",
+     "label": "Bench B",
+     "pos": [
+      5.0,
+      0.0,
+      0.0
+     ],
+     "note": "Any sturdy desk, at least 1.3 m deep for the two analyzer arms.",
+     "bom": null,
+     "stage": 0,
+     "rot": 0.0,
+     "param": "",
+     "size": [
+      1.8,
+      1.3
+     ]
+    },
+    {
+     "id": "hall",
+     "kind": "hallway",
+     "label": "Hallway",
+     "pos": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "note": "Free-space path between the two open doors; keep the beam below eye level.",
+     "bom": null,
+     "stage": 0,
+     "rot": 0.0,
+     "param": "",
+     "size": [
+      4.0,
+      2.2
+     ]
+    },
+    {
+     "id": "laptopA",
+     "kind": "laptop",
+     "label": "Laptop A",
+     "pos": [
+      -4.5,
+      0.88,
+      0.3
+     ],
+     "note": "Runs Site A's half of the protocol; static address on the link subnet.",
+     "bom": null,
+     "stage": 1,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "laptopB",
+     "kind": "laptop",
+     "label": "Laptop B",
+     "pos": [
+      5.45,
+      0.88,
+      0.45
+     ],
+     "note": "Runs Site B's half.",
+     "bom": null,
+     "stage": 1,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "mcA",
+     "kind": "mediaconv",
+     "label": "Media converter A",
+     "pos": [
+      -4.25,
+      0.88,
+      -0.35
+     ],
+     "note": "Ethernet to fiber; the authenticated classical channel (qll/link/net_transport.py).",
+     "bom": null,
+     "stage": 1,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "mcB",
+     "kind": "mediaconv",
+     "label": "Media converter B",
+     "pos": [
+      4.3,
+      0.88,
+      0.5
+     ],
+     "note": "Fiber back to Ethernet in room B.",
+     "bom": null,
+     "stage": 1,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "darkbox",
+     "kind": "box",
+     "label": "Light-tight receiver box",
+     "pos": [
+      4.7,
+      0.9,
+      -0.12
+     ],
+     "note": "Felt and black card around the receiver: every leak is a dark count.",
+     "bom": null,
+     "stage": 1,
+     "rot": 0.0,
+     "param": "",
+     "size": [
+      1.3,
+      0.28,
+      1.15
+     ]
+    },
+    {
+     "id": "fpgaB",
+     "kind": "fpga",
+     "label": "FPGA / time tagger B (gate and count)",
+     "pos": [
+      5.6,
+      0.88,
+      -0.45
+     ],
+     "note": "Opens a 5 ns gate per clock pulse and logs which detector fired.",
+     "bom": 0,
+     "stage": 1,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "sipmZ0",
+     "kind": "spad",
+     "label": "SPAD module Z0 (H)",
+     "pos": [
+      5.15,
+      0.88,
+      0.0
+     ],
+     "note": "Used silicon single-photon avalanche diode module: about 50 % at 850 nm, a few hundred dark counts per second.",
+     "bom": 0,
+     "stage": 1,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "sipmZ1",
+     "kind": "spad",
+     "label": "SPAD module Z1 (V)",
+     "pos": [
+      4.8,
+      0.88,
+      0.3
+     ],
+     "note": "Used silicon single-photon avalanche diode module: about 50 % at 850 nm, a few hundred dark counts per second.",
+     "bom": 0,
+     "stage": 1,
+     "rot": 90,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "sipmX0",
+     "kind": "spad",
+     "label": "SPAD module X0 (D)",
+     "pos": [
+      4.35,
+      0.88,
+      -0.6
+     ],
+     "note": "Used silicon single-photon avalanche diode module: about 50 % at 850 nm, a few hundred dark counts per second.",
+     "bom": 0,
+     "stage": 1,
+     "rot": 90,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "sipmX1",
+     "kind": "spad",
+     "label": "SPAD module X1 (A)",
+     "pos": [
+      4.7,
+      0.88,
+      -0.4
+     ],
+     "note": "Used silicon single-photon avalanche diode module: about 50 % at 850 nm, a few hundred dark counts per second.",
+     "bom": 0,
+     "stage": 1,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "diodeH",
+     "kind": "laser",
+     "label": "850 nm diode (H)",
+     "pos": [
+      -5.78,
+      0.88,
+      0.0
+     ],
+     "note": "850 nm diode, invisible: align with a card viewer and keep the beam enclosed.",
+     "bom": 0,
+     "stage": 1,
+     "rot": 0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "diodeV",
+     "kind": "laser",
+     "label": "850 nm diode (V)",
+     "pos": [
+      -5.4,
+      0.88,
+      -0.26
+     ],
+     "note": "850 nm diode, invisible: align with a card viewer and keep the beam enclosed.",
+     "bom": 0,
+     "stage": 1,
+     "rot": 90,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "diodeD",
+     "kind": "laser",
+     "label": "850 nm diode (D)",
+     "pos": [
+      -5.45,
+      0.88,
+      0.25
+     ],
+     "note": "850 nm diode, invisible: align with a card viewer and keep the beam enclosed.",
+     "bom": 0,
+     "stage": 1,
+     "rot": 0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "diodeA",
+     "kind": "laser",
+     "label": "850 nm diode (A)",
+     "pos": [
+      -5.05,
+      0.88,
+      0.42
+     ],
+     "note": "850 nm diode, invisible: align with a card viewer and keep the beam enclosed.",
+     "bom": 0,
+     "stage": 1,
+     "rot": -90,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "polH",
+     "kind": "polarizer",
+     "label": "Film polarizer at 0°",
+     "pos": [
+      -5.6,
+      0.88,
+      0.0
+     ],
+     "note": "Fixed polarizer in front of its diode.",
+     "bom": 0,
+     "stage": 1,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "polV",
+     "kind": "polarizer",
+     "label": "Film polarizer at 90°",
+     "pos": [
+      -5.4,
+      0.88,
+      -0.13
+     ],
+     "note": "Fixed polarizer in front of its diode.",
+     "bom": 0,
+     "stage": 1,
+     "rot": 90,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "polD",
+     "kind": "polarizer",
+     "label": "Film polarizer at 45°",
+     "pos": [
+      -5.25,
+      0.88,
+      0.25
+     ],
+     "note": "Fixed polarizer in front of its diode.",
+     "bom": 0,
+     "stage": 1,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "polA",
+     "kind": "polarizer",
+     "label": "Film polarizer at 135°",
+     "pos": [
+      -5.05,
+      0.88,
+      0.33
+     ],
+     "note": "Fixed polarizer in front of its diode.",
+     "bom": 0,
+     "stage": 1,
+     "rot": 90,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "bsHV",
+     "kind": "bs",
+     "label": "Combiner H+V",
+     "pos": [
+      -5.4,
+      0.88,
+      0.0
+     ],
+     "note": "50/50 cube: H through the face, V from the side.",
+     "bom": 0,
+     "stage": 1,
+     "rot": 45,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "bsDA",
+     "kind": "bs",
+     "label": "Combiner D+A",
+     "pos": [
+      -5.05,
+      0.88,
+      0.25
+     ],
+     "note": "50/50 cube: D through the face, A from the side; the pair leaves toward the third cube.",
+     "bom": 0,
+     "stage": 1,
+     "rot": 45,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "bsAll",
+     "kind": "bs",
+     "label": "Combiner, all four",
+     "pos": [
+      -5.05,
+      0.88,
+      0.0
+     ],
+     "note": "Joins the two pairs onto one beam line.",
+     "bom": 0,
+     "stage": 1,
+     "rot": 45,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "atten",
+     "kind": "nd",
+     "label": "Attenuator + power meter",
+     "pos": [
+      -4.68,
+      0.88,
+      0.0
+     ],
+     "note": "Set and verify μ with a calibrated sensor.",
+     "bom": 0,
+     "stage": 1,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "fpgaA",
+     "kind": "fpga",
+     "label": "FPGA / time tagger A (pulse and clock)",
+     "pos": [
+      -5.65,
+      0.88,
+      -0.33
+     ],
+     "note": "Chooses state and intensity per slot, drives the diodes, sends the clock.",
+     "bom": 0,
+     "stage": 1,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "tubes",
+     "kind": "tube",
+     "label": "Black tubes",
+     "pos": [
+      3.95,
+      0.88,
+      0.0
+     ],
+     "note": "Shield the beam line from room light.",
+     "bom": null,
+     "stage": 1,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "lensB",
+     "kind": "lens",
+     "label": "Collection lens",
+     "pos": [
+      4.18,
+      0.88,
+      0.0
+     ],
+     "note": "Focuses the beam into the analyzer.",
+     "bom": null,
+     "stage": 1,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "bsB",
+     "kind": "bs",
+     "label": "Basis beamsplitter",
+     "pos": [
+      4.35,
+      0.88,
+      0.0
+     ],
+     "note": "Passive, random basis choice: half the photons go to Z, half to X.",
+     "bom": 0,
+     "stage": 1,
+     "rot": 45,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "pbsZ",
+     "kind": "pbs",
+     "label": "PBS, Z arm",
+     "pos": [
+      4.8,
+      0.88,
+      0.0
+     ],
+     "note": "Sends H to one SiPM and V to the other.",
+     "bom": 0,
+     "stage": 1,
+     "rot": 45,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "hwp",
+     "kind": "hwp",
+     "label": "Half-wave plate at 22.5°",
+     "pos": [
+      4.35,
+      0.88,
+      -0.2
+     ],
+     "note": "Turns the diagonal basis into the rectilinear one for the X arm.",
+     "bom": 0,
+     "stage": 1,
+     "rot": 90,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "pbsX",
+     "kind": "pbs",
+     "label": "PBS, X arm",
+     "pos": [
+      4.35,
+      0.88,
+      -0.4
+     ],
+     "note": "Sends D to one SiPM and A to the other.",
+     "bom": 0,
+     "stage": 1,
+     "rot": 45,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "coax",
+     "kind": "coaxend",
+     "label": "Clock coax",
+     "pos": [
+      -5.65,
+      0.75,
+      -0.42
+     ],
+     "note": "Room A's FPGA sends one clock edge per slot; timing is public.",
+     "bom": null,
+     "stage": 1,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "spool",
+     "kind": "spool",
+     "label": "780HP fiber spool",
+     "pos": [
+      0.0,
+      0.25,
+      1.2
+     ],
+     "note": "The channel: 0–5 km of fiber at 3.5 dB/km near 850 nm.",
+     "bom": 0,
+     "stage": 2,
+     "rot": 0.0,
+     "param": "theta",
+     "size": []
+    },
+    {
+     "id": "paddles",
+     "kind": "paddles",
+     "label": "Polarization paddles",
+     "pos": [
+      3.6,
+      0.88,
+      0.35
+     ],
+     "note": "Undo the fiber's polarization rotation.",
+     "bom": 0,
+     "stage": 2,
+     "rot": 0.0,
+     "param": "theta",
+     "size": []
+    }
+   ],
+   "beams": [
+    {
+     "kind": "classical",
+     "points": [
+      [
+       -4.25,
+       0.8300000000000001,
+       -0.35
+      ],
+      [
+       -4.25,
+       2.4,
+       -0.35
+      ],
+      [
+       4.3,
+       2.4,
+       0.5
+      ],
+      [
+       4.3,
+       0.8300000000000001,
+       0.5
+      ]
+     ],
+     "label": "duplex fiber: authenticated classical channel",
+     "stage": 1,
+     "main": false
+    },
+    {
+     "kind": "sync",
+     "points": [
+      [
+       -5.65,
+       0.8200000000000001,
+       -0.42
+      ],
+      [
+       -5.65,
+       2.3,
+       -0.42
+      ],
+      [
+       5.6,
+       2.3,
+       -0.45
+      ],
+      [
+       5.6,
+       0.8200000000000001,
+       -0.45
+      ]
+     ],
+     "label": "clock coax: one edge per slot",
+     "stage": 1,
+     "main": false
+    },
+    {
+     "kind": "nir",
+     "points": [
+      [
+       -5.78,
+       0.9400000000000001,
+       0.0
+      ],
+      [
+       -5.4,
+       0.9400000000000001,
+       0.0
+      ]
+     ],
+     "label": "",
+     "stage": 1,
+     "main": false
+    },
+    {
+     "kind": "nir",
+     "points": [
+      [
+       -5.4,
+       0.9400000000000001,
+       -0.26
+      ],
+      [
+       -5.4,
+       0.9400000000000001,
+       0.0
+      ]
+     ],
+     "label": "",
+     "stage": 1,
+     "main": false
+    },
+    {
+     "kind": "nir",
+     "points": [
+      [
+       -5.45,
+       0.9400000000000001,
+       0.25
+      ],
+      [
+       -5.05,
+       0.9400000000000001,
+       0.25
+      ]
+     ],
+     "label": "",
+     "stage": 1,
+     "main": false
+    },
+    {
+     "kind": "nir",
+     "points": [
+      [
+       -5.05,
+       0.9400000000000001,
+       0.42
+      ],
+      [
+       -5.05,
+       0.9400000000000001,
+       0.25
+      ]
+     ],
+     "label": "",
+     "stage": 1,
+     "main": false
+    },
+    {
+     "kind": "nir",
+     "points": [
+      [
+       -5.4,
+       0.9400000000000001,
+       0.0
+      ],
+      [
+       -5.05,
+       0.9400000000000001,
+       0.0
+      ]
+     ],
+     "label": "",
+     "stage": 1,
+     "main": false
+    },
+    {
+     "kind": "nir",
+     "points": [
+      [
+       -5.05,
+       0.9400000000000001,
+       0.25
+      ],
+      [
+       -5.05,
+       0.9400000000000001,
+       0.0
+      ]
+     ],
+     "label": "",
+     "stage": 1,
+     "main": false
+    },
+    {
+     "kind": "nir",
+     "points": [
+      [
+       4.8,
+       0.9400000000000001,
+       0.0
+      ],
+      [
+       4.8,
+       0.9400000000000001,
+       0.3
+      ]
+     ],
+     "label": "",
+     "stage": 1,
+     "main": false
+    },
+    {
+     "kind": "nir",
+     "points": [
+      [
+       4.35,
+       0.9400000000000001,
+       0.0
+      ],
+      [
+       4.35,
+       0.9400000000000001,
+       -0.2
+      ],
+      [
+       4.35,
+       0.9400000000000001,
+       -0.4
+      ],
+      [
+       4.35,
+       0.9400000000000001,
+       -0.6
+      ]
+     ],
+     "label": "",
+     "stage": 1,
+     "main": false
+    },
+    {
+     "kind": "nir",
+     "points": [
+      [
+       4.35,
+       0.9400000000000001,
+       -0.4
+      ],
+      [
+       4.7,
+       0.9400000000000001,
+       -0.4
+      ]
+     ],
+     "label": "",
+     "stage": 1,
+     "main": false
+    },
+    {
+     "kind": "nir",
+     "points": [
+      [
+       -5.05,
+       0.9400000000000001,
+       0.0
+      ],
+      [
+       -4.6,
+       0.9400000000000001,
+       0.0
+      ],
+      [
+       -4.4,
+       0.4,
+       1.2
+      ],
+      [
+       0.0,
+       0.4,
+       1.2
+      ],
+      [
+       3.4,
+       0.4,
+       1.2
+      ],
+      [
+       3.6,
+       0.9400000000000001,
+       0.35
+      ],
+      [
+       4.18,
+       0.9400000000000001,
+       0.0
+      ],
+      [
+       4.35,
+       0.9400000000000001,
+       0.0
+      ],
+      [
+       4.8,
+       0.9400000000000001,
+       0.0
+      ],
+      [
+       5.15,
+       0.9400000000000001,
+       0.0
+      ]
+     ],
+     "label": "850 nm weak pulses through fiber",
+     "stage": 1,
+     "main": true
+    }
+   ],
+   "sliders": [
+    {
+     "key": "theta",
+     "label": "Drift rotation (degrees)",
+     "lo": 0,
+     "hi": 180,
+     "step": 1,
+     "value": 25,
+     "unit": "",
+     "log": false
+    },
+    {
+     "key": "tilt",
+     "label": "Drift axis tilt from vertical (degrees)",
+     "lo": 0,
+     "hi": 90,
+     "step": 1,
+     "value": 60,
+     "unit": "",
+     "log": false
+    },
+    {
+     "key": "p_dep",
+     "label": "Depolarization (mode mixing)",
+     "lo": 0,
+     "hi": 0.3,
+     "step": 0.005,
+     "value": 0.02,
+     "unit": "",
+     "log": false
+    },
+    {
+     "key": "correction",
+     "label": "Paddle correction applied",
+     "lo": 0,
+     "hi": 1,
+     "step": 0.01,
+     "value": 0.0,
+     "unit": "",
+     "log": false
+    }
+   ],
+   "commands": {
+    "simulate": "python -c \"from qll.circuits import qubit_channel as Q; import math; R = Q.compose(Q.rotation_ptm(math.radians(25), (1, 0, 0.6)), Q.depolarizing_ptm(0.02)); print(Q.basis_errors(R))\""
+   },
+   "rooms": true,
+   "claim": "A model of drift: measure your spool's rotation and its rate of change before trusting a correction.",
+   "bom_total": [
+    100,
+    400
+   ]
+  },
+  {
+   "id": "teleport",
+   "title": "Teleportation is a quantum channel (with its two bits)",
+   "rung": "cloud",
+   "experiments": [
+    "P14",
+    "P12"
+   ],
+   "milestones": [
+    "M4.7"
+   ],
+   "twin": "teleport",
+   "cost": "$0",
+   "summary": "Entanglement plus two classical bits per qubit makes a quantum channel; without the bits it is completely depolarizing. Tomography on a free cloud processor measures it with the same estimator as the hallway.",
+   "procedure": "experiments/protocols/P14_the_hallway_as_a_quantum_channel.md",
+   "bom": [
+    [
+     "Laptop and the free open plan",
+     "cloud runs",
+     0,
+     0
+    ]
+   ],
+   "stages": [
+    [
+     "In the browser",
+     "Exact density matrices, this page."
+    ],
+    [
+     "Rehearse",
+     "Aer with a noise model, and a fake device."
+    ],
+    [
+     "Run on hardware",
+     "The free open plan; record calibration and layout."
+    ]
+   ],
+   "parts": [
+    {
+     "id": "table",
+     "kind": "table",
+     "label": "Desk",
+     "pos": [
+      2.2,
+      0.0,
+      0.0
+     ],
+     "note": "",
+     "bom": null,
+     "stage": 1,
+     "rot": 0.0,
+     "param": "",
+     "size": [
+      1.2,
+      0.7
+     ]
+    },
+    {
+     "id": "laptop",
+     "kind": "laptop",
+     "label": "Your laptop",
+     "pos": [
+      2.2,
+      0.88,
+      0.0
+     ],
+     "note": "Builds the circuits; runs the simulator; submits jobs.",
+     "bom": null,
+     "stage": 1,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "cloud",
+     "kind": "cloud",
+     "label": "Internet and the provider's queue",
+     "pos": [
+      0.0,
+      2.2,
+      0.0
+     ],
+     "note": "Jobs travel as circuits; results come back as counts.",
+     "bom": null,
+     "stage": 2,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "fridge",
+     "kind": "fridge",
+     "label": "Cloud processor (dilution refrigerator)",
+     "pos": [
+      -2.0,
+      0.0,
+      0.0
+     ],
+     "note": "A superconducting processor near 10 mK: free time on the open plan [ibm2026openplan].",
+     "bom": null,
+     "stage": 3,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "chip",
+     "kind": "chip",
+     "label": "Qubit chip",
+     "pos": [
+      -2.0,
+      0.78,
+      0.0
+     ],
+     "note": "Pick neighbouring qubits for the circuit, and far ones for the crosstalk control.",
+     "bom": null,
+     "stage": 3,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    }
+   ],
+   "beams": [
+    {
+     "kind": "cloud",
+     "points": [
+      [
+       2.2,
+       1.0,
+       0.0
+      ],
+      [
+       0.0,
+       2.2,
+       0.0
+      ]
+     ],
+     "label": "jobs out, counts back",
+     "stage": 2,
+     "main": false
+    },
+    {
+     "kind": "cloud",
+     "points": [
+      [
+       0.0,
+       2.2,
+       0.0
+      ],
+      [
+       -2.0,
+       1.9,
+       0.0
+      ]
+     ],
+     "label": "",
+     "stage": 2,
+     "main": false
+    }
+   ],
+   "sliders": [
+    {
+     "key": "p2",
+     "label": "Two-qubit gate error p₂",
+     "lo": 0,
+     "hi": 0.3,
+     "step": 0.002,
+     "value": 0.03,
+     "unit": "",
+     "log": false
+    }
+   ],
+   "commands": {
+    "simulate": "python -c \"from qll.circuits import teleport_channel_cloud as TC; from qll.circuits.cloud_run import run_aer; from qll.link import channel_tomography as CT; k, c = TC.circuits('feedforward'); n = TC.counts_to_tomography(k, run_aer(c, 20000)); print(CT.estimate(n), CT.certify(n))\""
+   },
+   "rooms": false,
+   "claim": "The classical bits are part of the channel; nothing outruns them.",
+   "bom_total": [
+    0,
+    0
+   ]
+  },
+  {
+   "id": "superdense",
+   "title": "Superdense coding through the hallway (E19)",
+   "rung": "entangled",
+   "experiments": [
+    "E19",
+    "T4"
+   ],
+   "milestones": [
+    "M2.6"
+   ],
+   "twin": "superdense",
+   "cost": "$200–1,500 with a borrowed kit",
+   "summary": "The photon that crosses the hallway is the message, and because its partner was shared beforehand it can carry log₂3 = 1.58 bits instead of the one bit any single photon carries alone. Pair visibility and two-photon interference decide whether the experiment beats one bit.",
+   "procedure": "experiments/proposed/E19_superdense_coding_through_the_hallway.md",
+   "bom": [
+    [
+     "Borrowed entangled-photon kit: pump, crystals, couplers, four detectors, time tagger",
+     "source and detection (Phase 2 loan)",
+     0,
+     0
+    ],
+    [
+     "Alice's half-wave and quarter-wave plates on rotation mounts",
+     "the encoder",
+     60,
+     400
+    ],
+    [
+     "50/50 beamsplitter and two polarizing beamsplitters",
+     "Bob's Bell measurement",
+     80,
+     400
+    ],
+    [
+     "Fiber to room A, collimators, and a fiber delay line",
+     "matching the photons' arrival times",
+     60,
+     500
+    ],
+    [
+     "Mounts, irises, black tubes",
+     "mechanics",
+     0,
+     200
+    ]
+   ],
+   "stages": [
+    [
+     "Share the pairs",
+     "Source in room B; one photon to Alice by fiber."
+    ],
+    [
+     "Encode and send",
+     "Alice's waveplates; the photon crosses the hallway."
+    ],
+    [
+     "Bell measurement",
+     "Interfere with Bob's delayed photon; three classes."
+    ]
+   ],
+   "parts": [
+    {
+     "id": "roomA",
+     "kind": "room",
+     "label": "Room A (Alice)",
+     "pos": [
+      -5.0,
+      0.0,
+      0.0
+     ],
+     "note": "A lab or office; blackout the window and keep the door open on the beam line.",
+     "bom": null,
+     "stage": 0,
+     "rot": 0.0,
+     "param": "",
+     "size": [
+      6.0,
+      5.0
+     ]
+    },
+    {
+     "id": "roomB",
+     "kind": "room",
+     "label": "Room B (Bob)",
+     "pos": [
+      5.0,
+      0.0,
+      0.0
+     ],
+     "note": "The receiving room, 10 m along the beam from room A's source.",
+     "bom": null,
+     "stage": 0,
+     "rot": 0.0,
+     "param": "",
+     "size": [
+      6.0,
+      5.0
+     ]
+    },
+    {
+     "id": "tableA",
+     "kind": "table",
+     "label": "Bench A",
+     "pos": [
+      -5.0,
+      0.0,
+      0.0
+     ],
+     "note": "Any sturdy desk; bolt or tape the mounts down.",
+     "bom": null,
+     "stage": 0,
+     "rot": 0.0,
+     "param": "",
+     "size": [
+      1.8,
+      1.0
+     ]
+    },
+    {
+     "id": "tableB",
+     "kind": "table",
+     "label": "Bench B",
+     "pos": [
+      5.0,
+      0.0,
+      0.0
+     ],
+     "note": "Any sturdy desk, at least 1.3 m deep for the two analyzer arms.",
+     "bom": null,
+     "stage": 0,
+     "rot": 0.0,
+     "param": "",
+     "size": [
+      1.8,
+      1.3
+     ]
+    },
+    {
+     "id": "hall",
+     "kind": "hallway",
+     "label": "Hallway",
+     "pos": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "note": "Free-space path between the two open doors; keep the beam below eye level.",
+     "bom": null,
+     "stage": 0,
+     "rot": 0.0,
+     "param": "",
+     "size": [
+      4.0,
+      2.2
+     ]
+    },
+    {
+     "id": "laptopA",
+     "kind": "laptop",
+     "label": "Laptop A (picks the message)",
+     "pos": [
+      -4.5,
+      0.88,
+      0.3
+     ],
+     "note": "Chooses one of three messages per photon and sets the waveplates.",
+     "bom": null,
+     "stage": 1,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "laptopB",
+     "kind": "laptop",
+     "label": "Laptop B (reads it)",
+     "pos": [
+      5.45,
+      0.88,
+      0.45
+     ],
+     "note": "Logs which detectors fired together.",
+     "bom": null,
+     "stage": 1,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "pump",
+     "kind": "pump",
+     "label": "405 nm pump (kit)",
+     "pos": [
+      5.75,
+      0.88,
+      -0.45
+     ],
+     "note": "Pumps the down-conversion crystals in room B.",
+     "bom": 0,
+     "stage": 1,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "bbo",
+     "kind": "crystal",
+     "label": "Entangled-pair crystals (kit)",
+     "pos": [
+      5.35,
+      0.88,
+      -0.45
+     ],
+     "note": "Pairs in |Φ⁺⟩.",
+     "bom": 0,
+     "stage": 1,
+     "rot": 0.0,
+     "param": "visibility",
+     "size": []
+    },
+    {
+     "id": "cplA",
+     "kind": "lens",
+     "label": "Coupler: photon to Alice",
+     "pos": [
+      5.1,
+      0.88,
+      -0.35
+     ],
+     "note": "One photon of each pair goes to room A through fiber.",
+     "bom": 3,
+     "stage": 1,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "cplB",
+     "kind": "lens",
+     "label": "Coupler: photon kept by Bob",
+     "pos": [
+      5.1,
+      0.88,
+      -0.55
+     ],
+     "note": "The partner waits in a fiber delay.",
+     "bom": 3,
+     "stage": 1,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "delay",
+     "kind": "spool",
+     "label": "Fiber delay line",
+     "pos": [
+      5.0,
+      0.25,
+      -1.1
+     ],
+     "note": "Holds Bob's photon until Alice's arrives, within its coherence time.",
+     "bom": 3,
+     "stage": 2,
+     "rot": 0.0,
+     "param": "v_hom",
+     "size": []
+    },
+    {
+     "id": "colA",
+     "kind": "lens",
+     "label": "Fiber collimator (room A)",
+     "pos": [
+      -5.6,
+      0.88,
+      0.0
+     ],
+     "note": "Alice's photon leaves the fiber.",
+     "bom": 3,
+     "stage": 2,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "hwpA",
+     "kind": "hwp",
+     "label": "Encoder: half-wave plate",
+     "pos": [
+      -5.3,
+      0.88,
+      0.0
+     ],
+     "note": "Applies X or not.",
+     "bom": 1,
+     "stage": 2,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "qwpA",
+     "kind": "qwp",
+     "label": "Encoder: quarter-wave plate",
+     "pos": [
+      -5.05,
+      0.88,
+      0.0
+     ],
+     "note": "With the half-wave plate, applies Z or not.",
+     "bom": 1,
+     "stage": 2,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "launch",
+     "kind": "lens",
+     "label": "Launch lens",
+     "pos": [
+      -4.75,
+      0.88,
+      0.0
+     ],
+     "note": "Sends the encoded photon across the hallway.",
+     "bom": 4,
+     "stage": 2,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "bsm",
+     "kind": "bs",
+     "label": "Bell measurement: 50/50 beamsplitter",
+     "pos": [
+      4.35,
+      0.88,
+      0.0
+     ],
+     "note": "Alice's and Bob's photons interfere here.",
+     "bom": 2,
+     "stage": 3,
+     "rot": 45,
+     "param": "v_hom",
+     "size": []
+    },
+    {
+     "id": "pbs1",
+     "kind": "pbs",
+     "label": "Polarizing beamsplitter 1",
+     "pos": [
+      4.75,
+      0.88,
+      0.0
+     ],
+     "note": "Resolves polarization in output 1.",
+     "bom": 2,
+     "stage": 3,
+     "rot": 45,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "pbs2",
+     "kind": "pbs",
+     "label": "Polarizing beamsplitter 2",
+     "pos": [
+      4.35,
+      0.88,
+      0.4
+     ],
+     "note": "Resolves polarization in output 2.",
+     "bom": 2,
+     "stage": 3,
+     "rot": 45,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "d1",
+     "kind": "spad",
+     "label": "Detector 1H",
+     "pos": [
+      5.1,
+      0.88,
+      0.0
+     ],
+     "note": "",
+     "bom": 0,
+     "stage": 3,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "d2",
+     "kind": "spad",
+     "label": "Detector 1V",
+     "pos": [
+      4.75,
+      0.88,
+      -0.3
+     ],
+     "note": "",
+     "bom": 0,
+     "stage": 3,
+     "rot": 90,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "d3",
+     "kind": "spad",
+     "label": "Detector 2H",
+     "pos": [
+      4.35,
+      0.88,
+      0.62
+     ],
+     "note": "",
+     "bom": 0,
+     "stage": 3,
+     "rot": 90,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "d4",
+     "kind": "spad",
+     "label": "Detector 2V",
+     "pos": [
+      4.7,
+      0.88,
+      0.4
+     ],
+     "note": "",
+     "bom": 0,
+     "stage": 3,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "tag",
+     "kind": "timetagger",
+     "label": "Time tagger (kit)",
+     "pos": [
+      5.6,
+      0.88,
+      0.1
+     ],
+     "note": "Coincidences within a few nanoseconds.",
+     "bom": 0,
+     "stage": 3,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    }
+   ],
+   "beams": [
+    {
+     "kind": "pump",
+     "points": [
+      [
+       5.75,
+       0.9400000000000001,
+       -0.45
+      ],
+      [
+       5.35,
+       0.9400000000000001,
+       -0.45
+      ]
+     ],
+     "label": "405 nm pump",
+     "stage": 1,
+     "main": false
+    },
+    {
+     "kind": "pair",
+     "points": [
+      [
+       5.35,
+       0.9400000000000001,
+       -0.45
+      ],
+      [
+       5.1,
+       0.9400000000000001,
+       -0.35
+      ],
+      [
+       4.9,
+       0.3,
+       -1.6
+      ],
+      [
+       -4.0,
+       0.3,
+       -1.6
+      ],
+      [
+       -5.6,
+       0.3,
+       -0.6
+      ],
+      [
+       -5.6,
+       0.9400000000000001,
+       0.0
+      ]
+     ],
+     "label": "photon to Alice, by fiber",
+     "stage": 2,
+     "main": false
+    },
+    {
+     "kind": "pair",
+     "points": [
+      [
+       -5.6,
+       0.9400000000000001,
+       0.0
+      ],
+      [
+       -5.3,
+       0.9400000000000001,
+       0.0
+      ],
+      [
+       -5.05,
+       0.9400000000000001,
+       0.0
+      ],
+      [
+       -4.75,
+       0.9400000000000001,
+       0.0
+      ],
+      [
+       0.0,
+       0.9400000000000001,
+       0.0
+      ],
+      [
+       4.35,
+       0.9400000000000001,
+       0.0
+      ],
+      [
+       4.75,
+       0.9400000000000001,
+       0.0
+      ],
+      [
+       5.1,
+       0.9400000000000001,
+       0.0
+      ]
+     ],
+     "label": "the encoded photon crosses the hallway: the message",
+     "stage": 2,
+     "main": true
+    },
+    {
+     "kind": "pair",
+     "points": [
+      [
+       5.35,
+       0.9400000000000001,
+       -0.45
+      ],
+      [
+       5.1,
+       0.9400000000000001,
+       -0.55
+      ],
+      [
+       5.0,
+       0.3,
+       -1.1
+      ],
+      [
+       4.35,
+       0.3,
+       -0.6
+      ],
+      [
+       4.35,
+       0.9400000000000001,
+       -0.3
+      ],
+      [
+       4.35,
+       0.9400000000000001,
+       0.0
+      ],
+      [
+       4.35,
+       0.9400000000000001,
+       0.4
+      ],
+      [
+       4.35,
+       0.9400000000000001,
+       0.62
+      ]
+     ],
+     "label": "Bob's photon, delayed",
+     "stage": 2,
+     "main": false
+    },
+    {
+     "kind": "pair",
+     "points": [
+      [
+       4.75,
+       0.9400000000000001,
+       0.0
+      ],
+      [
+       4.75,
+       0.9400000000000001,
+       -0.3
+      ]
+     ],
+     "label": "",
+     "stage": 3,
+     "main": false
+    },
+    {
+     "kind": "pair",
+     "points": [
+      [
+       4.35,
+       0.9400000000000001,
+       0.4
+      ],
+      [
+       4.7,
+       0.9400000000000001,
+       0.4
+      ]
+     ],
+     "label": "",
+     "stage": 3,
+     "main": false
+    }
+   ],
+   "sliders": [
+    {
+     "key": "visibility",
+     "label": "Pair visibility V",
+     "lo": 0.5,
+     "hi": 1,
+     "step": 0.005,
+     "value": 0.94,
+     "unit": "",
+     "log": false
+    },
+    {
+     "key": "v_hom",
+     "label": "Two-photon interference visibility",
+     "lo": 0.3,
+     "hi": 1,
+     "step": 0.01,
+     "value": 0.9,
+     "unit": "",
+     "log": false
+    }
+   ],
+   "commands": {
+    "simulate": "python -c \"from qll.circuits import superdense_photonic as SP; print(SP.bits_per_photon(0.94, 0.9))\""
+   },
+   "rooms": true,
+   "claim": "Information per detected pair; exceeding one bit assumes fair sampling (losses independent of the message).",
+   "bom_total": [
+    200,
+    1500
+   ]
+  }
+ ],
+ "outdoor": [
+  {
+   "id": "rooftop",
+   "title": "Rooftop link with the Phase 1 hardware (P04)",
+   "rung": "starter",
+   "experiments": [
+    "P04",
+    "P10"
+   ],
+   "milestones": [
+    "M3.2"
+   ],
+   "twin": "outdoor",
+   "cost": "$100–800",
+   "summary": "The P10 source and receiver carried onto two roofs with small telescopes. The twin says what to expect before you climb the stairs: loss you can measure, a background that is fine at night and overwhelming by day, and dark counts that keep the SiPMs from making a key outdoors.",
+   "procedure": "experiments/protocols/P04_rooftop_free_space_link.md",
+   "bom": [
+    [
+     "Two 50 mm lenses or 2x beam expanders",
+     "the sending and receiving optics",
+     40,
+     150
+    ],
+    [
+     "Receiving telescope (50-100 mm), 3 nm filter at 405 nm, field stop",
+     "collecting and filtering",
+     60,
+     400
+    ],
+    [
+     "Two tripods with fine-adjust heads",
+     "pointing",
+     0,
+     150
+    ],
+    [
+     "Sunshade baffle and a weatherproof receiver box",
+     "daylight tests",
+     0,
+     50
+    ],
+    [
+     "GPS-disciplined 1 PPS clock pair, or a cable across the roof",
+     "timing",
+     0,
+     50
+    ]
+   ],
+   "stages": [
+    [
+     "Roofs and line of sight",
+     "Permission, a clear path, benches, telescopes."
+    ],
+    [
+     "Classical channel and clocks",
+     "Fiber or radio between buildings; GPS time."
+    ]
+   ],
+   "parts": [
+    {
+     "id": "ground",
+     "kind": "ground",
+     "label": "Campus",
+     "pos": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "note": "",
+     "bom": null,
+     "stage": 0,
+     "rot": 0.0,
+     "param": "",
+     "size": [
+      60.0,
+      30.0
+     ]
+    },
+    {
+     "id": "bldgA",
+     "kind": "building",
+     "label": "Building A (sender)",
+     "pos": [
+      -9.0,
+      0.0,
+      0.0
+     ],
+     "note": "Any roof with a clear line of sight; ask facilities first (risk MR-R8).",
+     "bom": null,
+     "stage": 0,
+     "rot": 0.0,
+     "param": "",
+     "size": [
+      8.0,
+      6.0,
+      8.0
+     ]
+    },
+    {
+     "id": "bldgB",
+     "kind": "building",
+     "label": "Building B (receiver)",
+     "pos": [
+      9.0,
+      0.0,
+      0.0
+     ],
+     "note": "The receiving roof.",
+     "bom": null,
+     "stage": 0,
+     "rot": 0.0,
+     "param": "",
+     "size": [
+      8.0,
+      6.0,
+      8.0
+     ]
+    },
+    {
+     "id": "tableA",
+     "kind": "table",
+     "label": "Roof bench A",
+     "pos": [
+      -7.5,
+      6.0,
+      0.0
+     ],
+     "note": "",
+     "bom": null,
+     "stage": 1,
+     "rot": 0.0,
+     "param": "",
+     "size": [
+      1.6,
+      0.8
+     ]
+    },
+    {
+     "id": "tableB",
+     "kind": "table",
+     "label": "Roof bench B",
+     "pos": [
+      7.5,
+      6.0,
+      0.0
+     ],
+     "note": "",
+     "bom": null,
+     "stage": 1,
+     "rot": 0.0,
+     "param": "",
+     "size": [
+      1.6,
+      0.8
+     ]
+    },
+    {
+     "id": "srcBox",
+     "kind": "box",
+     "label": "The P10 source, boxed",
+     "pos": [
+      -7.8,
+      6.9,
+      0.0
+     ],
+     "note": "The four-diode source, combiners, filters, and FPGA from P10, in a weatherproof box.",
+     "bom": null,
+     "stage": 1,
+     "rot": 0.0,
+     "param": "",
+     "size": [
+      0.6,
+      0.3,
+      0.4
+     ]
+    },
+    {
+     "id": "txScope",
+     "kind": "telescope",
+     "label": "Sending telescope (beam expander)",
+     "pos": [
+      -6.4,
+      6.0,
+      0.0
+     ],
+     "note": "Widens the beam to a waist of about 1 cm so it spreads less over the path.",
+     "bom": 0,
+     "stage": 1,
+     "rot": 0,
+     "param": "tx_waist_m",
+     "size": [
+      0.06,
+      0.35
+     ]
+    },
+    {
+     "id": "rxScope",
+     "kind": "telescope",
+     "label": "Receiving telescope, filter, field stop",
+     "pos": [
+      6.4,
+      6.0,
+      0.0
+     ],
+     "note": "Collects the beam; a 3 nm filter and a field stop keep out most of the sky.",
+     "bom": 1,
+     "stage": 1,
+     "rot": 180,
+     "param": "rx_aperture_m",
+     "size": [
+      0.1,
+      0.5
+     ]
+    },
+    {
+     "id": "rxBox",
+     "kind": "box",
+     "label": "P10 receiver (silicon photomultipliers)",
+     "pos": [
+      7.8,
+      6.9,
+      0.0
+     ],
+     "note": "The P10 analyzer and detectors in a light-tight box behind the telescope.",
+     "bom": 1,
+     "stage": 1,
+     "rot": 0.0,
+     "param": "",
+     "size": [
+      0.6,
+      0.3,
+      0.4
+     ]
+    },
+    {
+     "id": "laptopA",
+     "kind": "laptop",
+     "label": "Laptop A",
+     "pos": [
+      -8.0,
+      6.88,
+      0.25
+     ],
+     "note": "Site A's half of the protocol.",
+     "bom": null,
+     "stage": 1,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "laptopB",
+     "kind": "laptop",
+     "label": "Laptop B",
+     "pos": [
+      8.0,
+      6.88,
+      0.25
+     ],
+     "note": "Site B's half.",
+     "bom": null,
+     "stage": 1,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "gpsA",
+     "kind": "coaxend",
+     "label": "GPS-disciplined clock A",
+     "pos": [
+      -7.4,
+      6.82,
+      -0.3
+     ],
+     "note": "One pulse per second from GPS keeps the two roofs' clocks within nanoseconds.",
+     "bom": 4,
+     "stage": 2,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "gpsB",
+     "kind": "coaxend",
+     "label": "GPS-disciplined clock B",
+     "pos": [
+      7.4,
+      6.82,
+      -0.3
+     ],
+     "note": "",
+     "bom": 4,
+     "stage": 2,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "note",
+     "kind": "note",
+     "label": "distance not to scale: see the terminal",
+     "pos": [
+      0.0,
+      10.0,
+      0.0
+     ],
+     "note": "",
+     "bom": null,
+     "stage": 0,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    }
+   ],
+   "beams": [
+    {
+     "kind": "violet",
+     "points": [
+      [
+       -6.1,
+       6.9,
+       0.0
+      ],
+      [
+       6.1,
+       6.9,
+       0.0
+      ]
+     ],
+     "label": "weak pulses across the roofs",
+     "stage": 1,
+     "main": true
+    },
+    {
+     "kind": "classical",
+     "points": [
+      [
+       -8.0,
+       6.85,
+       0.25
+      ],
+      [
+       -8.0,
+       9.2,
+       -2.5
+      ],
+      [
+       8.0,
+       9.2,
+       -2.5
+      ],
+      [
+       8.0,
+       6.85,
+       0.25
+      ]
+     ],
+     "label": "classical channel (fiber or radio)",
+     "stage": 2,
+     "main": false
+    }
+   ],
+   "sliders": [
+    {
+     "key": "distance_m",
+     "label": "Distance between roofs",
+     "lo": 20,
+     "hi": 5000,
+     "step": 10,
+     "value": 300,
+     "unit": "m",
+     "log": true
+    },
+    {
+     "key": "tx_waist_m",
+     "label": "Sending beam waist",
+     "lo": 0.002,
+     "hi": 0.05,
+     "step": 0.001,
+     "value": 0.01,
+     "unit": "m",
+     "log": false
+    },
+    {
+     "key": "rx_aperture_m",
+     "label": "Receiving telescope diameter",
+     "lo": 0.02,
+     "hi": 0.3,
+     "step": 0.005,
+     "value": 0.05,
+     "unit": "m",
+     "log": false
+    },
+    {
+     "key": "pointing_urad",
+     "label": "Pointing jitter",
+     "lo": 0,
+     "hi": 100,
+     "step": 1,
+     "value": 10,
+     "unit": "µrad",
+     "log": false
+    },
+    {
+     "key": "air_db_per_km",
+     "label": "Air extinction at 405 nm",
+     "lo": 0.2,
+     "hi": 5,
+     "step": 0.1,
+     "value": 1.0,
+     "unit": "dB/km",
+     "log": false
+    },
+    {
+     "key": "coupling_loss_db",
+     "label": "Receiver coupling loss",
+     "lo": 0,
+     "hi": 8,
+     "step": 0.1,
+     "value": 3.0,
+     "unit": "dB",
+     "log": false
+    },
+    {
+     "key": "sky_radiance",
+     "label": "Sky brightness (W m⁻² sr⁻¹ nm⁻¹)",
+     "lo": 1e-09,
+     "hi": 0.2,
+     "step": 1e-09,
+     "value": 1e-06,
+     "unit": "",
+     "log": true
+    },
+    {
+     "key": "filter_nm",
+     "label": "Filter width",
+     "lo": 0.5,
+     "hi": 10,
+     "step": 0.5,
+     "value": 3.0,
+     "unit": "nm",
+     "log": false
+    },
+    {
+     "key": "fov_mrad",
+     "label": "Field of view",
+     "lo": 0.1,
+     "hi": 5,
+     "step": 0.1,
+     "value": 1.0,
+     "unit": "mrad",
+     "log": false
+    }
+   ],
+   "commands": {
+    "simulate": "python -c \"from qll.link import outdoor_link as O; print(O.predict(O.OutdoorParts(distance_m=300)))\"",
+    "real": "python -m qll.link.run ingest roof_a.csv --bob roof_b.csv --config roof_measured.json"
+   },
+   "rooms": false,
+   "claim": "Measures loss and background against the twin; a key needs better detectors (next tier).",
+   "bom_total": [
+    100,
+    800
+   ]
+  },
+  {
+   "id": "building",
+   "title": "Building to building at night (0.5–2 km)",
+   "rung": "main",
+   "experiments": [
+    "P04",
+    "T3"
+   ],
+   "milestones": [
+    "M3.3"
+   ],
+   "twin": "outdoor",
+   "cost": "$300–2,000",
+   "summary": "The same link between two buildings up to two kilometres apart, with used single-photon avalanche diode modules instead of SiPMs and a 100 mm telescope. At night the twin accepts a key out to about two kilometres; by day the sky ends it, which is why daylight links use 1550 nm and very narrow filters.",
+   "procedure": "experiments/protocols/P04_rooftop_free_space_link.md",
+   "bom": [
+    [
+     "Used single-photon avalanche diode modules, four (or borrowed)",
+     "detection",
+     200,
+     1200
+    ],
+    [
+     "100 mm telescope and a sturdier mount",
+     "collecting and pointing",
+     80,
+     500
+    ],
+    [
+     "Fiber or radio link for the classical channel between buildings",
+     "classical channel",
+     20,
+     300
+    ]
+   ],
+   "stages": [
+    [
+     "Roofs and line of sight",
+     "Permission, a clear path, benches, telescopes."
+    ],
+    [
+     "Classical channel and clocks",
+     "Fiber or radio between buildings; GPS time."
+    ]
+   ],
+   "parts": [
+    {
+     "id": "ground",
+     "kind": "ground",
+     "label": "Campus",
+     "pos": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "note": "",
+     "bom": null,
+     "stage": 0,
+     "rot": 0.0,
+     "param": "",
+     "size": [
+      60.0,
+      30.0
+     ]
+    },
+    {
+     "id": "bldgA",
+     "kind": "building",
+     "label": "Building A (sender)",
+     "pos": [
+      -9.0,
+      0.0,
+      0.0
+     ],
+     "note": "Any roof with a clear line of sight; ask facilities first (risk MR-R8).",
+     "bom": null,
+     "stage": 0,
+     "rot": 0.0,
+     "param": "",
+     "size": [
+      8.0,
+      6.0,
+      8.0
+     ]
+    },
+    {
+     "id": "bldgB",
+     "kind": "building",
+     "label": "Building B (receiver)",
+     "pos": [
+      9.0,
+      0.0,
+      0.0
+     ],
+     "note": "The receiving roof.",
+     "bom": null,
+     "stage": 0,
+     "rot": 0.0,
+     "param": "",
+     "size": [
+      8.0,
+      6.0,
+      8.0
+     ]
+    },
+    {
+     "id": "tableA",
+     "kind": "table",
+     "label": "Roof bench A",
+     "pos": [
+      -7.5,
+      6.0,
+      0.0
+     ],
+     "note": "",
+     "bom": null,
+     "stage": 1,
+     "rot": 0.0,
+     "param": "",
+     "size": [
+      1.6,
+      0.8
+     ]
+    },
+    {
+     "id": "tableB",
+     "kind": "table",
+     "label": "Roof bench B",
+     "pos": [
+      7.5,
+      6.0,
+      0.0
+     ],
+     "note": "",
+     "bom": null,
+     "stage": 1,
+     "rot": 0.0,
+     "param": "",
+     "size": [
+      1.6,
+      0.8
+     ]
+    },
+    {
+     "id": "srcBox",
+     "kind": "box",
+     "label": "The P10 source, boxed",
+     "pos": [
+      -7.8,
+      6.9,
+      0.0
+     ],
+     "note": "The four-diode source, combiners, filters, and FPGA from P10, in a weatherproof box.",
+     "bom": null,
+     "stage": 1,
+     "rot": 0.0,
+     "param": "",
+     "size": [
+      0.6,
+      0.3,
+      0.4
+     ]
+    },
+    {
+     "id": "txScope",
+     "kind": "telescope",
+     "label": "Sending telescope (beam expander)",
+     "pos": [
+      -6.4,
+      6.0,
+      0.0
+     ],
+     "note": "Widens the beam to a waist of about 1 cm so it spreads less over the path.",
+     "bom": 1,
+     "stage": 1,
+     "rot": 0,
+     "param": "tx_waist_m",
+     "size": [
+      0.06,
+      0.35
+     ]
+    },
+    {
+     "id": "rxScope",
+     "kind": "telescope",
+     "label": "Receiving telescope, filter, field stop",
+     "pos": [
+      6.4,
+      6.0,
+      0.0
+     ],
+     "note": "Collects the beam; a 3 nm filter and a field stop keep out most of the sky.",
+     "bom": 1,
+     "stage": 1,
+     "rot": 180,
+     "param": "rx_aperture_m",
+     "size": [
+      0.1,
+      0.5
+     ]
+    },
+    {
+     "id": "rxBox",
+     "kind": "box",
+     "label": "Avalanche-diode receiver (four used modules)",
+     "pos": [
+      7.8,
+      6.9,
+      0.0
+     ],
+     "note": "The P10 analyzer and detectors in a light-tight box behind the telescope.",
+     "bom": 0,
+     "stage": 1,
+     "rot": 0.0,
+     "param": "",
+     "size": [
+      0.6,
+      0.3,
+      0.4
+     ]
+    },
+    {
+     "id": "laptopA",
+     "kind": "laptop",
+     "label": "Laptop A",
+     "pos": [
+      -8.0,
+      6.88,
+      0.25
+     ],
+     "note": "Site A's half of the protocol.",
+     "bom": null,
+     "stage": 1,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "laptopB",
+     "kind": "laptop",
+     "label": "Laptop B",
+     "pos": [
+      8.0,
+      6.88,
+      0.25
+     ],
+     "note": "Site B's half.",
+     "bom": null,
+     "stage": 1,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "gpsA",
+     "kind": "coaxend",
+     "label": "GPS-disciplined clock A",
+     "pos": [
+      -7.4,
+      6.82,
+      -0.3
+     ],
+     "note": "One pulse per second from GPS keeps the two roofs' clocks within nanoseconds.",
+     "bom": null,
+     "stage": 2,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "gpsB",
+     "kind": "coaxend",
+     "label": "GPS-disciplined clock B",
+     "pos": [
+      7.4,
+      6.82,
+      -0.3
+     ],
+     "note": "",
+     "bom": null,
+     "stage": 2,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "note",
+     "kind": "note",
+     "label": "distance not to scale: see the terminal",
+     "pos": [
+      0.0,
+      10.0,
+      0.0
+     ],
+     "note": "",
+     "bom": null,
+     "stage": 0,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    }
+   ],
+   "beams": [
+    {
+     "kind": "violet",
+     "points": [
+      [
+       -6.1,
+       6.9,
+       0.0
+      ],
+      [
+       6.1,
+       6.9,
+       0.0
+      ]
+     ],
+     "label": "weak pulses across the roofs",
+     "stage": 1,
+     "main": true
+    },
+    {
+     "kind": "classical",
+     "points": [
+      [
+       -8.0,
+       6.85,
+       0.25
+      ],
+      [
+       -8.0,
+       9.2,
+       -2.5
+      ],
+      [
+       8.0,
+       9.2,
+       -2.5
+      ],
+      [
+       8.0,
+       6.85,
+       0.25
+      ]
+     ],
+     "label": "classical channel (fiber or radio)",
+     "stage": 2,
+     "main": false
+    }
+   ],
+   "sliders": [
+    {
+     "key": "distance_m",
+     "label": "Distance between roofs",
+     "lo": 20,
+     "hi": 5000,
+     "step": 10,
+     "value": 300,
+     "unit": "m",
+     "log": true
+    },
+    {
+     "key": "tx_waist_m",
+     "label": "Sending beam waist",
+     "lo": 0.002,
+     "hi": 0.05,
+     "step": 0.001,
+     "value": 0.01,
+     "unit": "m",
+     "log": false
+    },
+    {
+     "key": "rx_aperture_m",
+     "label": "Receiving telescope diameter",
+     "lo": 0.02,
+     "hi": 0.3,
+     "step": 0.005,
+     "value": 0.05,
+     "unit": "m",
+     "log": false
+    },
+    {
+     "key": "pointing_urad",
+     "label": "Pointing jitter",
+     "lo": 0,
+     "hi": 100,
+     "step": 1,
+     "value": 10,
+     "unit": "µrad",
+     "log": false
+    },
+    {
+     "key": "air_db_per_km",
+     "label": "Air extinction at 405 nm",
+     "lo": 0.2,
+     "hi": 5,
+     "step": 0.1,
+     "value": 1.0,
+     "unit": "dB/km",
+     "log": false
+    },
+    {
+     "key": "coupling_loss_db",
+     "label": "Receiver coupling loss",
+     "lo": 0,
+     "hi": 8,
+     "step": 0.1,
+     "value": 3.0,
+     "unit": "dB",
+     "log": false
+    },
+    {
+     "key": "sky_radiance",
+     "label": "Sky brightness (W m⁻² sr⁻¹ nm⁻¹)",
+     "lo": 1e-09,
+     "hi": 0.2,
+     "step": 1e-09,
+     "value": 1e-06,
+     "unit": "",
+     "log": true
+    },
+    {
+     "key": "filter_nm",
+     "label": "Filter width",
+     "lo": 0.5,
+     "hi": 10,
+     "step": 0.5,
+     "value": 3.0,
+     "unit": "nm",
+     "log": false
+    },
+    {
+     "key": "fov_mrad",
+     "label": "Field of view",
+     "lo": 0.1,
+     "hi": 5,
+     "step": 0.1,
+     "value": 1.0,
+     "unit": "mrad",
+     "log": false
+    }
+   ],
+   "commands": {
+    "simulate": "python -c \"from qll.link import outdoor_link as O; print(O.predict(O.OutdoorParts(distance_m=1000, receiver=O.RECEIVERS['spad'])))\"",
+    "real": "python -m qll.link.run ingest bldg_a.csv --bob bldg_b.csv --config bldg_measured.json"
+   },
+   "rooms": false,
+   "claim": "Laboratory-grade key outdoors at night; turbulence fades the signal around the mean the twin predicts.",
+   "bom_total": [
+    300,
+    2000
+   ]
+  },
+  {
+   "id": "station",
+   "title": "Ground station and a satellite pass (Micius class)",
+   "rung": "upgrade",
+   "experiments": [
+    "D09",
+    "E03",
+    "E14"
+   ],
+   "milestones": [
+    "M3.4",
+    "M3.1"
+   ],
+   "twin": "pass",
+   "cost": "$1,000–8,000",
+   "summary": "A tracking telescope with GPS timing follows a satellite for the six minutes it is above 15 degrees. The twin traces elevation, range, and loss second by second with the link budget that reproduces Micius's published losses, and adds up the key one pass could give.",
+   "procedure": "systems/program/01_phases_and_milestones.md",
+   "bom": [
+    [
+     "Used tracking mount and a 200-300 mm telescope",
+     "tracking",
+     600,
+     4000
+    ],
+    [
+     "GPS-disciplined clock and time tagger",
+     "timing",
+     300,
+     2500
+    ],
+    [
+     "Single-photon detectors and filters at 810/850 nm",
+     "detection",
+     100,
+     1500
+    ]
+   ],
+   "stages": [
+    [
+     "Station",
+     "Dome or roll-off roof, telescope, mount."
+    ],
+    [
+     "Timing and detectors",
+     "GPS clock, tagger, filtered detectors."
+    ],
+    [
+     "The pass",
+     "A partner's satellite overhead."
+    ]
+   ],
+   "parts": [
+    {
+     "id": "ground",
+     "kind": "ground",
+     "label": "Ground station site",
+     "pos": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "note": "",
+     "bom": null,
+     "stage": 0,
+     "rot": 0.0,
+     "param": "",
+     "size": [
+      60.0,
+      40.0
+     ]
+    },
+    {
+     "id": "dome",
+     "kind": "dome",
+     "label": "Optical ground station",
+     "pos": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "note": "A roll-off roof or dome around a tracking telescope.",
+     "bom": null,
+     "stage": 1,
+     "rot": 0.0,
+     "param": "",
+     "size": [
+      2.6
+     ]
+    },
+    {
+     "id": "scope",
+     "kind": "telescope",
+     "label": "Tracking telescope (goto mount)",
+     "pos": [
+      0.0,
+      1.4,
+      0.0
+     ],
+     "note": "Follows the satellite across the sky to within its field of view; a fast mirror would hold it to microradians.",
+     "bom": 0,
+     "stage": 1,
+     "rot": 0,
+     "param": "",
+     "size": [
+      0.3,
+      1.4
+     ]
+    },
+    {
+     "id": "desk",
+     "kind": "table",
+     "label": "Control desk",
+     "pos": [
+      4.5,
+      0.0,
+      2.5
+     ],
+     "note": "",
+     "bom": null,
+     "stage": 2,
+     "rot": 0.0,
+     "param": "",
+     "size": [
+      1.4,
+      0.7
+     ]
+    },
+    {
+     "id": "tagger",
+     "kind": "timetagger",
+     "label": "GPS clock and time tagger",
+     "pos": [
+      4.2,
+      0.88,
+      2.5
+     ],
+     "note": "Timestamps every detection against GPS time, within 10 ns of a second clock (MR-3.4).",
+     "bom": 1,
+     "stage": 2,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "dets",
+     "kind": "spad",
+     "label": "Detectors and filters (810/850 nm)",
+     "pos": [
+      4.9,
+      0.94,
+      2.4
+     ],
+     "note": "Single-photon detectors behind a narrow filter, fed from the telescope by fiber.",
+     "bom": 2,
+     "stage": 2,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "laptop",
+     "kind": "laptop",
+     "label": "Station laptop",
+     "pos": [
+      4.6,
+      0.88,
+      2.75
+     ],
+     "note": "Schedules passes from public orbit data (M3.1) and runs the protocol.",
+     "bom": null,
+     "stage": 2,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "sat",
+     "kind": "satellite",
+     "label": "Micius-class satellite (500 km)",
+     "pos": [
+      -12.0,
+      12.0,
+      -3.0
+     ],
+     "note": "The source in orbit, sending weak pulses or entangled photons down.",
+     "bom": null,
+     "stage": 3,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "note",
+     "kind": "note",
+     "label": "orbit not to scale: see the terminal",
+     "pos": [
+      0.0,
+      16.0,
+      -3.0
+     ],
+     "note": "",
+     "bom": null,
+     "stage": 0,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    }
+   ],
+   "beams": [
+    {
+     "kind": "usb",
+     "points": [
+      [
+       4.9,
+       0.95,
+       2.4
+      ],
+      [
+       2.0,
+       0.5,
+       1.6
+      ],
+      [
+       0.0,
+       2.3,
+       0.0
+      ]
+     ],
+     "label": "fiber from the telescope",
+     "stage": 2,
+     "main": false
+    }
+   ],
+   "sliders": [
+    {
+     "key": "t",
+     "label": "Time from overhead",
+     "lo": -200,
+     "hi": 200,
+     "step": 1,
+     "value": -60,
+     "unit": "s",
+     "log": false
+    },
+    {
+     "key": "min_elevation_deg",
+     "label": "Lowest usable elevation",
+     "lo": 5,
+     "hi": 40,
+     "step": 1,
+     "value": 15,
+     "unit": "°",
+     "log": false
+    },
+    {
+     "key": "y0",
+     "label": "Background clicks per pulse",
+     "lo": 1e-08,
+     "hi": 0.01,
+     "step": 1e-08,
+     "value": 1e-06,
+     "unit": "",
+     "log": true
+    },
+    {
+     "key": "mu",
+     "label": "Signal mean photon number",
+     "lo": 0.1,
+     "hi": 1.0,
+     "step": 0.01,
+     "value": 0.5,
+     "unit": "",
+     "log": false
+    },
+    {
+     "key": "e_det",
+     "label": "Downlink misalignment",
+     "lo": 0,
+     "hi": 0.05,
+     "step": 0.001,
+     "value": 0.01,
+     "unit": "",
+     "log": false
+    }
+   ],
+   "commands": {
+    "simulate": "python -c \"from qll.link import satellite_pass as S; s = S.pass_summary(S.PRESETS['micius']); print(s['duration_s'], s['min_loss_db'], s['max_loss_db'], s['key_bits'])\""
+   },
+   "rooms": false,
+   "claim": "Losses follow the validated link budget; the key is an asymptotic upper estimate for one pass.",
+   "bom_total": [
+    1000,
+    8000
+   ]
+  },
+  {
+   "id": "microsat",
+   "title": "A microsatellite partner (Jinan-1 class)",
+   "rung": "device",
+   "experiments": [
+    "D14",
+    "D09"
+   ],
+   "milestones": [
+    "M3.5",
+    "M3.6"
+   ],
+   "twin": "pass",
+   "cost": "partner time; a CubeSat only with outside funding",
+   "summary": "Jinan-1 showed a 23 kg satellite and a portable 28 cm receiver can make keys. With a partner's pass (M3.5) the same station works; flying a source (M3.6) waits for outside funding.",
+   "procedure": "systems/program/07_startup_path.md",
+   "bom": [
+    [
+     "Proposal and partner coordination",
+     "M3.5",
+     0,
+     1000
+    ]
+   ],
+   "stages": [
+    [
+     "Station",
+     "As before."
+    ],
+    [
+     "Timing and detectors",
+     "As before."
+    ],
+    [
+     "The pass",
+     "A partner's microsatellite."
+    ]
+   ],
+   "parts": [
+    {
+     "id": "ground",
+     "kind": "ground",
+     "label": "Ground station site",
+     "pos": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "note": "",
+     "bom": null,
+     "stage": 0,
+     "rot": 0.0,
+     "param": "",
+     "size": [
+      60.0,
+      40.0
+     ]
+    },
+    {
+     "id": "dome",
+     "kind": "dome",
+     "label": "Optical ground station",
+     "pos": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "note": "A roll-off roof or dome around a tracking telescope.",
+     "bom": null,
+     "stage": 1,
+     "rot": 0.0,
+     "param": "",
+     "size": [
+      2.6
+     ]
+    },
+    {
+     "id": "scope",
+     "kind": "telescope",
+     "label": "Tracking telescope (goto mount)",
+     "pos": [
+      0.0,
+      1.4,
+      0.0
+     ],
+     "note": "Follows the satellite across the sky to within its field of view; a fast mirror would hold it to microradians.",
+     "bom": null,
+     "stage": 1,
+     "rot": 0,
+     "param": "",
+     "size": [
+      0.3,
+      1.4
+     ]
+    },
+    {
+     "id": "desk",
+     "kind": "table",
+     "label": "Control desk",
+     "pos": [
+      4.5,
+      0.0,
+      2.5
+     ],
+     "note": "",
+     "bom": null,
+     "stage": 2,
+     "rot": 0.0,
+     "param": "",
+     "size": [
+      1.4,
+      0.7
+     ]
+    },
+    {
+     "id": "tagger",
+     "kind": "timetagger",
+     "label": "GPS clock and time tagger",
+     "pos": [
+      4.2,
+      0.88,
+      2.5
+     ],
+     "note": "Timestamps every detection against GPS time, within 10 ns of a second clock (MR-3.4).",
+     "bom": null,
+     "stage": 2,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "dets",
+     "kind": "spad",
+     "label": "Detectors and filters (810/850 nm)",
+     "pos": [
+      4.9,
+      0.94,
+      2.4
+     ],
+     "note": "Single-photon detectors behind a narrow filter, fed from the telescope by fiber.",
+     "bom": null,
+     "stage": 2,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "laptop",
+     "kind": "laptop",
+     "label": "Station laptop",
+     "pos": [
+      4.6,
+      0.88,
+      2.75
+     ],
+     "note": "Schedules passes from public orbit data (M3.1) and runs the protocol.",
+     "bom": null,
+     "stage": 2,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "sat",
+     "kind": "satellite",
+     "label": "Microsatellite (Jinan-1 class, 23 kg)",
+     "pos": [
+      -12.0,
+      12.0,
+      -3.0
+     ],
+     "note": "The source in orbit, sending weak pulses or entangled photons down.",
+     "bom": 0,
+     "stage": 3,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "note",
+     "kind": "note",
+     "label": "orbit not to scale: see the terminal",
+     "pos": [
+      0.0,
+      16.0,
+      -3.0
+     ],
+     "note": "",
+     "bom": null,
+     "stage": 0,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    }
+   ],
+   "beams": [
+    {
+     "kind": "usb",
+     "points": [
+      [
+       4.9,
+       0.95,
+       2.4
+      ],
+      [
+       2.0,
+       0.5,
+       1.6
+      ],
+      [
+       0.0,
+       2.3,
+       0.0
+      ]
+     ],
+     "label": "fiber from the telescope",
+     "stage": 2,
+     "main": false
+    }
+   ],
+   "sliders": [
+    {
+     "key": "t",
+     "label": "Time from overhead",
+     "lo": -200,
+     "hi": 200,
+     "step": 1,
+     "value": -60,
+     "unit": "s",
+     "log": false
+    },
+    {
+     "key": "min_elevation_deg",
+     "label": "Lowest usable elevation",
+     "lo": 5,
+     "hi": 40,
+     "step": 1,
+     "value": 15,
+     "unit": "°",
+     "log": false
+    },
+    {
+     "key": "y0",
+     "label": "Background clicks per pulse",
+     "lo": 1e-08,
+     "hi": 0.01,
+     "step": 1e-08,
+     "value": 1e-06,
+     "unit": "",
+     "log": true
+    },
+    {
+     "key": "mu",
+     "label": "Signal mean photon number",
+     "lo": 0.1,
+     "hi": 1.0,
+     "step": 0.01,
+     "value": 0.5,
+     "unit": "",
+     "log": false
+    },
+    {
+     "key": "e_det",
+     "label": "Downlink misalignment",
+     "lo": 0,
+     "hi": 0.05,
+     "step": 0.001,
+     "value": 0.01,
+     "unit": "",
+     "log": false
+    }
+   ],
+   "commands": {
+    "simulate": "python -c \"from qll.link import satellite_pass as S; print(S.pass_summary(S.PRESETS['jinan1'])['key_bits'])\""
+   },
+   "rooms": false,
+   "claim": "A partner pass first; nothing is flown out of pocket.",
+   "bom_total": [
+    0,
+    1000
+   ]
+  }
+ ],
+ "frontier": [
+  {
+   "id": "delay",
+   "title": "Teleport with the bits delayed, on a cloud processor (E01)",
+   "rung": "cloud",
+   "experiments": [
+    "E01",
+    "P12"
+   ],
+   "milestones": [
+    "M4.3"
+   ],
+   "twin": "delay",
+   "cost": "$0",
+   "summary": "Teleportation on a free cloud processor with Bob's qubit made to wait before the two bits arrive, as it would while they cross a distance. The fidelity falls as the qubit relaxes and dephases, and crosses the classical 2/3 after about T₂; without the bits it is 1/2 at every delay.",
+   "procedure": "experiments/proposed/E01_delayed_classical_channel_teleportation.md",
+   "bom": [
+    [
+     "Laptop and internet",
+     "owned",
+     0,
+     0
+    ],
+    [
+     "Simulator and fake devices (Qiskit Aer)",
+     "rehearsal",
+     0,
+     0
+    ],
+    [
+     "Open-plan processor time, about 10 minutes a month",
+     "cloud runs",
+     0,
+     0
+    ]
+   ],
+   "stages": [
+    [
+     "In the browser",
+     "Exact density matrices, this page."
+    ],
+    [
+     "Rehearse",
+     "Aer with a noise model, and a fake device."
+    ],
+    [
+     "Run on hardware",
+     "The free open plan; record calibration and layout."
+    ]
+   ],
+   "parts": [
+    {
+     "id": "table",
+     "kind": "table",
+     "label": "Desk",
+     "pos": [
+      2.2,
+      0.0,
+      0.0
+     ],
+     "note": "",
+     "bom": null,
+     "stage": 1,
+     "rot": 0.0,
+     "param": "",
+     "size": [
+      1.2,
+      0.7
+     ]
+    },
+    {
+     "id": "laptop",
+     "kind": "laptop",
+     "label": "Your laptop",
+     "pos": [
+      2.2,
+      0.88,
+      0.0
+     ],
+     "note": "Builds the circuits; runs the simulator; submits jobs.",
+     "bom": null,
+     "stage": 1,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "cloud",
+     "kind": "cloud",
+     "label": "Internet and the provider's queue",
+     "pos": [
+      0.0,
+      2.2,
+      0.0
+     ],
+     "note": "Jobs travel as circuits; results come back as counts.",
+     "bom": null,
+     "stage": 2,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "fridge",
+     "kind": "fridge",
+     "label": "Cloud processor (dilution refrigerator)",
+     "pos": [
+      -2.0,
+      0.0,
+      0.0
+     ],
+     "note": "A superconducting processor near 10 mK: free time on the open plan [ibm2026openplan].",
+     "bom": null,
+     "stage": 3,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "chip",
+     "kind": "chip",
+     "label": "Qubit chip",
+     "pos": [
+      -2.0,
+      0.78,
+      0.0
+     ],
+     "note": "Pick neighbouring qubits for the circuit, and far ones for the crosstalk control.",
+     "bom": null,
+     "stage": 3,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "note",
+     "kind": "note",
+     "label": "the delay stands in for distance",
+     "pos": [
+      0.0,
+      2.9,
+      0.0
+     ],
+     "note": "",
+     "bom": null,
+     "stage": 0,
+     "rot": 0.0,
+     "param": "",
+     "size": [
+      0.16
+     ]
+    }
+   ],
+   "beams": [
+    {
+     "kind": "cloud",
+     "points": [
+      [
+       2.2,
+       1.0,
+       0.0
+      ],
+      [
+       0.0,
+       2.2,
+       0.0
+      ]
+     ],
+     "label": "jobs out, counts back",
+     "stage": 2,
+     "main": false
+    },
+    {
+     "kind": "cloud",
+     "points": [
+      [
+       0.0,
+       2.2,
+       0.0
+      ],
+      [
+       -2.0,
+       1.9,
+       0.0
+      ]
+     ],
+     "label": "",
+     "stage": 2,
+     "main": false
+    }
+   ],
+   "sliders": [
+    {
+     "key": "t_us",
+     "label": "Delay before the bits arrive",
+     "lo": 0,
+     "hi": 600,
+     "step": 1,
+     "value": 60,
+     "unit": "µs",
+     "log": false
+    },
+    {
+     "key": "T1_us",
+     "label": "Qubit relaxation time T₁",
+     "lo": 20,
+     "hi": 500,
+     "step": 5,
+     "value": 200,
+     "unit": "µs",
+     "log": false
+    },
+    {
+     "key": "T2_us",
+     "label": "Qubit dephasing time T₂",
+     "lo": 10,
+     "hi": 400,
+     "step": 5,
+     "value": 150,
+     "unit": "µs",
+     "log": false
+    },
+    {
+     "key": "p2",
+     "label": "Two-qubit gate error p₂",
+     "lo": 0,
+     "hi": 0.1,
+     "step": 0.001,
+     "value": 0.01,
+     "unit": "",
+     "log": false
+    }
+   ],
+   "commands": {
+    "simulate": "python experiments/bench/frontier/run_frontier.py delay --backend aer",
+    "real": "python experiments/bench/frontier/run_frontier.py delay --backend ibm_torino"
+   },
+   "rooms": false,
+   "claim": "Fidelity against delay on a real qubit; the delay is time, not distance, so it tests the memory model, not a link.",
+   "bom_total": [
+    0,
+    0
+   ]
+  },
+  {
+   "id": "network",
+   "title": "Three nodes: a swapping node between two labs (M4.4)",
+   "rung": "main",
+   "experiments": [
+    "D08",
+    "D13"
+   ],
+   "milestones": [
+    "M4.4"
+   ],
+   "twin": "swap",
+   "cost": "$0 in the twin; up to $2,000 with a third room",
+   "summary": "Two pairs, A–C and C–B, become one A–B pair when the node in the middle makes a Bell measurement and tells both ends the result. The node learns nothing about a key made from the pair, unlike a trusted relay, and with memories the two halves wait for each other, which beats sending one photon all the way once the distance is long enough.",
+   "procedure": "experiments/done/08_nv_remote_entanglement_and_network.md",
+   "bom": [
+    [
+     "Third room's bench and fiber patch cords",
+     "node C",
+     0,
+     300
+    ],
+    [
+     "Two fiber spools for the segments",
+     "segments",
+     0,
+     700
+    ],
+    [
+     "Bell-state analyzer and tagger channels at the node (borrowed with the Phase 2 source)",
+     "the swap",
+     0,
+     1000
+    ]
+   ],
+   "stages": [
+    [
+     "Two pairs",
+     "A source per segment, memories at the ends."
+    ],
+    [
+     "The swap",
+     "Bell measurement and its announcement."
+    ],
+    [
+     "Teleport",
+     "Alice to Bob over the new pair."
+    ]
+   ],
+   "parts": [
+    {
+     "id": "ground",
+     "kind": "ground",
+     "label": "Three labs (not to scale)",
+     "pos": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "note": "",
+     "bom": null,
+     "stage": 0,
+     "rot": 0.0,
+     "param": "",
+     "size": [
+      30.0,
+      14.0
+     ]
+    },
+    {
+     "id": "tableA",
+     "kind": "table",
+     "label": "Node A (Alice)",
+     "pos": [
+      -6.0,
+      0.0,
+      0.0
+     ],
+     "note": "",
+     "bom": null,
+     "stage": 1,
+     "rot": 0.0,
+     "param": "",
+     "size": [
+      1.6,
+      0.8
+     ]
+    },
+    {
+     "id": "tableC",
+     "kind": "table",
+     "label": "Node C (the swapping node)",
+     "pos": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "note": "",
+     "bom": 0,
+     "stage": 1,
+     "rot": 0.0,
+     "param": "",
+     "size": [
+      1.8,
+      0.9
+     ]
+    },
+    {
+     "id": "tableB",
+     "kind": "table",
+     "label": "Node B (Bob)",
+     "pos": [
+      6.0,
+      0.0,
+      0.0
+     ],
+     "note": "",
+     "bom": null,
+     "stage": 1,
+     "rot": 0.0,
+     "param": "",
+     "size": [
+      1.6,
+      0.8
+     ]
+    },
+    {
+     "id": "memA",
+     "kind": "box",
+     "label": "Memory A",
+     "pos": [
+      -5.7,
+      0.9,
+      0.0
+     ],
+     "note": "Holds Alice's half of the A–C pair until the node announces the swap.",
+     "bom": null,
+     "stage": 1,
+     "rot": 0.0,
+     "param": "T_mem_s",
+     "size": [
+      0.4,
+      0.2,
+      0.3
+     ]
+    },
+    {
+     "id": "memB",
+     "kind": "box",
+     "label": "Memory B",
+     "pos": [
+      5.7,
+      0.9,
+      0.0
+     ],
+     "note": "Holds Bob's half of the C–B pair.",
+     "bom": null,
+     "stage": 1,
+     "rot": 0.0,
+     "param": "T_mem_s",
+     "size": [
+      0.4,
+      0.2,
+      0.3
+     ]
+    },
+    {
+     "id": "srcAC",
+     "kind": "crystal",
+     "label": "Pair source for A–C",
+     "pos": [
+      -0.5,
+      0.88,
+      -0.2
+     ],
+     "note": "Sends one photon of each pair toward A and keeps the other at C.",
+     "bom": null,
+     "stage": 1,
+     "rot": 0.0,
+     "param": "f0",
+     "size": []
+    },
+    {
+     "id": "srcCB",
+     "kind": "crystal",
+     "label": "Pair source for C–B",
+     "pos": [
+      0.5,
+      0.88,
+      -0.2
+     ],
+     "note": "The same toward B.",
+     "bom": null,
+     "stage": 1,
+     "rot": 0.0,
+     "param": "f0",
+     "size": []
+    },
+    {
+     "id": "bsm",
+     "kind": "bs",
+     "label": "Bell-state measurement at C",
+     "pos": [
+      0.0,
+      0.88,
+      0.2
+     ],
+     "note": "Joins the two pairs into one between A and B; its two-bit result goes to both ends.",
+     "bom": 2,
+     "stage": 2,
+     "rot": 0.0,
+     "param": "p_swap",
+     "size": []
+    },
+    {
+     "id": "detC0",
+     "kind": "spad",
+     "label": "Node detector 1",
+     "pos": [
+      0.3,
+      0.88,
+      0.45
+     ],
+     "note": "",
+     "bom": 2,
+     "stage": 2,
+     "rot": 90,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "detC1",
+     "kind": "spad",
+     "label": "Node detector 2",
+     "pos": [
+      -0.3,
+      0.88,
+      0.45
+     ],
+     "note": "",
+     "bom": 2,
+     "stage": 2,
+     "rot": 90,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "spoolAC",
+     "kind": "spool",
+     "label": "Fiber, A to C",
+     "pos": [
+      -3.0,
+      0.25,
+      1.0
+     ],
+     "note": "Each segment is half the distance; its loss sets how often a pair arrives.",
+     "bom": 1,
+     "stage": 1,
+     "rot": 0.0,
+     "param": "alpha_db_per_km",
+     "size": []
+    },
+    {
+     "id": "spoolCB",
+     "kind": "spool",
+     "label": "Fiber, C to B",
+     "pos": [
+      3.0,
+      0.25,
+      1.0
+     ],
+     "note": "",
+     "bom": 1,
+     "stage": 1,
+     "rot": 0.0,
+     "param": "alpha_db_per_km",
+     "size": []
+    },
+    {
+     "id": "laptopA",
+     "kind": "laptop",
+     "label": "Laptop A",
+     "pos": [
+      -6.4,
+      0.88,
+      0.2
+     ],
+     "note": "Runs Alice's side.",
+     "bom": null,
+     "stage": 3,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "laptopB",
+     "kind": "laptop",
+     "label": "Laptop B",
+     "pos": [
+      6.4,
+      0.88,
+      0.2
+     ],
+     "note": "Runs Bob's side.",
+     "bom": null,
+     "stage": 3,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "tagC",
+     "kind": "timetagger",
+     "label": "Time tagger at the node",
+     "pos": [
+      0.0,
+      0.88,
+      -0.35
+     ],
+     "note": "Heralds which attempts succeeded on each segment.",
+     "bom": 2,
+     "stage": 2,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "note",
+     "kind": "note",
+     "label": "the node learns nothing about the key",
+     "pos": [
+      0.0,
+      3.3,
+      -0.8
+     ],
+     "note": "",
+     "bom": null,
+     "stage": 0,
+     "rot": 0.0,
+     "param": "",
+     "size": [
+      0.24
+     ]
+    }
+   ],
+   "beams": [
+    {
+     "kind": "pair",
+     "points": [
+      [
+       -0.5,
+       0.9400000000000001,
+       -0.2
+      ],
+      [
+       -3.0,
+       0.3,
+       1.0
+      ],
+      [
+       -5.7,
+       0.9400000000000001,
+       0.0
+      ]
+     ],
+     "label": "photon to A",
+     "stage": 1,
+     "main": true
+    },
+    {
+     "kind": "pair",
+     "points": [
+      [
+       0.5,
+       0.9400000000000001,
+       -0.2
+      ],
+      [
+       3.0,
+       0.3,
+       1.0
+      ],
+      [
+       5.7,
+       0.9400000000000001,
+       0.0
+      ]
+     ],
+     "label": "photon to B",
+     "stage": 1,
+     "main": false
+    },
+    {
+     "kind": "pair",
+     "points": [
+      [
+       -0.5,
+       0.9400000000000001,
+       -0.2
+      ],
+      [
+       0.0,
+       0.9400000000000001,
+       0.2
+      ]
+     ],
+     "label": "",
+     "stage": 2,
+     "main": false
+    },
+    {
+     "kind": "pair",
+     "points": [
+      [
+       0.5,
+       0.9400000000000001,
+       -0.2
+      ],
+      [
+       0.0,
+       0.9400000000000001,
+       0.2
+      ]
+     ],
+     "label": "",
+     "stage": 2,
+     "main": false
+    },
+    {
+     "kind": "classical",
+     "points": [
+      [
+       0.0,
+       0.8500000000000001,
+       0.2
+      ],
+      [
+       0.0,
+       2.6,
+       0.2
+      ],
+      [
+       -6.0,
+       2.6,
+       0.2
+      ],
+      [
+       -6.4,
+       0.9,
+       0.2
+      ]
+     ],
+     "label": "swap result to A",
+     "stage": 2,
+     "main": false
+    },
+    {
+     "kind": "classical",
+     "points": [
+      [
+       0.0,
+       2.6,
+       0.2
+      ],
+      [
+       6.0,
+       2.6,
+       0.2
+      ],
+      [
+       6.4,
+       0.9,
+       0.2
+      ]
+     ],
+     "label": "swap result to B",
+     "stage": 2,
+     "main": false
+    },
+    {
+     "kind": "classical",
+     "points": [
+      [
+       -6.4,
+       0.9,
+       0.2
+      ],
+      [
+       -6.4,
+       3.0,
+       -0.6
+      ],
+      [
+       6.4,
+       3.0,
+       -0.6
+      ],
+      [
+       6.4,
+       0.9,
+       0.2
+      ]
+     ],
+     "label": "teleportation bits, A to B",
+     "stage": 3,
+     "main": false
+    }
+   ],
+   "sliders": [
+    {
+     "key": "distance_m",
+     "label": "Distance A to B",
+     "lo": 10,
+     "hi": 500000.0,
+     "step": 10,
+     "value": 20000,
+     "unit": "m",
+     "log": true
+    },
+    {
+     "key": "f0",
+     "label": "Each segment's pair f₀",
+     "lo": 0.55,
+     "hi": 1.0,
+     "step": 0.005,
+     "value": 0.95,
+     "unit": "",
+     "log": false
+    },
+    {
+     "key": "T_mem_s",
+     "label": "Memory lifetime",
+     "lo": 0.0001,
+     "hi": 1000.0,
+     "step": 0.0001,
+     "value": 1.0,
+     "unit": "s",
+     "log": true
+    },
+    {
+     "key": "alpha_db_per_km",
+     "label": "Fiber loss",
+     "lo": 0.15,
+     "hi": 0.5,
+     "step": 0.01,
+     "value": 0.2,
+     "unit": "dB/km",
+     "log": false
+    },
+    {
+     "key": "p_swap",
+     "label": "Bell-measurement success at the node",
+     "lo": 0.25,
+     "hi": 1.0,
+     "step": 0.25,
+     "value": 0.5,
+     "unit": "",
+     "log": false
+    }
+   ],
+   "commands": {
+    "simulate": "python -c \"from qll.network import teleport_across as X; print(X.swap(X.Swap(distance_m=20000)))\""
+   },
+   "rooms": false,
+   "claim": "Keys between every pair in the twin; with hardware, the swap is the borrowed Phase 2 source twice over.",
+   "bom_total": [
+    0,
+    2000
+   ]
+  },
+  {
+   "id": "rooms",
+   "title": "Photonic teleportation between the rooms (M4.5)",
+   "rung": "upgrade",
+   "experiments": [
+    "D06",
+    "D07"
+   ],
+   "milestones": [
+    "M4.5"
+   ],
+   "twin": "link",
+   "cost": "$2,000–30,000 (outside funding)",
+   "summary": "The 1997 experiment across the hallway: an input photon and one photon of a pair meet at a beam splitter in room A, and the two-bit result races Bob's photon, held in a fiber delay line, to a fast Pockels cell in room B. The fiber is the memory; the distance is the rooms; the twin says how long a delay line keeps the fidelity above 2/3.",
+   "procedure": "experiments/done/07_teleportation_photonic.md",
+   "bom": [
+    [
+     "Heralded single-photon source for the input (or a second pair source)",
+     "the input qubit",
+     1000,
+     10000
+    ],
+    [
+     "Bell-state analyzer: beam splitter, two detectors, coincidence logic",
+     "Alice's measurement",
+     500,
+     8000
+    ],
+    [
+     "Pockels cell and fast driver",
+     "Bob's correction",
+     300,
+     8000
+    ],
+    [
+     "Fiber delay line and feed-forward cable",
+     "Bob's memory",
+     200,
+     4000
+    ]
+   ],
+   "stages": [
+    [
+     "Sources",
+     "Input photon and the shared pair."
+    ],
+    [
+     "Alice's measurement",
+     "Beam splitter and two detectors."
+    ],
+    [
+     "Bob's correction",
+     "Feed-forward and Pockels cell."
+    ],
+    [
+     "Memory",
+     "A longer delay line, then a real memory."
+    ]
+   ],
+   "parts": [
+    {
+     "id": "roomA",
+     "kind": "room",
+     "label": "Room A (Alice)",
+     "pos": [
+      -5.0,
+      0.0,
+      0.0
+     ],
+     "note": "A lab or office; blackout the window and keep the door open on the beam line.",
+     "bom": null,
+     "stage": 0,
+     "rot": 0.0,
+     "param": "",
+     "size": [
+      6.0,
+      5.0
+     ]
+    },
+    {
+     "id": "roomB",
+     "kind": "room",
+     "label": "Room B (Bob)",
+     "pos": [
+      5.0,
+      0.0,
+      0.0
+     ],
+     "note": "The receiving room, 10 m along the beam from room A's source.",
+     "bom": null,
+     "stage": 0,
+     "rot": 0.0,
+     "param": "",
+     "size": [
+      6.0,
+      5.0
+     ]
+    },
+    {
+     "id": "tableA",
+     "kind": "table",
+     "label": "Bench A",
+     "pos": [
+      -5.0,
+      0.0,
+      0.0
+     ],
+     "note": "Any sturdy desk; bolt or tape the mounts down.",
+     "bom": null,
+     "stage": 0,
+     "rot": 0.0,
+     "param": "",
+     "size": [
+      1.8,
+      1.0
+     ]
+    },
+    {
+     "id": "tableB",
+     "kind": "table",
+     "label": "Bench B",
+     "pos": [
+      5.0,
+      0.0,
+      0.0
+     ],
+     "note": "Any sturdy desk, at least 1.3 m deep for the two analyzer arms.",
+     "bom": null,
+     "stage": 0,
+     "rot": 0.0,
+     "param": "",
+     "size": [
+      1.8,
+      1.3
+     ]
+    },
+    {
+     "id": "hall",
+     "kind": "hallway",
+     "label": "Hallway",
+     "pos": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "note": "Free-space path between the two open doors; keep the beam below eye level.",
+     "bom": null,
+     "stage": 0,
+     "rot": 0.0,
+     "param": "",
+     "size": [
+      4.0,
+      2.2
+     ]
+    },
+    {
+     "id": "input",
+     "kind": "laser",
+     "label": "Input photon (heralded single photon)",
+     "pos": [
+      -5.7,
+      0.88,
+      0.25
+     ],
+     "note": "The qubit Alice teleports: a heralded photon in the polarization she chooses.",
+     "bom": 0,
+     "stage": 1,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "pump",
+     "kind": "pump",
+     "label": "Pair source pump (405 nm)",
+     "pos": [
+      -5.7,
+      0.88,
+      -0.3
+     ],
+     "note": "Pumps the down-conversion crystals that make the shared pair (the Phase 2 source).",
+     "bom": null,
+     "stage": 1,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "bbo",
+     "kind": "crystal",
+     "label": "Entangled-pair crystals",
+     "pos": [
+      -5.3,
+      0.88,
+      -0.3
+     ],
+     "note": "One photon of the pair goes to Alice's Bell measurement, the other to room B.",
+     "bom": null,
+     "stage": 1,
+     "rot": 0.0,
+     "param": "f0",
+     "size": []
+    },
+    {
+     "id": "bs",
+     "kind": "bs",
+     "label": "Bell-state analyzer: beam splitter",
+     "pos": [
+      -4.8,
+      0.88,
+      0.0
+     ],
+     "note": "Two-photon interference picks out Bell states; linear optics succeeds half the time.",
+     "bom": 1,
+     "stage": 2,
+     "rot": 0.0,
+     "param": "p_bsm",
+     "size": []
+    },
+    {
+     "id": "bsmD0",
+     "kind": "spad",
+     "label": "Analyzer detector 1",
+     "pos": [
+      -4.4,
+      0.88,
+      0.0
+     ],
+     "note": "",
+     "bom": 1,
+     "stage": 2,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "bsmD1",
+     "kind": "spad",
+     "label": "Analyzer detector 2",
+     "pos": [
+      -4.8,
+      0.88,
+      0.35
+     ],
+     "note": "",
+     "bom": 1,
+     "stage": 2,
+     "rot": 90,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "delay",
+     "kind": "spool",
+     "label": "Fiber delay line (Bob's memory)",
+     "pos": [
+      0.0,
+      0.25,
+      1.2
+     ],
+     "note": "Holds Bob's photon until Alice's result arrives: 5 µs per kilometre of fiber.",
+     "bom": 3,
+     "stage": 2,
+     "rot": 0.0,
+     "param": "T_mem_s",
+     "size": []
+    },
+    {
+     "id": "pockels",
+     "kind": "box",
+     "label": "Pockels cell (fast correction)",
+     "pos": [
+      4.2,
+      0.88,
+      0.0
+     ],
+     "note": "Applies Bob's correction in nanoseconds, driven by Alice's two bits.",
+     "bom": 2,
+     "stage": 3,
+     "rot": 0.0,
+     "param": "",
+     "size": [
+      0.25,
+      0.12,
+      0.12
+     ]
+    },
+    {
+     "id": "anaB_hwp",
+     "kind": "hwp",
+     "label": "Bob's analyzer: waveplate",
+     "pos": [
+      4.55,
+      0.88,
+      0.0
+     ],
+     "note": "Checks the teleported polarization.",
+     "bom": null,
+     "stage": 3,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "anaB_pbs",
+     "kind": "pbs",
+     "label": "Bob's analyzer: PBS",
+     "pos": [
+      4.8,
+      0.88,
+      0.0
+     ],
+     "note": "",
+     "bom": null,
+     "stage": 3,
+     "rot": 45,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "detB0",
+     "kind": "spad",
+     "label": "Bob's detector 1",
+     "pos": [
+      5.1,
+      0.88,
+      0.0
+     ],
+     "note": "",
+     "bom": null,
+     "stage": 3,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "detB1",
+     "kind": "spad",
+     "label": "Bob's detector 2",
+     "pos": [
+      4.8,
+      0.88,
+      0.3
+     ],
+     "note": "",
+     "bom": null,
+     "stage": 3,
+     "rot": 90,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "ffA",
+     "kind": "mediaconv",
+     "label": "Feed-forward link A",
+     "pos": [
+      -4.3,
+      0.88,
+      0.4
+     ],
+     "note": "Carries Alice's two bits to room B: a cable or fiber, at most light speed.",
+     "bom": 3,
+     "stage": 3,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "ffB",
+     "kind": "mediaconv",
+     "label": "Feed-forward link B",
+     "pos": [
+      4.2,
+      0.88,
+      0.45
+     ],
+     "note": "Drives the Pockels cell.",
+     "bom": 3,
+     "stage": 3,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    }
+   ],
+   "beams": [
+    {
+     "kind": "pump",
+     "points": [
+      [
+       -5.7,
+       0.9400000000000001,
+       -0.3
+      ],
+      [
+       -5.3,
+       0.9400000000000001,
+       -0.3
+      ]
+     ],
+     "label": "pump",
+     "stage": 1,
+     "main": false
+    },
+    {
+     "kind": "pair",
+     "points": [
+      [
+       -5.3,
+       0.9400000000000001,
+       -0.3
+      ],
+      [
+       -4.8,
+       0.9400000000000001,
+       0.0
+      ]
+     ],
+     "label": "pair photon to Alice",
+     "stage": 1,
+     "main": false
+    },
+    {
+     "kind": "red",
+     "points": [
+      [
+       -5.7,
+       0.9400000000000001,
+       0.25
+      ],
+      [
+       -4.8,
+       0.9400000000000001,
+       0.0
+      ],
+      [
+       -4.4,
+       0.9400000000000001,
+       0.0
+      ]
+     ],
+     "label": "input photon",
+     "stage": 1,
+     "main": false
+    },
+    {
+     "kind": "pair",
+     "points": [
+      [
+       -4.8,
+       0.9400000000000001,
+       0.0
+      ],
+      [
+       -4.8,
+       0.9400000000000001,
+       0.35
+      ]
+     ],
+     "label": "",
+     "stage": 2,
+     "main": false
+    },
+    {
+     "kind": "pair",
+     "points": [
+      [
+       -5.3,
+       0.9400000000000001,
+       -0.3
+      ],
+      [
+       -4.6,
+       0.3,
+       1.2
+      ],
+      [
+       0.0,
+       0.3,
+       1.2
+      ],
+      [
+       3.6,
+       0.3,
+       1.2
+      ],
+      [
+       4.2,
+       0.9400000000000001,
+       0.0
+      ],
+      [
+       4.55,
+       0.9400000000000001,
+       0.0
+      ],
+      [
+       4.8,
+       0.9400000000000001,
+       0.0
+      ],
+      [
+       5.1,
+       0.9400000000000001,
+       0.0
+      ]
+     ],
+     "label": "Bob's photon through the delay line",
+     "stage": 2,
+     "main": true
+    },
+    {
+     "kind": "pair",
+     "points": [
+      [
+       4.8,
+       0.9400000000000001,
+       0.0
+      ],
+      [
+       4.8,
+       0.9400000000000001,
+       0.3
+      ]
+     ],
+     "label": "",
+     "stage": 3,
+     "main": false
+    },
+    {
+     "kind": "classical",
+     "points": [
+      [
+       -4.3,
+       0.8300000000000001,
+       0.4
+      ],
+      [
+       -4.3,
+       2.4,
+       0.4
+      ],
+      [
+       4.2,
+       2.4,
+       0.45
+      ],
+      [
+       4.2,
+       0.8300000000000001,
+       0.45
+      ]
+     ],
+     "label": "Alice's two bits",
+     "stage": 3,
+     "main": false
+    }
+   ],
+   "sliders": [
+    {
+     "key": "distance_m",
+     "label": "Distance",
+     "lo": 1,
+     "hi": 500000000000.0,
+     "step": 1,
+     "value": 10,
+     "unit": "m",
+     "log": true
+    },
+    {
+     "key": "f0",
+     "label": "Pair fidelity when made f₀",
+     "lo": 0.55,
+     "hi": 1.0,
+     "step": 0.005,
+     "value": 0.95,
+     "unit": "",
+     "log": false
+    },
+    {
+     "key": "T_mem_s",
+     "label": "Memory lifetime",
+     "lo": 1e-06,
+     "hi": 100000.0,
+     "step": 1e-06,
+     "value": 1.0,
+     "unit": "s",
+     "log": true
+    },
+    {
+     "key": "bank_s",
+     "label": "Time in the bank before use",
+     "lo": 0,
+     "hi": 3600,
+     "step": 1,
+     "value": 0,
+     "unit": "s",
+     "log": false
+    },
+    {
+     "key": "eta_mem",
+     "label": "Memory retrieval efficiency",
+     "lo": 0.001,
+     "hi": 1.0,
+     "step": 0.001,
+     "value": 0.9,
+     "unit": "",
+     "log": false
+    },
+    {
+     "key": "p_bsm",
+     "label": "Bell-measurement success",
+     "lo": 0.25,
+     "hi": 1.0,
+     "step": 0.25,
+     "value": 0.5,
+     "unit": "",
+     "log": false
+    }
+   ],
+   "commands": {
+    "simulate": "python -c \"from qll.network import teleport_across as X; print(X.link(X.Link(distance_m=10, T_mem_s=1e-3, eta_mem=0.9)))\""
+   },
+   "rooms": true,
+   "claim": "Fidelity above 2/3 with the Bell measurement and the bits; one Bell state in two, as linear optics allows.",
+   "bom_total": [
+    2000,
+    30000
+   ]
+  },
+  {
+   "id": "mars",
+   "title": "Earth to Mars with banked entanglement (E01, research version)",
+   "rung": "device",
+   "experiments": [
+    "E01",
+    "E02",
+    "F3"
+   ],
+   "milestones": [
+    "M4.3"
+   ],
+   "twin": "link",
+   "cost": "research; outside funding",
+   "summary": "Pairs are sent ahead and banked in memories on both planets, so the message moment needs only Alice's Bell measurement and two bits that take 3 to 22 minutes to arrive. Teleportation is then never faster than light, but it needs no photon to survive the trip at the moment of sending, and only memories that outlive the light-time keep the fidelity above 2/3.",
+   "procedure": "experiments/proposed/E01_delayed_classical_channel_teleportation.md",
+   "bom": [
+    [
+     "Partner memory laboratories and a deep-space optical link",
+     "the research version",
+     0,
+     0
+    ]
+   ],
+   "stages": [
+    [
+     "Banked pairs",
+     "A source sends ahead; memories hold."
+    ],
+    [
+     "Memories",
+     "Ion or rare-earth storage at both ends."
+    ],
+    [
+     "Teleport",
+     "Alice measures; two bits cross at light speed."
+    ]
+   ],
+   "parts": [
+    {
+     "id": "earth",
+     "kind": "planet",
+     "label": "Earth",
+     "pos": [
+      -9.0,
+      3.0,
+      0.0
+     ],
+     "note": "Ground station with a memory that holds Alice's half of each pair.",
+     "bom": null,
+     "stage": 1,
+     "rot": 0.0,
+     "param": "",
+     "size": [
+      2.4,
+      3108822
+     ]
+    },
+    {
+     "id": "mars",
+     "kind": "planet",
+     "label": "Mars",
+     "pos": [
+      9.0,
+      3.0,
+      0.0
+     ],
+     "note": "A lander or orbiter with a memory holding Bob's half.",
+     "bom": null,
+     "stage": 1,
+     "rot": 0.0,
+     "param": "",
+     "size": [
+      1.3,
+      12665870
+     ]
+    },
+    {
+     "id": "relay",
+     "kind": "satellite",
+     "label": "Pair source in deep space",
+     "pos": [
+      0.0,
+      7.5,
+      -2.0
+     ],
+     "note": "Sends one photon of each pair to each planet ahead of time; pairs are banked, not made on demand.",
+     "bom": null,
+     "stage": 1,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "memE",
+     "kind": "box",
+     "label": "Earth memory (rare-earth or ion)",
+     "pos": [
+      -6.3,
+      3.0,
+      0.0
+     ],
+     "note": "Holds Alice's halves; a 171Yb+ ion holds for an hour, a Eu:YSO crystal for hours.",
+     "bom": 0,
+     "stage": 2,
+     "rot": 0.0,
+     "param": "T_mem_s",
+     "size": [
+      0.6,
+      0.4,
+      0.5
+     ]
+    },
+    {
+     "id": "memM",
+     "kind": "box",
+     "label": "Mars memory",
+     "pos": [
+      7.4,
+      3.0,
+      0.0
+     ],
+     "note": "Holds Bob's halves until Alice's bits arrive, 3 to 22 minutes later.",
+     "bom": 0,
+     "stage": 2,
+     "rot": 0.0,
+     "param": "T_mem_s",
+     "size": [
+      0.6,
+      0.4,
+      0.5
+     ]
+    },
+    {
+     "id": "note",
+     "kind": "note",
+     "label": "nothing outruns the light-time: the two bits set the pace",
+     "pos": [
+      0.0,
+      10.5,
+      -2.0
+     ],
+     "note": "",
+     "bom": null,
+     "stage": 0,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    }
+   ],
+   "beams": [
+    {
+     "kind": "pair",
+     "points": [
+      [
+       0.0,
+       7.2,
+       -2.0
+      ],
+      [
+       -6.3,
+       3.3,
+       0.0
+      ]
+     ],
+     "label": "pair photon to Earth",
+     "stage": 1,
+     "main": false
+    },
+    {
+     "kind": "pair",
+     "points": [
+      [
+       0.0,
+       7.2,
+       -2.0
+      ],
+      [
+       7.4,
+       3.3,
+       0.0
+      ]
+     ],
+     "label": "pair photon to Mars",
+     "stage": 1,
+     "main": false
+    },
+    {
+     "kind": "classical",
+     "points": [
+      [
+       -6.3,
+       3.0,
+       0.0
+      ],
+      [
+       -3.0,
+       1.2,
+       1.5
+      ],
+      [
+       3.0,
+       1.2,
+       1.5
+      ],
+      [
+       7.4,
+       3.0,
+       0.0
+      ]
+     ],
+     "label": "Alice's two bits, at light speed",
+     "stage": 3,
+     "main": true
+    }
+   ],
+   "sliders": [
+    {
+     "key": "distance_m",
+     "label": "Distance",
+     "lo": 1,
+     "hi": 500000000000.0,
+     "step": 1,
+     "value": 10,
+     "unit": "m",
+     "log": true
+    },
+    {
+     "key": "f0",
+     "label": "Pair fidelity when made f₀",
+     "lo": 0.55,
+     "hi": 1.0,
+     "step": 0.005,
+     "value": 0.95,
+     "unit": "",
+     "log": false
+    },
+    {
+     "key": "T_mem_s",
+     "label": "Memory lifetime",
+     "lo": 1e-06,
+     "hi": 100000.0,
+     "step": 1e-06,
+     "value": 1.0,
+     "unit": "s",
+     "log": true
+    },
+    {
+     "key": "bank_s",
+     "label": "Time in the bank before use",
+     "lo": 0,
+     "hi": 3600,
+     "step": 1,
+     "value": 0,
+     "unit": "s",
+     "log": false
+    },
+    {
+     "key": "eta_mem",
+     "label": "Memory retrieval efficiency",
+     "lo": 0.001,
+     "hi": 1.0,
+     "step": 0.001,
+     "value": 0.9,
+     "unit": "",
+     "log": false
+    },
+    {
+     "key": "p_bsm",
+     "label": "Bell-measurement success",
+     "lo": 0.25,
+     "hi": 1.0,
+     "step": 0.25,
+     "value": 0.5,
+     "unit": "",
+     "log": false
+    }
+   ],
+   "commands": {
+    "simulate": "python -c \"from qll.network import teleport_across as X; print(X.for_scenario('Mars at its farthest', '171Yb+ hyperfine'))\""
+   },
+   "rooms": false,
+   "claim": "A design study: every number is the light-time and the memory model, and no claim outruns them.",
+   "bom_total": [
+    0,
+    0
+   ]
+  }
+ ],
+ "messenger": [
+  {
+   "id": "rooms",
+   "title": "Messages between the rooms (P10's key)",
+   "rung": "main",
+   "experiments": [
+    "P15",
+    "P10"
+   ],
+   "milestones": [
+    "M1.6"
+   ],
+   "twin": "messenger",
+   "cost": "$0 above the link",
+   "summary": "The two-room link runs around the clock and makes far more key than text needs: a one-time pad is affordable, and the bank never runs dry.",
+   "procedure": "experiments/protocols/P15_messages_keyed_by_the_link.md",
+   "bom": [
+    [
+     "Messenger software and the key store (this repository)",
+     "the application",
+     0,
+     0
+    ]
+   ],
+   "stages": [
+    [
+     "The link",
+     "Its own lab builds it; here it only makes key."
+    ],
+    [
+     "Key bank",
+     "Accepted key is stored at both ends."
+    ],
+    [
+     "Messenger",
+     "Each message spends key by its policy."
+    ],
+    [
+     "Fail closed",
+     "An empty bank refuses; no weaker fallback."
+    ]
+   ],
+   "parts": [
+    {
+     "id": "roomA",
+     "kind": "room",
+     "label": "Room A (Alice)",
+     "pos": [
+      -5.0,
+      0.0,
+      0.0
+     ],
+     "note": "A lab or office; blackout the window and keep the door open on the beam line.",
+     "bom": null,
+     "stage": 0,
+     "rot": 0.0,
+     "param": "",
+     "size": [
+      6.0,
+      5.0
+     ]
+    },
+    {
+     "id": "roomB",
+     "kind": "room",
+     "label": "Room B (Bob)",
+     "pos": [
+      5.0,
+      0.0,
+      0.0
+     ],
+     "note": "The receiving room, 10 m along the beam from room A's source.",
+     "bom": null,
+     "stage": 0,
+     "rot": 0.0,
+     "param": "",
+     "size": [
+      6.0,
+      5.0
+     ]
+    },
+    {
+     "id": "tableA",
+     "kind": "table",
+     "label": "Bench A",
+     "pos": [
+      -5.0,
+      0.0,
+      0.0
+     ],
+     "note": "Any sturdy desk; bolt or tape the mounts down.",
+     "bom": null,
+     "stage": 0,
+     "rot": 0.0,
+     "param": "",
+     "size": [
+      1.8,
+      1.0
+     ]
+    },
+    {
+     "id": "tableB",
+     "kind": "table",
+     "label": "Bench B",
+     "pos": [
+      5.0,
+      0.0,
+      0.0
+     ],
+     "note": "Any sturdy desk, at least 1.3 m deep for the two analyzer arms.",
+     "bom": null,
+     "stage": 0,
+     "rot": 0.0,
+     "param": "",
+     "size": [
+      1.8,
+      1.3
+     ]
+    },
+    {
+     "id": "hall",
+     "kind": "hallway",
+     "label": "Hallway",
+     "pos": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "note": "Free-space path between the two open doors; keep the beam below eye level.",
+     "bom": null,
+     "stage": 0,
+     "rot": 0.0,
+     "param": "",
+     "size": [
+      4.0,
+      2.2
+     ]
+    },
+    {
+     "id": "laptopA",
+     "kind": "laptop",
+     "label": "Laptop A",
+     "pos": [
+      -4.5,
+      0.88,
+      0.3
+     ],
+     "note": "Runs Site A's half of the protocol; static address on the link subnet.",
+     "bom": null,
+     "stage": 1,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "laptopB",
+     "kind": "laptop",
+     "label": "Laptop B",
+     "pos": [
+      5.45,
+      0.88,
+      0.45
+     ],
+     "note": "Runs Site B's half.",
+     "bom": null,
+     "stage": 1,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "mcA",
+     "kind": "mediaconv",
+     "label": "Media converter A",
+     "pos": [
+      -4.25,
+      0.88,
+      -0.35
+     ],
+     "note": "Ethernet to fiber; the authenticated classical channel (qll/link/net_transport.py).",
+     "bom": null,
+     "stage": 2,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "mcB",
+     "kind": "mediaconv",
+     "label": "Media converter B",
+     "pos": [
+      4.3,
+      0.88,
+      0.5
+     ],
+     "note": "Fiber back to Ethernet in room B.",
+     "bom": null,
+     "stage": 2,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "darkbox",
+     "kind": "box",
+     "label": "Light-tight receiver box",
+     "pos": [
+      4.7,
+      0.9,
+      -0.12
+     ],
+     "note": "Felt and black card around the receiver: every leak is a dark count.",
+     "bom": null,
+     "stage": 4,
+     "rot": 0.0,
+     "param": "",
+     "size": [
+      1.3,
+      0.28,
+      1.15
+     ]
+    },
+    {
+     "id": "boost",
+     "kind": "supply",
+     "label": "30 V boost module",
+     "pos": [
+      5.7,
+      0.88,
+      0.05
+     ],
+     "note": "Biases the SiPMs at breakdown plus 2.5 V (about 27 V).",
+     "bom": null,
+     "stage": 4,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "fpgaB",
+     "kind": "fpga",
+     "label": "FPGA B (gate and count)",
+     "pos": [
+      5.6,
+      0.88,
+      -0.45
+     ],
+     "note": "Opens a 5 ns gate per clock pulse and logs which detector fired.",
+     "bom": null,
+     "stage": 4,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "sipmZ0",
+     "kind": "sipm",
+     "label": "SiPM Z0 (H)",
+     "pos": [
+      5.15,
+      0.88,
+      0.0
+     ],
+     "note": "MicroFC-30035: 31 % efficient at 420 nm, 300 kHz dark at 21 °C.",
+     "bom": null,
+     "stage": 4,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "sipmZ1",
+     "kind": "sipm",
+     "label": "SiPM Z1 (V)",
+     "pos": [
+      4.8,
+      0.88,
+      0.3
+     ],
+     "note": "Second detector of the Z arm.",
+     "bom": null,
+     "stage": 4,
+     "rot": 90,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "sipmX0",
+     "kind": "sipm",
+     "label": "SiPM X0 (D)",
+     "pos": [
+      4.35,
+      0.88,
+      -0.6
+     ],
+     "note": "First detector of the X arm.",
+     "bom": null,
+     "stage": 4,
+     "rot": 90,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "sipmX1",
+     "kind": "sipm",
+     "label": "SiPM X1 (A)",
+     "pos": [
+      4.7,
+      0.88,
+      -0.4
+     ],
+     "note": "Second detector of the X arm.",
+     "bom": null,
+     "stage": 4,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "diodeH",
+     "kind": "laser",
+     "label": "405 nm diode (H)",
+     "pos": [
+      -5.78,
+      0.88,
+      0.0
+     ],
+     "note": "Fired at random, one per 1 µs slot, at the signal or decoy current, or not at all (vacuum).",
+     "bom": null,
+     "stage": 4,
+     "rot": 0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "diodeV",
+     "kind": "laser",
+     "label": "405 nm diode (V)",
+     "pos": [
+      -5.4,
+      0.88,
+      -0.26
+     ],
+     "note": "Enters the H+V cube from the side.",
+     "bom": null,
+     "stage": 4,
+     "rot": 90,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "diodeD",
+     "kind": "laser",
+     "label": "405 nm diode (D)",
+     "pos": [
+      -5.45,
+      0.88,
+      0.25
+     ],
+     "note": "Enters the D+A cube through its face.",
+     "bom": null,
+     "stage": 4,
+     "rot": 0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "diodeA",
+     "kind": "laser",
+     "label": "405 nm diode (A)",
+     "pos": [
+      -5.05,
+      0.88,
+      0.42
+     ],
+     "note": "Enters the D+A cube from the side.",
+     "bom": null,
+     "stage": 4,
+     "rot": -90,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "polH",
+     "kind": "polarizer",
+     "label": "Film polarizer at 0°",
+     "pos": [
+      -5.6,
+      0.88,
+      0.0
+     ],
+     "note": "Fixed polarizer in front of its diode.",
+     "bom": null,
+     "stage": 4,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "polV",
+     "kind": "polarizer",
+     "label": "Film polarizer at 90°",
+     "pos": [
+      -5.4,
+      0.88,
+      -0.13
+     ],
+     "note": "Fixed polarizer in front of its diode.",
+     "bom": null,
+     "stage": 4,
+     "rot": 90,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "polD",
+     "kind": "polarizer",
+     "label": "Film polarizer at 45°",
+     "pos": [
+      -5.25,
+      0.88,
+      0.25
+     ],
+     "note": "Fixed polarizer in front of its diode.",
+     "bom": null,
+     "stage": 4,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "polA",
+     "kind": "polarizer",
+     "label": "Film polarizer at 135°",
+     "pos": [
+      -5.05,
+      0.88,
+      0.33
+     ],
+     "note": "Fixed polarizer in front of its diode.",
+     "bom": null,
+     "stage": 4,
+     "rot": 90,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "bsHV",
+     "kind": "bs",
+     "label": "Combiner H+V",
+     "pos": [
+      -5.4,
+      0.88,
+      0.0
+     ],
+     "note": "50/50 cube: H through the face, V from the side.",
+     "bom": null,
+     "stage": 4,
+     "rot": 45,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "bsDA",
+     "kind": "bs",
+     "label": "Combiner D+A",
+     "pos": [
+      -5.05,
+      0.88,
+      0.25
+     ],
+     "note": "50/50 cube: D through the face, A from the side; the pair leaves toward the third cube.",
+     "bom": null,
+     "stage": 4,
+     "rot": 45,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "bsAll",
+     "kind": "bs",
+     "label": "Combiner, all four",
+     "pos": [
+      -5.05,
+      0.88,
+      0.0
+     ],
+     "note": "Joins the two pairs onto one beam line.",
+     "bom": null,
+     "stage": 4,
+     "rot": 45,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "pinhole",
+     "kind": "iris",
+     "label": "Pinhole spatial filter",
+     "pos": [
+      -4.85,
+      0.88,
+      0.0
+     ],
+     "note": "Makes the four diodes' beams look alike (side channel MR-R2).",
+     "bom": null,
+     "stage": 4,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "nd",
+     "kind": "nd",
+     "label": "Neutral-density filters",
+     "pos": [
+      -4.68,
+      0.88,
+      0.0
+     ],
+     "note": "Attenuate each pulse to a mean of 0.5 photons (signal) or 0.1 (decoy).",
+     "bom": null,
+     "stage": 4,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "fpgaA",
+     "kind": "fpga",
+     "label": "FPGA A (pulse and clock)",
+     "pos": [
+      -5.65,
+      0.88,
+      -0.33
+     ],
+     "note": "Chooses state and intensity per slot, drives the diodes, sends the clock.",
+     "bom": null,
+     "stage": 4,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "tubes",
+     "kind": "tube",
+     "label": "Black tubes",
+     "pos": [
+      3.95,
+      0.88,
+      0.0
+     ],
+     "note": "Shield the beam line from room light.",
+     "bom": null,
+     "stage": 4,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "lensB",
+     "kind": "lens",
+     "label": "Collection lens",
+     "pos": [
+      4.18,
+      0.88,
+      0.0
+     ],
+     "note": "Focuses the beam into the analyzer.",
+     "bom": null,
+     "stage": 4,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "bsB",
+     "kind": "bs",
+     "label": "Basis beamsplitter",
+     "pos": [
+      4.35,
+      0.88,
+      0.0
+     ],
+     "note": "Passive, random basis choice: half the photons go to Z, half to X.",
+     "bom": null,
+     "stage": 4,
+     "rot": 45,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "pbsZ",
+     "kind": "pbs",
+     "label": "PBS, Z arm",
+     "pos": [
+      4.8,
+      0.88,
+      0.0
+     ],
+     "note": "Sends H to one SiPM and V to the other.",
+     "bom": null,
+     "stage": 4,
+     "rot": 45,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "hwp",
+     "kind": "hwp",
+     "label": "Half-wave plate at 22.5°",
+     "pos": [
+      4.35,
+      0.88,
+      -0.2
+     ],
+     "note": "Turns the diagonal basis into the rectilinear one for the X arm.",
+     "bom": null,
+     "stage": 4,
+     "rot": 90,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "pbsX",
+     "kind": "pbs",
+     "label": "PBS, X arm",
+     "pos": [
+      4.35,
+      0.88,
+      -0.4
+     ],
+     "note": "Sends D to one SiPM and A to the other.",
+     "bom": null,
+     "stage": 4,
+     "rot": 45,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "coax",
+     "kind": "coaxend",
+     "label": "Clock coax",
+     "pos": [
+      -5.65,
+      0.75,
+      -0.42
+     ],
+     "note": "Room A's FPGA sends one clock edge per slot; timing is public.",
+     "bom": null,
+     "stage": 4,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "eveTable",
+     "kind": "table",
+     "label": "Eavesdropper's cart",
+     "pos": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "note": "Optional: an intercept-resend station halfway down the hallway.",
+     "bom": null,
+     "stage": 4,
+     "rot": 0.0,
+     "param": "",
+     "size": [
+      0.7,
+      0.5
+     ]
+    },
+    {
+     "id": "eveBS",
+     "kind": "pbs",
+     "label": "Eve's analyzer",
+     "pos": [
+      -0.15,
+      0.88,
+      0.0
+     ],
+     "note": "Measures each pulse in a random basis...",
+     "bom": null,
+     "stage": 4,
+     "rot": 45,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "eveDet",
+     "kind": "sipm",
+     "label": "Eve's detector",
+     "pos": [
+      -0.15,
+      0.88,
+      0.18
+     ],
+     "note": "...with her own detector...",
+     "bom": null,
+     "stage": 4,
+     "rot": 90,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "eveLaser",
+     "kind": "laser",
+     "label": "Eve's resend diodes",
+     "pos": [
+      0.15,
+      0.88,
+      0.0
+     ],
+     "note": "...and re-sends what she saw: about 25 % errors where she guessed the basis wrong.",
+     "bom": null,
+     "stage": 4,
+     "rot": 0,
+     "param": "",
+     "size": []
+    }
+   ],
+   "beams": [
+    {
+     "kind": "classical",
+     "points": [
+      [
+       -4.25,
+       0.8300000000000001,
+       -0.35
+      ],
+      [
+       -4.25,
+       2.4,
+       -0.35
+      ],
+      [
+       4.3,
+       2.4,
+       0.5
+      ],
+      [
+       4.3,
+       0.8300000000000001,
+       0.5
+      ]
+     ],
+     "label": "duplex fiber: authenticated classical channel",
+     "stage": 2,
+     "main": false
+    },
+    {
+     "kind": "sync",
+     "points": [
+      [
+       -5.65,
+       0.8200000000000001,
+       -0.42
+      ],
+      [
+       -5.65,
+       2.3,
+       -0.42
+      ],
+      [
+       5.6,
+       2.3,
+       -0.45
+      ],
+      [
+       5.6,
+       0.8200000000000001,
+       -0.45
+      ]
+     ],
+     "label": "clock coax: one edge per slot",
+     "stage": 4,
+     "main": false
+    },
+    {
+     "kind": "violet",
+     "points": [
+      [
+       -5.78,
+       0.9400000000000001,
+       0.0
+      ],
+      [
+       -5.4,
+       0.9400000000000001,
+       0.0
+      ]
+     ],
+     "label": "",
+     "stage": 4,
+     "main": false
+    },
+    {
+     "kind": "violet",
+     "points": [
+      [
+       -5.4,
+       0.9400000000000001,
+       -0.26
+      ],
+      [
+       -5.4,
+       0.9400000000000001,
+       0.0
+      ]
+     ],
+     "label": "",
+     "stage": 4,
+     "main": false
+    },
+    {
+     "kind": "violet",
+     "points": [
+      [
+       -5.45,
+       0.9400000000000001,
+       0.25
+      ],
+      [
+       -5.05,
+       0.9400000000000001,
+       0.25
+      ]
+     ],
+     "label": "",
+     "stage": 4,
+     "main": false
+    },
+    {
+     "kind": "violet",
+     "points": [
+      [
+       -5.05,
+       0.9400000000000001,
+       0.42
+      ],
+      [
+       -5.05,
+       0.9400000000000001,
+       0.25
+      ]
+     ],
+     "label": "",
+     "stage": 4,
+     "main": false
+    },
+    {
+     "kind": "violet",
+     "points": [
+      [
+       -5.4,
+       0.9400000000000001,
+       0.0
+      ],
+      [
+       -5.05,
+       0.9400000000000001,
+       0.0
+      ]
+     ],
+     "label": "",
+     "stage": 4,
+     "main": false
+    },
+    {
+     "kind": "violet",
+     "points": [
+      [
+       -5.05,
+       0.9400000000000001,
+       0.25
+      ],
+      [
+       -5.05,
+       0.9400000000000001,
+       0.0
+      ]
+     ],
+     "label": "",
+     "stage": 4,
+     "main": false
+    },
+    {
+     "kind": "violet",
+     "points": [
+      [
+       -5.05,
+       0.9400000000000001,
+       0.0
+      ],
+      [
+       -0.15,
+       0.9400000000000001,
+       0.0
+      ],
+      [
+       4.18,
+       0.9400000000000001,
+       0.0
+      ],
+      [
+       4.35,
+       0.9400000000000001,
+       0.0
+      ],
+      [
+       4.8,
+       0.9400000000000001,
+       0.0
+      ],
+      [
+       5.15,
+       0.9400000000000001,
+       0.0
+      ]
+     ],
+     "label": "weak pulses, 0.5 photons",
+     "stage": 4,
+     "main": true
+    },
+    {
+     "kind": "violet",
+     "points": [
+      [
+       4.8,
+       0.9400000000000001,
+       0.0
+      ],
+      [
+       4.8,
+       0.9400000000000001,
+       0.3
+      ]
+     ],
+     "label": "",
+     "stage": 4,
+     "main": false
+    },
+    {
+     "kind": "violet",
+     "points": [
+      [
+       4.35,
+       0.9400000000000001,
+       0.0
+      ],
+      [
+       4.35,
+       0.9400000000000001,
+       -0.2
+      ],
+      [
+       4.35,
+       0.9400000000000001,
+       -0.4
+      ],
+      [
+       4.35,
+       0.9400000000000001,
+       -0.6
+      ]
+     ],
+     "label": "",
+     "stage": 4,
+     "main": false
+    },
+    {
+     "kind": "violet",
+     "points": [
+      [
+       4.35,
+       0.9400000000000001,
+       -0.4
+      ],
+      [
+       4.7,
+       0.9400000000000001,
+       -0.4
+      ]
+     ],
+     "label": "",
+     "stage": 4,
+     "main": false
+    }
+   ],
+   "sliders": [
+    {
+     "key": "messages_per_day",
+     "label": "Messages a day",
+     "lo": 1,
+     "hi": 1000000.0,
+     "step": 1,
+     "value": 500,
+     "unit": "",
+     "log": true
+    },
+    {
+     "key": "msg_bytes",
+     "label": "Message size",
+     "lo": 16,
+     "hi": 10000000.0,
+     "step": 1,
+     "value": 200,
+     "unit": "bytes",
+     "log": true
+    },
+    {
+     "key": "rekey_every",
+     "label": "Messages per session key (AES, hybrid)",
+     "lo": 1,
+     "hi": 10000.0,
+     "step": 1,
+     "value": 100,
+     "unit": "",
+     "log": true
+    }
+   ],
+   "commands": {
+    "simulate": "python -m qll.link.keyed_messaging --messages 500 --bytes 200",
+    "real": "python -m qll.link.run demo"
+   },
+   "rooms": true,
+   "claim": "Test messages only; keys at rest are ordinary memory, not a hardware security module.",
+   "bom_total": [
+    0,
+    0
+   ]
+  },
+  {
+   "id": "buildings",
+   "title": "Messages between buildings (key made at night)",
+   "rung": "upgrade",
+   "experiments": [
+    "P15",
+    "P04"
+   ],
+   "milestones": [
+    "M3.3"
+   ],
+   "twin": "messenger",
+   "cost": "$0 above the link",
+   "summary": "Key arrives only at night and is spent by day, so the bank must carry a day's messages; daylight makes none.",
+   "procedure": "experiments/protocols/P15_messages_keyed_by_the_link.md",
+   "bom": [
+    [
+     "Messenger software and the key store (this repository)",
+     "the application",
+     0,
+     0
+    ]
+   ],
+   "stages": [
+    [
+     "The link",
+     "Its own lab builds it; here it only makes key."
+    ],
+    [
+     "Key bank",
+     "Accepted key is stored at both ends."
+    ],
+    [
+     "Messenger",
+     "Each message spends key by its policy."
+    ],
+    [
+     "Fail closed",
+     "An empty bank refuses; no weaker fallback."
+    ]
+   ],
+   "parts": [
+    {
+     "id": "ground",
+     "kind": "ground",
+     "label": "Campus",
+     "pos": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "note": "",
+     "bom": null,
+     "stage": 0,
+     "rot": 0.0,
+     "param": "",
+     "size": [
+      60.0,
+      30.0
+     ]
+    },
+    {
+     "id": "bldgA",
+     "kind": "building",
+     "label": "Building A (sender)",
+     "pos": [
+      -9.0,
+      0.0,
+      0.0
+     ],
+     "note": "Any roof with a clear line of sight; ask facilities first (risk MR-R8).",
+     "bom": null,
+     "stage": 0,
+     "rot": 0.0,
+     "param": "",
+     "size": [
+      8.0,
+      6.0,
+      8.0
+     ]
+    },
+    {
+     "id": "bldgB",
+     "kind": "building",
+     "label": "Building B (receiver)",
+     "pos": [
+      9.0,
+      0.0,
+      0.0
+     ],
+     "note": "The receiving roof.",
+     "bom": null,
+     "stage": 0,
+     "rot": 0.0,
+     "param": "",
+     "size": [
+      8.0,
+      6.0,
+      8.0
+     ]
+    },
+    {
+     "id": "tableA",
+     "kind": "table",
+     "label": "Roof bench A",
+     "pos": [
+      -7.5,
+      6.0,
+      0.0
+     ],
+     "note": "",
+     "bom": null,
+     "stage": 1,
+     "rot": 0.0,
+     "param": "",
+     "size": [
+      1.6,
+      0.8
+     ]
+    },
+    {
+     "id": "tableB",
+     "kind": "table",
+     "label": "Roof bench B",
+     "pos": [
+      7.5,
+      6.0,
+      0.0
+     ],
+     "note": "",
+     "bom": null,
+     "stage": 1,
+     "rot": 0.0,
+     "param": "",
+     "size": [
+      1.6,
+      0.8
+     ]
+    },
+    {
+     "id": "srcBox",
+     "kind": "box",
+     "label": "The P10 source, boxed",
+     "pos": [
+      -7.8,
+      6.9,
+      0.0
+     ],
+     "note": "The four-diode source, combiners, filters, and FPGA from P10, in a weatherproof box.",
+     "bom": null,
+     "stage": 1,
+     "rot": 0.0,
+     "param": "",
+     "size": [
+      0.6,
+      0.3,
+      0.4
+     ]
+    },
+    {
+     "id": "txScope",
+     "kind": "telescope",
+     "label": "Sending telescope (beam expander)",
+     "pos": [
+      -6.4,
+      6.0,
+      0.0
+     ],
+     "note": "Widens the beam to a waist of about 1 cm so it spreads less over the path.",
+     "bom": null,
+     "stage": 1,
+     "rot": 0,
+     "param": "",
+     "size": [
+      0.06,
+      0.35
+     ]
+    },
+    {
+     "id": "rxScope",
+     "kind": "telescope",
+     "label": "Receiving telescope, filter, field stop",
+     "pos": [
+      6.4,
+      6.0,
+      0.0
+     ],
+     "note": "Collects the beam; a 3 nm filter and a field stop keep out most of the sky.",
+     "bom": null,
+     "stage": 1,
+     "rot": 180,
+     "param": "",
+     "size": [
+      0.1,
+      0.5
+     ]
+    },
+    {
+     "id": "rxBox",
+     "kind": "box",
+     "label": "Avalanche-diode receiver",
+     "pos": [
+      7.8,
+      6.9,
+      0.0
+     ],
+     "note": "The P10 analyzer and detectors in a light-tight box behind the telescope.",
+     "bom": null,
+     "stage": 1,
+     "rot": 0.0,
+     "param": "",
+     "size": [
+      0.6,
+      0.3,
+      0.4
+     ]
+    },
+    {
+     "id": "laptopA",
+     "kind": "laptop",
+     "label": "Laptop A",
+     "pos": [
+      -8.0,
+      6.88,
+      0.25
+     ],
+     "note": "Site A's half of the protocol.",
+     "bom": null,
+     "stage": 1,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "laptopB",
+     "kind": "laptop",
+     "label": "Laptop B",
+     "pos": [
+      8.0,
+      6.88,
+      0.25
+     ],
+     "note": "Site B's half.",
+     "bom": null,
+     "stage": 1,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "gpsA",
+     "kind": "coaxend",
+     "label": "GPS-disciplined clock A",
+     "pos": [
+      -7.4,
+      6.82,
+      -0.3
+     ],
+     "note": "One pulse per second from GPS keeps the two roofs' clocks within nanoseconds.",
+     "bom": null,
+     "stage": 2,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "gpsB",
+     "kind": "coaxend",
+     "label": "GPS-disciplined clock B",
+     "pos": [
+      7.4,
+      6.82,
+      -0.3
+     ],
+     "note": "",
+     "bom": null,
+     "stage": 2,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "note",
+     "kind": "note",
+     "label": "distance not to scale: see the terminal",
+     "pos": [
+      0.0,
+      10.0,
+      0.0
+     ],
+     "note": "",
+     "bom": null,
+     "stage": 0,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    }
+   ],
+   "beams": [
+    {
+     "kind": "violet",
+     "points": [
+      [
+       -6.1,
+       6.9,
+       0.0
+      ],
+      [
+       6.1,
+       6.9,
+       0.0
+      ]
+     ],
+     "label": "weak pulses across the roofs",
+     "stage": 1,
+     "main": true
+    },
+    {
+     "kind": "classical",
+     "points": [
+      [
+       -8.0,
+       6.85,
+       0.25
+      ],
+      [
+       -8.0,
+       9.2,
+       -2.5
+      ],
+      [
+       8.0,
+       9.2,
+       -2.5
+      ],
+      [
+       8.0,
+       6.85,
+       0.25
+      ]
+     ],
+     "label": "classical channel (fiber or radio)",
+     "stage": 2,
+     "main": false
+    }
+   ],
+   "sliders": [
+    {
+     "key": "messages_per_day",
+     "label": "Messages a day",
+     "lo": 1,
+     "hi": 1000000.0,
+     "step": 1,
+     "value": 500,
+     "unit": "",
+     "log": true
+    },
+    {
+     "key": "msg_bytes",
+     "label": "Message size",
+     "lo": 16,
+     "hi": 10000000.0,
+     "step": 1,
+     "value": 200,
+     "unit": "bytes",
+     "log": true
+    },
+    {
+     "key": "rekey_every",
+     "label": "Messages per session key (AES, hybrid)",
+     "lo": 1,
+     "hi": 10000.0,
+     "step": 1,
+     "value": 100,
+     "unit": "",
+     "log": true
+    }
+   ],
+   "commands": {
+    "simulate": "python -m qll.link.keyed_messaging --messages 500 --bytes 200",
+    "real": "python -m qll.link.run demo"
+   },
+   "rooms": false,
+   "claim": "The bank bridges day and night; a cloudy night makes no key.",
+   "bom_total": [
+    0,
+    0
+   ]
+  },
+  {
+   "id": "satellite",
+   "title": "Messages keyed by a satellite pass",
+   "rung": "upgrade",
+   "experiments": [
+    "P15",
+    "D09"
+   ],
+   "milestones": [
+    "M3.4"
+   ],
+   "twin": "messenger",
+   "cost": "$0 above the link",
+   "summary": "One pass a night delivers a burst of key; a one-time pad still covers a couple of thousand short messages a day, and AES millions.",
+   "procedure": "experiments/protocols/P15_messages_keyed_by_the_link.md",
+   "bom": [
+    [
+     "Messenger software and the key store (this repository)",
+     "the application",
+     0,
+     0
+    ]
+   ],
+   "stages": [
+    [
+     "The link",
+     "Its own lab builds it; here it only makes key."
+    ],
+    [
+     "Key bank",
+     "Accepted key is stored at both ends."
+    ],
+    [
+     "Messenger",
+     "Each message spends key by its policy."
+    ],
+    [
+     "Fail closed",
+     "An empty bank refuses; no weaker fallback."
+    ]
+   ],
+   "parts": [
+    {
+     "id": "ground",
+     "kind": "ground",
+     "label": "Ground station site",
+     "pos": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "note": "",
+     "bom": null,
+     "stage": 0,
+     "rot": 0.0,
+     "param": "",
+     "size": [
+      60.0,
+      40.0
+     ]
+    },
+    {
+     "id": "dome",
+     "kind": "dome",
+     "label": "Optical ground station",
+     "pos": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "note": "A roll-off roof or dome around a tracking telescope.",
+     "bom": null,
+     "stage": 1,
+     "rot": 0.0,
+     "param": "",
+     "size": [
+      2.6
+     ]
+    },
+    {
+     "id": "scope",
+     "kind": "telescope",
+     "label": "Tracking telescope (goto mount)",
+     "pos": [
+      0.0,
+      1.4,
+      0.0
+     ],
+     "note": "Follows the satellite across the sky to within its field of view; a fast mirror would hold it to microradians.",
+     "bom": null,
+     "stage": 1,
+     "rot": 0,
+     "param": "",
+     "size": [
+      0.3,
+      1.4
+     ]
+    },
+    {
+     "id": "desk",
+     "kind": "table",
+     "label": "Control desk",
+     "pos": [
+      4.5,
+      0.0,
+      2.5
+     ],
+     "note": "",
+     "bom": null,
+     "stage": 2,
+     "rot": 0.0,
+     "param": "",
+     "size": [
+      1.4,
+      0.7
+     ]
+    },
+    {
+     "id": "tagger",
+     "kind": "timetagger",
+     "label": "GPS clock and time tagger",
+     "pos": [
+      4.2,
+      0.88,
+      2.5
+     ],
+     "note": "Timestamps every detection against GPS time, within 10 ns of a second clock (MR-3.4).",
+     "bom": null,
+     "stage": 2,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "dets",
+     "kind": "spad",
+     "label": "Detectors and filters (810/850 nm)",
+     "pos": [
+      4.9,
+      0.94,
+      2.4
+     ],
+     "note": "Single-photon detectors behind a narrow filter, fed from the telescope by fiber.",
+     "bom": null,
+     "stage": 2,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "laptop",
+     "kind": "laptop",
+     "label": "Station laptop",
+     "pos": [
+      4.6,
+      0.88,
+      2.75
+     ],
+     "note": "Schedules passes from public orbit data (M3.1) and runs the protocol.",
+     "bom": null,
+     "stage": 2,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "sat",
+     "kind": "satellite",
+     "label": "Micius-class satellite (500 km)",
+     "pos": [
+      -12.0,
+      12.0,
+      -3.0
+     ],
+     "note": "The source in orbit, sending weak pulses or entangled photons down.",
+     "bom": null,
+     "stage": 3,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "note",
+     "kind": "note",
+     "label": "orbit not to scale: see the terminal",
+     "pos": [
+      0.0,
+      16.0,
+      -3.0
+     ],
+     "note": "",
+     "bom": null,
+     "stage": 0,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    }
+   ],
+   "beams": [
+    {
+     "kind": "usb",
+     "points": [
+      [
+       4.9,
+       0.95,
+       2.4
+      ],
+      [
+       2.0,
+       0.5,
+       1.6
+      ],
+      [
+       0.0,
+       2.3,
+       0.0
+      ]
+     ],
+     "label": "fiber from the telescope",
+     "stage": 2,
+     "main": false
+    }
+   ],
+   "sliders": [
+    {
+     "key": "messages_per_day",
+     "label": "Messages a day",
+     "lo": 1,
+     "hi": 1000000.0,
+     "step": 1,
+     "value": 500,
+     "unit": "",
+     "log": true
+    },
+    {
+     "key": "msg_bytes",
+     "label": "Message size",
+     "lo": 16,
+     "hi": 10000000.0,
+     "step": 1,
+     "value": 200,
+     "unit": "bytes",
+     "log": true
+    },
+    {
+     "key": "rekey_every",
+     "label": "Messages per session key (AES, hybrid)",
+     "lo": 1,
+     "hi": 10000.0,
+     "step": 1,
+     "value": 100,
+     "unit": "",
+     "log": true
+    }
+   ],
+   "commands": {
+    "simulate": "python -m qll.link.keyed_messaging --messages 500 --bytes 200",
+    "real": "python -m qll.link.run demo"
+   },
+   "rooms": false,
+   "claim": "The pass key is an asymptotic upper estimate.",
+   "bom_total": [
+    0,
+    0
+   ]
+  },
+  {
+   "id": "mars",
+   "title": "Messages to Mars (key carried on the lander)",
+   "rung": "device",
+   "experiments": [
+    "P15",
+    "E01",
+    "F3"
+   ],
+   "milestones": [
+    "M4.3"
+   ],
+   "twin": "messenger",
+   "cost": "$0 above the link",
+   "summary": "No quantum link reaches Mars yet, so the first secure messenger carries its key: a terabyte of one-time pad loaded before launch outlasts the mission, and every message still takes the light time.",
+   "procedure": "experiments/protocols/P15_messages_keyed_by_the_link.md",
+   "bom": [
+    [
+     "Messenger software and the key store (this repository)",
+     "the application",
+     0,
+     0
+    ]
+   ],
+   "stages": [
+    [
+     "The link",
+     "Its own lab builds it; here it only makes key."
+    ],
+    [
+     "Key bank",
+     "Accepted key is stored at both ends."
+    ],
+    [
+     "Messenger",
+     "Each message spends key by its policy."
+    ],
+    [
+     "Fail closed",
+     "An empty bank refuses; no weaker fallback."
+    ]
+   ],
+   "parts": [
+    {
+     "id": "earth",
+     "kind": "planet",
+     "label": "Earth",
+     "pos": [
+      -9.0,
+      3.0,
+      0.0
+     ],
+     "note": "Ground station with a memory that holds Alice's half of each pair.",
+     "bom": null,
+     "stage": 1,
+     "rot": 0.0,
+     "param": "",
+     "size": [
+      2.4,
+      3108822
+     ]
+    },
+    {
+     "id": "mars",
+     "kind": "planet",
+     "label": "Mars",
+     "pos": [
+      9.0,
+      3.0,
+      0.0
+     ],
+     "note": "A lander or orbiter with a memory holding Bob's half.",
+     "bom": null,
+     "stage": 1,
+     "rot": 0.0,
+     "param": "",
+     "size": [
+      1.3,
+      12665870
+     ]
+    },
+    {
+     "id": "relay",
+     "kind": "satellite",
+     "label": "Pair source in deep space",
+     "pos": [
+      0.0,
+      7.5,
+      -2.0
+     ],
+     "note": "Sends one photon of each pair to each planet ahead of time; pairs are banked, not made on demand.",
+     "bom": null,
+     "stage": 1,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    },
+    {
+     "id": "memE",
+     "kind": "box",
+     "label": "Earth memory (rare-earth or ion)",
+     "pos": [
+      -6.3,
+      3.0,
+      0.0
+     ],
+     "note": "Holds Alice's halves; a 171Yb+ ion holds for an hour, a Eu:YSO crystal for hours.",
+     "bom": null,
+     "stage": 2,
+     "rot": 0.0,
+     "param": "",
+     "size": [
+      0.6,
+      0.4,
+      0.5
+     ]
+    },
+    {
+     "id": "memM",
+     "kind": "box",
+     "label": "Mars memory",
+     "pos": [
+      7.4,
+      3.0,
+      0.0
+     ],
+     "note": "Holds Bob's halves until Alice's bits arrive, 3 to 22 minutes later.",
+     "bom": null,
+     "stage": 2,
+     "rot": 0.0,
+     "param": "",
+     "size": [
+      0.6,
+      0.4,
+      0.5
+     ]
+    },
+    {
+     "id": "note",
+     "kind": "note",
+     "label": "nothing outruns the light-time: the two bits set the pace",
+     "pos": [
+      0.0,
+      10.5,
+      -2.0
+     ],
+     "note": "",
+     "bom": null,
+     "stage": 0,
+     "rot": 0.0,
+     "param": "",
+     "size": []
+    }
+   ],
+   "beams": [
+    {
+     "kind": "pair",
+     "points": [
+      [
+       0.0,
+       7.2,
+       -2.0
+      ],
+      [
+       -6.3,
+       3.3,
+       0.0
+      ]
+     ],
+     "label": "pair photon to Earth",
+     "stage": 1,
+     "main": false
+    },
+    {
+     "kind": "pair",
+     "points": [
+      [
+       0.0,
+       7.2,
+       -2.0
+      ],
+      [
+       7.4,
+       3.3,
+       0.0
+      ]
+     ],
+     "label": "pair photon to Mars",
+     "stage": 1,
+     "main": false
+    },
+    {
+     "kind": "classical",
+     "points": [
+      [
+       -6.3,
+       3.0,
+       0.0
+      ],
+      [
+       -3.0,
+       1.2,
+       1.5
+      ],
+      [
+       3.0,
+       1.2,
+       1.5
+      ],
+      [
+       7.4,
+       3.0,
+       0.0
+      ]
+     ],
+     "label": "Alice's two bits, at light speed",
+     "stage": 3,
+     "main": true
+    }
+   ],
+   "sliders": [
+    {
+     "key": "messages_per_day",
+     "label": "Messages a day",
+     "lo": 1,
+     "hi": 1000000.0,
+     "step": 1,
+     "value": 500,
+     "unit": "",
+     "log": true
+    },
+    {
+     "key": "msg_bytes",
+     "label": "Message size",
+     "lo": 16,
+     "hi": 10000000.0,
+     "step": 1,
+     "value": 200,
+     "unit": "bytes",
+     "log": true
+    },
+    {
+     "key": "rekey_every",
+     "label": "Messages per session key (AES, hybrid)",
+     "lo": 1,
+     "hi": 10000.0,
+     "step": 1,
+     "value": 100,
+     "unit": "",
+     "log": true
+    },
+    {
+     "key": "preloaded_bits",
+     "label": "Key loaded before launch",
+     "lo": 1000000.0,
+     "hi": 80000000000000.0,
+     "step": 1,
+     "value": 8000000000000.0,
+     "unit": "bits",
+     "log": true
+    },
+    {
+     "key": "distance_m",
+     "label": "Earth–Mars distance",
+     "lo": 55000000000.0,
+     "hi": 410000000000.0,
+     "step": 1,
+     "value": 400920000000.0,
+     "unit": "m",
+     "log": true
+    }
+   ],
+   "commands": {
+    "simulate": "python -m qll.link.keyed_messaging --messages 500 --bytes 200",
+    "real": "python -m qll.link.run demo"
+   },
+   "rooms": false,
+   "claim": "Key carried, not distributed; a courier-keyed pad is as secure as the courier.",
    "bom_total": [
     0,
     0

@@ -18,7 +18,7 @@
 <div class="aurora"></div>
 <header class="top">
   <a class="brand" href="../../"><span class="dot"></span>Quantum Link Research</a>
-  <nav><a href="../">Lab</a><a href="./">Two-room link</a><a href="../circuits/">Cloud circuits</a><a href="../../systems/">Traceability</a><a class="gh" href="https://github.com/Normansrule/quantum-link-research">GitHub ↗</a></nav>
+  <nav><a href="../">Lab</a><a href="./">Two-room link</a><a href="../channel/">Quantum channels</a><a href="../outdoor/">Outdoors and orbit</a><a href="../frontier/">Frontier</a><a href="../messenger/">Messenger</a><a href="../circuits/">Cloud circuits</a><a href="../../systems/">Traceability</a><a class="gh" href="https://github.com/Normansrule/quantum-link-research">GitHub ↗</a></nav>
 </header>
 
 <section class="lab-head">
@@ -27,6 +27,8 @@
   <p class="sub" id="summary"></p>
   <div class="tiers" id="tiers" role="tablist" aria-label="Tiers, from starter to real world"></div>
 </section>
+
+<section class="how" id="how" aria-label="How the link works"></section>
 
 <main class="lab">
   <div>
@@ -49,9 +51,11 @@
     </div>
   </aside>
 
+  <section class="charts" id="charts"></section>
   <section class="term-wrap panel">
     <div class="term-bar">
       <h3>Terminal: the twin, line by line</h3>
+      <button class="btn-s" id="explain">Explain each line</button>
       <button class="btn-s primary" id="run">Run a session in the browser</button>
       <button class="btn-s" id="dlA" disabled>Download room_a.csv</button>
       <button class="btn-s" id="dlB" disabled>Download room_b.csv</button>
@@ -73,7 +77,58 @@ const tiers = data.link;
 const $ = (id) => document.getElementById(id);
 const lab = createLab($("view"));
 window.__lab = lab;
-let tier = null, values = {}, specs = [], lastSample = null, setters = {};
+let tier = null, values = {}, specs = [], lastSample = null, setters = {}, labelsOn = false;
+U.explainToggle($("explain"), $("term"));
+const ICON = {
+  pick: '<svg viewBox="0 0 120 46"><rect x="20" y="8" width="30" height="30" rx="6" fill="none" stroke="#5ef2e0"/><text x="35" y="28" fill="#5ef2e0" font-size="14" text-anchor="middle">0/1</text><rect x="68" y="8" width="30" height="30" rx="6" fill="none" stroke="#a78bfa"/><text x="83" y="28" fill="#a78bfa" font-size="13" text-anchor="middle">+ ×</text></svg>',
+  pulse: '<svg viewBox="0 0 120 46"><path d="M6 23 H114" stroke="#8b5cf6" stroke-width="2" stroke-dasharray="4 5"/><circle cx="40" cy="23" r="6" fill="#8b5cf6"/><line x1="34" y1="23" x2="46" y2="23" stroke="#fff" stroke-width="2"/><circle cx="84" cy="23" r="6" fill="none" stroke="#8b5cf6" stroke-dasharray="2 2"/></svg>',
+  loss: '<svg viewBox="0 0 120 46"><path d="M6 23 H114" stroke="#8b5cf6" stroke-width="2"/><circle cx="24" cy="23" r="5" fill="#8b5cf6"/><circle cx="60" cy="23" r="5" fill="#8b5cf6" opacity=".35"/><circle cx="96" cy="23" r="5" fill="#8b5cf6" opacity=".12"/><text x="60" y="42" fill="#93a1b8" font-size="9" text-anchor="middle">most are lost, Bob knows which</text></svg>',
+  detect: '<svg viewBox="0 0 120 46"><rect x="40" y="10" width="22" height="22" fill="rgba(219,234,254,.25)" stroke="#dbeafe"/><line x1="40" y1="32" x2="62" y2="10" stroke="#fff"/><rect x="82" y="14" width="10" height="14" fill="#14532d"/><rect x="47" y="-2" width="10" height="10" fill="#14532d" transform="translate(0,4)"/><circle cx="87" cy="21" r="3" fill="#5ef2e0"/></svg>',
+  sift: '<svg viewBox="0 0 120 46"><path d="M6 23 H114" stroke="#f5c518" stroke-width="3"/><rect x="30" y="16" width="14" height="14" fill="#f5c518"/><rect x="76" y="16" width="14" height="14" fill="#f5c518"/><text x="60" y="42" fill="#93a1b8" font-size="9" text-anchor="middle">bases, never bits</text></svg>',
+  key: '<svg viewBox="0 0 120 46"><circle cx="40" cy="23" r="9" fill="none" stroke="#45e0a0" stroke-width="3"/><path d="M49 23 H92 M80 23 V31 M88 23 V29" stroke="#45e0a0" stroke-width="3"/></svg>' };
+function renderHow() {
+  const ent = tier.twin === "tier4", bright = tier.twin === "tier1";
+  const steps = [["l", "1 · Alice chooses", "a random bit and basis", ent ? "Each room picks a random basis for its photon of the pair." : "A random bit (0 or 1) and a random basis (+ or ×) for every pulse.", "pick"],
+    ["q", "2 · quantum channel", ent ? "a pair is shared" : bright ? "bright light leaves" : "a weak pulse leaves", ent ? "The source sends one entangled photon to each room." : bright ? "A polarized laser beam: thousands of photons, so it can be tapped (no security)." : "About 0.5 photons on average, polarized by the chosen diode.", "pulse"],
+    ["q", "3 · the hallway", "most photons are lost", "Losses are heralded: no click means no photon, so they cost rate, not secrecy.", "loss"],
+    ["l", "4 · Bob measures", "a beamsplitter picks his basis", "Each arriving photon is sent at random to the + or × analyzer; one detector clicks.", "detect"],
+    ["c", "5 · classical channel", "compare bases, keep matches", "Over the authenticated fiber they reveal bases (never bits) and keep the half that match.", "sift"],
+    ["c", "6 · distill", "errors out, secrecy in", "They estimate the error rate, correct the errors, and shrink the key to what no eavesdropper can know.", "key"]];
+  $("how").innerHTML = steps.map(([k, tag, b, t, ic]) => `<div class="step ${k}"><span class="tag">${tag}</span><b>${U.esc(b)}</b>${ICON[ic]}${U.esc(t)}</div>`).join("");
+}
+const card = (h, cap, body) => `<div class="chartcard"><h3>${U.esc(h)}</h3><p class="cap">${U.esc(cap)}</p>${body}</div>`;
+function renderCharts(r) {
+  const v = values;
+  if (tier.twin === "tier1") {
+    const e = T.tier1Expected(v), th = e.thresholds, xs = Array.from({ length: 205 }, (_, k) => 5 * k), g = (m) => xs.map((x) => Math.exp(-0.5 * ((x - m) / Math.max(v.noise, 1)) ** 2));
+    $("charts").innerHTML = card("What the photodiode reads", "Readings for an aligned (bit 0), crossed (bit 1), and wrong-basis pulse, with Bob's two thresholds. Overlap with the wrong side is the error rate.",
+      U.line(xs, [{ ys: g(th.bright), color: U.C.cyan, label: "aligned: bit 0" }, { ys: g(th.dark), color: U.C.blue, label: "crossed: bit 1" }, { ys: g(e.half), color: U.C.violet, label: "wrong basis" }],
+        { xticks: [0, 200, 400, 600, 800, 1000], xlabel: "ADC counts", ymin: 0, ymax: 1.1, vlines: [{ x: th.high, label: "0 above" }, { x: th.low, label: "1 below" }] })) +
+      card("Error rate against reading noise", "Sifted error rate as the photodiode's noise grows, with and without the intercept station.",
+        U.line(xs.slice(0, 61).map((x) => x), [{ ys: xs.slice(0, 61).map((x) => T.tier1Expected(Object.assign({}, v, { noise: x, eve_fraction: 0 })).qber * 100), color: U.C.cyan, label: "no interception" },
+          { ys: xs.slice(0, 61).map((x) => T.tier1Expected(Object.assign({}, v, { noise: x, eve_fraction: 1 })).qber * 100), color: U.C.warm, label: "full interception" }],
+          { xticks: [0, 100, 200, 300], yticks: [0, 10, 25, 50], xlabel: "reading noise σ (counts)", ylabel: "error rate (%)", ymin: 0, ymax: 55, marker: { x: v.noise, y: e.qber * 100, label: "you" } }));
+    return;
+  }
+  const c = r.c, e = r.e, rate = c.pulse_rate_hz, secs = c.n_pulses / rate, mu = e.classes.reduce((s, k) => s + k.share * (k.mu ?? 1), 0);
+  const tEta = T.signalClickProb(c), Tch = T.channelTransmittance(c) * Math.pow(10, -c.receiver_loss_db / 10), pb = T.backgroundClickProb(c);
+  const sig = e.classes.reduce((s, k) => s + k.share * k.p_sig, 0);
+  const flow = [["pulses sent", rate], ["photons sent", rate * mu], ["photons reaching the detectors", rate * mu * Tch], ["photon clicks", rate * sig], ["dark and afterpulse clicks", rate * (e.click_prob_per_pulse - sig)], ["sifted key bits", e.sifted_bits / secs], ["secret key bits", e.key_bits / secs]];
+  const lg = (x) => Math.max(0, Math.log10(Math.max(x, 1e-3)) + 1);
+  const fmt = (x) => (x >= 1e6 ? (x / 1e6).toFixed(2) + " M/s" : x >= 1e3 ? (x / 1e3).toFixed(1) + " k/s" : x.toFixed(x < 10 ? 1 : 0) + " /s");
+  const det = -10 * Math.log10(c.detector_efficiency), path = T.channelLossDb(c);
+  const probe = Array.from({ length: 81 }, (_, k) => k * 0.5), lastPos = probe.filter((L) => T.expectedSession(Object.assign({}, c, { distance_km: 0, extra_loss_db: L })).key_bits > 0).at(-1) ?? path;
+  const Lmax = Math.max(6, Math.ceil(Math.max(lastPos, path) + 3)), Ls = Array.from({ length: 61 }, (_, k) => (k * Lmax) / 60);
+  const keys = Ls.map((L) => T.expectedSession(Object.assign({}, c, { distance_km: 0, extra_loss_db: L })).key_bits);
+  $("charts").innerHTML =
+    card("Where the photons go, per second", "Each bar is ten times the one it would be one step shorter (log scale). Most photons are lost in the hallway and the detectors; the key is what survives every step.",
+      U.bars(flow.map(([l, x], i) => ({ label: l, value: lg(x), text: fmt(x), color: [U.C.blue, U.C.violet, U.C.violet, U.C.cyan, U.C.warm, U.C.gold, U.C.green][i] })), { max: lg(rate * Math.max(mu, 1)) * 1.05, labelWidth: 190 })) +
+    card("The loss budget", "Every 3 dB halves the light. Detector efficiency counts as a loss too.",
+      U.bars([{ label: tier.twin === "two_room" ? "hallway path" : "fiber and path", value: path, text: path.toFixed(2) + " dB", color: U.C.violet }, { label: "receiver optics", value: c.receiver_loss_db, text: c.receiver_loss_db.toFixed(2) + " dB", color: U.C.blue },
+        { label: "detector efficiency", value: det, text: det.toFixed(2) + " dB", color: U.C.cyan }, { label: "total", value: path + c.receiver_loss_db + det, text: (path + c.receiver_loss_db + det).toFixed(2) + " dB", color: U.C.gold }], { max: Math.max(12, (path + c.receiver_loss_db + det) * 1.1) })) +
+    card("Secret key against channel loss", "Secret bits per session (log scale) as the channel loss grows, with everything else as set. Past the cliff, dark counts win and no key survives.",
+      U.line(Ls, [{ ys: keys.map((k) => (k > 0 ? k : NaN)), color: U.C.green, label: "secret bits per session" }], { logY: true, ymin: 10, ymax: Math.max(...keys, 100) * 2, xticks: Array.from({ length: 7 }, (_, k) => +((k * Lmax) / 6).toFixed(1)), yticks: [10, 100, 1e3, 1e4, 1e5, 1e6].filter((y) => y <= Math.max(...keys, 100) * 2), yfmt: (y) => (y >= 1e3 ? y / 1e3 + "k" : String(y)), xlabel: "channel loss before the receiver (dB)", marker: { x: path, y: e.key_bits || NaN, label: "you" } }));
+}
 const state = { stage: 8, pick: (p) => { U.partCard($("build"), tier, p, specs); } };
 lab.onPick((p) => state.pick(p));
 
@@ -127,6 +182,7 @@ function update() {
     `<div class="verdict ${r.verdict[0] ? "" : "bad"}" id="verdict">${U.esc(r.verdict[1])}</div>`;
   lab.setValues(values, r.rates);
   window.__twin = r;
+  renderCharts(r);
 }
 function setStage(n) { state.stage = n; $("stage").value = n; lab.setStage(n); $("stageName").textContent = n === 0 ? "rooms only" : `${n}. ${tier.stages[n - 1][0]}`; U.markStage($("build"), n); }
 function select(id, keepValues) {
@@ -139,8 +195,11 @@ function select(id, keepValues) {
   setters = U.sliders($("params"), specs, values, () => update(), (k) => lab.setFocus(k));
   $("legend").innerHTML = (LEGEND[tier.id] || []).map(([c, l]) => `<span><i style="background:${c}"></i>${U.esc(l)}</span>`).join("") + `<span class="muted">optics drawn 2× size</span>`;
   $("cams").innerHTML = CAMS[!!tier.rooms].map(([k, l]) => `<button data-cam="${k}">${l}</button>`).join("");
-  $("cams").querySelectorAll("button").forEach((b) => b.addEventListener("click", () => lab.view(b.dataset.cam)));
-  lab.setTier(tier);
+  $("cams").insertAdjacentHTML("beforeend", `<button id="labels" aria-pressed="${labelsOn}">Labels</button>`);
+  $("cams").querySelectorAll("[data-cam]").forEach((b) => b.addEventListener("click", () => lab.view(b.dataset.cam)));
+  $("labels").addEventListener("click", () => { labelsOn = !labelsOn; lab.setLabels(labelsOn); $("labels").setAttribute("aria-pressed", String(labelsOn)); });
+  renderHow();
+  lab.setTier(tier); lab.setLabels(labelsOn);
   $("stage").max = tier.stages.length;
   U.buildPanel($("build"), tier, state, setStage);
   setStage(tier.stages.length);

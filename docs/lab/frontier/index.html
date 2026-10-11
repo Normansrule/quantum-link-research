@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Frontier Lab · Quantum Link Research</title>
+<meta name="description" content="Phase 4: teleportation across a distance, from a delayed classical channel on a cloud processor to a swapping node, photonic teleportation between rooms, and Earth to Mars with banked entanglement.">
+<meta name="theme-color" content="#05070d">
+<link rel="manifest" href="../manifest.webmanifest">
+<link rel="icon" href="../icon-192.png">
+<link rel="apple-touch-icon" href="../icon-192.png">
+<link rel="stylesheet" href="../../space.css">
+<link rel="stylesheet" href="../lab.css">
+<style>
+  table.mem { width: 100%; border-collapse: collapse; font-size: .74rem; margin-top: .4rem }
+  table.mem th, table.mem td { padding: .3rem .25rem; border-bottom: 1px solid var(--line); text-align: center }
+  table.mem th:first-child, table.mem td:first-child { text-align: left }
+  table.mem td.y { color: #45e0a0; font-weight: 700 } table.mem td.n { color: #5b6780 } table.mem tr.sel td { background: rgba(94,242,224,.08) }
+  .chartcard.wide { grid-column: 1 / -1 }
+</style>
+<script src="../../js/lab_frontier.js"></script>
+<script src="../../js/lab_ui.js"></script>
+<script type="importmap">{ "imports": { "three": "../../vendor/three/three.module.js", "three/addons/": "../../vendor/three/addons/" } }</script>
+</head>
+<body>
+<div class="aurora"></div>
+<header class="top">
+  <a class="brand" href="../../"><span class="dot"></span>Quantum Link Research</a>
+  <nav><a href="../">Lab</a><a href="../link/">Two-room link</a><a href="../channel/">Quantum channels</a><a href="../outdoor/">Outdoors and orbit</a><a href="./">Frontier</a><a href="../messenger/">Messenger</a><a href="../circuits/">Cloud circuits</a><a class="gh" href="https://github.com/Normansrule/quantum-link-research">GitHub ↗</a></nav>
+</header>
+<section class="lab-head">
+  <div class="kicker" id="kicker">Phase 4 · teleportation across a distance</div>
+  <h1 id="title">The frontier</h1>
+  <p class="sub" id="summary"></p>
+  <div class="tiers" id="tiers" role="tablist" aria-label="From a cloud processor to Mars"></div>
+</section>
+<section class="how" id="how" aria-label="How teleportation across a distance works"></section>
+<main class="lab">
+  <div>
+    <div class="view" id="view">
+      <div class="legend" id="legend"></div>
+      <div class="overlay"><div class="cams" id="cams"></div></div>
+    </div>
+  </div>
+  <aside class="side">
+    <div class="panel"><div class="metrics" id="metrics"></div></div>
+    <div class="panel">
+      <h3 style="margin:.1rem 0 .6rem;font-size:1rem">Parameters</h3>
+      <div class="ctl" id="ctl"></div>
+      <div class="params" id="params"></div>
+      <button class="btn-s" id="reset">Reset</button>
+    </div>
+  </aside>
+  <section class="charts" id="charts"></section>
+  <section class="term-wrap panel">
+    <div class="term-bar">
+      <h3>Terminal: teleportation across a distance, line by line</h3>
+      <button class="btn-s" id="explain">Explain each line</button>
+      <button class="btn-s" id="copyPy">Copy the Python</button>
+      <span class="muted small">Same arithmetic as <code>qll/circuits/teleport_delay_cloud.py</code> and <code>qll/network/teleport_across.py</code> (tests/test_lab_js.py).</span>
+    </div>
+    <div class="term" id="term" aria-live="polite"></div>
+  </section>
+  <section class="build panel" id="build"></section>
+</main>
+<script type="module">
+import { createLab } from "../../js/lab3d.js";
+const F = window.QLLFrontier, U = window.QLLLabUI;
+const data = await (await fetch("../scenes.json")).json();
+const tiers = data.frontier;
+const $ = (id) => document.getElementById(id);
+const lab = createLab($("view"));
+window.__lab = lab;
+let tier = null, values = {}, specs = [], ctl = {}, labelsOn = false, setters = {};
+const state = { stage: 9, pick: (p) => U.partCard($("build"), tier, p, specs) };
+lab.onPick((p) => state.pick(p));
+U.explainToggle($("explain"), $("term"));
+const card = (h, cap, body, wide) => `<div class="chartcard${wide ? " wide" : ""}"><h3>${U.esc(h)}</h3><p class="cap">${U.esc(cap)}</p>${body}</div>`;
+const metric = (l, n, ok) => `<div class="metric ${ok ? "ok" : "bad"}"><div class="n">${n}</div><div class="l">${U.esc(l)}</div></div>`;
+const short = { "two rooms": "rooms", campus: "campus", "city to city, 100 km fiber": "100 km", "Los Angeles to New York, 3,940 km": "LA–NY", "low Earth orbit, 1,000 km": "LEO",
+  "the Moon": "Moon", "Mars at its closest": "Mars min", "Mars at its farthest": "Mars max" };
+
+function renderHow() {
+  const t = tier.twin;
+  const steps = t === "delay"
+    ? [["q", "1 · share a pair", "on the chip", "Two qubits are entangled; Bob keeps one."], ["q", "2 · Bell measurement", "Alice's two bits", "Alice measures her input qubit with her half of the pair."],
+       ["c", "3 · the bits travel", "a delay stands in", "Bob's qubit waits, as it would while the bits crossed a distance."], ["l", "4 · the qubit fades", "T₁ and T₂", "Waiting costs fidelity: the qubit relaxes and dephases."],
+       ["c", "5 · Bob corrects", "X and Z", "With the bits Bob recovers Alice's state; without them he has a coin flip."], ["l", "6 · the verdict", "above 2/3?", "Above 2/3 no classical trick matches it; the delay where it falls to 2/3 is the limit."]]
+    : t === "swap"
+    ? [["q", "1 · two pairs", "A–C and C–B", "Each half of the distance gets its own pair; the ends keep theirs in memories."], ["q", "2 · the swap", "Bell measurement at C", "Measuring C's two photons together entangles A with B."],
+       ["c", "3 · the announcement", "two bits to each end", "A and B learn which pair they now share, at light speed."], ["l", "4 · waiting", "memories fade", "The ends hold their halves until the announcement arrives."],
+       ["c", "5 · teleport", "A to B", "Alice teleports over the new pair; her two bits cross the whole distance."], ["l", "6 · no trusted node", "C learns nothing", "The node's outcomes are random coin flips: a key made from the pair stays secret from it."]]
+    : [["q", "1 · bank pairs", "ahead of time", "Pairs are made and stored in memories at both ends before any message exists."], ["q", "2 · Bell measurement", "Alice's two bits", "When there is a qubit to send, Alice measures it with her half."],
+       ["c", "3 · light time", "the bits travel", "The two bits cross the distance at light speed or slower; nothing goes faster."], ["l", "4 · memories fade", "Bob waits longest", "Bob's half must survive until the bits arrive."],
+       ["c", "5 · Bob corrects", "the state arrives", "Only now does Bob hold Alice's state; before, a coin flip."], ["l", "6 · the payoff", "no photon in flight", "At the message moment nothing quantum has to survive the trip; it was sent ahead."]];
+  $("how").innerHTML = steps.map(([k, tag, b, s]) => `<div class="step ${k}"><span class="tag">${tag}</span><b>${U.esc(b)}</b>${U.esc(s)}</div>`).join("");
+}
+
+function updateDelay(anim) {
+  const { t_us, T1_us, T2_us, p2 } = values, Fd = F.delayFidelity(t_us, T1_us, T2_us, p2), tx = F.crossoverDelay(T1_us, T2_us, p2), km = t_us * 1e-6 * F.C / 1000;
+  U.terminal($("term"), `python -c "from qll.circuits import teleport_delay_cloud as D; print(D.average_fidelity(${t_us}, ${T1_us}, ${T2_us}, ${p2}), D.crossover_delay_us(${T1_us}, ${T2_us}, ${p2}))"`, F.stepsDelay(t_us, T1_us, T2_us, p2), { animate: anim });
+  $("metrics").innerHTML = metric("Fidelity with the bits", Fd.toFixed(3), Fd > F.LIMIT) + metric("Without the bits", "0.500", false) +
+    metric("Longest useful delay", `${tx.toFixed(0)} µs`, tx > 0) + metric("Light covers, meanwhile", `${km < 100 ? km.toFixed(1) : km.toFixed(0)} km`, true) +
+    `<div class="verdict ${Fd > F.LIMIT ? "" : "bad"}" id="verdict">${Fd > F.LIMIT ? `After a ${t_us} µs wait the teleported state still beats every classical strategy (F = ${Fd.toFixed(3)} > 2/3).` : `After ${t_us} µs the qubit has faded below 2/3: guessing and re-preparing would do as well.`}</div>`;
+  const ts = Array.from({ length: 121 }, (_, k) => k * 5);
+  const need = [["two rooms", 0], ["Los Angeles to New York, 3,940 km", 0], ["the Moon", 0], ["Mars at its farthest", 0]].map(([k]) => [short[k], F.lightTime(...F.SCENARIOS[k])]);
+  const holds = [["this qubit (T₂)", T2_us * 1e-6, U.C.violet], ["fiber delay, 1 km", 1.47e3 / F.C, U.C.blue], ["SiV spin", 1, U.C.cyan], ["NV ¹³C register", 60, U.C.cyan], ["¹⁷¹Yb⁺ ion", 3600, U.C.green], ["Eu:YSO crystal", 13.1 * 3600, U.C.green]];
+  const lg = (s) => Math.max(0, Math.log10(s) + 9);
+  $("charts").innerHTML =
+    card("Fidelity against delay", "Average fidelity of the teleported qubit as Bob waits for the bits. Above the gold line no classical strategy could match it; without the bits it is ½ at every delay.",
+      U.line(ts, [{ ys: ts.map((t) => F.delayFidelity(t, T1_us, T2_us, p2)), color: U.C.cyan, label: "with the two bits" }, { ys: ts.map(() => 2 / 3), color: U.C.gold, label: "classical limit 2/3" }, { ys: ts.map(() => 0.5), color: U.C.warm, label: "without the bits" }],
+        { ymin: 0.45, ymax: 1.0, yticks: [0.5, 0.667, 0.8, 1.0], yfmt: (y) => y.toFixed(2), xticks: [0, 100, 200, 300, 400, 500, 600], xlabel: "delay before the bits arrive (µs)", vlines: tx > 0 ? [{ x: tx, label: "limit", color: U.C.gold }] : [], marker: { x: t_us, y: Fd, label: "you" } })) +
+    card("How long memories hold, and how long distances need", "Seconds on a log scale. A cloud qubit holds for microseconds; Mars needs over twenty minutes, which only ions and rare-earth crystals reach today.",
+      U.bars([...holds.map(([l, s, c]) => ({ label: l, value: lg(s), text: F.dur(s), color: c })), ...need.map(([l, s]) => ({ label: `needed: ${l}`, value: lg(s), text: F.dur(s), color: U.C.gold }))], { max: lg(13.1 * 3600) * 1.08, labelWidth: 170 })) +
+    card("What the delay means", "On a chip the wait is time, not distance. It tests the same physics a long link will: Bob's half must outlast the bits.",
+      U.spacetime({ nodes: [{ x: 0, label: "Alice's qubits" }, { x: 1, label: "Bob's qubit" }], tmin: -0.25, tmax: 1.35, tticks: [0, 1], tfmt: (v) => (v ? `${t_us} µs` : "0"),
+        bands: [{ x: 1, t0: -0.2, t1: 1, color: U.C.violet, label: "waiting", opacity: 0.25 + 0.5 * (Fd - 0.5) * 2 }], lines: [{ pts: [[0, 0], [1, 1]], color: U.C.gold, label: "two bits (delayed)" }],
+        events: [{ x: 0, t: 0, label: "Bell measurement", below: true }, { x: 1, t: 1, label: `corrects: F = ${Fd.toFixed(2)}`, color: Fd > F.LIMIT ? U.C.green : U.C.warm }] }));
+  lab.setValues(values, { photons: 4, transmit: 1, beam: 0.6, dark: 1, packets: 0.4 + Math.min(1, t_us / 300) });
+  window.__twin = { kind: "delay", F: Fd, crossover_us: tx, prompt: `python experiments/bench/frontier/run_frontier.py delay --backend aer --T1 ${T1_us} --T2 ${T2_us}` };
+}
+
+function linkParams() { return { distance_m: values.distance_m, index: ctl.index, f0: values.f0, T_mem_s: values.T_mem_s, bank_s: values.bank_s, eta_mem: values.eta_mem, p_bsm: values.p_bsm }; }
+function updateLink(anim) {
+  const p = linkParams(), r = F.link(p), tc = r.light_time_s, mem = ctl.memory !== "custom" ? ctl.memory : "";
+  U.terminal($("term"), `python -c "from qll.network import teleport_across as X; print(X.link(X.Link(${Object.entries(p).map(([k, v]) => `${k}=${v}`).join(", ")})))"`, F.stepsLink(p, mem), { animate: anim });
+  $("metrics").innerHTML = metric("Light time (the bits)", F.dur(tc), true) + metric("Fidelity with the bits", r.fidelity_with_bits.toFixed(3), r.beats_classical) +
+    metric("Memory needed", F.dur(r.min_memory_s), values.T_mem_s >= r.min_memory_s) + metric("Success per use", `${(100 * r.success_per_use).toPrecision(3)} %`, r.success_per_use > 0.01) +
+    `<div class="verdict ${r.beats_classical ? "" : "bad"}" id="verdict">${r.beats_classical ? `Teleported in ${F.dur(tc)}, exactly the light time, with F = ${r.fidelity_with_bits.toFixed(3)} > 2/3. Banked pairs stay useful for ${F.dur(r.max_bank_s)}.` : `The memories fade before the bits arrive: F = ${r.fidelity_with_bits.toFixed(3)}, no better than guessing. This distance needs a memory that holds for ${F.dur(r.min_memory_s)}.`}</div>`;
+  const tb = values.bank_s / Math.max(tc, 1e-30), tmin = -Math.min(1.2, Math.max(0.35, tb)), unit = (v) => F.dur(v * tc);
+  const Ls = Array.from({ length: 80 }, (_, k) => k * 11.7 / 79), FL = Ls.map((x) => F.link(Object.assign({}, p, { distance_m: Math.pow(10, x), bank_s: 0 })).fidelity_with_bits);
+  const marks = ["Los Angeles to New York, 3,940 km", "the Moon", "Mars at its farthest"].map((k) => ({ x: Math.log10(F.SCENARIOS[k][0]), label: short[k], color: U.C.faint }));
+  const scen = Object.keys(F.SCENARIOS), mems = Object.keys(F.MEMORIES);
+  const table = `<table class="mem"><tr><th>Memory (lifetime)</th>${scen.map((s) => `<th>${short[s]}</th>`).join("")}</tr>${mems.map((m) => `<tr class="${m === ctl.memory ? "sel" : ""}"><td>${U.esc(m.split(" (")[0])} <span class="muted">(${F.dur(F.MEMORIES[m].lifetime_s)})</span></td>${scen.map((s) => { const ok = F.forScenario(s, m, { f0: values.f0 }).beats_classical; return `<td class="${ok ? "y" : "n"}">${ok ? "✓" : "✗"}</td>`; }).join("")}</tr>`).join("")}</table>`;
+  $("charts").innerHTML =
+    card("Spacetime: when Bob has the state", "Time runs up in units of the light time. The bits travel along the gold line; Bob's qubit is a coin flip until they arrive, and nothing Alice does can reach him outside the shaded cone.",
+      U.spacetime({ nodes: [{ x: 0, label: "Alice" }, { x: 1, label: "Bob" }], tmin, tmax: 1.45, tticks: [tmin, 0, 1].filter((v, i, a) => a.indexOf(v) === i), tfmt: (v) => (v === 0 ? "0" : unit(v)), cone: { x: 0, t: 0 },
+        bands: [{ x: 0, t0: tmin, t1: 0, color: U.C.violet, label: values.bank_s ? "banked" : "" }, { x: 1, t0: tmin, t1: 1, color: U.C.violet, label: "Bob's half waits", opacity: 0.2 + 0.6 * Math.max(0, (r.fidelity_with_bits - 0.5) * 2) }],
+        lines: [{ pts: [[0, 0], [1, 1]], color: U.C.gold, label: "two bits at light speed" }],
+        events: [{ x: 0, t: 0, label: "Alice's Bell measurement", below: true }, { x: 1, t: 1, label: `Bob corrects: F = ${r.fidelity_with_bits.toFixed(2)}`, color: r.beats_classical ? U.C.green : U.C.warm }, { x: 1, t: 0.3, label: "before: F = ½", color: U.C.muted }] })) +
+    card("Fidelity against distance", "With these memories and no banking. The gold line is the classical 2/3; the faint lines mark Los Angeles to New York, the Moon, and Mars at its farthest.",
+      U.line(Ls, [{ ys: FL, color: U.C.cyan, label: "with the two bits" }, { ys: Ls.map(() => 2 / 3), color: U.C.gold, label: "classical limit" }, { ys: Ls.map(() => 0.5), color: U.C.warm, label: "without the bits" }],
+        { ymin: 0.45, ymax: 1.0, yticks: [0.5, 0.667, 0.8, 1.0], yfmt: (y) => y.toFixed(2), xticks: [0, 3, 6, 9, 11], xlabel: "distance: 10^x metres", vlines: marks, marker: { x: Math.log10(values.distance_m), y: F.link(Object.assign({}, p, { bank_s: 0 })).fidelity_with_bits, label: "you" } })) +
+    card("Which memory survives which distance", "Fidelity above 2/3 when the bits arrive, with no banking, from the memories demonstrated so far. Lifetime is not everything: the rare-earth crystals give back 1 % of their photons or less.", table, true);
+  lab.setValues(values, { photons: 6, transmit: r.success_per_use, beam: 0.7, dark: 1, packets: 0.9 });
+  window.__twin = { kind: "link", r, prompt: `python -c "from qll.network import teleport_across as X; print(X.link(X.Link(${Object.entries(p).map(([k, v]) => `${k}=${v}`).join(", ")})))"` };
+}
+
+function updateSwap(anim) {
+  const s = { distance_m: values.distance_m, f0: values.f0, T_mem_s: values.T_mem_s, alpha_db_per_km: values.alpha_db_per_km, p_swap: values.p_swap }, r = F.swap(s), tc = r.teleport_s;
+  U.terminal($("term"), `python -c "from qll.network import teleport_across as X; print(X.swap(X.Swap(${Object.entries(s).map(([k, v]) => `${k}=${v}`).join(", ")})))"`, F.stepsSwap(s), { animate: anim });
+  const better = r.attempts_swapped < r.attempts_direct;
+  $("metrics").innerHTML = metric("End-to-end pair f", r.pair_fraction.toFixed(3), r.pair_fraction > 0.5) + metric("Teleportation F", r.fidelity_with_bits.toFixed(3), r.beats_classical) +
+    metric("Attempts per pair: node vs direct", `${(+r.attempts_swapped.toPrecision(3)).toLocaleString("en-US")} vs ${(+r.attempts_direct.toPrecision(3)).toLocaleString("en-US")}`, better) + metric("Node learns the key", "no", true) +
+    `<div class="verdict ${r.beats_classical ? "" : "bad"}" id="verdict">${better ? `Through the node: ${(r.attempts_direct / r.attempts_swapped).toPrecision(3)}× fewer attempts per pair than sending one photon all the way, and the node learns nothing.` : `At ${(values.distance_m / 1000).toPrecision(3)} km the node's lossy Bell measurement costs more than the fiber it saves; it pays off at longer distances.`} Teleportation then takes ${F.dur(r.total_s)} after the swap.</div>`;
+  const Ls = Array.from({ length: 80 }, (_, k) => 1 + k * (5.7 - 1) / 79), sw = Ls.map((x) => F.swap(Object.assign({}, s, { distance_m: Math.pow(10, x) })));
+  let cross = null; for (let k = 1; k < sw.length; k++) if (sw[k - 1].attempts_swapped > sw[k - 1].attempts_direct && sw[k].attempts_swapped <= sw[k].attempts_direct) cross = Ls[k];
+  const unit = (v) => F.dur(v * tc);
+  $("charts").innerHTML =
+    card("Spacetime with a node", "The node swaps at time zero and announces the result; the ends wait for it, then Alice teleports. Every arrow is at light speed or slower.",
+      U.spacetime({ nodes: [{ x: 0, label: "A (Alice)" }, { x: 0.5, label: "C (node)" }, { x: 1, label: "B (Bob)" }], tmin: -0.2, tmax: 1.75, tticks: [0, 0.5, 1.5], tfmt: (v) => (v === 0 ? "0" : unit(v)),
+        bands: [{ x: 0, t0: -0.2, t1: 0.5, color: U.C.violet }, { x: 1, t0: -0.2, t1: 1.5, color: U.C.violet, label: "Bob's half waits" }],
+        lines: [{ pts: [[0.5, 0], [0, 0.5]], color: U.C.blue }, { pts: [[0.5, 0], [1, 0.5]], color: U.C.blue, label: "swap result" }, { pts: [[0, 0.5], [1, 1.5]], color: U.C.gold, label: "teleportation bits" }],
+        events: [{ x: 0.5, t: 0, label: "swap", below: true, color: U.C.blue }, { x: 0, t: 0.5, label: "Alice measures" }, { x: 1, t: 1.5, label: `Bob corrects: F = ${r.fidelity_with_bits.toFixed(2)}`, color: r.beats_classical ? U.C.green : U.C.warm }] })) +
+    card("Attempts per end-to-end pair", "Sending one photon all the way against two half-length segments that wait for each other in memories (log scales). The node wins past the crossover.",
+      U.line(Ls, [{ ys: sw.map((q) => q.attempts_direct), color: U.C.warm, label: "direct" }, { ys: sw.map((q) => q.attempts_swapped), color: U.C.green, label: "through the node" }],
+        { logY: true, ymin: 1, ymax: 1e10, yticks: [1, 1e2, 1e4, 1e6, 1e8, 1e10], yfmt: (y) => (y >= 1e3 ? "1e" + Math.round(Math.log10(y)) : String(y)), xticks: [1, 2, 3, 4, 5], xlabel: "distance: 10^x metres", vlines: cross ? [{ x: cross, label: "crossover" }] : [], marker: { x: Math.log10(values.distance_m), y: r.attempts_swapped, label: "you" } })) +
+    card("What the swap costs in fidelity", "Each segment's pair, the joined pair, the joined pair after waiting for the announcement, and the teleportation it gives.",
+      U.bars([{ label: "each segment's pair f₀", value: s.f0, text: s.f0.toFixed(3), color: U.C.cyan }, { label: "after the swap", value: F.swappedFraction(s.f0, s.f0), text: F.swappedFraction(s.f0, s.f0).toFixed(3), color: U.C.blue },
+        { label: "after waiting", value: r.pair_fraction, text: r.pair_fraction.toFixed(3), color: U.C.violet }, { label: "teleportation F", value: r.fidelity_with_bits, text: r.fidelity_with_bits.toFixed(3), color: r.beats_classical ? U.C.green : U.C.warm }],
+        { max: 1, marks: [{ at: 2 / 3, label: "2/3" }, { at: 0.5, label: "½", color: U.C.warm }] }));
+  lab.setValues(values, { photons: 6, transmit: Math.min(1, r.eta_segment), beam: 0.7, dark: 1, packets: 0.8 });
+  window.__twin = { kind: "swap", r, prompt: `python -c "from qll.network import teleport_across as X; print(X.swap(X.Swap(${Object.entries(s).map(([k, v]) => `${k}=${v}`).join(", ")})))"` };
+}
+
+function update(anim) { ({ delay: updateDelay, link: updateLink, swap: updateSwap })[tier.twin](anim); }
+function renderTabs() {
+  $("tiers").innerHTML = tiers.map((t, i) => `${i ? '<span class="arrow">→</span>' : ""}<button role="tab" data-tier="${t.id}" aria-selected="${t === tier}"><small>${U.esc(t.milestones.join(", "))}</small><span>${U.esc(t.title)}</span><small>${U.esc(t.cost.split(";")[0])}</small></button>`).join("");
+  $("tiers").querySelectorAll("button").forEach((b) => b.addEventListener("click", () => select(b.dataset.tier)));
+}
+function applyScenario(name) { const [L, n] = F.SCENARIOS[name]; ctl.scenario = name; ctl.index = n; setters.distance_m(L); }
+function applyMemory(name) { ctl.memory = name; if (name !== "custom") { const m = F.MEMORIES[name]; setters.T_mem_s(m.lifetime_s); setters.eta_mem(m.efficiency); } }
+function select(id) {
+  tier = tiers.find((t) => t.id === id) || tiers[0]; history.replaceState(null, "", "#" + tier.id);
+  specs = tier.sliders; values = {}; specs.forEach((s) => (values[s.key] = s.value));
+  $("title").textContent = tier.title; $("summary").textContent = tier.summary; $("kicker").textContent = `Phase 4 · ${tier.experiments.join(", ")} · milestone ${tier.milestones.join(", ")}`;
+  renderTabs(); renderHow();
+  ctl = { index: F.FIBER, scenario: tier.id === "mars" ? "Mars at its farthest" : "two rooms", memory: tier.id === "mars" ? "171Yb+ hyperfine" : "custom" };
+  $("ctl").innerHTML = tier.twin === "link" ? `<label>Distance <select id="scenario">${Object.keys(F.SCENARIOS).map((k) => `<option>${U.esc(k)}</option>`).join("")}</select></label>
+    <label>Memories <select id="memory"><option value="custom">set by the sliders</option>${Object.keys(F.MEMORIES).map((k) => `<option>${U.esc(k)}</option>`).join("")}</select></label>` : "";
+  setters = U.sliders($("params"), specs, values, () => update(), (k) => lab.setFocus(k));
+  if (tier.twin === "link") {
+    $("scenario").value = ctl.scenario; $("memory").value = ctl.memory; applyScenario(ctl.scenario); applyMemory(ctl.memory);
+    $("scenario").addEventListener("change", () => { applyScenario($("scenario").value); update(true); });
+    $("memory").addEventListener("change", () => { applyMemory($("memory").value); update(true); });
+  }
+  $("legend").innerHTML = tier.twin === "delay" ? `<span><i style="background:#5ef2e0"></i>jobs and counts</span><span class="muted">the delay is on the chip</span>`
+    : `<span><i style="background:#ff6fb5"></i>entangled photons</span><span><i style="background:#f5c518"></i>classical bits (light speed at most)</span><span class="muted">not to scale</span>`;
+  const cams = { delay: [["overview", "Desk and processor"]], swap: [["nodes", "Three nodes"], ["nodeC", "The node"], ["nodeB", "Bob"]], link: tier.id === "mars" ? [["planets", "Earth and Mars"], ["earth", "Earth"]] : [["overview", "Both rooms"], ["roomA", "Alice"], ["roomB", "Bob"]] }[tier.twin];
+  $("cams").innerHTML = cams.map(([k, l]) => `<button data-cam="${k}">${l}</button>`).join("") + `<button id="labels" aria-pressed="${labelsOn}">Labels</button>`;
+  $("cams").querySelectorAll("[data-cam]").forEach((b) => b.addEventListener("click", () => lab.view(b.dataset.cam)));
+  $("labels").addEventListener("click", () => { labelsOn = !labelsOn; lab.setLabels(labelsOn); $("labels").setAttribute("aria-pressed", String(labelsOn)); });
+  lab.setTier(tier); lab.setLabels(labelsOn); lab.view(cams[0][0], true);
+  if (tier.id === "mars") lab.setSky(1e-9);
+  U.buildPanel($("build"), tier, state, (n) => { lab.setStage(n); U.markStage($("build"), n); });
+  update(true);
+}
+$("reset").addEventListener("click", () => select(tier.id));
+$("copyPy").addEventListener("click", (e) => U.copy(window.__twin.prompt, e.target));
+select(location.hash.slice(1) || "delay");
+U.registerApp();
+document.body.dataset.ready = "1";
+</script>
+</body>
+</html>
