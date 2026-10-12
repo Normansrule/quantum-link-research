@@ -115,9 +115,26 @@ def compute_data() -> dict:
     rb, _, pb = bbpssw_rounds_to_target(0.8, 0.99)
     rd, _, pd = dejmps_rounds_to_target(bell_diagonal_weights(werner_state(0.8)), 0.99)
     sample_t = list(np.linspace(0.0, 2 * SYNODIC_PERIOD_DAYS, 41))
+    from qll.space import latency_floor as LF
+    latency = {
+        "sites": [{"name": x.name, "lat_deg": x.lat_deg, "lon_deg": x.lon_deg, "range_m": x.range_m} for x in LF.SITES.values()],
+        "constants": {"R": LF.EARTH_RADIUS_M, "GEO": LF.GEO_ALTITUDE_M, "LEO": LF.LEO_ALTITUDE_M, "FIBER": LF.FIBER_INDEX,
+                      "HOLLOW": LF.HOLLOW_CORE_INDEX, "STRETCH": LF.FIBER_ROUTE_STRETCH},
+        "antipodal": LF.antipodal_floor_s(),
+        "from_la": [{"to": x, "floor_s": rr["floor_s"], "best": rr["best"], "best_s": rr["best_delay_s"], "stretch": rr["best_stretch"],
+                     "fiber_s": rr["routes"].get("terrestrial fiber", {}).get("delay_s"),
+                     "tls_s": rr["latency"]["secure message"]["TCP + TLS 1.3, new connection"]}
+                    for x in ("New York", "London", "Tokyo", "Sydney", "the Moon", "Mars at its closest", "Mars at its farthest")
+                    for rr in [LF.report("Los Angeles", x)]],
+    }
+    _la_ldn = LF.report("Los Angeles", "London")
     data = {
         "status": status,
+        "latency": latency,
         "headline": {
+            "latency_antipodal_ms": 1e3 * LF.antipodal_floor_s()["great_circle_s"],
+            "latency_la_london_floor_ms": 1e3 * _la_ldn["floor_s"], "latency_la_london_best_ms": 1e3 * _la_ldn["best_delay_s"],
+            "latency_moon_s": LF.report("Los Angeles", "the Moon")["best_delay_s"],
             "one_way_min_min": one_way_delay_s(EARTH_MARS_MIN_M) / 60,
             "one_way_max_min": one_way_delay_s(EARTH_MARS_MAX_M) / 60,
             "round_trip_max_min": round_trip_delay_s(EARTH_MARS_MAX_M) / 60,
@@ -175,10 +192,41 @@ def main() -> None:
     (ROOT / "docs" / "site_data.json").write_text(json.dumps(data, indent=1) + "\n", encoding="utf-8")
     print("wrote docs/site_data.json")
     write_readme_numbers(data)
+    write_readme_latency()
+
+
+def latency_table() -> str:
+    """The README's latency table: from Los Angeles to cities, the Moon, and Mars, with every route and protocol."""
+    from qll.space import latency_floor as LF
+
+    def t(s):
+        return f"{s * 1e3:.1f} ms" if s < 1 else f"{s:.2f} s" if s < 120 else f"{s / 60:.1f} min"
+    rows = ["| From Los Angeles to | Light-time floor | Terrestrial fiber | Fastest route | Secure message, banked key | QKD on demand | New TCP + TLS 1.3 |",
+            "|---|---|---|---|---|---|---|"]
+    for to in ("New York", "London", "Tokyo", "Sydney", "Cape Town", "the Moon", "Mars at its closest", "Mars at its farthest"):
+        r = LF.report("Los Angeles", to)
+        fiber = r["routes"].get("terrestrial fiber")
+        sm = r["latency"]["secure message"]
+        rows.append(f"| {to} | {t(r['floor_s'])} | {t(fiber['delay_s']) if fiber else '—'} | {r['best']}: **{t(r['best_delay_s'])}** ({r['best_stretch']:.2f}×) | "
+                    f"**{t(sm['banked key'])}** | {t(sm['QKD on demand'])} | {t(sm['TCP + TLS 1.3, new connection'])} |")
+    ant = LF.antipodal_floor_s()
+    return ("\n".join(rows) + f"\n\nThe farthest any two places on Earth can be is antipodal: {t(ant['great_circle_s'])} along the surface, {t(ant['chord_s'])} through the planet. "
+            "The fiber route factor (1.5) and the orbit altitude (550 km) are assumed planning values; every number is a model output from "
+            "[`qll/space/latency_floor.py`](qll/space/latency_floor.py), tested in [`tests/test_latency_floor.py`](tests/test_latency_floor.py).")
+
+
+def write_readme_latency() -> None:
+    readme = ROOT / "README.md"
+    text = readme.read_text(encoding="utf-8")
+    start, end = "<!-- latency:start -->", "<!-- latency:end -->"
+    if start in text and end in text:
+        pre, rest = text.split(start, 1)
+        _, post = rest.split(end, 1)
+        readme.write_text(pre + start + "\n" + latency_table() + "\n" + end + post, encoding="utf-8")
 
 
 def write_readme_numbers(data: dict) -> None:
-    """Regenerate the table between the numbers markers in PROJECT_TOUR.md from the same data."""
+    """Regenerate the table between the numbers markers in README.md from the same data."""
     from qll.systems.mars_budget import MarsLinkDesign
     h = data["headline"]
     rows = [
@@ -199,7 +247,7 @@ def write_readme_numbers(data: dict) -> None:
         ("Key buffer to message once a minute through a Mars round trip", f"{h['messenger_buffer_kB_mars_max']:.2f} kB", "`qll/app/messenger.py`"),
     ]
     table = "| Question | Answer from the code | Module |\n|---|---|---|\n" + "\n".join(f"| {a} | **{b}** | {c} |" for a, b, c in rows)
-    readme = ROOT / "PROJECT_TOUR.md"
+    readme = ROOT / "README.md"
     text = readme.read_text(encoding="utf-8")
     start, end = "<!-- numbers:start -->", "<!-- numbers:end -->"
     if start in text and end in text:

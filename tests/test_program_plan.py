@@ -116,7 +116,7 @@ def test_hand_written_program_numbers_match_the_plan():
     readme = (ROOT / "systems" / "program" / "README.md").read_text(encoding="utf-8")
     for ph in (1, 2, 3, 4, P.STARTUP):
         assert f"${P.phase_cost(ph)['likely']:,.0f}" in readme, ph
-    assert f"about ${P.phase_cost(1)['likely']:,.0f} likely" in (ROOT / "PROJECT_TOUR.md").read_text(encoding="utf-8")
+    assert f"about ${P.phase_cost(1)['likely']:,.0f} likely" in (ROOT / "README.md").read_text(encoding="utf-8")
     req = (ROOT / "systems" / "program" / "03_requirements_and_verification.md").read_text(encoding="utf-8")
     verified_by = set(re.findall(r"\| (M\d\.\d|S\d) \|\n", req))
     ids = {m.id for m in P.MILESTONES}

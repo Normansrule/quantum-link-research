@@ -1,6 +1,6 @@
 # The Quantum Link Mission: from two rooms to orbit, on a student budget
 
-**Mission.** Share quantum states between two places, first two rooms, then two buildings, then a ground station and a satellite. Turn what each step teaches into entanglement-assisted secure communication that can reach anywhere on the planet. Publish at every step. Found a company once a validated bench has a paying customer.
+**Mission.** Share quantum states between two places, first two rooms, then two buildings, then a ground station and a satellite. Turn what each step teaches into entanglement-assisted secure communication that can reach anywhere on the planet, as close to instantaneous as physics allows: one trip at the light-time floor, with key and entanglement banked so nothing waits on top ([10](10_anywhere_at_light_speed.md)). Publish at every step. Found a company once a validated bench has a paying customer.
 
 This folder is the systems-engineering plan for that mission. It is phase-based: each phase starts from the evidence of the one before, ends at a gate with pass criteria, and commits money only when that gate passes. Everything already in the repository is the research foundation: the 15 landmark experiments, the lab protocols, 17 proposals, the three flagships, the simulation library, and the SEE 510 two-site link. Each item is catalogued in [02](02_research_foundation.md), with the phase it feeds and what it takes to replicate it.
 
@@ -75,6 +75,7 @@ Five rules hold in every phase:
 | 07 | [The startup path](07_startup_path.md) | who might pay, what to sell first, and the steps from a bench to a company |
 | 08 | [Papers](08_first_paper.md) | the first paper's plan in detail, and the two after it |
 | 09 | [From classical links to quantum channels](09_quantum_channels.md) | three ways to build a quantum channel, how each is certified, mapped, and measured, and the ladder from the hallway to a network |
+| 10 | [Anywhere at light speed](10_anywhere_at_light_speed.md) | the goal stated so it can be verified: the light-time floor, the latency budget (route stretch, handshake trips, key latency), why banked key and banked entanglement reach the floor, and the verification ladder |
 | — | [Gate reviews](reviews/README.md) | the record of each gate |
 | — | [The lab](https://normansrule.github.io/quantum-link-research/lab/) ([source](../../docs/lab/)) | every experiment in one gallery; the two-room link and the cloud circuits in 3D, tier by tier, with the twin's math in a terminal and every part priced ([`qll/systems/lab_scenes.py`](../../qll/systems/lab_scenes.py)) |
 | — | [Paper drafts](../../research/papers/README.md) | each paper's draft, generated results, figures, and data (paper 1 rehearsed on simulators) |

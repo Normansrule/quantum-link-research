@@ -48,3 +48,11 @@ def test_the_workflow_deploys_only_what_passed():
         body = wf[wf.index(job):]
         assert "QLL_REQUIRE:" in body.split("steps:")[0]                          # required tools fail instead of skipping
     assert "windows-latest" in wf and "ubuntu-latest" in wf
+
+
+def test_failures_become_readable_annotations(tmp_path):
+    p = _report(tmp_path, ["", '<failure message="assert 1 == 2">long trace\nlast line</failure>'])
+    r = subprocess.run([sys.executable, str(ROOT / "scripts" / "junit_annotations.py"), str(p)], capture_output=True, text=True, encoding="utf-8")
+    assert r.returncode == 0
+    lines = [ln for ln in r.stdout.splitlines() if ln.startswith("::error")]
+    assert len(lines) == 1 and "assert 1 == 2" in lines[0] and "%0A" in lines[0] and "last line" in lines[0]

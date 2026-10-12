@@ -1,7 +1,7 @@
 """Animated SVG artwork for the README, generated from docs/site_data.json and docs/status.json so every number in
 the pictures is the tested code's output. GitHub renders SVG images with SMIL animation, so these move in the README.
 
-    python scripts/make_readme_art.py        # writes docs/figures/readme_{stats,timescales,stack,marquee,equations}.svg
+    python scripts/make_readme_art.py        # writes docs/figures/readme_{stats,timescales,latency,stack,marquee,equations}.svg
 
 Design patterns (re-implemented, nothing copied; see CREDITS.md): number-ticker tiles and bento grid (Magic UI
 NumberTicker/BentoGrid), animated beams between nodes (Magic UI AnimatedBeam), an infinite marquee (Magic UI
@@ -155,6 +155,43 @@ def timescales(site: dict) -> str:
     return frame(W, H, "".join(body), "Memory useful time versus classical round trip, computed by qll.network.memory_decoherence")
 
 
+def latency(site: dict) -> str:
+    """Anywhere at light speed: from Los Angeles to cities, the Moon, and Mars on a log-time axis, the light-time floor,
+    the fastest route, terrestrial fiber, and a fresh TLS connection; a pulse rides the fastest route."""
+    rows = site["latency"]["from_la"]
+    W, H = 1280, 120 + 50 * len(rows) + 70
+    x0, x1, t0, t1 = 250, 1230, -3.0, 4.0                  # log10 seconds: 1 ms to ~3 h
+    X = lambda s: x0 + (x1 - x0) * (math.log10(max(s, 1e-3)) - t0) / (t1 - t0)
+    top = 112
+    ybot = top + 50 * len(rows)
+    body = [f'<text x="40" y="46" font-family="{FONT}" font-size="15" font-weight="700" letter-spacing="2.5" fill="{COL["cyan"]}">THE GOAL: ANYWHERE, AT THE SPEED OF LIGHT</text>',
+            f'<text x="40" y="76" font-family="{FONT}" font-size="21" font-weight="700" fill="#e8eef8">From Los Angeles: the light-time floor, the fastest route, and what waits on top</text>']
+    for e, lab in {-3: "1 ms", -2: "10 ms", -1: "100 ms", 0: "1 s", 1: "10 s", 2: "100 s", 3: "17 min", 4: "2.8 h"}.items():
+        body.append(f'<line x1="{X(10**e):.1f}" y1="{top - 8}" x2="{X(10**e):.1f}" y2="{ybot}" stroke="rgba(148,170,210,.10)"/>'
+                    f'<text x="{X(10**e):.1f}" y="{ybot + 22}" text-anchor="middle" font-family="{MONO}" font-size="12" fill="#5b6780">{lab}</text>')
+    for i, r in enumerate(rows):
+        y, d = top + 50 * i, 0.25 + 0.15 * i
+        body.append(f'<text x="{x0 - 16}" y="{y + 20}" text-anchor="end" font-family="{FONT}" font-size="14.5" fill="#c9d4e6">{escape(r["to"])}</text>'
+                    f'<text x="{x0 - 16}" y="{y + 36}" text-anchor="end" font-family="{MONO}" font-size="11" fill="#5b6780">{escape(r["best"])} · {r["stretch"]:.2f}×</text>')
+        body.append(f'<rect x="{x0}" y="{y + 9}" width="{X(r["tls_s"]) - x0:.1f}" height="22" rx="6" fill="none" stroke="{COL["warm"]}" stroke-opacity=".45" stroke-dasharray="4 4"/>')
+        if r["fiber_s"]:
+            body.append(f'<rect x="{x0}" y="{y + 13}" width="{X(r["fiber_s"]) - x0:.1f}" height="14" rx="5" fill="{COL["warm"]}" fill-opacity=".45"/>')
+        wb = X(r["best_s"]) - x0
+        f = d / (d + 1.0)
+        body.append(f'<rect x="{x0}" y="{y + 13}" width="{wb:.1f}" height="14" rx="5" fill="{COL["cyan"]}">'
+                    f'<animate attributeName="width" values="0;0;{wb:.1f}" keyTimes="0;{f:.3f};1" dur="{d + 1.0:.2f}s" fill="freeze"/></rect>'
+                    f'<circle cx="{x0 + wb:.1f}" cy="{y + 20}" r="5" fill="#e8fffb" filter="url(#glow)">'
+                    f'<animate attributeName="cx" values="{x0};{x0 + wb:.1f}" dur="{1.6 + 0.2 * i:.1f}s" repeatCount="indefinite"/></circle>')
+        fx = X(r["floor_s"])
+        body.append(f'<line x1="{fx:.1f}" y1="{y + 4}" x2="{fx:.1f}" y2="{y + 36}" stroke="{COL["green"]}" stroke-width="2.4"/>')
+    lg = [(COL["green"], "light-time floor d/c"), (COL["cyan"], "fastest route (banked key: one trip)"), (COL["warm"], "terrestrial fiber"), ("#ff8a4c80", "new TCP + TLS 1.3 connection (5 trips)")]
+    x = 40
+    for c, lab in lg:
+        body.append((f'<rect x="{x}" y="{H - 36}" width="16" height="9" rx="3" fill="none" stroke="{COL["warm"]}" stroke-dasharray="3 2"/>' if "TLS" in lab else f'<rect x="{x}" y="{H - 34}" width="16" height="6" rx="3" fill="{c}"/>') + f'<text x="{x + 24}" y="{H - 27}" font-family="{FONT}" font-size="12.5" fill="#93a1b8">{escape(lab)}</text>')
+        x += 34 + 7.2 * len(lab)
+    return frame(W, H, "".join(body), "Latency from Los Angeles to cities, the Moon, and Mars against the light-time floor, computed by qll.space.latency_floor")
+
+
 STACK = [("constants", "n̄(ω,T)"), ("channels", "η, τ = d/c"), ("circuits", "F, S"), ("QKD", "r ≤ PLOB"),
          ("network", "memories"), ("space", "ephemeris"), ("messenger", "fail closed")]
 
@@ -266,7 +303,7 @@ def equations() -> str:
 def main() -> None:
     site = json.loads((ROOT / "docs" / "site_data.json").read_text(encoding="utf-8"))
     status = json.loads((ROOT / "docs" / "status.json").read_text(encoding="utf-8")) if (ROOT / "docs" / "status.json").exists() else {}
-    for name, svg in (("readme_stats", stats(site, status)), ("readme_timescales", timescales(site)),
+    for name, svg in (("readme_stats", stats(site, status)), ("readme_timescales", timescales(site)), ("readme_latency", latency(site)),
                       ("readme_stack", stack()), ("readme_marquee", marquee()), ("readme_equations", equations())):
         (OUT / f"{name}.svg").write_text(svg, encoding="utf-8")
         print(f"wrote docs/figures/{name}.svg")

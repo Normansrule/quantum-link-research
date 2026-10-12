@@ -1,5 +1,31 @@
 # Changelog
 
+## 0.57.0 — 2026-10-12 (anywhere, at the speed of light)
+- **The goal, made computable: communication as close to instantaneous as physics allows, wherever the two ends are, and secure.**
+  - Physics sets the floor exactly: no signal outruns light, and entanglement alone carries no message (Eberhard and Ross, 1989; Ghirardi et al., 1980).
+  - "Almost instantaneous" therefore means one trip at the light-time floor, with nothing waiting on top.
+- **`qll/space/latency_floor.py`: the floor and the routes that approach it, anywhere.**
+  - **The floor:** the great circle over c on Earth, with the chord through the planet as the absolute floor; the straight line to the Moon and Mars.
+  - **The routes:** terrestrial fiber, hollow-core fiber (99.7 % of c), a low-orbit laser mesh, a geostationary relay, and free space, each with its stretch over the floor.
+  - **What waits on top:** banked key is 1 trip, QKD on demand 3, and a new TCP + TLS 1.3 connection 5; teleportation from banked pairs is 1 trip.
+  - **Where low orbit wins:** the mesh beats terrestrial fiber beyond about 980 km and hollow-core fiber beyond about 2,600 km.
+  - **Some numbers:** Los Angeles to London has a 29.2 ms floor, and the fastest route takes 35.4 ms. The worst case on Earth is 66.8 ms; the Moon 1.28 s; Mars 3.1 to 22.3 minutes.
+  - Tested against closed forms (no route beats d/c; each route's geometry; the crossover is where the routes tie) and against its JavaScript port for every pair of places.
+- **New page: [Anywhere at light speed](https://normansrule.github.io/quantum-link-research/latency/).**
+  - A to-scale cross-section of Earth through the two places, every route against the floor, and a race of pulses with play, pause, step, and reset.
+  - When a secure message or a teleported qubit can be read, the math line by line, and "Mars today" from the live ephemeris.
+  - The landing page now leads with the goal.
+- **One design across the site.**
+  - `scripts/build_site_chrome.py` writes the same menu (with the current page marked), the same tabs across the labs, and the same footer into every page; `tests/test_site_chrome.py` keeps them in step.
+  - Shared page components in `space.css`: page frame, panels with a border beam, number tiles, controls, the "what physics allows" callout, and the footer.
+- **The README's visuals are back.**
+  - The animated banner, the badge rows, the computed-numbers card, the landing-page recording, the memory chart, the full website gallery, the equations, the stack, the systems engineering, and the figures, now with uniform gallery cards.
+  - It opens with the goal, the honest physics boundary, and the development status.
+  - A new animated card and a generated table show the floor, the fastest route, and the handshake cost from Los Angeles to six cities, the Moon, and Mars.
+  - The tour file merged back into the README.
+- **CI explains its own failures.** A failing job now prints each failed test as an annotation (`scripts/junit_annotations.py`), readable from the run page and the API without the raw log. The conda setup warnings are fixed.
+- **Program document [10](systems/program/10_anywhere_at_light_speed.md):** the goal stated so it can be verified, with the latency budget and a verification ladder from computed (L0) to banked-key delivery between two computers (L2) and free-space links (L3).
+
 ## 0.56.0 — 2026-10-12 (the October 2026 technical audit, answered finding by finding)
 - **Every finding of the independent audit is closed with one status** in [`docs/audit/2026-10-11_findings.md`](docs/audit/2026-10-11_findings.md): 15 fixed and verified by tests, 4 deferred with every affected claim qualified (S05, S06, P03, U04), and 3 blocked by evidence that software cannot supply (C01 until a passing CI run is observed; H01 and H02 until a safety review, calibration, and timing hardware exist). The release is assessed separately as an educational simulation, a network prototype, an optical experiment, a finite-key implementation, and a production system; only the first is ready, pending CI confirmation.
 - **Release gates (C01–C03).**

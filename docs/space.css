@@ -142,3 +142,54 @@ html.js .top nav.open a, html.js .top nav.open a.opt { display: block !important
 main code, main a, .lab-head a, .panel a { overflow-wrap: anywhere } .compose { flex-wrap: wrap }
 .compose input { min-width: 8rem }
 .dash > * { min-width: 0 } .dash .st { flex-wrap: wrap }
+
+/* ---------------------------------------------------------------- shared page components (0.57.0)
+   One vocabulary for every page: .page and .page-intro frame it, .ui-grid lays out .ui-panel cards with a slow
+   border beam, .ui-kpis hold numbers, .ui-btn / .ui-select / .ui-slider are the controls, .physics is the callout
+   that states what physics allows, and .site-foot closes every page the same way. */
+.page { max-width: 1320px; margin: 0 auto; padding: 5.6rem 3vw 2rem }
+.page-intro { max-width: 980px; margin: 0 0 1.4rem }
+.page-intro h1 { font-size: clamp(1.9rem, 3.8vw, 3.1rem); line-height: 1.06; margin: .5rem 0 .7rem; letter-spacing: -.02em; font-weight: 800 }
+.page-intro .sub { margin: 0 }
+.ui-grid { display: grid; gap: 1rem; grid-template-columns: repeat(12, minmax(0, 1fr)); margin-bottom: 1rem }
+.ui-grid > * { min-width: 0 }
+.span-4 { grid-column: span 4 } .span-5 { grid-column: span 5 } .span-6 { grid-column: span 6 } .span-7 { grid-column: span 7 } .span-8 { grid-column: span 8 } .span-12 { grid-column: span 12 }
+@media (max-width: 1000px) { .span-4, .span-5, .span-6, .span-7, .span-8 { grid-column: span 12 } }
+.ui-panel { position: relative; overflow: hidden; border: 1px solid var(--line); border-radius: 16px; background: var(--glass); padding: .95rem 1.05rem }
+.ui-panel::before { content: ""; position: absolute; inset: -1px; border-radius: 16px; padding: 1px; pointer-events: none; opacity: .55;
+  background: conic-gradient(from var(--beam, 0deg), transparent 0 70%, rgba(94,242,224,.9) 80%, rgba(167,139,250,.9) 88%, transparent 96%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude;
+  animation: beam 9s linear infinite }
+@property --beam { syntax: "<angle>"; initial-value: 0deg; inherits: false }
+@keyframes beam { to { --beam: 360deg } }
+.ui-panel > h4 { margin: 0 0 .6rem; font-size: .74rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); font-weight: 700; display: flex; gap: .5rem; align-items: center }
+.ui-panel > h4::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--grad); box-shadow: 0 0 10px var(--cyan) }
+.ui-panel canvas { width: 100%; display: block; border-radius: 12px }
+.ui-kpis { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: .7rem }
+.ui-k { border: 1px solid var(--line); border-radius: 12px; padding: .6rem .7rem; background: rgba(10,15,28,.55) }
+.ui-k .l { font-size: .72rem; color: var(--muted); letter-spacing: .04em } .ui-k .v { font: 700 1.3rem/1.2 "JetBrains Mono", ui-monospace, monospace; font-variant-numeric: tabular-nums }
+.ui-k .s { font-size: .72rem; color: var(--faint) }
+.ui-row { display: flex; gap: .5rem; flex-wrap: wrap; align-items: center; margin: .35rem 0 }
+.ui-btn, .ui-select { font: 600 .82rem/1 "JetBrains Mono", ui-monospace, monospace; padding: .55rem .8rem; min-height: 40px; border-radius: 10px; border: 1px solid var(--line); background: var(--bg2); color: var(--ink); cursor: pointer; max-width: 100% }
+.ui-btn:hover { border-color: rgba(94,242,224,.5) } .ui-btn.on, .ui-btn[aria-pressed="true"] { border-color: var(--cyan); box-shadow: 0 0 14px rgba(94,242,224,.3) }
+.ui-btn:focus-visible, .ui-select:focus-visible, .ui-slider input:focus-visible { outline: 2px solid var(--cyan); outline-offset: 2px }
+.ui-slider { display: grid; grid-template-columns: 1fr auto; gap: .1rem .6rem; font-size: .84rem; color: var(--muted); margin: .45rem 0 }
+.ui-slider b { color: var(--ink); font: 600 .84rem "JetBrains Mono", monospace } .ui-slider input { grid-column: 1 / -1; width: 100%; accent-color: var(--cyan) }
+.ui-legend { display: flex; gap: 1rem; flex-wrap: wrap; font-size: .78rem; color: var(--muted); margin: .45rem 0 0 }
+.ui-legend i { display: inline-block; width: 14px; height: 3px; border-radius: 2px; vertical-align: middle; margin-right: .35rem }
+.ui-note { color: var(--muted); font-size: .86rem; margin: .5rem 0 0 }
+.ui-term { font: .82rem/1.75 "JetBrains Mono", ui-monospace, monospace; color: #c9d6ea; background: #03060c; border: 1px solid var(--line); border-radius: 12px; padding: .8rem 1rem; overflow-x: auto }
+.ui-term .c { color: var(--faint) } .ui-term .v { color: var(--cyan) } .ui-term .ref { color: var(--violet) }
+.physics { position: relative; margin: 0 0 1.2rem; padding: .9rem 1.1rem .9rem 1.3rem; border: 1px solid var(--line); border-radius: 14px; background: linear-gradient(90deg, rgba(94,242,224,.08), rgba(167,139,250,.04) 60%, transparent) }
+.physics::before { content: ""; position: absolute; left: 0; top: 10px; bottom: 10px; width: 3px; border-radius: 3px; background: var(--grad) }
+.physics b { color: var(--ink) } .physics p { margin: .2rem 0; color: #c2cde0 }
+.site-foot { max-width: var(--maxw, 1200px); margin: 2.5rem auto 0; padding: 1.4rem 5vw 2.4rem; border-top: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: .6rem 1.4rem; align-items: center; color: var(--faint); font-size: .82rem }
+.site-foot .brand-s { color: var(--ink); font-weight: 700; display: inline-flex; gap: .45rem; align-items: center } .site-foot .brand-s::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--grad) }
+.site-foot a { color: var(--muted) } .site-foot .grow { flex: 1 1 18rem }
+.top nav a[aria-current="page"] { color: var(--ink); text-shadow: 0 0 12px rgba(94,242,224,.55) }
+@media (prefers-reduced-motion: reduce) { .ui-panel::before, .gradient-text { animation: none } }
+.lab-tabs { display: flex; gap: .4rem; flex-wrap: wrap; margin: 0 0 .9rem }
+.lab-tabs a { padding: .4rem .8rem; border: 1px solid var(--line); border-radius: 999px; background: rgba(10,15,28,.55); color: var(--muted); font-size: .8rem; min-height: 32px; display: inline-flex; align-items: center }
+.lab-tabs a:hover { color: var(--ink); border-color: rgba(94,242,224,.45); text-decoration: none }
+.lab-tabs a[aria-current="page"] { color: #05070d; background: var(--grad); border-color: transparent; font-weight: 700 }
+@media (min-width: 900px) { .eyebrow { white-space: nowrap } }

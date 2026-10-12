@@ -39,7 +39,8 @@ jobs:
         with:
           environment-file: environment.yml
           activate-environment: qll
-          auto-activate-base: false
+          auto-activate: false
+          conda-remove-defaults: "true"
       - run: python scripts/check_env.py
       - run: mkdir -p reports
       - run: python -m pytest -m phase1 -q -rfE --junitxml=reports/phase1-${{ matrix.os }}.xml
@@ -50,7 +51,9 @@ jobs:
         env:
           MPLBACKEND: Agg
       - run: python scripts/build_reference_index.py
-      - run: python scripts/build_site_data.py && python scripts/make_banner.py && python scripts/make_readme_art.py && python scripts/build_systems_docs.py && python scripts/build_program_docs.py && python scripts/build_lab.py && python scripts/build_readme_build.py
+      - run: python scripts/build_site_data.py && python scripts/make_banner.py && python scripts/make_readme_art.py && python scripts/build_systems_docs.py && python scripts/build_program_docs.py && python scripts/build_lab.py && python scripts/build_readme_build.py && python scripts/build_site_chrome.py
+      - if: failure()
+        run: python scripts/junit_annotations.py reports/*.xml          # failing tests as annotations, readable without the raw log
       - if: always()
         uses: actions/upload-artifact@v4
         with:
@@ -74,10 +77,13 @@ jobs:
         with:
           environment-file: environment.yml      # the same pinned environment as the tests (numpy for pytest's filters, qll itself)
           activate-environment: qll
-          auto-activate-base: false
+          auto-activate: false
+          conda-remove-defaults: "true"
       - run: pip install playwright==1.63.0 && python -m playwright install --with-deps chromium
       - run: mkdir -p reports
       - run: python -m pytest -q -m browser -rfE -p no:cacheprovider --junitxml=reports/browser.xml tests/test_pages_headless.py
+      - if: failure()
+        run: python scripts/junit_annotations.py reports/*.xml
       - if: always()
         uses: actions/upload-artifact@v4
         with:

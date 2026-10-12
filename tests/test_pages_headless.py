@@ -481,7 +481,7 @@ def test_landing_page_quotes_the_deployed_ci_result(browser, server):
     assert "stale" in page.locator("#ci-status").get_attribute("class")          # a failing run is never shown as success
 
 
-ALL_PAGES = ["/", "/lab/", "/lab/link/", "/lab/channel/", "/lab/outdoor/", "/lab/frontier/", "/lab/messenger/", "/lab/circuits/", "/mars/",
+ALL_PAGES = ["/", "/latency/", "/lab/", "/lab/link/", "/lab/channel/", "/lab/outdoor/", "/lab/frontier/", "/lab/messenger/", "/lab/circuits/", "/mars/",
              "/budget/", "/teleport/", "/monitor/", "/link/", "/repeater/", "/coupler/", "/qec/", "/systems/"]
 
 
@@ -493,3 +493,24 @@ def test_every_page_fits_a_320_pixel_screen_and_has_one_main_landmark(browser, s
     assert page.locator("main").count() == 1 and page.locator(".nav-toggle").is_visible()
     target = page.locator(".skip").get_attribute("href")
     assert page.locator(target).count() == 1                                    # the skip link lands somewhere
+
+
+def test_latency_page_matches_the_python_floor_and_its_race_is_controllable(browser, server):
+    from qll.space import latency_floor as LF
+    page, errors = open_page(browser, server + "/latency/")
+    page.wait_for_function("document.body.dataset.ready === '1'", timeout=30000)
+    r = LF.report("Los Angeles", "London")
+    kp = page.locator("#kpis").inner_text()
+    assert f"{r['floor_s'] * 1e3:.1f} ms" in kp and f"{r['best_delay_s'] * 1e3:.1f} ms" in kp and r["best"] in kp
+    assert page.locator("#table tbody tr").count() == len(r["routes"])
+    page.select_option("#to", "the Moon")
+    page.wait_for_function("document.getElementById('kpis').textContent.includes('1.28 s')", timeout=10000)
+    assert page.locator("#table tbody tr").count() == 1 and "free space" in page.locator("#table").inner_text()
+    page.select_option("#to", "Tokyo")
+    page.click("#play"); assert page.get_attribute("#play", "aria-pressed") == "true"
+    page.wait_for_timeout(400); page.click("#play"); assert page.get_attribute("#play", "aria-pressed") == "false"
+    page.click("#reset"); assert "t = 0" in page.locator("#scale").inner_text()
+    page.click("#step"); assert "t = 0 µs" not in page.locator("#scale").inner_text()
+    opts = page.locator("#from option").all_inner_texts()
+    assert any(o.startswith("Mars today") for o in opts)                     # the live ephemeris adds today's range
+    assert errors == []

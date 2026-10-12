@@ -1,6 +1,6 @@
 # Start Here
 
-1. **Read the top of the [README](README.md)**: what the project is, what is implemented (and what is only modelled or planned), and the development status. The advanced Earth–Mars, repeater, and memory studies are research models; they are in the [project tour](PROJECT_TOUR.md) and are not prerequisites for anything below.
+1. **Read the top of the [README](README.md)**: the goal (communication as close to instantaneous as physics allows, anywhere, and secure), what the project is, what is implemented (and what is only modelled or planned), and the development status. The advanced Earth–Mars, repeater, and memory studies are research models; they are further down the README and are not prerequisites for anything below.
 2. **Pick one of three paths**
    - **Run a simulation.** Follow the [README quickstart](README.md#run-a-simulation): create the Conda environment, run `python scripts/check_env.py`, then `python -m qll.link.run session`. A seeded run is reproducible; it is not secret.
    - **Explore the labs.** Open the [website](https://normansrule.github.io/quantum-link-research/), or serve it offline with `python -m http.server --bind 127.0.0.1 --directory docs 8000`. For the concepts behind them, use the [learning guide](learn/README.md).

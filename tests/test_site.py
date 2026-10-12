@@ -28,7 +28,7 @@ def test_site_data_matches_the_code():
 
 
 def test_readme_numbers_block_is_generated_and_current():
-    text = (ROOT / "PROJECT_TOUR.md").read_text(encoding="utf-8")
+    text = (ROOT / "README.md").read_text(encoding="utf-8")
     block = text.split("<!-- numbers:start -->")[1].split("<!-- numbers:end -->")[0]
     h = json.loads((DOCS / "site_data.json").read_text(encoding="utf-8"))["headline"]
     assert f"{h['round_trip_max_min']:.1f} min" in block and f"{h['bb84_threshold_pct']:.2f} %" in block
@@ -270,3 +270,32 @@ def test_lab_app_manifest_and_offline_cache_point_at_real_files():
     assert f'version = "{version}"' in pyproject, "bump the service worker cache with the release"
     for page in LAB_PAGES:
         assert 'rel="manifest"' in page.read_text(encoding="utf-8") and "registerApp" in page.read_text(encoding="utf-8"), page
+
+
+@pytest.mark.skipif(node is None, reason="node not installed")
+def test_js_latency_floor_matches_python(tmp_path):
+    from qll.space import latency_floor as LF
+    site = json.loads((DOCS / "site_data.json").read_text(encoding="utf-8"))["latency"]
+    c = site["constants"]
+    assert (c["R"], c["GEO"], c["LEO"], c["FIBER"], c["HOLLOW"], c["STRETCH"]) == (LF.EARTH_RADIUS_M, LF.GEO_ALTITUDE_M, LF.LEO_ALTITUDE_M,
+                                                                                LF.FIBER_INDEX, LF.HOLLOW_CORE_INDEX, LF.FIBER_ROUTE_STRETCH)
+    names = [s["name"] for s in site["sites"]]
+    pairs = [(a, b) for a in names for b in names if a != b and not (LF.SITES[a].range_m and LF.SITES[b].range_m)]
+    cases = [[a, b, 550e3, 1.5] for a, b in pairs] + [["London", "Sydney", 1200e3, 1.2], ["Tokyo", "Cape Town", 340e3, 2.0]]
+    (tmp_path / "cases.json").write_text(json.dumps({"sites": site["sites"], "cases": cases}), encoding="utf-8")
+    script = tmp_path / "lat.js"
+    script.write_text(
+        "const L=require(process.argv[2]);const d=JSON.parse(require('fs').readFileSync(process.argv[3],'utf8'));"
+        "const S=Object.fromEntries(d.sites.map(s=>[s.name,s]));"
+        "console.log(JSON.stringify(d.cases.map(([a,b,h,s])=>L.report(S[a],S[b],h,s))))", encoding="utf-8")
+    out = json.loads(subprocess.run([node, str(script), str(DOCS / "js" / "latency_core.js"), str(tmp_path / "cases.json")],
+                                    capture_output=True, text=True, encoding="utf-8", check=True).stdout)
+    for (a, b, h, s), js in zip(cases, out):
+        py = LF.routes(LF.SITES[a], LF.SITES[b], leo_altitude_m=h, fiber_stretch=s)
+        best, _ = LF.best_route(py)
+        assert js["best"] == best and set(js["routes"]) == set(py["routes"]), (a, b)
+        assert js["floor_s"] == pytest.approx(py["floor_s"], rel=1e-12) and js["chord_floor_s"] == pytest.approx(py["chord_floor_s"], rel=1e-12)
+        for name, r in py["routes"].items():
+            assert js["routes"][name]["delay_s"] == pytest.approx(r["delay_s"], rel=1e-12) and js["routes"][name]["note"] == r["note"], (a, b, name)
+        for kind, rows in LF.message_latency_s(js["best_delay_s"]).items():
+            assert js["latency"][kind] == pytest.approx(rows, rel=1e-12), kind

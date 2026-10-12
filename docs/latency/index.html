@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Anywhere at light speed · Quantum Link Research</title>
+<meta name="description" content="How close to instantaneous communication can get, anywhere: the light-time floor between any two places, the routes that approach it, and why banked key and banked entanglement bring secure messages down to that floor.">
+<meta property="og:title" content="Anywhere, at the speed of light · Quantum Link Research">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://normansrule.github.io/quantum-link-research/latency/">
+<meta property="og:image" content="https://normansrule.github.io/quantum-link-research/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+<link rel="stylesheet" href="../space.css">
+<style>
+  canvas#geo { height: 380px; background: radial-gradient(circle at 50% 70%, #0b1426 0%, #04070f 75%) }
+  canvas#bars { height: 204px }
+  canvas#race { height: 260px; background: #03060c }
+  canvas#secure { height: 250px }
+  .swap { min-width: 44px }
+  .pair { display: grid; grid-template-columns: 1fr auto 1fr; gap: .5rem; align-items: center }
+  .pair label { display: grid; gap: .25rem; font-size: .74rem; color: var(--muted); letter-spacing: .04em }
+  .best { color: var(--green) } .slow { color: var(--warm) }
+  @media (max-width: 520px) { .pair { grid-template-columns: 1fr } .swap { justify-self: start } }
+</style>
+<script defer src="../js/nav.js"></script>
+</head>
+<body>
+<a class="skip" href="#content">Skip to content</a>
+<div class="aurora"></div>
+<header class="top">
+  <a class="brand" href="../"><span class="dot"></span>Quantum Link Research</a>
+  <nav><a href="../">Home</a><a aria-current="page" href="../latency/">Anywhere</a><a href="../lab/">Lab</a><a href="../mars/">Mars</a><a href="../budget/">Budget</a><a href="../teleport/">Teleport</a><a class="opt" href="../monitor/">Monitor</a><a class="opt" href="../link/">Link ops</a><a class="opt" href="../repeater/">Repeater</a><a class="opt" href="../coupler/">Coupler</a><a class="opt" href="../qec/">QEC</a><a class="opt" href="../systems/">Systems</a><a class="gh" href="https://github.com/Normansrule/quantum-link-research">GitHub ↗</a></nav>
+</header>
+<main class="page" id="content" tabindex="-1">
+  <div class="page-intro">
+    <div class="kicker">The goal · communication anywhere, as close to instant as physics allows</div>
+    <h1>Anywhere, at the <span class="gradient-text">speed of light</span>.</h1>
+    <p class="sub">Pick any two places. The page computes the light-time floor between them, how close each real route comes to it, and what a secure message or a teleported qubit adds on top. Banking key and entanglement before the message exists is what brings both down to the floor, wherever the two ends are. The physics is <code>qll/space/latency_floor.py</code>, ported line by line to <code>docs/js/latency_core.js</code> and checked against it for every pair of places.</p>
+  </div>
+
+  <div class="physics" role="note">
+    <p><b>What physics allows.</b> Nothing outruns light: d/c is a hard floor. Entanglement does not beat it either, because whatever Alice does to her half of a pair, Bob sees nothing new until a classical message arrives (the no-signalling theorem). "Almost instantaneous" therefore means one trip at the floor, with nothing waiting on top. On Earth that is at most 67 ms; to the Moon about 1.3 s; to Mars 3 to 22 minutes.</p>
+  </div>
+
+  <div class="ui-grid">
+    <section class="ui-panel span-8" aria-labelledby="h-geo">
+      <h4 id="h-geo">The geometry of the floor</h4>
+      <div class="pair">
+        <label>From <select class="ui-select" id="from" aria-label="From"></select></label>
+        <button class="ui-btn swap" id="swap" type="button" aria-label="Swap the two ends">⇄</button>
+        <label>To <select class="ui-select" id="to" aria-label="To"></select></label>
+      </div>
+      <canvas id="geo" role="img" aria-label="Cross-section of Earth through the two places, with the great circle, the chord, the fiber route, the low-orbit route, and the geostationary relay"></canvas>
+      <div class="ui-legend" aria-hidden="true"><span><i style="background:#45e0a0"></i>great circle (floor)</span><span><i style="background:#93a1b8"></i>chord (through the planet)</span><span><i style="background:#ff8a4c"></i>fiber route</span><span><i style="background:#5ef2e0"></i>LEO laser mesh</span><span><i style="background:#ff6b4a"></i>GEO relay</span><span><i style="background:#5ea8ff"></i>free space</span></div>
+    </section>
+    <section class="ui-panel span-4" aria-labelledby="h-k">
+      <h4 id="h-k">The numbers</h4>
+      <div class="ui-kpis" id="kpis" aria-live="polite"></div>
+      <p class="ui-note" id="verdict"></p>
+    </section>
+
+    <section class="ui-panel span-12" aria-labelledby="h-bars">
+      <h4 id="h-bars">Every route against the floor</h4>
+      <canvas id="bars" role="img" aria-label="One-way delay of each route as a bar, with the light-time floor marked"></canvas>
+      <div class="ui-grid" style="margin:.4rem 0 0">
+        <div class="span-6"><label class="ui-slider">Low-orbit shell altitude <b id="v-leo"></b><input id="leo" type="range" min="300" max="2000" step="10" value="550"></label></div>
+        <div class="span-6"><label class="ui-slider">Fiber route over the great circle (assumed) <b id="v-st"></b><input id="st" type="range" min="1" max="2.5" step="0.05" value="1.5"></label></div>
+      </div>
+      <div class="matrix" style="margin-top:.5rem"><table id="table"></table></div>
+    </section>
+
+    <section class="ui-panel span-7" aria-labelledby="h-race">
+      <h4 id="h-race">A pulse down every route</h4>
+      <canvas id="race" role="img" aria-label="Pulses racing along each route at their true relative speeds"></canvas>
+      <div class="ui-row">
+        <button class="ui-btn" id="play" type="button" aria-pressed="false">▶ Play</button>
+        <button class="ui-btn" id="step" type="button">Step</button>
+        <button class="ui-btn" id="reset" type="button">Reset</button>
+        <span class="ui-note" id="scale" style="margin:0"></span>
+      </div>
+    </section>
+    <section class="ui-panel span-5" aria-labelledby="h-sec">
+      <h4 id="h-sec">When can it be read?</h4>
+      <canvas id="secure" role="img" aria-label="Time until the receiver can read a secure message or use a teleported qubit, for each way of preparing"></canvas>
+      <p class="ui-note">On the fastest route. Banked key or banked pairs need one trip; key made on demand needs three, and a fresh internet connection with TLS 1.3 five.</p>
+    </section>
+
+    <section class="ui-panel span-12" aria-labelledby="h-math">
+      <h4 id="h-math">The math, line by line</h4>
+      <div class="ui-term" id="term"></div>
+    </section>
+  </div>
+</main>
+<footer>Anywhere at light speed. Physics from <code>qll/space/latency_floor.py</code> [eberhard1989, ghirardi1980, moritz2000, williams2024moon, poletti2013, handley2018, bozkurt2015, rfc8446, rfc9293, bennett1993]. Times are compressed or expanded in the race so every route fits on screen; the scale is printed beside the controls. The fiber route factor and the orbit altitude are assumed planning values.</footer>
+<!-- site-foot:start --><div class="site-foot" role="contentinfo"><span class="brand-s">Quantum Link Research</span><span>v0.57.0</span><a href="../latency/">Anywhere at light speed</a><a href="https://github.com/Normansrule/quantum-link-research">Source</a><a href="https://github.com/Normansrule/quantum-link-research/blob/main/CHANGELOG.md">Changelog</a><a href="https://github.com/Normansrule/quantum-link-research/blob/main/docs/audit/2026-10-11_findings.md">Audit findings</a><a href="https://github.com/Normansrule/quantum-link-research/blob/main/CREDITS.md">Credits</a><span class="grow">No signal outruns light. Numbers are model outputs unless a page says measured; nothing here is a security-reviewed link.</span></div><!-- site-foot:end -->
+<script src="../js/ephemeris.js"></script>
+<script src="../js/latency_core.js"></script>
+<script>
+(() => {
+  const L = window.QLLLatency, E = window.QLLEphemeris, $ = (id) => document.getElementById(id);
+  const COL = { "terrestrial fiber": "#ff8a4c", "hollow-core fiber": "#a78bfa", "LEO laser mesh": "#5ef2e0", "geostationary relay": "#ff6b4a", "free space": "#5ea8ff" };
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let SITES = [], S = {}, state = { from: "Los Angeles", to: "London", leo: 550e3, st: 1.5 }, rep = null;
+  const fmt = (s) => s < 1e-3 ? `${(s * 1e6).toFixed(0)} µs` : s < 1 ? `${(s * 1e3).toFixed(s < 0.01 ? 2 : 1)} ms` : s < 120 ? `${s.toFixed(s < 10 ? 2 : 1)} s` : `${(s / 60).toFixed(1)} min`;
+  const km = (m) => `${Math.round(m / 1e3).toLocaleString("en-US")} km`;
+  function fit(cv) { const r = cv.getBoundingClientRect(), d = Math.min(devicePixelRatio || 1, 2); cv.width = Math.max(1, r.width * d); cv.height = Math.max(1, r.height * d); const g = cv.getContext("2d"); g.setTransform(d, 0, 0, d, 0, 0); return [g, r.width, r.height]; }
+
+  function compute() { rep = L.report(S[state.from], S[state.to], state.leo, state.st); }
+
+  function kpis() {
+    const r = rep, onE = !Number.isNaN(r.distances.angle_rad);
+    const cells = [["light-time floor", fmt(r.floor_s), onE ? `great circle, ${km(r.distances.great_circle_m)}` : `straight line, ${km(r.distances.great_circle_m)}`],
+      ["absolute floor", fmt(r.chord_floor_s), onE ? "the chord through the planet" : "the same: free space"],
+      ["fastest route", fmt(r.best_delay_s), `${r.best}, ${r.best_stretch.toFixed(3)}× the floor`],
+      ["secure message, banked key", fmt(r.latency["secure message"]["banked key"]), "one trip, nothing waits"]];
+    $("kpis").innerHTML = cells.map(([l, v, s]) => `<div class="ui-k"><div class="l">${l}</div><div class="v">${v}</div><div class="s">${s}</div></div>`).join("");
+    const slow = r.latency["secure message"]["TCP + TLS 1.3, new connection"];
+    $("verdict").innerHTML = `With key banked in advance, a message from ${r.from} reaches ${r.to} in <b class="best">${fmt(r.best_delay_s)}</b>, ${((r.best_stretch - 1) * 100).toFixed(1)} % above the floor. A fresh TLS connection on the same route takes <b class="slow">${fmt(slow)}</b>.`;
+  }
+
+  function geo() {
+    const [g, w, h] = fit($("geo")), r = rep;
+    g.clearRect(0, 0, w, h);
+    if (Number.isNaN(r.distances.angle_rad)) return space(g, w, h);
+    const th = r.distances.angle_rad, ER = Math.min(w * 0.36, h * 0.62), cx = w / 2, cy = h * 0.5 + ER * 0.55;
+    const pt = (a, rr) => [cx + rr * Math.sin(a), cy - rr * Math.cos(a)];
+    const a0 = -th / 2, a1 = th / 2, s = ER / L.R;
+    const earth = g.createRadialGradient(cx - ER * 0.3, cy - ER * 0.4, ER * 0.1, cx, cy, ER);
+    earth.addColorStop(0, "#1d3a66"); earth.addColorStop(1, "#08121f");
+    g.fillStyle = earth; g.beginPath(); g.arc(cx, cy, ER, 0, 7); g.fill();
+    g.strokeStyle = "rgba(94,168,255,.35)"; g.lineWidth = 1; g.stroke();
+    const arcPath = (rr, col, wid, dash) => { g.strokeStyle = col; g.lineWidth = wid; g.setLineDash(dash || []); g.beginPath(); g.arc(cx, cy, rr, a0 - Math.PI / 2, a1 - Math.PI / 2); g.stroke(); g.setLineDash([]); };
+    // GEO relay (off scale above the midpoint)
+    if (r.routes["geostationary relay"]) {
+      const [ax, ay] = pt(a0, ER), [bx, by] = pt(a1, ER), top = [cx, 14];
+      g.strokeStyle = "rgba(255,107,74,.75)"; g.setLineDash([5, 5]); g.lineWidth = 1.4; g.beginPath(); g.moveTo(ax, ay); g.lineTo(...top); g.lineTo(bx, by); g.stroke(); g.setLineDash([]);
+      g.fillStyle = "#ff6b4a"; g.font = "11px JetBrains Mono, monospace"; g.textAlign = "center"; g.fillText("GEO relay, 35,786 km up (off scale) ↑", cx, 28);
+    }
+    // fiber: wanders below the surface, drawn as a wiggle whose excess length is the route factor
+    g.strokeStyle = COL["terrestrial fiber"]; g.lineWidth = 2; g.beginPath();
+    const n = 160, amp = Math.min(ER * 0.06, ER * 0.05 * (state.st - 1) * 4 + 2);
+    for (let i = 0; i <= n; i++) { const a = a0 + (th * i) / n, wob = amp * Math.abs(Math.sin((i / n) * Math.PI * Math.max(3, Math.round(th * 8)))); const [x, y] = pt(a, ER * 0.965 - wob); i ? g.lineTo(x, y) : g.moveTo(x, y); }
+    g.stroke();
+    // chord and great circle
+    const [ax, ay] = pt(a0, ER), [bx, by] = pt(a1, ER);
+    g.strokeStyle = "rgba(147,161,184,.7)"; g.setLineDash([3, 4]); g.lineWidth = 1.2; g.beginPath(); g.moveTo(ax, ay); g.lineTo(bx, by); g.stroke(); g.setLineDash([]);
+    arcPath(ER, "#45e0a0", 3);
+    // LEO path at true scale
+    const rl = ER + state.leo * s, [lax, lay] = pt(a0, rl), [lbx, lby] = pt(a1, rl);
+    g.strokeStyle = COL["LEO laser mesh"]; g.lineWidth = 2.2; g.beginPath(); g.moveTo(ax, ay); g.lineTo(lax, lay); g.stroke();
+    arcPath(rl, COL["LEO laser mesh"], 2.2); g.beginPath(); g.moveTo(lbx, lby); g.lineTo(bx, by); g.stroke();
+    // ends
+    for (const [x, y, name] of [[ax, ay, r.from], [bx, by, r.to]]) {
+      g.fillStyle = "#e8eef8"; g.beginPath(); g.arc(x, y, 5, 0, 7); g.fill(); g.strokeStyle = "#5ef2e0"; g.lineWidth = 2; g.beginPath(); g.arc(x, y, 9, 0, 7); g.stroke();
+      g.font = "600 12px Inter, system-ui, sans-serif"; g.fillStyle = "#e8eef8";
+      const tw = g.measureText(name).width, side = x < cx ? -1 : 1;
+      if ((side < 0 && x - 14 - tw < 4) || (side > 0 && x + 14 + tw > w - 4)) { g.textAlign = "center"; g.fillText(name, Math.min(Math.max(x, tw / 2 + 4), w - tw / 2 - 4), y + 26); }
+      else { g.textAlign = side < 0 ? "right" : "left"; g.fillText(name, x + side * 14, y + 4); }
+    }
+    g.textAlign = "center"; g.fillStyle = "#93a1b8"; g.font = "11px JetBrains Mono, monospace";
+    const info = `${(th * 180 / Math.PI).toFixed(1)}° apart · ${km(r.distances.great_circle_m)} on the surface · ${km(r.distances.chord_m)} through it`;
+    if (g.measureText(info).width < w - 16) g.fillText(info, cx, h - 10);
+    else { g.fillText(`${(th * 180 / Math.PI).toFixed(1)}° apart · ${km(r.distances.great_circle_m)} on the surface`, cx, h - 24); g.fillText(`${km(r.distances.chord_m)} through the planet`, cx, h - 9); }
+  }
+
+  function space(g, w, h) {
+    const r = rep, d = r.distances.great_circle_m, y = h * 0.52, x0 = 70, x1 = w - 70;
+    g.fillStyle = "#1d3a66"; g.beginPath(); g.arc(x0, y, 22, 0, 7); g.fill(); g.fillStyle = "#e8eef8"; g.font = "600 12px Inter, system-ui"; g.textAlign = "center"; g.fillText("Earth", x0, y + 40);
+    const body = r.to.includes("Mars") || r.from.includes("Mars") ? ["#ff6b4a", 14, "Mars"] : ["#c9d1dc", 10, "Moon"];
+    g.fillStyle = body[0]; g.beginPath(); g.arc(x1, y, body[1], 0, 7); g.fill(); g.fillStyle = "#e8eef8"; g.fillText(body[2], x1, y + 36);
+    g.strokeStyle = COL["free space"]; g.lineWidth = 2; g.beginPath(); g.moveTo(x0 + 24, y); g.lineTo(x1 - body[1] - 2, y); g.stroke();
+    // light-second ticks on a log scale
+    const lsec = d / L.C, X = (t) => x0 + 24 + (x1 - x0 - 48) * Math.log10(1 + t) / Math.log10(1 + lsec);
+    g.font = "11px JetBrains Mono, monospace"; g.fillStyle = "#93a1b8";
+    for (const t of [1, 10, 60, 600].filter((t) => t < lsec)) { const x = X(t); g.fillRect(x, y - 6, 1, 12); g.fillText(t < 60 ? `${t} s` : `${t / 60} min`, x, y - 12); }
+    g.fillStyle = "#5ef2e0"; g.fillText(`${km(d)} · ${fmt(lsec)} one way at the speed of light (log scale)`, w / 2, h - 12);
+  }
+
+  function bars() {
+    const r = rep, items = Object.entries(r.routes).sort((a, b) => a[1].delay_s - b[1].delay_s);
+    const narrow = $("bars").getBoundingClientRect().width < 560;
+    $("bars").style.height = `${items.length * (narrow ? 52 : 40) + 44}px`;
+    const [g, w, h] = fit($("bars"));
+    g.clearRect(0, 0, w, h);
+    const left = narrow ? 8 : Math.min(170, w * 0.36), right = 18, top = narrow ? 22 : 14, rowH = (h - top - 30) / Math.max(items.length, 1);
+    const tmax = Math.max(...items.map(([, x]) => x.delay_s)) * 1.05, X = (t) => left + (w - left - right) * t / tmax;
+    g.font = "12px Inter, system-ui, sans-serif";
+    items.forEach(([name, x], i) => {
+      const y = top + i * rowH, bh = rowH * 0.55;
+      g.fillStyle = "#93a1b8"; if (narrow) { g.textAlign = "left"; g.fillText(name, left, y - 5); } else { g.textAlign = "right"; g.fillText(name, left - 10, y + bh * 0.8); }
+      const grd = g.createLinearGradient(left, 0, X(x.delay_s), 0); grd.addColorStop(0, COL[name] + "55"); grd.addColorStop(1, COL[name]);
+      g.fillStyle = grd; g.beginPath(); g.roundRect ? g.roundRect(left, y, X(x.delay_s) - left, bh, 5) : g.rect(left, y, X(x.delay_s) - left, bh); g.fill();
+      g.fillStyle = "#e8eef8"; g.textAlign = "left"; g.font = "11px JetBrains Mono, monospace";
+      const lab = `${fmt(x.delay_s)} · ${x.stretch.toFixed(2)}×`, lx = X(x.delay_s) + 6;
+      if (lx + g.measureText(lab).width < w) g.fillText(lab, lx, y + bh * 0.8); else { g.textAlign = "right"; g.fillStyle = "#03060c"; g.fillText(lab, X(x.delay_s) - 6, y + bh * 0.8); }
+      g.font = "12px Inter, system-ui, sans-serif";
+    });
+    const fx = X(r.floor_s);
+    g.strokeStyle = "#45e0a0"; g.setLineDash([4, 4]); g.lineWidth = 1.5; g.beginPath(); g.moveTo(fx, top - 6); g.lineTo(fx, top + items.length * rowH); g.stroke(); g.setLineDash([]);
+    g.fillStyle = "#45e0a0"; g.textAlign = "center"; g.font = "11px JetBrains Mono, monospace"; g.fillText(`floor ${fmt(r.floor_s)}`, Math.min(Math.max(fx, 50), w - 50), h - 6);
+    $("table").innerHTML = "<thead><tr><th style='text-align:left'>route</th><th>path length</th><th>index</th><th>one way</th><th>× floor</th><th style='text-align:left'>how</th></tr></thead><tbody>" +
+      items.map(([n, x]) => `<tr><td style="text-align:left">${n}</td><td>${km(x.length_m)}</td><td>${x.index}</td><td>${fmt(x.delay_s)}</td><td>${x.stretch.toFixed(3)}</td><td style="text-align:left;color:var(--muted)">${x.note}</td></tr>`).join("") + "</tbody>";
+  }
+
+  // the race: pulses move at their true relative speeds, on a time scale chosen so the slowest finishes in 6 s
+  let raceT = 0, playing = false, lastNow = 0;
+  function raceScale() { const tmax = Math.max(...Object.values(rep.routes).map((x) => x.delay_s)); return 6 / tmax; }
+  function race() {
+    const [g, w, h] = fit($("race")), items = Object.entries(rep.routes).sort((a, b) => a[1].delay_s - b[1].delay_s), k = raceScale();
+    g.clearRect(0, 0, w, h);
+    const left = 16, right = 16, rowH = (h - 30) / Math.max(items.length, 1), tmax = 6 / k;
+    const X = (t) => left + (w - left - right) * Math.min(t, tmax) / tmax, simT = raceT / k;
+    items.forEach(([name, x], i) => {
+      const y = 18 + i * rowH + rowH / 2;
+      g.strokeStyle = "rgba(147,161,184,.25)"; g.lineWidth = 1; g.beginPath(); g.moveTo(left, y); g.lineTo(w - right, y); g.stroke();
+      g.fillStyle = "#93a1b8"; g.font = "11px Inter, system-ui"; g.textAlign = "left"; g.fillText(name, left + 14, y - 9);
+      const done = simT >= x.delay_s, px = X(Math.min(simT, x.delay_s));
+      g.strokeStyle = COL[name]; g.lineWidth = 3; g.beginPath(); g.moveTo(left, y); g.lineTo(px, y); g.stroke();
+      g.fillStyle = COL[name]; g.shadowColor = COL[name]; g.shadowBlur = done ? 0 : 14; g.beginPath(); g.arc(px, y, done ? 4 : 6, 0, 7); g.fill(); g.shadowBlur = 0;
+      if (done) { g.fillStyle = "#e8eef8"; g.font = "11px JetBrains Mono, monospace"; g.textAlign = "right"; g.fillText(`arrived ${fmt(x.delay_s)}`, w - right, y - 8); }
+    });
+    const fx = X(rep.floor_s); g.strokeStyle = "#45e0a0"; g.setLineDash([3, 4]); g.beginPath(); g.moveTo(fx, 8); g.lineTo(fx, h - 14); g.stroke(); g.setLineDash([]);
+    g.fillStyle = "#45e0a0"; g.font = "11px JetBrains Mono, monospace"; g.textAlign = "center"; g.fillText("floor", fx, h - 3);
+    const f = k >= 1 ? `slowed ${k.toLocaleString("en-US", { maximumSignificantDigits: 3 })}×` : `sped up ${(1 / k).toLocaleString("en-US", { maximumSignificantDigits: 3 })}×`;
+    $("scale").textContent = `Time ${f} · t = ${fmt(simT)}`;
+  }
+  function tick(now) {
+    if (!playing) return;
+    raceT += Math.min(0.05, (now - lastNow) / 1000); lastNow = now;
+    if (raceT >= 6.4) { raceT = 6.4; setPlaying(false); }
+    race(); if (playing) requestAnimationFrame(tick);
+  }
+  function setPlaying(p) { playing = p; $("play").setAttribute("aria-pressed", String(p)); $("play").textContent = p ? "❚❚ Pause" : "▶ Play"; if (p) { if (raceT >= 6.4) raceT = 0; lastNow = performance.now(); requestAnimationFrame(tick); } }
+
+  function secure() {
+    const narrow = $("secure").getBoundingClientRect().width < 560;
+    $("secure").style.height = narrow ? "300px" : "";
+    const [g, w, h] = fit($("secure")), lat = rep.latency;
+    const rows = [["secure", "banked key", "#45e0a0"], ["secure", "QKD on demand", "#5ea8ff"], ["secure", "TCP + TLS 1.3, new connection", "#ff8a4c"], ["teleported", "banked pairs", "#5ef2e0"], ["teleported", "pair sent on demand", "#a78bfa"]];
+    g.clearRect(0, 0, w, h);
+    const left = narrow ? 8 : Math.min(230, w * 0.5), rowH = (h - 16) / rows.length, tmax = lat["secure message"]["TCP + TLS 1.3, new connection"] * 1.05;
+    rows.forEach(([kind, k, col], i) => {
+      const t = kind === "secure" ? lat["secure message"][k] : lat["teleported qubit"][k], y = (narrow ? 22 : 8) + i * rowH, bh = rowH * (narrow ? 0.38 : 0.5);
+      g.fillStyle = "#93a1b8"; g.font = "11px Inter, system-ui"; g.textAlign = narrow ? "left" : "right"; g.fillText(`${kind === "secure" ? "message" : "qubit"} · ${k.replace("TCP + TLS 1.3, new connection", "new TLS 1.3 connection")}`, narrow ? left : left - 8, narrow ? y - 5 : y + bh * 0.85);
+      const x1 = left + (w - left - 12) * t / tmax;
+      g.fillStyle = col; g.globalAlpha = 0.9; g.beginPath(); g.roundRect ? g.roundRect(left, y, x1 - left, bh, 4) : g.rect(left, y, x1 - left, bh); g.fill(); g.globalAlpha = 1;
+      g.fillStyle = "#e8eef8"; g.textAlign = "left"; g.font = "11px JetBrains Mono, monospace";
+      const lab = fmt(t); if (x1 + 6 + g.measureText(lab).width < w) g.fillText(lab, x1 + 6, y + bh * 0.85); else { g.textAlign = "right"; g.fillStyle = "#03060c"; g.fillText(lab, x1 - 6, y + bh * 0.85); }
+    });
+  }
+
+  function term() {
+    const r = rep, onE = !Number.isNaN(r.distances.angle_rad), b = r.routes[r.best];
+    const lines = onE ? [
+      `<span class="c"># the floor: nothing outruns light, and entanglement alone carries no message</span> <span class="ref">[eberhard1989]</span>`,
+      `θ = haversine(φ₁, λ₁, φ₂, λ₂) = <span class="v">${(r.distances.angle_rad * 180 / Math.PI).toFixed(3)}°</span>`,
+      `great circle = R θ = 6,371.0088 km × ${r.distances.angle_rad.toFixed(5)} = <span class="v">${km(r.distances.great_circle_m)}</span> <span class="ref">[moritz2000]</span>`,
+      `floor = R θ / c = <span class="v">${fmt(r.floor_s)}</span>;  absolute floor = 2R sin(θ/2) / c = <span class="v">${fmt(r.chord_floor_s)}</span>`,
+      `<span class="c"># the routes</span>`,
+      `fiber      = n s R θ / c = 1.47 × ${state.st} × R θ / c = <span class="v">${fmt(r.routes["terrestrial fiber"].delay_s)}</span>`,
+      `hollow     = 1.003 × ${state.st} × R θ / c = <span class="v">${fmt(r.routes["hollow-core fiber"].delay_s)}</span> <span class="ref">[poletti2013]</span>`,
+      `LEO mesh   = (2h + (R + h) θ) / c, h = ${km(state.leo)} → <span class="v">${fmt(r.routes["LEO laser mesh"].delay_s)}</span> <span class="ref">[handley2018]</span>`,
+      r.routes["geostationary relay"] ? `GEO relay  = 2 √(R² + r² − 2Rr cos(θ/2)) / c, r = R + 35,786 km → <span class="v">${fmt(r.routes["geostationary relay"].delay_s)}</span>` : `GEO relay  = none: the ends are more than 162.6° apart, so no single relay sees both`,
+      `<span class="c"># what waits on top, in one-way trips of the fastest route (${r.best}, ${fmt(b.delay_s)})</span>`,
+      `banked key 1 · QKD on demand 3 · TCP + TLS 1.3 5 <span class="ref">[rfc9293] [rfc8446]</span> → <span class="v">${fmt(b.delay_s)}</span> · ${fmt(3 * b.delay_s)} · ${fmt(5 * b.delay_s)}`,
+      `teleportation: banked pairs 1 (two classical bits) · pair sent on demand 2 <span class="ref">[bennett1993]</span>`,
+    ] : [
+      `<span class="c"># between bodies the only route is free space, and the floor is the straight line</span>`,
+      `floor = d / c = ${km(r.distances.great_circle_m)} / 299,792.458 km/s = <span class="v">${fmt(r.floor_s)}</span>`,
+      `banked key 1 trip → <span class="v">${fmt(r.floor_s)}</span>;  QKD on demand 3 → ${fmt(3 * r.floor_s)};  TCP + TLS 1.3 5 → ${fmt(5 * r.floor_s)}`,
+      `<span class="c"># this is why the Mars messenger banks key: at 22 minutes a trip, waiting for fresh key costs another 44</span>`,
+    ];
+    $("term").innerHTML = lines.join("<br>");
+  }
+
+  function render() { compute(); kpis(); geo(); bars(); secure(); term(); raceT = reduce ? 6.4 : 0; race(); }
+  function fill() {
+    const opts = SITES.map((s) => `<option>${s.name}</option>`).join("");
+    $("from").innerHTML = opts; $("to").innerHTML = opts; $("from").value = state.from; $("to").value = state.to;
+  }
+  function valid(changed) {   // two bodies cannot both be off Earth, and the two ends must differ
+    const a = S[state.from], b = S[state.to], offA = a.range_m != null, offB = b.range_m != null;
+    if (state.from === state.to || (offA && offB)) { if (changed === "from") state.to = offA ? "Los Angeles" : (state.from === "London" ? "Tokyo" : "London"); else state.from = offB ? "Los Angeles" : (state.to === "Los Angeles" ? "London" : "Los Angeles"); fill(); }
+  }
+  function boot(data) {
+    if (E && data) E.configure(data);
+    SITES = data.latency.sites.slice();
+    const t = (Date.now() - Date.UTC(2000, 0, 1, 12)) / 864e5;
+    if (E) SITES.push({ name: `Mars today (${new Date().toISOString().slice(0, 10)})`, lat_deg: null, lon_deg: null, range_m: E.rangeM(t) });
+    S = Object.fromEntries(SITES.map((s) => [s.name, s]));
+    fill();
+    $("from").onchange = (e) => { state.from = e.target.value; valid("from"); render(); };
+    $("to").onchange = (e) => { state.to = e.target.value; valid("to"); render(); };
+    $("swap").onclick = () => { [state.from, state.to] = [state.to, state.from]; fill(); render(); };
+    const sl = () => { state.leo = +$("leo").value * 1e3; state.st = +$("st").value; $("v-leo").textContent = km(state.leo); $("v-st").textContent = `${state.st.toFixed(2)}×`; render(); };
+    $("leo").oninput = sl; $("st").oninput = sl;
+    $("play").onclick = () => setPlaying(!playing);
+    $("step").onclick = () => { setPlaying(false); raceT = Math.min(6.4, raceT + 0.3); race(); };
+    $("reset").onclick = () => { setPlaying(false); raceT = 0; race(); };
+    addEventListener("resize", () => { geo(); bars(); secure(); race(); });
+    sl();
+    document.body.dataset.ready = "1";
+  }
+  fetch("../site_data.json", { cache: "no-cache" }).then((r) => { if (!r.ok) throw new Error(r.status); return r.json(); }).then(boot).catch((e) => {
+    console.warn("site_data.json unavailable", e);
+    $("kpis").innerHTML = '<div class="ui-k"><div class="l">status</div><div class="v stale">unavailable</div><div class="s">site data could not be loaded</div></div>';
+  });
+})();
+</script>
+</body>
+</html>

@@ -15,14 +15,14 @@ DOCS = ROOT / "docs"
 pytestmark = pytest.mark.phase1
 sys.path.insert(0, str(ROOT / "scripts"))
 
-NAMES = ("stats", "timescales", "stack", "marquee", "equations")
+NAMES = ("stats", "timescales", "latency", "stack", "marquee", "equations")
 
 
 @pytest.mark.parametrize("name", NAMES)
 def test_readme_art_is_valid_svg_and_referenced(name):
     path = DOCS / "figures" / f"readme_{name}.svg"
     xml.dom.minidom.parseString(path.read_bytes())
-    assert f"docs/figures/readme_{name}.svg" in (ROOT / "PROJECT_TOUR.md").read_text(encoding="utf-8")
+    assert f"docs/figures/readme_{name}.svg" in (ROOT / "README.md").read_text(encoding="utf-8")
 
 
 def test_stats_card_shows_the_tested_numbers_as_its_static_frame():
@@ -60,7 +60,7 @@ def test_marquee_has_one_pill_per_landmark_file():
     assert f"{len(files)} LANDMARK EXPERIMENTS" in art.marquee()
 
 
-@pytest.mark.parametrize("page", ["README.md", "PROJECT_TOUR.md", "START_HERE.md"])
+@pytest.mark.parametrize("page", ["README.md", "START_HERE.md"])
 def test_every_local_link_and_image_in_the_readme_exists(page):
     text = (ROOT / page).read_text(encoding="utf-8")
     targets = re.findall(r'(?:src|href)="([^"]+)"', text) + re.findall(r"\]\(([^)\s]+)\)", text)
@@ -86,12 +86,19 @@ def test_endpoint_badges_follow_the_schema_and_quote_status():
     assert "passed" not in committed["message"] and "CI" in committed["message"]                # an inventory, never a result
 
 
-def test_readme_is_short_and_states_its_scope():
+def test_readme_states_its_goal_scope_and_status():
     text = (ROOT / "README.md").read_text(encoding="utf-8")
-    head = text.split("<!-- build-guide:start -->")[0]
-    assert head.count("\n# ") == 0 and head.startswith("# Quantum Link Research")                # one live-text H1
-    assert ".gif" not in text and "hero_banner.svg" not in head                                   # static posters only
-    assert "research models" in head and "Development status" in head and "not a production" in head
-    for anchor in ("## Run a simulation", "## Explore the labs", "## Build the two-room experiment", "## What is implemented?"):
-        assert anchor in head
-    assert len(re.sub(r"<[^>]+>|\(http[^)]*\)", "", head).split()) < 1600
+    head = text.split("## The goal: anywhere, at the speed of light")[0]
+    assert text.count("<h1") == 1 and "\n# " not in text.split("<!-- build-guide:start -->")[0]      # one live-text H1
+    assert "as close to instantaneous as physics allows" in head and "No signal outruns light" in head
+    assert "Development status" in head and "not a production" in head and "model outputs" in head
+    for anchor in ("## Run a simulation", "## Explore the labs", "## Build the two-room experiment", "## What is implemented?", "## The website"):
+        assert anchor in text
+    assert "docs/figures/readme_latency.svg" in text and "docs/figures/lab_latency.jpg" in text
+
+
+def test_readme_latency_table_is_generated_and_current():
+    import build_site_data as B
+    text = (ROOT / "README.md").read_text(encoding="utf-8")
+    block = text.split("<!-- latency:start -->")[1].split("<!-- latency:end -->")[0]
+    assert block.strip() == B.latency_table().strip(), "run python scripts/build_site_data.py"

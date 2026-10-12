@@ -24,22 +24,19 @@
 
 <header class="top">
   <a class="brand" href="#"><span class="dot"></span>Quantum Link Research</a>
-  <nav>
-    <a class="opt" href="#numbers">Numbers</a><a href="#equations">Equations</a><a href="#flagships">Experiments</a><a class="opt" href="#memories">Memories</a>
-    <a href="lab/">Lab</a><a class="opt" href="#bloch">Bloch</a><a class="opt" href="#interference">Interference</a><a href="mars/">Mars</a><a href="budget/">Budget</a><a href="teleport/">Teleport</a><a href="monitor/">Monitor</a><a href="link/">Link ops</a><a href="repeater/">Repeater</a><a href="coupler/">Coupler</a><a href="qec/">QEC</a><a class="opt" href="systems/">Traceability</a><a class="opt" href="#library">Library</a>
-    <a class="gh" href="https://github.com/Normansrule/quantum-link-research">GitHub ↗</a>
-  </nav>
+  <nav><a aria-current="page" href="./">Home</a><a href="latency/">Anywhere</a><a href="lab/">Lab</a><a href="mars/">Mars</a><a href="budget/">Budget</a><a href="teleport/">Teleport</a><a class="opt" href="monitor/">Monitor</a><a class="opt" href="link/">Link ops</a><a class="opt" href="repeater/">Repeater</a><a class="opt" href="coupler/">Coupler</a><a class="opt" href="qec/">QEC</a><a class="opt" href="systems/">Systems</a><a class="gh" href="https://github.com/Normansrule/quantum-link-research">GitHub ↗</a></nav>
 </header>
 <main id="content" tabindex="-1">
 
 <section class="hero">
   <canvas id="hero-canvas" aria-label="The inner Solar System with Earth, Mars, a relay at Sun–Earth L4, entangled photons and classical bits"></canvas>
   <div class="hero-inner">
-    <span class="eyebrow"><b>●</b> v<span data-status="version">…</span> · <span data-status="tests">…</span> tests collected · <span data-status="requirements_verified">…</span>/<span data-status="requirements">…</span> requirements mapped to tests · <a id="ci-status" href="https://github.com/Normansrule/quantum-link-research/actions/workflows/ci.yml">CI status: checking…</a></span>
-    <h1 class="title">Can Earth and Mars share a key<br><span class="gradient-text">no eavesdropper can learn?</span></h1>
-    <p class="lede">Under stated assumptions (trusted devices, authenticated messages, a matching finite-key proof), quantum physics allows it in principle; nothing here demonstrates it for Mars, and the Earth–Mars numbers are research models. There is also one catch: entanglement carries no message, and the two classical bits every teleportation needs take minutes at the speed of light. This project computes what that catch costs, what hardware can pay it, and what a student can build on the way, in code that is tested against the equations.</p>
+    <span class="eyebrow"><b>●</b> v<span data-status="version">…</span> · <span data-status="tests">…</span> tests · <span data-status="requirements_verified">…</span>/<span data-status="requirements">…</span> requirements mapped · <a id="ci-status" href="https://github.com/Normansrule/quantum-link-research/actions/workflows/ci.yml">CI status: checking…</a></span>
+    <h1 class="title">Talk to anywhere,<br><span class="gradient-text">as fast as light allows.</span></h1>
+    <p class="lede">The goal is communication that is as close to instantaneous as physics permits, wherever the two ends are, and secure. Physics sets the floor exactly: no signal, and no use of entanglement, outruns light. So the work is to reach that floor: routes that travel at nearly c, and key and entanglement banked before the message exists, so nothing waits on top. On Earth the floor is at most 67 ms; to Mars it is 3 to 22 minutes. Everything here is tested code and research models; nothing is yet a measured link.</p>
     <div class="cta">
-      <a class="btn primary" href="mars/">Open the Mars link simulator →</a>
+      <a class="btn primary" href="latency/">Anywhere at light speed →</a>
+      <a class="btn" href="mars/">Mars link simulator</a>
       <a class="btn" href="#numbers">The numbers</a>
       <a class="btn" href="https://github.com/Normansrule/quantum-link-research/blob/main/research/thesis/THESIS_DRAFT.md">Read the thesis draft</a>
     </div>
@@ -170,6 +167,7 @@
   <div class="kicker reveal">Interactive</div>
   <h2 class="reveal">Eleven ways in</h2>
   <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr))">
+    <a class="card reveal" href="latency/"><span class="tag green">the goal</span><h3>Anywhere, at the speed of light</h3><p>Pick any two places on Earth, the Moon, or Mars: the light-time floor between them, how close fiber, hollow-core fiber, a low-orbit laser mesh, and a geostationary relay come to it, and why banked key and banked entanglement bring a secure message down to one trip at the floor.</p></a>
     <a class="card reveal" href="lab/"><span class="tag green">lab · app</span><h3>Build the two-room link</h3><p>The main experiment in 3D, from a $40 starter to entangled photons: every part and its cost, live parameters, a terminal with the exact math, and logs the Python pipeline ingests. A quantum-channel lab certifies the hallway, maps it, and sends more than one bit per photon. An outdoor lab takes the link onto the roofs and up to a satellite pass, a frontier lab times teleportation from a cloud processor to Mars, and a messenger lab spends each link's key on real encrypted messages. Installable and offline.</p></a>
     <a class="card reveal" href="mars/"><span class="tag warm">simulator</span><h3>Mars link simulator</h3><p>Orbits, conjunction, L4/L5 relays, and which memories survive today's round trip.</p></a>
     <a class="card reveal" href="budget/"><span class="tag warm">budget</span><h3>Earth–Mars link budget</h3><p>Follow a trillion pairs a second from Earth to Mars, stage by stage, and count the useful teleportations and secret bits that arrive.</p></a>
@@ -216,6 +214,7 @@
   visual techniques inspired by open-source work credited in <a href="https://github.com/Normansrule/quantum-link-research/blob/main/CREDITS.md">CREDITS.md</a>.
 </footer>
 
+<!-- site-foot:start --><div class="site-foot" role="contentinfo"><span class="brand-s">Quantum Link Research</span><span>v0.57.0</span><a href="latency/">Anywhere at light speed</a><a href="https://github.com/Normansrule/quantum-link-research">Source</a><a href="https://github.com/Normansrule/quantum-link-research/blob/main/CHANGELOG.md">Changelog</a><a href="https://github.com/Normansrule/quantum-link-research/blob/main/docs/audit/2026-10-11_findings.md">Audit findings</a><a href="https://github.com/Normansrule/quantum-link-research/blob/main/CREDITS.md">Credits</a><span class="grow">No signal outruns light. Numbers are model outputs unless a page says measured; nothing here is a security-reviewed link.</span></div><!-- site-foot:end -->
 <script src="vendor/gsap/gsap.min.js"></script>
 <script src="vendor/gsap/ScrollTrigger.min.js"></script>
 <script defer src="vendor/katex/katex.min.js"></script>

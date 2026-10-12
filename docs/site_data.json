@@ -1,19 +1,176 @@
 {
  "status": {
-  "version": "0.56.0",
-  "tests": 951,
+  "version": "0.57.0",
+  "tests": 983,
   "requirements": 37,
   "requirements_verified": 36,
-  "references": 454,
-  "references_verified": 29,
+  "references": 462,
+  "references_verified": 31,
   "learn_files": 93,
   "experiment_files": 68,
   "research_files": 39,
   "simulations": 8,
-  "figures": 45,
+  "figures": 46,
   "phases_done": 6
  },
+ "latency": {
+  "sites": [
+   {
+    "name": "Carson, CA (CSUDH)",
+    "lat_deg": 33.864,
+    "lon_deg": -118.255,
+    "range_m": null
+   },
+   {
+    "name": "Los Angeles",
+    "lat_deg": 34.052,
+    "lon_deg": -118.244,
+    "range_m": null
+   },
+   {
+    "name": "New York",
+    "lat_deg": 40.713,
+    "lon_deg": -74.006,
+    "range_m": null
+   },
+   {
+    "name": "London",
+    "lat_deg": 51.507,
+    "lon_deg": -0.128,
+    "range_m": null
+   },
+   {
+    "name": "Tokyo",
+    "lat_deg": 35.676,
+    "lon_deg": 139.65,
+    "range_m": null
+   },
+   {
+    "name": "Singapore",
+    "lat_deg": 1.352,
+    "lon_deg": 103.82,
+    "range_m": null
+   },
+   {
+    "name": "Sydney",
+    "lat_deg": -33.869,
+    "lon_deg": 151.209,
+    "range_m": null
+   },
+   {
+    "name": "S\u00e3o Paulo",
+    "lat_deg": -23.551,
+    "lon_deg": -46.633,
+    "range_m": null
+   },
+   {
+    "name": "Cape Town",
+    "lat_deg": -33.925,
+    "lon_deg": 18.424,
+    "range_m": null
+   },
+   {
+    "name": "the Moon",
+    "lat_deg": null,
+    "lon_deg": null,
+    "range_m": 384400000.0
+   },
+   {
+    "name": "Mars at its closest",
+    "lat_deg": null,
+    "lon_deg": null,
+    "range_m": 55650407900.4
+   },
+   {
+    "name": "Mars at its farthest",
+    "lat_deg": null,
+    "lon_deg": null,
+    "range_m": 400922293476.0
+   }
+  ],
+  "constants": {
+   "R": 6371008.8,
+   "GEO": 35786000.0,
+   "LEO": 550000.0,
+   "FIBER": 1.47,
+   "HOLLOW": 1.003,
+   "STRETCH": 1.5
+  },
+  "antipodal": {
+   "great_circle_s": 0.06676323539145179,
+   "chord_s": 0.042502795717429286
+  },
+  "from_la": [
+   {
+    "to": "New York",
+    "floor_s": 0.013128364183662864,
+    "best": "LEO laser mesh",
+    "best_s": 0.01793092197413408,
+    "stretch": 1.3658153996403903,
+    "fiber_s": 0.028948043024976618,
+    "tls_s": 0.08965460987067041
+   },
+   {
+    "to": "London",
+    "floor_s": 0.029205763693096663,
+    "best": "LEO laser mesh",
+    "best_s": 0.035396260192770194,
+    "stretch": 1.2119614663983866,
+    "fiber_s": 0.06439870894327814,
+    "tls_s": 0.17698130096385098
+   },
+   {
+    "to": "Tokyo",
+    "floor_s": 0.02941845540983972,
+    "best": "LEO laser mesh",
+    "best_s": 0.03562731327862778,
+    "stretch": 1.2110531563363913,
+    "fiber_s": 0.06486769417869657,
+    "tls_s": 0.1781365663931389
+   },
+   {
+    "to": "Sydney",
+    "floor_s": 0.040272939359967695,
+    "best": "LEO laser mesh",
+    "best_s": 0.047418849171388514,
+    "stretch": 1.1774370067093745,
+    "fiber_s": 0.08880183128872877,
+    "tls_s": 0.23709424585694255
+   },
+   {
+    "to": "the Moon",
+    "floor_s": 1.2822203819416964,
+    "best": "free space",
+    "best_s": 1.2822203819416964,
+    "stretch": 1.0,
+    "fiber_s": null,
+    "tls_s": 6.411101909708482
+   },
+   {
+    "to": "Mars at its closest",
+    "floor_s": 185.6297795870502,
+    "best": "free space",
+    "best_s": 185.6297795870502,
+    "stretch": 1.0,
+    "fiber_s": null,
+    "tls_s": 928.148897935251
+   },
+   {
+    "to": "Mars at its farthest",
+    "floor_s": 1337.3328206808992,
+    "best": "free space",
+    "best_s": 1337.3328206808992,
+    "stretch": 1.0,
+    "fiber_s": null,
+    "tls_s": 6686.664103404496
+   }
+  ]
+ },
  "headline": {
+  "latency_antipodal_ms": 66.76323539145179,
+  "latency_la_london_floor_ms": 29.205763693096664,
+  "latency_la_london_best_ms": 35.39626019277019,
+  "latency_moon_s": 1.2822203819416964,
   "one_way_min_min": 3.09382965978417,
   "one_way_max_min": 22.288880344681655,
   "round_trip_max_min": 44.57776068936331,

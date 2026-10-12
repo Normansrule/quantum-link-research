@@ -64,7 +64,7 @@ async function ciStatus() {
     el.classList.toggle("stale", c.outcome !== "pass");
     if (c.run_url) el.href = c.run_url;
   } catch (e) {
-    el.textContent = "CI status unavailable for this copy"; el.classList.add("stale");
+    el.textContent = "CI result unavailable here"; el.classList.add("stale");
   }
 }
 async function main() {
