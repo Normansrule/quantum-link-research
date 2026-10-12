@@ -73,3 +73,18 @@ def test_req_app_003_a_bank_carries_the_messenger_through_every_conjunction():
     assert demand_for_capacity(MarsLinkDesign(), L.capacity_bits, KEY) == pytest.approx(1e6, rel=1e-4)
     with pytest.raises(ValueError):
         ledger(MarsLinkDesign(), 2 * L.sustainable_bits_per_day, KEY)
+
+
+def test_low_level_bank_rejects_bad_inputs_and_reports_unsustainable_demand():
+    """Audit D02: unequal series, empty series, impossible capacities, and a demand above the periodic supply."""
+    import math
+    from qll.app.key_bank import sequent_peak, simulate
+    assert math.isinf(sequent_peak([1.0, 1.0], [1.5, 1.0]))                 # every finite bank eventually refuses
+    with pytest.raises(ValueError):
+        simulate([1.0, 2.0, 3.0], [1.0, 2.0], capacity=5)
+    with pytest.raises(ValueError):
+        sequent_peak([], [])
+    with pytest.raises(ValueError):
+        simulate([1.0], [1.0], capacity=1.0, level0=2.0)
+    with pytest.raises(ValueError):
+        simulate([1.0], [1.0], capacity=float("inf"))

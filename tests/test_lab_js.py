@@ -34,15 +34,15 @@ def run_js(tmp_path, body: str, data) -> dict:
     script = tmp_path / "lab.js"
     script.write_text("const T = require(process.argv[2]); const Q = require(process.argv[3]);\n"
                       "const data = JSON.parse(require('fs').readFileSync(process.argv[4], 'utf8'));\n"
-                      "const out = (() => {" + body + "})();\nprocess.stdout.write(JSON.stringify(out));\n")
-    (tmp_path / "data.json").write_text(json.dumps(data))
+                      "const out = (() => {" + body + "})();\nprocess.stdout.write(JSON.stringify(out));\n", encoding="utf-8")
+    (tmp_path / "data.json").write_text(json.dumps(data), encoding="utf-8")
     r = subprocess.run([_node(), str(script), str(JS / "lab_twin.js"), str(JS / "lab_quantum.js"), str(tmp_path / "data.json")],
-                       capture_output=True, text=True, check=True)
+                       capture_output=True, text=True, encoding="utf-8", check=True)
     return json.loads(r.stdout)
 
 
 def preset(name: str, **over) -> LinkConfig:
-    d = {k: v for k, v in json.loads((HW / f"{name}.json").read_text()).items() if not k.startswith("_")}
+    d = {k: v for k, v in json.loads((HW / f"{name}.json").read_text(encoding="utf-8")).items() if not k.startswith("_")}
     return replace(LinkConfig.from_dict(d), **over)
 
 
@@ -260,7 +260,7 @@ def test_every_terminal_line_cites_a_known_source(tmp_path):
     keys = set()
     for bib in (ROOT / "docs").glob("references*.bib"):
         import re
-        keys |= set(re.findall(r"@\w+\{([^,]+),", bib.read_text()))
+        keys |= set(re.findall(r"@\w+\{([^,]+),", bib.read_text(encoding="utf-8")))
     assert len(out) > 80
     for label, ref, value, why in out:
         assert ref in keys or (ROOT / ref).exists(), (label, ref)
@@ -272,9 +272,9 @@ def run_channel(tmp_path, body: str, data):
     script = tmp_path / "ch.js"
     script.write_text("const C = require(process.argv[2]);\n"
                       "const data = JSON.parse(require('fs').readFileSync(process.argv[3], 'utf8'));\n"
-                      "const out = (() => {" + body + "})();\nprocess.stdout.write(JSON.stringify(out));\n")
-    (tmp_path / "chdata.json").write_text(json.dumps(data))
-    r = subprocess.run([_node(), str(script), str(JS / "lab_channel.js"), str(tmp_path / "chdata.json")], capture_output=True, text=True, check=True)
+                      "const out = (() => {" + body + "})();\nprocess.stdout.write(JSON.stringify(out));\n", encoding="utf-8")
+    (tmp_path / "chdata.json").write_text(json.dumps(data), encoding="utf-8")
+    r = subprocess.run([_node(), str(script), str(JS / "lab_channel.js"), str(tmp_path / "chdata.json")], capture_output=True, text=True, encoding="utf-8", check=True)
     return json.loads(r.stdout)
 
 
@@ -336,7 +336,7 @@ def test_channel_lab_hallway_tomography_and_certificate_match_python(tmp_path):
         assert out["cert"][key] == pytest.approx(py[key], abs=1e-10), key
     assert out["cert"]["certified_quantum"] == py["certified_quantum"]
     assert out["ppf"] == pytest.approx([stats.beta.ppf(q, a, b) for q, a, b in [[0.9975, 101, 19900], [0.99, 1, 50], [0.5, 30, 70]]], abs=1e-10)
-    (tmp_path / "t.csv").write_text(out["csv"])
+    (tmp_path / "t.csv").write_text(out["csv"], encoding="utf-8")
     assert CT.read_log(tmp_path / "t.csv") == {("H", "Z"): (3, 1), ("D", "X"): (2, 2)}
 
 
@@ -354,9 +354,9 @@ def run_outdoor(tmp_path, body: str, data):
     script = tmp_path / "od.js"
     script.write_text("const O = require(process.argv[2]);\n"
                       "const data = JSON.parse(require('fs').readFileSync(process.argv[3], 'utf8'));\n"
-                      "const out = (() => {" + body + "})();\nprocess.stdout.write(JSON.stringify(out));\n")
-    (tmp_path / "oddata.json").write_text(json.dumps(data))
-    r = subprocess.run([_node(), str(script), str(JS / "lab_outdoor.js"), str(tmp_path / "oddata.json")], capture_output=True, text=True, check=True)
+                      "const out = (() => {" + body + "})();\nprocess.stdout.write(JSON.stringify(out));\n", encoding="utf-8")
+    (tmp_path / "oddata.json").write_text(json.dumps(data), encoding="utf-8")
+    r = subprocess.run([_node(), str(script), str(JS / "lab_outdoor.js"), str(tmp_path / "oddata.json")], capture_output=True, text=True, encoding="utf-8", check=True)
     return json.loads(r.stdout)
 
 
@@ -399,9 +399,9 @@ def run_frontier(tmp_path, body: str, data):
     script = tmp_path / "fr.js"
     script.write_text("const F = require(process.argv[2]);\n"
                       "const data = JSON.parse(require('fs').readFileSync(process.argv[3], 'utf8'));\n"
-                      "const out = (() => {" + body + "})();\nprocess.stdout.write(JSON.stringify(out));\n")
-    (tmp_path / "frdata.json").write_text(json.dumps(data))
-    r = subprocess.run([_node(), str(script), str(JS / "lab_frontier.js"), str(tmp_path / "frdata.json")], capture_output=True, text=True, check=True)
+                      "const out = (() => {" + body + "})();\nprocess.stdout.write(JSON.stringify(out));\n", encoding="utf-8")
+    (tmp_path / "frdata.json").write_text(json.dumps(data), encoding="utf-8")
+    r = subprocess.run([_node(), str(script), str(JS / "lab_frontier.js"), str(tmp_path / "frdata.json")], capture_output=True, text=True, encoding="utf-8", check=True)
     return json.loads(r.stdout)
 
 
@@ -444,13 +444,13 @@ def test_messenger_lab_matches_python(tmp_path):
                       "const out = {src: Object.fromEntries(Object.entries(M.sources()).map(([k, v]) => [k, v.hourly_bits])),\n"
                       "  plans: data.plans.map(([s, p, o]) => { const r = M.plan(s, p, o); return Object.fromEntries(Object.entries(r).map(([k, v]) => [k, typeof v === 'number' && !isFinite(v) ? 'inf' : v])); }),\n"
                       "  tags: data.tags.map(([k, r, hex]) => M.tag(BigInt(k), BigInt(r), Buffer.from(hex, 'hex')).toString())};\n"
-                      "process.stdout.write(JSON.stringify(out));\n")
+                      "process.stdout.write(JSON.stringify(out));\n", encoding="utf-8")
     plans = [["two rooms (P10)", "one-time pad", {}], ["two buildings at night, 1 km", "one-time pad", {"messages_per_day": 800, "msg_bytes": 1000}],
              ["one satellite pass a night", "hybrid ML-KEM + QKD", {"rekey_every": 10, "messages_per_day": 1e5}], ["one satellite pass a night", "one-time pad", {"messages_per_day": 1e4}],
              ["a Mars lander (key loaded before launch)", "QKD-keyed AES-256-GCM", {"preloaded_bits": 8e12, "distance_m": 4e11}], ["two rooms (P10)", "conventional ECDHE + AES (today)", {}]]
     tags = [[12345678901234567890, 987654321, "68656c6c6f"], [A.P127 - 2, A.P127 - 5, "00" * 31], [7, 0, ""]]
-    (tmp_path / "ms.json").write_text(json.dumps({"plans": plans, "tags": [[str(k), str(r), h] for k, r, h in tags]}))
-    r = subprocess.run([_node(), str(script), str(JS / "lab_messenger.js"), str(tmp_path / "ms.json")], capture_output=True, text=True, check=True)
+    (tmp_path / "ms.json").write_text(json.dumps({"plans": plans, "tags": [[str(k), str(r), h] for k, r, h in tags]}), encoding="utf-8")
+    r = subprocess.run([_node(), str(script), str(JS / "lab_messenger.js"), str(tmp_path / "ms.json")], capture_output=True, text=True, encoding="utf-8", check=True)
     out = json.loads(r.stdout)
     for k, v in K.sources().items():
         assert out["src"][k] == pytest.approx(v["hourly_bits"], rel=1e-10), k

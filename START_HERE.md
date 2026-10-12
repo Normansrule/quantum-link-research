@@ -1,12 +1,11 @@
 # Start Here
 
-1. **Read the six sentences** in [README.md](README.md). That is the whole project.
-2. **Look at one picture**: `docs/figures/overview_storyboard.svg` (top of the README). Panel 5 is the thesis question.
-3. **Pick your door**
-   - Want to understand? [`learn/README.md`](learn/README.md), choose a learning path, tick boxes.
-   - Want to build? [`experiments/protocols/P01_odmr_nv_bench.md`](experiments/protocols/P01_odmr_nv_bench.md), a $100–500 qubit readout in a weekend.
-   - Want to work on the project? [`research/thesis/BACKLOG.md`](research/thesis/BACKLOG.md), pick a row.
-4. **Run the code** (10 minutes for the environment): `conda env create -f environment.yml && conda activate qll && pytest -q`.
-5. **Turn a knob**: https://Normansrule.github.io/quantum-link-research/apps/ or `python -m qll.viz.light_time_explorer`.
+1. **Read the top of the [README](README.md)**: what the project is, what is implemented (and what is only modelled or planned), and the development status. The advanced Earth–Mars, repeater, and memory studies are research models; they are in the [project tour](PROJECT_TOUR.md) and are not prerequisites for anything below.
+2. **Pick one of three paths**
+   - **Run a simulation.** Follow the [README quickstart](README.md#run-a-simulation): create the Conda environment, run `python scripts/check_env.py`, then `python -m qll.link.run session`. A seeded run is reproducible; it is not secret.
+   - **Explore the labs.** Open the [website](https://normansrule.github.io/quantum-link-research/), or serve it offline with `python -m http.server --bind 127.0.0.1 --directory docs 8000`. For the concepts behind them, use the [learning guide](learn/README.md).
+   - **Build the two-room experiment.** Read [P10](experiments/protocols/P10_two_room_single_photon_link.md) and its [evaluation specification](experiments/specs/two_room_evaluation_spec.md). P10 is a planning document: its build status is BLOCKED until a qualified laser-safety review is recorded, and its FPGA timing system is planned, not implemented. Stage 0 (simulation) and Stage 1 (the authenticated classical channel) need no optics.
+3. **Check the evidence before relying on a number.** The tests badge on the README is written by the CI run that built the deployed website; the counts in [docs/status.md](docs/status.md) are an inventory. The [audit findings matrix](docs/audit/2026-10-11_findings.md) records what was fixed, what was tested, and what is still blocked.
+4. **Want to work on the project?** Start from a failing test or a row in [`research/thesis/BACKLOG.md`](research/thesis/BACKLOG.md), and follow [CONTRIBUTING.md](CONTRIBUTING.md).
 
-Three rules you will see everywhere: nothing signals faster than light (`ClassicalMessage` refuses early reads), nothing is cloned, teleportation costs two classical bits. Three files you will come back to: [`learn/00_GLOSSARY.md`](learn/00_GLOSSARY.md), [`docs/physics_overview.md`](docs/physics_overview.md), [`docs/physics_module_design.md`](docs/physics_module_design.md).
+Three rules you will see everywhere: nothing signals faster than light (`ClassicalMessage` refuses early reads), nothing is cloned, and teleportation costs two classical bits. Three files you will come back to: [`learn/00_GLOSSARY.md`](learn/00_GLOSSARY.md), [`docs/physics_overview.md`](docs/physics_overview.md), and [`docs/physics_module_design.md`](docs/physics_module_design.md).

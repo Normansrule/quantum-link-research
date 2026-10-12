@@ -16,7 +16,7 @@ def main() -> None:
     args = cli(__doc__)
     import matplotlib.pyplot as plt
 
-    data = json.loads(DATA.read_text())
+    data = json.loads(DATA.read_text(encoding="utf-8"))
     axes_names = data["axes"]
     n = len(axes_names)
     ang = np.linspace(0, 2 * np.pi, n, endpoint=False).tolist() + [0]

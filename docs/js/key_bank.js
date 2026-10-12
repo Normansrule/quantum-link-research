@@ -6,6 +6,10 @@
   else root.QLLKeyBank = factory();
 })(typeof self !== "undefined" ? self : this, function () {
   function sequentPeak(supply, demand, cycles = 2) {
+    // Infinity when the periodic demand exceeds the supply: every finite bank eventually refuses (audit D02)
+    let ds = 0, ss = 0;
+    for (let i = 0; i < supply.length; i++) { ds += Array.isArray(demand) ? demand[i] : demand; ss += supply[i]; }
+    if (ds > ss * (1 + 1e-12)) return Infinity;
     let S = 0, K = 0;
     for (let c = 0; c < cycles; c++) for (let i = 0; i < supply.length; i++) {
       const d = Array.isArray(demand) ? demand[i] : demand;

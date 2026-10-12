@@ -79,7 +79,7 @@ def stats(site: dict, status: dict) -> str:
         (h["bb84_threshold_pct"], 2, "%", "BB84 error threshold", "violet"),
         (h["chain_crossover_km_1s_memory"], 0, "km", "where a repeater with 1 s memories beats fiber", "blue"),
         (h["dejmps_pairs"], 0, "pairs", f"DEJMPS purification 0.80→0.99 (BBPSSW {h['bbpssw_pairs']:,.0f})", "green"),
-        (status.get("tests", 0), 0, "tests", f"{status.get('requirements_verified', 0)}/{status.get('requirements', 0)} requirements verified by test", "cyan"),
+        (status.get("tests", 0), 0, "tests collected", f"{status.get('requirements_verified', 0)}/{status.get('requirements', 0)} requirements mapped to tests; results in CI", "cyan"),
     ]
     W, H, cols, pad, gap = 1280, 404, 4, 28, 18
     tw, th = (W - 2 * pad - (cols - 1) * gap) / cols, 150

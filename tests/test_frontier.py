@@ -98,7 +98,7 @@ def test_fake_device_rehearsal_follows_the_calibrated_decay():
     from pathlib import Path
     files = sorted((Path(__file__).resolve().parents[1] / "experiments/bench/frontier/rehearsal").glob("delay_fake_*.json"))
     assert files, "run: python experiments/bench/frontier/run_frontier.py delay --backend fake_torino --layout 0 1 2 --delays 0 60 120 180"
-    rec = json.loads(files[-1].read_text())
+    rec = json.loads(files[-1].read_text(encoding="utf-8"))
     for r in rec["runs"].values():
         v = r["verdict"]
         assert v["ci_low"] - 0.01 <= D.with_offset(r["delay_us"], rec["T1_us"], rec["T2_us"], rec["zero_delay_shrink_k"]) <= v["ci_high"] + 0.01, r["delay_us"]

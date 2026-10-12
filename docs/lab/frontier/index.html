@@ -20,14 +20,16 @@
 <script src="../../js/lab_frontier.js"></script>
 <script src="../../js/lab_ui.js"></script>
 <script type="importmap">{ "imports": { "three": "../../vendor/three/three.module.js", "three/addons/": "../../vendor/three/addons/" } }</script>
+<script defer src="../../js/nav.js"></script>
 </head>
 <body>
+<a class="skip" href="#content">Skip to content</a>
 <div class="aurora"></div>
 <header class="top">
   <a class="brand" href="../../"><span class="dot"></span>Quantum Link Research</a>
   <nav><a href="../">Lab</a><a href="../link/">Two-room link</a><a href="../channel/">Quantum channels</a><a href="../outdoor/">Outdoors and orbit</a><a href="./">Frontier</a><a href="../messenger/">Messenger</a><a href="../circuits/">Cloud circuits</a><a class="gh" href="https://github.com/Normansrule/quantum-link-research">GitHub ↗</a></nav>
 </header>
-<section class="lab-head">
+<section class="lab-head" id="content" tabindex="-1">
   <div class="kicker" id="kicker">Phase 4 · teleportation across a distance</div>
   <h1 id="title">The frontier</h1>
   <p class="sub" id="summary"></p>
@@ -140,7 +142,7 @@ function updateLink(anim) {
     card("Fidelity against distance", "With these memories and no banking. The gold line is the classical 2/3; the faint lines mark Los Angeles to New York, the Moon, and Mars at its farthest.",
       U.line(Ls, [{ ys: FL, color: U.C.cyan, label: "with the two bits" }, { ys: Ls.map(() => 2 / 3), color: U.C.gold, label: "classical limit" }, { ys: Ls.map(() => 0.5), color: U.C.warm, label: "without the bits" }],
         { ymin: 0.45, ymax: 1.0, yticks: [0.5, 0.667, 0.8, 1.0], yfmt: (y) => y.toFixed(2), xticks: [0, 3, 6, 9, 11], xlabel: "distance: 10^x metres", vlines: marks, marker: { x: Math.log10(values.distance_m), y: F.link(Object.assign({}, p, { bank_s: 0 })).fidelity_with_bits, label: "you" } })) +
-    card("Which memory survives which distance", "Fidelity above 2/3 when the bits arrive, with no banking, from the memories demonstrated so far. Lifetime is not everything: the rare-earth crystals give back 1 % of their photons or less.", table, true);
+    card("Which memory survives which distance", "Fidelity above 2/3 when the bits arrive, with no banking. Coherence times are as reported by the cited experiments; photon storage efficiencies are assumed operating points, not demonstrated at these storage times, and a memory at another wavelength than the link needs frequency conversion.", table, true);
   lab.setValues(values, { photons: 6, transmit: r.success_per_use, beam: 0.7, dark: 1, packets: 0.9 });
   window.__twin = { kind: "link", r, prompt: `python -c "from qll.network import teleport_across as X; print(X.link(X.Link(${Object.entries(p).map(([k, v]) => `${k}=${v}`).join(", ")})))"` };
 }

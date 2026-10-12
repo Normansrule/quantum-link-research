@@ -15,7 +15,7 @@ def main() -> None:
     a = ap.parse_args()
     f, s = load_csv(a.csv)
     side = Path(a.csv).with_suffix(".json")
-    meta = json.loads(side.read_text()) if side.exists() else {}
+    meta = json.loads(side.read_text(encoding="utf-8")) if side.exists() else {}
     fit = fit_odmr(f, s, a.dips, meta.get("photon_rate_hz"))
     T = meta.get("temperature_k", 300.0)
     D_expected = D_ZFS_HZ + D_TEMPERATURE_COEFF_HZ_PER_K * (T - 300.0)

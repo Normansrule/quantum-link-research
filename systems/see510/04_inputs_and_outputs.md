@@ -78,8 +78,8 @@ Errors:                  90 of 7938 sampled bits
 QBER:                    1.13 % estimated (upper bound 4.94 %)
 Adversary:               none
 Key Accepted:            yes
-Final Usable Key Length: 44,396 bits (44,396.0 bit/s at the pulse rate)
-Authentication:          wegman_carter: 381 key bits spent; net key 44,015 bits (forgery probability below 4.8e-34)
+Final Usable Key Length: 44,396 bits (44,396.0 bit/s at the pulse rate; simplified finite-key estimate, not a composable proof)
+Authentication:          wegman_carter: 381 key bits spent; net key 44,015 bits (forgery probability below 4.8e-34 if the authentication key is secret)
 Random Seed:             11
 Execution Time:          0.396 s
 ```

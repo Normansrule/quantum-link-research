@@ -83,7 +83,7 @@ def _write_run(folder, scheme, leak, seed, shots=20000):
     counts = C.run_aer(scheme, shots, leak=leak, seed=seed)
     rec = {"experiment": "E17 collapse code", "backend": "aer", "scheme": scheme, "layout": [0, 1], "coupling_distance": None,
            "leak_injected": leak, "seed": seed, "counts": counts}
-    (folder / f"{scheme}_{leak}_{seed}.json").write_text(json.dumps(rec))
+    (folder / f"{scheme}_{leak}_{seed}.json").write_text(json.dumps(rec), encoding="utf-8")
 
 
 def test_paper_pipeline_flags_controls_and_passes_nulls(tmp_path):
@@ -113,7 +113,7 @@ def test_frontier_runner_rehearses_on_a_fake_device(tmp_path):
     spec = importlib.util.spec_from_file_location("rf", ROOT / "experiments" / "bench" / "frontier" / "run_frontier.py")
     rf = importlib.util.module_from_spec(spec); spec.loader.exec_module(rf)
     path = rf.main(["superdense", "--backend", "fake_torino", "--layout", "0", "1", "--shots", "1000", "--out", str(tmp_path)])
-    rec = json.loads(Path(path).read_text())
+    rec = json.loads(Path(path).read_text(encoding="utf-8"))
     assert rec["runs"]["send_qubit"]["verdict"]["success"] > 0.6 and abs(rec["runs"]["keep_qubit"]["verdict"]["success"] - 0.25) < 0.05
 
 
@@ -127,6 +127,6 @@ def test_numbers_quoted_in_the_paper_draft_match_the_data():
     assert f"{m} × 10⁻{sup}" in paper
     leak = [r for r in rows if r["control"]][0]
     assert f"{leak['bias']:.3f}".replace("-", "−") in paper
-    tele = json.loads(next((ROOT / "experiments" / "bench" / "frontier" / "rehearsal").glob("teleport_*.json")).read_text())
+    tele = json.loads(next((ROOT / "experiments" / "bench" / "frontier" / "rehearsal").glob("teleport_*.json")).read_text(encoding="utf-8"))
     for mode in ("feedforward", "deferred", "no_bits"):
         assert f"{T.analyze(tele['runs'][mode]['counts'], mode).average:.3f}" in paper, mode

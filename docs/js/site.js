@@ -28,7 +28,8 @@ function matrix(data) {
   bases.forEach((b) => (h += `<th>${b}<br><span style="color:var(--faint)">${human(data.baselines_round_trip_s[b])}</span></th>`));
   h += "</tr></thead><tbody>";
   data.memories.forEach((m) => {
-    h += `<tr><td>${m.name}</td><td>${human(m.lifetime_s)}</td><td>${(100 * m.efficiency).toFixed(1)} %</td><td>${human(m.crossover_s)}</td>`;
+    const eff = `${(100 * m.efficiency).toFixed(1)} %` + (m.efficiency_status === "measured" ? "" : " (assumed)");
+    h += `<tr><td>${m.name}</td><td>${human(m.lifetime_s)}</td><td>${eff}</td><td>${human(m.crossover_s)}</td>`;
     bases.forEach((b) => (h += m.survives[b] ? '<td class="yes">✓</td>' : '<td class="no">·</td>'));
     h += "</tr>";
   });
@@ -46,15 +47,42 @@ function reveals() {
 function math() {
   if (window.renderMathInElement) renderMathInElement(document.body, { delimiters: [{ left: "$$", right: "$$", display: true }, { left: "\\(", right: "\\)", display: false }], throwOnError: false });
 }
-async function main() {
-  spotlight(); reveals(); math();
+// Status (audit U03): counters come from the generated data or read "unavailable"; they never fall back to old
+// numbers. The test result comes only from ci_status.json, which CI writes from the JUnit reports of the run that
+// built the deployed site; a local or branch-deployed copy has none and says so.
+function unavailable(sel) {
+  document.querySelectorAll(sel).forEach((el) => { el.textContent = "unavailable"; el.classList.add("stale"); el.title = "site data could not be loaded"; });
+}
+async function ciStatus() {
+  const el = document.getElementById("ci-status"); if (!el) return;
   try {
-    const data = await (await fetch("site_data.json", { cache: "no-cache" })).json();
+    const r = await fetch("ci_status.json", { cache: "no-cache" });
+    if (!r.ok) throw new Error(String(r.status));
+    const c = await r.json(), t = c.totals || {};
+    if (!c.revision || typeof t.passed !== "number") throw new Error("malformed");
+    el.textContent = `CI @ ${c.revision.slice(0, 7)}: ${t.passed} passed · ${t.failed} failed · ${t.skipped} skipped (${(c.generated_utc || "").slice(0, 10)})`;
+    el.classList.toggle("stale", c.outcome !== "pass");
+    if (c.run_url) el.href = c.run_url;
+  } catch (e) {
+    el.textContent = "CI status unavailable for this copy"; el.classList.add("stale");
+  }
+}
+async function main() {
+  spotlight(); reveals(); math(); ciStatus();
+  try {
+    const r = await fetch("site_data.json", { cache: "no-cache" });
+    if (!r.ok) throw new Error(String(r.status));
+    const data = await r.json();
     if (window.QLLEphemeris) window.QLLEphemeris.configure(data);
     tickers(data); matrix(data);
     const s = data.status || {};
-    document.querySelectorAll("[data-status]").forEach((el) => { if (s[el.dataset.status] !== undefined) el.textContent = s[el.dataset.status]; });
+    document.querySelectorAll("[data-status]").forEach((el) => {
+      if (s[el.dataset.status] !== undefined) el.textContent = s[el.dataset.status]; else { el.textContent = "unavailable"; el.classList.add("stale"); }
+    });
     if (window.ScrollTrigger) ScrollTrigger.refresh();
-  } catch (e) { console.warn("site_data.json unavailable", e); }
+  } catch (e) {
+    console.warn("site_data.json unavailable", e);
+    unavailable("[data-status]"); unavailable("[data-num]"); unavailable("[data-val]");
+  }
 }
 main();

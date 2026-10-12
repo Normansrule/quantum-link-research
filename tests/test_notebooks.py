@@ -13,6 +13,6 @@ pytestmark = [pytest.mark.phase1, pytest.mark.slow]
 def test_notebook_executes(nb, tmp_path):
     pytest.importorskip("nbconvert")
     r = subprocess.run([sys.executable, "-m", "jupyter", "nbconvert", "--to", "notebook", "--execute", "--ExecutePreprocessor.timeout=300",
-                        str(ROOT / "notebooks" / nb), "--output", str(tmp_path / nb)], capture_output=True, text=True, cwd=ROOT,
+                        str(ROOT / "notebooks" / nb), "--output", str(tmp_path / nb)], capture_output=True, text=True, encoding="utf-8", cwd=ROOT,
                        env={**__import__("os").environ, "MPLBACKEND": "Agg"})
     assert r.returncode == 0, r.stderr[-2000:]

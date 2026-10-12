@@ -28,14 +28,16 @@
   @keyframes pulseb { 70% { box-shadow: 0 0 0 10px rgba(255,107,74,0) } 100% { box-shadow: 0 0 0 0 rgba(255,107,74,0) } }
   .ok { color: var(--green) } .bad { color: var(--mars) } .warn { color: var(--warm) }
 </style>
+<script defer src="../js/nav.js"></script>
 </head>
 <body>
+<a class="skip" href="#content">Skip to content</a>
 <div class="aurora"></div>
 <header class="top">
   <a class="brand" href="../"><span class="dot"></span>Quantum Link Research</a>
   <nav><a href="../mars/">Mars simulator</a><a href="../teleport/">Teleportation explainer</a><a href="../coupler/">Coupler lab</a><a href="../repeater/">Repeater lab</a><a href="../qec/">QEC lab</a><a href="../budget/">Link budget</a><a href="../systems/">Traceability</a><a class="gh" href="https://github.com/Normansrule/quantum-link-research">GitHub ↗</a></nav>
 </header>
-<main class="dash">
+<main class="dash" id="content" tabindex="-1">
   <div class="p kpi"><h4>date</h4><div class="v" id="k-date">—</div><div class="s" id="k-day"></div></div>
   <div class="p kpi"><h4>range</h4><div class="v" id="k-range">—</div><div class="s">Earth–Mars</div></div>
   <div class="p kpi"><h4>one-way light</h4><div class="v" id="k-lt">—</div><div class="s" id="k-rt"></div></div>

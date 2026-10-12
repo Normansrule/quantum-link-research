@@ -1,8 +1,8 @@
-{"step": "ready", "level": "info", "message": "session 62297767f4f9 established; channel loss 0.00 dB"}
+{"step": "ready", "level": "info", "message": "session 62297767f4f9 established; channel loss 0.00 dB; execution mode: simulation, both sites in one process (shared state; not separate endpoints); execution id c8c33821ad574e949f14884b5c480109; authentication pool: simulation ledger (seeded, not secret)"}
 {"step": "transmit", "level": "info", "message": "1,000,000 states sent, 158,319 detected"}
 {"step": "sift", "level": "info", "message": "79,373 sifted bits"}
 {"step": "estimate", "level": "info", "message": "QBER 1.13 % from 7938 sampled bits"}
-{"step": "reconcile", "level": "info", "message": "727 bits corrected, 6625 parities disclosed; keys match"}
-{"step": "amplify", "level": "info", "message": "44,396 final key bits"}
+{"step": "reconcile", "level": "info", "message": "727 bits corrected, 6623 parities disclosed; keys match"}
+{"step": "amplify", "level": "info", "message": "44,398 final key bits"}
 {"step": "authenticate", "level": "info", "message": "transcript tags agree (forgery probability below 4.8e-34)"}
 {"step": "decide", "level": "info", "message": "ACCEPTED"}

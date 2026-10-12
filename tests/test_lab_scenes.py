@@ -23,7 +23,7 @@ TIERS = L.link_tiers() + L.circuit_tiers() + channel_tiers() + outdoor_tiers() +
 def test_two_room_bill_of_materials_matches_P10_exactly():
     t = L.two_room()
     assert L.bom_total(t) == (530, 1180)
-    text = (ROOT / t.procedure).read_text()
+    text = (ROOT / t.procedure).read_text(encoding="utf-8")
     for item, _, lo, hi in t.bom:
         assert f"${lo:,.0f}–{hi:,.0f}" in text, item
     assert "Four non-polarizing beamsplitters (three to combine the four diodes" in text
@@ -84,8 +84,8 @@ def test_main_experiment_has_every_build_stage_populated():
 def test_committed_json_is_current():
     sys.path.insert(0, str(ROOT / "scripts"))
     import build_lab
-    assert json.loads((ROOT / "docs" / "lab" / "scenes.json").read_text()) == json.loads(json.dumps(L.export()))
-    cat = json.loads((ROOT / "docs" / "lab" / "catalog.json").read_text())
+    assert json.loads((ROOT / "docs" / "lab" / "scenes.json").read_text(encoding="utf-8")) == json.loads(json.dumps(L.export()))
+    cat = json.loads((ROOT / "docs" / "lab" / "catalog.json").read_text(encoding="utf-8"))
     assert [e["id"] for e in cat["experiments"]] == [e.id for e in CATALOG]
     assert cat == json.loads(json.dumps(build_lab.catalog(), ensure_ascii=False))
     assert {x["tier"] for x in next(e for e in cat["experiments"] if e["id"] == "P10")["lab"]} == {"two_room", "hallway", "rooftop", "rooms"}

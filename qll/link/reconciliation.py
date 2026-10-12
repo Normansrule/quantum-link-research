@@ -70,12 +70,15 @@ def reconcile(key_a: np.ndarray, key_b: np.ndarray, qber_estimate: float, passes
         return int(b[perm[blk * k:min(n, (blk + 1) * k)]].sum() % 2) != par_a[q][blk]
 
     for p in range(passes):
-        perm = np.arange(n) if p == 0 else rng.permutation(n)
+        # the permutation is public and fully determined by the transcript: Alice sends its seed, and Bob builds the
+        # permutation from the seed he received (audit S05), not from shared state
+        seed_p = 0 if p == 0 else int(rng.integers(1, 2**63 - 1))
+        got = int(channel.send("A", "permutation_seed", {"pass": p, "seed": seed_p})["seed"])
+        perm = np.arange(n) if got == 0 else np.random.default_rng(got).permutation(n)
         pos = np.empty(n, dtype=np.int64)
         pos[perm] = np.arange(n)
         k = min(n, k1 * 2**p)
         perms.append(perm); poss.append(pos); sizes.append(k)
-        channel.send("A", "permutation_seed", {"pass": p})                       # the shared permutation is public
         lo = np.arange(0, n, k)
         hi = np.minimum(lo + k, n)
         par_a.append(unpack(channel.send("A", "block_parities", pack(_parities(a[perm], lo, hi)))))

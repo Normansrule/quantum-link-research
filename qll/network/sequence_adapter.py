@@ -54,7 +54,7 @@ def two_router_link(distance_m: float, n_pairs: int = 5, memo_size: int = 20, co
         "cconnections": [{"node1": "r1", "node2": "r2", "delay": cc_delay_ps}],
     }
     path = tempfile.mktemp(suffix=".json")
-    with open(path, "w") as fh:
+    with open(path, "w", encoding="utf-8") as fh:
         json.dump(cfg, fh)
     topo = RouterNetTopo(path)
     tl = topo.get_timeline()

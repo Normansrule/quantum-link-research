@@ -74,18 +74,37 @@ def _upper(k: int, n: int, alpha: float) -> float:
     return 1.0 if k == n else float(stats.beta.ppf(1 - alpha, k + 1, n - k))
 
 
+ASSUMPTIONS = (
+    "trusted qubit model: the source prepares the named polarization qubits and the analyzer measures in the named bases",
+    "counts are conditional on a click; no-click and double-click events are excluded by the selection rule",
+    "fair sampling: which pulses click does not depend on the input state (state-independent loss)",
+    "single-photon (qubit) signals; a weak-coherent or bright-light source needs the decoy bound or is only an analogue",
+    "Clopper-Pearson intervals at alpha/4 per input, assuming independent trials",
+)
+
+
 def certify(counts: dict, alpha: float = 0.01) -> dict:
-    """The entanglement-fidelity lower bound from the H, V (Z) and D, A (X) error counts."""
+    """The entanglement-fidelity lower bound from the H, V (Z) and D, A (X) error counts. This is a witness WITHIN the
+    trusted qubit-channel model listed in ASSUMPTIONS (audit P04), returned with the result; it is not device-
+    independent certification, a capacity, or a secure key. Missing or empty input classes raise ValueError."""
+    if not 0 < alpha < 1:
+        raise ValueError("alpha must lie in (0, 1)")
     up, rate = {}, {}
     for (s, b), err in ERROR_OUTCOME.items():
+        if (s, b) not in counts:
+            raise ValueError(f"insufficient data: no counts for input {s} in basis {b}")
         n0, n1 = counts[(s, b)]
+        if min(n0, n1) < 0 or n0 + n1 == 0:
+            raise ValueError(f"insufficient data: {n0 + n1} counts for input {s} in basis {b}")
         k, n = (n1 if err == 1 else n0), n0 + n1
         up[s], rate[s] = _upper(k, n, alpha / 4), k / n
     e_z, e_x = (rate["H"] + rate["V"]) / 2, (rate["D"] + rate["A"]) / 2
     ez_u, ex_u = (up["H"] + up["V"]) / 2, (up["D"] + up["A"]) / 2
     bound = Q.certified_entanglement_fidelity(ez_u, ex_u)
     return {"e_z": e_z, "e_x": e_x, "e_z_upper": ez_u, "e_x_upper": ex_u, "fe_estimate": 1 - e_z - e_x,
-            "fe_lower": bound, "certified_quantum": bound > 0.5, "confidence": 1 - alpha}
+            "fe_lower": bound, "certified_quantum": bound > 0.5, "confidence": 1 - alpha,
+            "scope": "witness within a trusted qubit-channel model", "assumptions": list(ASSUMPTIONS),
+            "trials": {f"{s}{b}": sum(counts[(s, b)]) for (s, b) in ERROR_OUTCOME}}
 
 
 def write_log(path: Path, counts: dict, seed: int = 0) -> Path:

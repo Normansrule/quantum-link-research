@@ -16,10 +16,18 @@ deployment would split this file into one file per site with the same columns.
 `run_from_log` replaces steps 3-4 of a session (preparation, transmission, detection) with the log and runs sifting,
 estimation, Cascade, verification, amplification, and key delivery unchanged. `simulate_log` writes the simulation's
 own record in this format: it is both the template for an experiment's logger and the test that the bridge is exact.
+
+Strict ingestion (audit D01): every field must be an exact integer (no decimals, no blanks, no exponent), headers must
+be known and unique, every row must have every column, and pulse indices must be unique and in order; anything else
+is refused rather than repaired. Each input's SHA-256 and its origin are recorded: files written by this module carry
+a sidecar <file>.meta.json saying "synthetic", and a log without one is reported as "unlabelled", never as measured.
 """
 from __future__ import annotations
 
 import csv
+import hashlib
+import json
+import re
 from dataclasses import replace
 from pathlib import Path
 
@@ -33,6 +41,51 @@ from qll.link.site_b import Detections
 
 COLUMNS = ["pulse", "alice_bit", "alice_basis", "bob_basis", "bob_click", "bob_bit"]
 EVE_COLUMNS = ["eve_touched", "eve_basis", "eve_bit"]
+KNOWN = set(COLUMNS + EVE_COLUMNS + ["alice_intensity"])
+_INT = re.compile(r"[+-]?[0-9]+")
+
+
+def _strict_rows(path: Path, required: list[str]) -> tuple[list[str], np.ndarray]:
+    """Read a log with exact integer fields only; refuse anything ambiguous instead of coercing it."""
+    with open(path, newline="", encoding="utf-8") as fh:
+        reader = csv.reader(fh)
+        try:
+            header = [h.strip() for h in next(reader)]
+        except StopIteration:
+            raise ValueError(f"{Path(path).name} is empty") from None
+        if len(set(header)) != len(header):
+            raise ValueError(f"{Path(path).name} has duplicate columns")
+        unknown = [h for h in header if h not in KNOWN]
+        if unknown:
+            raise ValueError(f"{Path(path).name} has unknown columns {unknown}")
+        missing = [c for c in required if c not in header]
+        if missing:
+            raise ValueError(f"{Path(path).name} is missing columns {missing}")
+        rows = []
+        for line, r in enumerate(reader, start=2):
+            if not r:
+                continue
+            if len(r) != len(header):
+                raise ValueError(f"{Path(path).name} line {line}: {len(r)} fields for {len(header)} columns")
+            bad = [v for v in r if not _INT.fullmatch(v.strip())]
+            if bad:
+                raise ValueError(f"{Path(path).name} line {line}: not an exact integer: {bad[0]!r}")
+            rows.append([int(v) for v in r])
+    return header, np.array(rows, dtype=np.int64).reshape(-1, len(header))
+
+
+def provenance(path: Path) -> dict:
+    """SHA-256 of a raw input and its origin label from the sidecar, if any."""
+    path = Path(path)
+    meta = path.with_name(path.name + ".meta.json")
+    origin = json.loads(meta.read_text(encoding="utf-8")).get("origin", "unlabelled") if meta.exists() else "unlabelled"
+    return {"file": path.name, "sha256": hashlib.sha256(path.read_bytes()).hexdigest(), "origin": origin}
+
+
+def _label_synthetic(path: Path) -> None:
+    path = Path(path)
+    path.with_name(path.name + ".meta.json").write_text(json.dumps({"origin": "synthetic", "writer": "qll.link.hardware_log",
+                                                                     "note": "simulated record; never measured evidence"}, indent=1), encoding="utf-8")
 
 
 def write_log(path: Path, rec: QuantumRecord) -> Path:
@@ -48,20 +101,17 @@ def write_log(path: Path, rec: QuantumRecord) -> Path:
         w = csv.writer(fh)
         w.writerow(cols)
         w.writerows(np.column_stack(arrays).tolist())
+    _label_synthetic(path)
     return Path(path)
 
 
 def read_log(path: Path) -> QuantumRecord:
-    with open(path, newline="", encoding="utf-8") as fh:
-        reader = csv.reader(fh)
-        header = next(reader)
-        missing = [c for c in COLUMNS if c not in header]
-        if missing:
-            raise ValueError(f"log is missing columns {missing}")
-        rows = np.array([[int(float(v)) for v in r] for r in reader if r], dtype=np.int64)
+    header, rows = _strict_rows(path, COLUMNS)
     if rows.size == 0:
         raise ValueError("log has no rows")
     col = {name: rows[:, i] for i, name in enumerate(header)}
+    if not np.array_equal(col["pulse"], np.arange(len(rows))):
+        raise ValueError("pulse indices must list every pulse once, in order, from 0")
     for name in ("alice_bit", "alice_basis", "bob_basis", "bob_click", "bob_bit"):
         if not np.isin(col[name], (0, 1)).all():
             raise ValueError(f"column {name} must hold only 0 and 1")
@@ -92,7 +142,7 @@ def run_from_log(path: Path, c: LinkConfig, managers=None) -> SessionResult:
     description of the channel); the number of pulses comes from the log."""
     rec = read_log(path)
     c = replace(c, n_pulses=len(rec.states.bits))
-    return run_session(c, managers, record=rec)
+    return run_session(c, managers, record=rec, inputs=[provenance(path)])
 
 
 # ------------------------------------------------------------------------------------- one log per site (two rooms)
@@ -111,17 +161,13 @@ def write_site_logs(rec: QuantumRecord, alice_path: Path, bob_path: Path) -> tup
     for path, cols, arrays in ((alice_path, a_cols, a), (bob_path, BOB_SITE, [idx, d.bases[idx], d.bits[idx]])):
         Path(path).parent.mkdir(parents=True, exist_ok=True)
         np.savetxt(path, np.column_stack(arrays).astype(np.int64), fmt="%d", delimiter=",", header=",".join(cols), comments="")
+        _label_synthetic(path)
     return Path(alice_path), Path(bob_path)
 
 
 def _load(path: Path, required: list[str]) -> dict[str, np.ndarray]:
-    with open(path, encoding="utf-8") as fh:
-        header = fh.readline().strip().split(",")
-    missing = [c for c in required if c not in header]
-    if missing:
-        raise ValueError(f"{Path(path).name} is missing columns {missing}")
-    rows = np.loadtxt(path, delimiter=",", skiprows=1, dtype=np.int64, ndmin=2)
-    return {name: rows[:, i] for i, name in enumerate(header)} if rows.size else {name: np.zeros(0, np.int64) for name in header}
+    header, rows = _strict_rows(path, required)
+    return {name: rows[:, i] for i, name in enumerate(header)}
 
 
 def read_site_logs(alice_path: Path, bob_path: Path) -> QuantumRecord:
@@ -147,4 +193,4 @@ def read_site_logs(alice_path: Path, bob_path: Path) -> QuantumRecord:
 
 def run_from_site_logs(alice_path: Path, bob_path: Path, c: LinkConfig, managers=None) -> SessionResult:
     rec = read_site_logs(alice_path, bob_path)
-    return run_session(replace(c, n_pulses=len(rec.states.bits)), managers, record=rec)
+    return run_session(replace(c, n_pulses=len(rec.states.bits)), managers, record=rec, inputs=[provenance(alice_path), provenance(bob_path)])

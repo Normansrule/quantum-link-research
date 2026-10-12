@@ -158,6 +158,6 @@ def test_rehearsal_numbers_in_protocol_p13_match_the_data():
     from qll.circuits import teleport_cloud as T
     root = Path(__file__).resolve().parents[1]
     text = (root / "experiments" / "protocols" / "P13_majorana_teleportation_on_a_cloud_processor.md").read_text(encoding="utf-8")
-    rec = json.loads(next((root / "experiments" / "bench" / "frontier" / "rehearsal").glob("majorana_*.json")).read_text())
+    rec = json.loads(next((root / "experiments" / "bench" / "frontier" / "rehearsal").glob("majorana_*.json")).read_text(encoding="utf-8"))
     for mode in ("two_bit", "one_bit", "paper_one_bit", "no_bits"):
         assert f"{T.analyze(rec['runs'][mode]['counts'], mode).average:.3f}" in text, mode

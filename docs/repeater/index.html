@@ -44,14 +44,16 @@
   .legend i { display: inline-block; width: 18px; height: 3px; border-radius: 2px; margin-right: .35rem; vertical-align: middle }
   .ok { color: var(--green) } .bad { color: var(--mars) } .warm { color: var(--warm) } .cyan { color: var(--cyan) }
 </style>
+<script defer src="../js/nav.js"></script>
 </head>
 <body>
+<a class="skip" href="#content">Skip to content</a>
 <div class="aurora"></div>
 <header class="top">
   <a class="brand" href="../"><span class="dot"></span>Quantum Link Research</a>
   <nav><a href="../mars/">Mars simulator</a><a href="../teleport/">Teleportation explainer</a><a href="../monitor/">Link monitor</a><a href="../coupler/">Coupler lab</a><a href="../qec/">QEC lab</a><a href="../budget/">Link budget</a><a href="../systems/">Traceability</a><a class="gh" href="https://github.com/Normansrule/quantum-link-research">GitHub ↗</a></nav>
 </header>
-<main class="lab">
+<main class="lab" id="content" tabindex="-1">
   <div class="intro">
     <div class="kicker">Repeater lab · REQ-NET-001 · learn 03</div>
     <h1>Beat the exponential, <span class="gradient-text">if your memory can wait</span>.</h1>

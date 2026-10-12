@@ -7,6 +7,7 @@
 <link rel="stylesheet" href="../site.css">
 <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
 <style>
+.skip{position:absolute;left:.5rem;top:-4rem;padding:.5rem .9rem;background:#e8eef8;color:#05070d;border-radius:8px;z-index:60}.skip:focus{top:.5rem}
   :root { --fg:#1b1f23; --bg:#fff; --muted:#666; --accent:#0b5fff; --warm:#d9480f; --grid:#e5e7eb; }
   @media (prefers-color-scheme: dark) { :root { --fg:#e6e6e6; --bg:#0f1115; --muted:#9aa; --grid:#2a2e36; } }
   body { font: 15px/1.5 system-ui, sans-serif; color: var(--fg); background: var(--bg); margin: 0; padding: 1.5rem; max-width: 1100px; margin-inline: auto; }
@@ -23,7 +24,9 @@
 </style>
 </head>
 <body>
+<a class="skip" href="#content">Skip to content</a>
 <header class="top"><a class="brand" href="../">Quantum Link Research</a><nav><a href="../mars/">Mars simulator</a><a href="../#learn">Learn</a><a href="../#experiments">Experiments</a><a href="../#simulations">Simulations</a><a href="../#research">Research</a><a class="gh" href="https://github.com/Normansrule/quantum-link-research">GitHub</a></nav></header>
+<main id="content" tabindex="-1">
 <h1 style="margin-top:1.2rem">Explorers</h1>
 <p class="muted">Every curve here is the same formula as the Python module named beside it; the Python version is the one the pytest suite validates, and the spot values shown in each panel can be checked against it in one line (see README, section "Apps"). Sliders are live.</p>
 
@@ -90,6 +93,7 @@
   </div>
 </div>
 
+</main>
 <script>
 const C=299792458, H=6.62607015e-34, HBAR=H/(2*Math.PI), KB=1.380649e-23, AU=149597870700;
 const nbar=(omega,T)=>{ if(T<=0) return 0; const x=HBAR*omega/(KB*T); return x>700?0:1/Math.expm1(x); };

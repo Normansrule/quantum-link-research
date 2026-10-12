@@ -110,7 +110,7 @@ def trade_tables() -> dict[str, str]:
     mean = float(key.mean())
     rows = ["| daily demand | one-time pad per day | 256-bit session keys per day | days refused with no bank | key bank needed |",
             "|---|---|---|---|---|"]
-    for dem in (1e5, 3e5, 1e6, 2e6, mean):
+    for dem in [x for x in (1e5, 3e5, 1e6, 1.5e6, 2e6, 3e6) if x < mean] + [mean]:          # the mean supply depends on sifting and testing
         L = ledger(d, dem, key)
         tag = " (the mean supply: the most any bank can carry)" if dem == mean else " (baseline)" if dem == 1e6 else ""
         rows.append(f"| {dem:.2g} bits{tag} | {L.otp_bytes_per_day / 1e3:,.0f} kB | {L.sessions_per_day:,.0f} | "

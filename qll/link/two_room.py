@@ -1,15 +1,17 @@
 """The two-room link: polarization BB84 with weak laser pulses at the single-photon level between two rooms, built
-from hobby-priced parts, and the configuration that makes the simulation its digital twin.
+from hobby-priced parts, and the configuration that turns the simulation into its planning model. It becomes a
+calibrated digital twin only once measured part parameters and held-out comparisons exist (audit H02); until then
+every prediction here is a model output, not a measurement.
 
 Setup
 -----
 Room A: a 405 nm laser diode pulsed at `rep_rate_hz` by a microcontroller, attenuated by neutral-density filters to a
 mean photon number mu per pulse, then a polarizer at 0, 90, 45, or 135 degrees (four fixed polarizers selected by
-four laser diodes, or one diode and a servo-turned half-wave plate). Channel: free space across a hallway, or a
+four laser diodes, or one diode and a servo-turned half-wave plate). Channel: an enclosed free-space path between the rooms, or a
 single-mode fiber patch cord through the wall. Room B: a 50/50 beamsplitter for a passive basis choice, a polarizing
 beamsplitter in each arm (the diagonal arm behind a half-wave plate at 22.5 degrees), and four silicon
-photomultipliers (SiPMs) read by fast comparators and a gated counter on a second microcontroller. A fiber Ethernet
-link between the rooms carries the classical channel (qll/link/net_transport.py).
+photomultipliers (SiPMs) read by fast comparators and a gated counter on a second microcontroller. A separate fiber Ethernet
+link between the rooms carries only the classical channel (qll/link/net_transport.py).
 
 Twin
 ----

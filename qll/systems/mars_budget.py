@@ -37,6 +37,20 @@ as soon as it has it, and the bases are compared later over the classical channe
 neither the memories nor the storage. It is distilled at the asymptotic rate 1 - 2 h(Q) per sifted pair with the Werner
 error rate Q = 2(1 - f_key)/3 of the pair as delivered, f_key = 1/4 + w (f0 - 1/4) [shor2000]. This is a budget, not a simulation: every factor is an
 average, and the result is only as good as the least certain stage, which is why each stage is shown.
+
+Accounting made explicit (audit P01-P03):
+  - basis sifting: each end picks the key basis with probability p_key_basis and the other basis otherwise; a herald
+    yields a sifted pair with probability p^2 + (1 - p)^2 (1/2 for unbiased BBM92), and a fraction test_fraction of sifted
+    pairs is spent on parameter estimation, so key per herald = sift (1 - test_fraction)(1 - 2 h(Q)). The defaults are
+    the unbiased protocol with 10 % testing; a biased-basis protocol raises sift toward 1 but must be chosen explicitly;
+  - wavelength: a memory whose optical interface differs from the link wavelength needs frequency conversion at each
+    end; the memory stage then includes conversion_efficiency squared (an assumed external efficiency, 0.3-0.6 in
+    demonstrations [vanleent2020]); conversion noise is not modelled and is listed as an open assumption;
+  - schedulability: the rates here are averages. If every attempt were held until its herald returned, the number of
+    attempts pending at once would be rate x round trip (extra["pending_attempts_if_held"]), far beyond any memory;
+    a realizable design needs heralding that does not destroy the stored state, memory allocation and release, and
+    multiplexing limits, which this budget does not model. Memory efficiencies are assumed operating points
+    (memory_decoherence.MemoryPlatform).
 """
 from __future__ import annotations
 
@@ -83,6 +97,20 @@ class MarsLinkDesign:
     stray_light: float = 1e-9               # receiver's off-axis rejection floor (relative to on axis)
     sun_depression_deg: float = 12.0        # ground stations operate with the Sun this far below the horizon
     night_radiance: float = NIGHT_RADIANCE  # W m^-2 sr^-1 nm^-1, airglow behind a ground station at night
+    p_key_basis: float = 0.5                # probability each end measures in the key basis (0.5: unbiased BBM92)
+    test_fraction: float = 0.1              # fraction of sifted pairs spent on parameter estimation
+    conversion_efficiency: float = 0.4      # per end, when the memory's wavelength differs from the link's (assumed)
+
+    def __post_init__(self) -> None:
+        if not 0 < self.p_key_basis < 1 or not 0 <= self.test_fraction < 1 or not 0 < self.conversion_efficiency <= 1:
+            raise ValueError("need 0 < p_key_basis < 1, 0 <= test_fraction < 1, 0 < conversion_efficiency <= 1")
+
+    @property
+    def sift_probability(self) -> float:
+        return self.p_key_basis ** 2 + (1 - self.p_key_basis) ** 2
+
+    def needs_conversion(self) -> bool:
+        return abs(self.platform().wavelength_nm - self.wavelength_m * 1e9) > 1.0
 
     def platform(self):
         for p in MEMORY_TABLE:
@@ -210,7 +238,8 @@ def budget(d: MarsLinkDesign, t_days: float) -> Budget:
         sM = d.source_rate_hz * d.eta_tx * _to_aperture(legM)
         noise, w = night + nM, _purity(sE, night) * _purity(sM, nM)    # a coincidence needs both clicks to be signal
         extra = {"legs_m": [LE, LM]}
-    factors.append(("memories (write and read, both ends)", mem.efficiency**2))
+    mem_factor = mem.efficiency**2 * (d.conversion_efficiency**2 if d.needs_conversion() else 1.0)
+    factors.append((f"memories (write and read, both ends{', with frequency conversion' if d.needs_conversion() else ''})", mem_factor))
     factors.append(("availability (conjunction x duty)", d.duty if available else 0.0))
     rate = d.source_rate_hz * d.modes
     stages = [Stage(f"source: {d.modes:g} modes x {d.source_rate_hz:.3g} pairs/s", 1.0, rate)]
@@ -223,10 +252,16 @@ def budget(d: MarsLinkDesign, t_days: float) -> Budget:
     F = (2 * f + 1) / 3
     f_key = 0.25 + w * (d.f0 - 0.25)                      # measured on arrival: no storage, no memory
     Q = 2 * (1 - f_key) / 3
-    key = max(0.0, 1 - 2 * h2(Q)) if Q < 0.5 else 0.0
+    secret = max(0.0, 1 - 2 * h2(Q)) if Q < 0.5 else 0.0
+    key = d.sift_probability * (1 - d.test_fraction) * secret     # per herald: sifting and testing made explicit
     extra["fraction_stored"] = f_stored
     extra["key_error_rate"] = Q
-    return Budget(d, t_days, L, tuple(stages), t_store, f, F, key, extra, w, noise, mem.efficiency**2)
+    extra["secret_fraction_per_sifted_pair"] = secret
+    extra["sift_probability"] = d.sift_probability
+    extra["conversion"] = d.needs_conversion()
+    extra["conversion_noise"] = "not modelled"
+    extra["pending_attempts_if_held"] = d.source_rate_hz * d.modes * 2 * one_way_delay_s(L)
+    return Budget(d, t_days, L, tuple(stages), t_store, f, F, key, extra, w, noise, mem_factor)
 
 
 def required_rejection(d: MarsLinkDesign, t_days: float, purity: float = 0.99) -> float:

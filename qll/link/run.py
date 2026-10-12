@@ -21,6 +21,7 @@ import argparse
 import csv
 import json
 import platform
+import sys
 import time
 from pathlib import Path
 
@@ -69,16 +70,22 @@ def _md_table(rows: list[dict], cols: list[str]) -> str:
     return "\n".join(out)
 
 
-def cmd_validate(a) -> list[dict]:
+def cmd_validate(a) -> int:
+    """Exit status 0 only when every check passes and at least one ran; 1 otherwise (machine-detectable)."""
     rows = S.validation_checks()
     for r in rows:
         print(f"{'PASS' if r['pass'] else 'FAIL'}  {r['check']}\n      expected {r['expected']}\n      observed {r['observed']}")
+    failed = [r["check"] for r in rows if not r["pass"]]
+    outcome = "pass" if rows and not failed else "fail"
+    print(f"validation {outcome.upper()}: {len(rows) - len(failed)} of {len(rows)} checks passed")
     if a.out:
         Path(a.out).mkdir(parents=True, exist_ok=True)
         with open(Path(a.out) / "validation.csv", "w", newline="", encoding="utf-8") as fh:
             w = csv.DictWriter(fh, fieldnames=list(rows[0]))
             w.writeheader(); w.writerows(rows)
-    return rows
+        (Path(a.out) / "validation.json").write_text(json.dumps({"outcome": outcome, "executed": len(rows), "failed": failed,
+                                                                 "skipped": [], "rows": rows}, indent=1, default=str), encoding="utf-8")
+    return 0 if outcome == "pass" else 1
 
 
 def cmd_ingest(a) -> None:
@@ -93,13 +100,14 @@ def cmd_ingest(a) -> None:
         print(f"wrote {write_session(r, Path(a.out))}")
 
 
-def cmd_demo(a) -> dict:
+def cmd_demo(a) -> int:
     d = S.demonstration()
     print(f"accepted session {d['accepted_session'].run_id}: {d['keys_from_good']} keys of 256 bits delivered to both sites")
     print(f"rejected session {d['rejected_session'].run_id} ({d['rejected_session'].reject_reason}): {d['keys_from_bad']} keys delivered")
     print(f"{d['messages']} test messages encrypted at Site A and decrypted at Site B: {'all match' if d['roundtrips_ok'] else 'MISMATCH'}")
     print(f"request with an empty key store: {'refused (fail closed)' if d['refused_when_empty'] else 'NOT refused'}")
-    return d
+    ok = d["roundtrips_ok"] and d["refused_when_empty"] and d["keys_from_bad"] == 0
+    return 0 if ok else 1
 
 
 def cmd_scenarios(a) -> None:
@@ -315,7 +323,8 @@ def _report(res, pairs, rep, demo, validation, plots, example, out, base, elapse
         f"![net key]({P('net_key_vs_distance')})",
         "",
         f"The classical channel is authenticated with Wegman–Carter tags over each site's view of the whole transcript "
-        f"(information-theoretically secure; forgery probability below 10⁻³⁰ per session). Each session spends "
+        f"(information-theoretically secure only when the authentication key is secret and used once; in these simulations a "
+        f"seeded ledger stands in for it, so the forgery bound below 10⁻³⁰ per session describes the construction, not this run). Each session spends "
         f"{res['1_baseline'][0].metrics.auth_bits_consumed} bits of authentication key, replaced from its own output before "
         "any key is delivered. A session that yields less than that is accepted but delivers nothing: the link is then "
         "consuming its pre-shared key rather than growing it, which in the 10⁶-pulse sessions happens near 75 km.",
@@ -366,7 +375,7 @@ def _report(res, pairs, rep, demo, validation, plots, example, out, base, elapse
     return "\n".join(L)
 
 
-def main(argv: list[str] | None = None) -> None:
+def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest="cmd", required=True)
     p = sub.add_parser("session"); p.add_argument("--config"); p.add_argument("--set", nargs="*"); p.add_argument("--out")
@@ -376,9 +385,10 @@ def main(argv: list[str] | None = None) -> None:
     p = sub.add_parser("ingest"); p.add_argument("log"); p.add_argument("--bob"); p.add_argument("--config"); p.add_argument("--set", nargs="*"); p.add_argument("--out")
     p = sub.add_parser("operations"); p.add_argument("--out"); p.add_argument("--site")
     a = ap.parse_args(argv)
-    {"session": cmd_session, "validate": cmd_validate, "scenarios": cmd_scenarios, "demo": cmd_demo, "ingest": cmd_ingest,
-     "operations": cmd_operations}[a.cmd](a)
+    code = {"session": cmd_session, "validate": cmd_validate, "scenarios": cmd_scenarios, "demo": cmd_demo, "ingest": cmd_ingest,
+            "operations": cmd_operations}[a.cmd](a)
+    return code if isinstance(code, int) else 0
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

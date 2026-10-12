@@ -85,3 +85,22 @@ def test_s08_multiplexing_scalings():
     assert multiplexing_needed(EARTH_MARS_MIN_M, 0.5, 10.0, 1e8, 1.0) < multiplexing_needed(EARTH_MARS_MAX_M, 0.5, 10.0, 1e8, 1.0) / 30
     assert 1e2 < multiplexing_needed(EARTH_MARS_MAX_M, 0.5, 10.0, 1e8, 1.0) < 1e4              # the thesis number: 10²–10³ with 1 m → 10 m optics
     assert pairs_per_day(EARTH_MARS_MAX_M, 0.5, 10.0, 1e8, 1) < 1e4                              # single mode: pairs per day, not per second
+
+
+def test_di_estimates_reject_impossible_inputs_instead_of_clipping():
+    import math
+
+    from qll.qkd.e91 import di_rate_finite_key, di_rate_per_round
+    S = 2 * math.sqrt(2)
+    assert di_rate_per_round(S, 0.0) == pytest.approx(1.0)
+    for bad in ((3.0, 0.0), (S, -0.01), (S, 0.6), (float("nan"), 0.0)):
+        with pytest.raises(ValueError):
+            di_rate_per_round(*bad)
+    assert di_rate_finite_key(S * 1.001, 0.0, 10**4) >= 0.0          # a sampled estimate may fluctuate above the bound
+    with pytest.raises(ValueError):
+        di_rate_finite_key(3.5, 0.0, 10**8)                           # far beyond it, even after the penalty: an error
+    for n in (0, -5, 1.5, True):
+        with pytest.raises(ValueError):
+            di_rate_finite_key(S, 0.0, n)
+    with pytest.raises(ValueError):
+        di_rate_finite_key(S, 0.0, 1000, eps=0.0)

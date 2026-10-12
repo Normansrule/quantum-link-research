@@ -37,11 +37,16 @@ def _series(x, n: int | None = None) -> np.ndarray:
 
 
 def sequent_peak(supply, demand, cycles: int = 2) -> float:
-    """Smallest capacity (bits) that, starting full, meets `demand` from the periodic `supply` without refusal."""
+    """Smallest capacity (bits) that, starting full, meets `demand` from the periodic `supply` without refusal; inf when
+    the periodic demand exceeds the supply, because then every finite bank eventually refuses (audit D02)."""
     s = _series(supply)
     d = _series(demand, len(s))
+    if len(s) == 0:
+        raise ValueError("supply must not be empty")
     if len(d) != len(s):
         raise ValueError("supply and demand must have the same length")
+    if d.sum() > s.sum() * (1 + 1e-12):
+        return float("inf")
     S = K = 0.0
     for _ in range(cycles):
         for st, dt in zip(s, d):
@@ -66,8 +71,12 @@ def simulate(supply, demand, capacity: float, level0: float | None = None) -> Ba
     """Day-by-day bank: serve what the level plus today's key allows, keep the rest up to the capacity."""
     s = _series(supply)
     d = _series(demand, len(s))
+    if len(s) == 0 or len(d) != len(s):
+        raise ValueError("supply and demand must be non-empty and the same length")
     C = float(capacity)
     L = C if level0 is None else float(level0)
+    if not (C >= 0 and np.isfinite(C)) or not 0 <= L <= C:
+        raise ValueError("capacity must be finite and non-negative, and the starting level within [0, capacity]")
     level, served, refused = np.empty(len(s)), np.empty(len(s)), np.empty(len(s))
     for i, (st, dt) in enumerate(zip(s, d)):
         use = min(dt, L + st)

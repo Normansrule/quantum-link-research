@@ -234,10 +234,10 @@ def test_an_experiment_log_runs_through_the_same_protocol_exactly(tmp_path):
 
 def test_experiment_logs_are_validated(tmp_path):
     from qll.link.hardware_log import read_log
-    (tmp_path / "bad.csv").write_text("pulse,alice_bit,alice_basis,bob_basis,bob_click\n0,1,0,0,1\n")
+    (tmp_path / "bad.csv").write_text("pulse,alice_bit,alice_basis,bob_basis,bob_click\n0,1,0,0,1\n", encoding="utf-8")
     with pytest.raises(ValueError):
         read_log(tmp_path / "bad.csv")
-    (tmp_path / "bad2.csv").write_text("pulse,alice_bit,alice_basis,bob_basis,bob_click,bob_bit\n0,2,0,0,1,1\n")
+    (tmp_path / "bad2.csv").write_text("pulse,alice_bit,alice_basis,bob_basis,bob_click,bob_bit\n0,2,0,0,1,1\n", encoding="utf-8")
     with pytest.raises(ValueError):
         read_log(tmp_path / "bad2.csv")
 
@@ -245,7 +245,7 @@ def test_experiment_logs_are_validated(tmp_path):
 def test_tier1_twin_shows_the_protocol_and_the_intercept_disturbance(tmp_path):
     from qll.link.bench_tier1 import ANGLE, MalusBench, calibrate, run
     from qll.link.hardware_log import write_log, run_from_log
-    t1 = LinkConfig.from_dict({k: v for k, v in __import__("json").loads((ROOT / "systems/see510/hardware/tier1.json").read_text()).items()})
+    t1 = LinkConfig.from_dict({k: v for k, v in __import__("json").loads((ROOT / "systems/see510/hardware/tier1.json").read_text(encoding="utf-8")).items()})
     bench = MalusBench(seed=4)
     th = calibrate(bench)
     assert bench.pulse(90, 0)[0] < th.low < th.high < bench.pulse(0, 0)[0]
@@ -283,10 +283,10 @@ def test_tier1_serial_protocol(monkeypatch):
 def test_tier_presets_are_valid_and_predict_a_key():
     import json
     for t in ("tier1", "tier3", "tier4"):
-        c = LinkConfig.from_dict(json.loads((ROOT / f"systems/see510/hardware/{t}.json").read_text()))
+        c = LinkConfig.from_dict(json.loads((ROOT / f"systems/see510/hardware/{t}.json").read_text(encoding="utf-8")))
         cap = 2_000_000 if c.source_model == "weak_coherent_decoy" else 400_000
         assert run_session(c.with_(n_pulses=min(c.n_pulses, cap))).metrics.accepted, t
-    LinkConfig.from_dict(json.loads((ROOT / "systems/see510/hardware/tier2_channel.json").read_text()))
+    LinkConfig.from_dict(json.loads((ROOT / "systems/see510/hardware/tier2_channel.json").read_text(encoding="utf-8")))
 
 
 

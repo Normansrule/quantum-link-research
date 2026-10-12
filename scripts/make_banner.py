@@ -10,7 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def main() -> None:
-    d = json.loads((ROOT / "docs" / "site_data.json").read_text())["headline"]
+    d = json.loads((ROOT / "docs" / "site_data.json").read_text(encoding="utf-8"))["headline"]
     rnd = random.Random(7)
     W, H = 1280, 420
     stars = "".join(
@@ -55,7 +55,7 @@ def main() -> None:
 <text x="{W / 2}" y="104" text-anchor="middle" font-family="Inter,Segoe UI,Helvetica,Arial,sans-serif" font-size="19" fill="#c9d4e6">from a diamond on a bench to a message to Mars — tested physics, simulations, and experiments</text>
 <text x="{W / 2}" y="{H - 24}" text-anchor="middle" font-family="JetBrains Mono,Menlo,monospace" font-size="14" fill="#5b6780">F = (2f+1)/3  ·  f(t) = 1/4 + (f0 − 1/4)e^(−t/T)  ·  K ≤ −log2(1−η)  ·  τ = d/c  ·  {d["mars_capable_memories"]} of {d["n_memories"]} memories survive the {d["round_trip_max_min"]:.1f}-min round trip</text>
 </svg>'''
-    (ROOT / "docs" / "figures" / "hero_banner.svg").write_text(svg)
+    (ROOT / "docs" / "figures" / "hero_banner.svg").write_text(svg, encoding="utf-8")
     print("wrote docs/figures/hero_banner.svg")
 
 

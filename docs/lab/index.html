@@ -11,13 +11,16 @@
 <link rel="stylesheet" href="../space.css">
 <link rel="stylesheet" href="lab.css">
 <script src="../js/lab_ui.js"></script>
+<script defer src="../js/nav.js"></script>
 </head>
 <body>
+<a class="skip" href="#content">Skip to content</a>
 <div class="aurora"></div>
 <header class="top">
   <a class="brand" href="../"><span class="dot"></span>Quantum Link Research</a>
   <nav><a href="./">Lab</a><a href="link/">Two-room link</a><a href="channel/">Quantum channels</a><a href="outdoor/">Outdoors and orbit</a><a href="frontier/">Frontier</a><a href="messenger/">Messenger</a><a href="circuits/">Cloud circuits</a><a href="../systems/">Traceability</a><a class="gh" href="https://github.com/Normansrule/quantum-link-research">GitHub ↗</a></nav>
 </header>
+<main id="content" tabindex="-1">
 <section class="lab-head">
   <div class="kicker">The lab · web and installable app</div>
   <h1>Build it in the browser first, then in the rooms</h1>
@@ -46,6 +49,7 @@
   <div class="exp-grid" id="grid"></div>
   <p class="muted small" style="margin-top:1.4rem">Generated from <code>qll/systems/experiment_catalog.py</code> and <code>qll/systems/lab_scenes.py</code> by <code>scripts/build_lab.py</code>. Experiments without a lab yet open their procedure; each one still has a twin, a test, and a data format.</p>
 </section>
+</main>
 <script>
 (async () => {
   const U = window.QLLLabUI, esc = U.esc;

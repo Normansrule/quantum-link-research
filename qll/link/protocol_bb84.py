@@ -26,6 +26,7 @@ import datetime as _dt
 import hashlib
 import math
 import time
+import uuid
 from dataclasses import dataclass
 
 import numpy as np
@@ -33,7 +34,7 @@ import numpy as np
 from qll.link.adversary import AdversaryRecord, InterceptResend, PhotonNumberSplitting
 from qll.link.decoy import SinglePhotonBound, decoy_bound, gllp_bound
 from qll.link.authentication import AuthKeyPool
-from qll.link.classical_channel import AuthenticatedChannel, AuthenticationFailure
+from qll.link.classical_channel import AuthenticatedChannel, AuthenticationFailure, ChannelClosed
 from qll.link.codec import pack, pack_indices, unpack, unpack_indices
 from qll.link.config import LinkConfig
 from qll.link.key_store import SiteKeyManager
@@ -108,7 +109,8 @@ def new_auth_pool(c: LinkConfig) -> AuthKeyPool:
 
 
 def run_session(c: LinkConfig, managers: dict[str, SiteKeyManager] | None = None, site_a: str = "A",
-                site_b: str = "B", record: QuantumRecord | None = None, pool: AuthKeyPool | None = None) -> SessionResult:
+                site_b: str = "B", record: QuantumRecord | None = None, pool: AuthKeyPool | None = None,
+                inputs: list[dict] | None = None) -> SessionResult:
     """One session. With `record`, the quantum part comes from an experiment instead of the simulation and every later
     step (sifting, estimation, Cascade, verification, amplification, delivery) runs unchanged. `pool` carries the
     Wegman-Carter key from session to session; a fresh pre-shared pool is used if none is given."""
@@ -127,29 +129,37 @@ def run_session(c: LinkConfig, managers: dict[str, SiteKeyManager] | None = None
     rec: AdversaryRecord | None = None
     result_ids: list = []
 
+    execution_id = uuid.uuid4().hex                             # unique per acquisition; run_id is the reproducible experiment id
+    verified_digest = ""
+
     def done(reason: str = "", key_a=empty, key_b=empty) -> SessionResult:
+        nonlocal verified_digest
         # authenticate only a session that would otherwise be accepted: a rejected session uses no key, so an adversary
         # who forces rejections cannot drain the pool (she can still stop the key: denial of service is not prevented)
-        if reason == "" and cc.mode == "wegman_carter":
-            spent = cc.pool.consumed
+        if reason == "":
+            spent = cc.pool.consumed if cc.mode == "wegman_carter" else 0
             try:
-                cc.finalize()                                   # authenticate the transcript before any decision
-                m.event("authenticate", "info", f"transcript tags agree (forgery probability below {cc.forgery_probability:.1e})")
-            except AuthenticationFailure as err:
+                verified_digest = cc.finalize()                 # authenticate and seal the transcript before any decision
+                if cc.mode == "wegman_carter":
+                    m.event("authenticate", "info", f"transcript tags agree (forgery probability below {cc.forgery_probability:.1e}"
+                            + ("; meaningful only for a secret key, and this pool is a seeded simulation ledger)" if getattr(cc.pool, "simulated", False) else ")"))
+            except AuthenticationFailure as err:                # tags differ, pool exhausted, or verifier error: FAILED, sticky
                 m.event("authenticate", "alarm", str(err))
                 reason, key_a, key_b = "auth", empty, empty
-            except RuntimeError as err:                         # pool exhausted
-                m.event("authenticate", "alarm", str(err))
-                reason, key_a, key_b = "auth", empty, empty
-            m.auth_bits_consumed = cc.pool.consumed - spent
-            m.forgery_probability = cc.forgery_probability
+            if cc.mode == "wegman_carter":
+                m.auth_bits_consumed = cc.pool.consumed - spent
+                m.forgery_probability = cc.forgery_probability
         if reason == "" and len(key_a):
             # top the authentication pool back up from this session's output (its own spend plus any earlier deficit),
             # then deliver the rest; the net key is the session's output minus what it spent
             m.net_key_bits = len(key_a) - m.auth_bits_consumed
+            cc.require_verified(verified_digest)                # key release only for the exact verified transcript
             if cc.mode == "wegman_carter":
                 topped = min(len(key_a), max(0, c.auth_pool_bits - cc.pool.bits))
-                cc.pool.refill(topped)
+                if not getattr(cc.pool, "simulated", True):
+                    topped -= topped % 8                        # whole bytes, so a secret pool receives exactly these bits
+                if topped:
+                    cc.pool.replenish(key_a[:topped], provenance=f"{m.run_id}/{execution_id}")
                 m.auth_bits_refilled = topped
                 key_a, key_b = key_a[topped:], key_b[topped:]
             m.key_delivered_bits = len(key_a)
@@ -157,8 +167,8 @@ def run_session(c: LinkConfig, managers: dict[str, SiteKeyManager] | None = None
             if m.net_key_bits <= 0:
                 m.event("deliver", "warning", "the session made less key than its authentication consumed: no net key")
             if len(key_a) and managers is not None:
-                ids = managers[site_a].store_for(site_b, c.key_size_bits).deposit(m.run_id, key_a)
-                ids_b = managers[site_b].store_for(site_a, c.key_size_bits).deposit(m.run_id, key_b)
+                ids = managers[site_a].store_for(site_b, c.key_size_bits).deposit(m.run_id, key_a, execution_id)
+                ids_b = managers[site_b].store_for(site_a, c.key_size_bits).deposit(m.run_id, key_b, execution_id)
                 assert ids == ids_b
                 m.keys_delivered_256 = len(ids)
                 m.event("deliver", "info", f"{len(ids)} keys of {c.key_size_bits} bits deposited at both sites")
@@ -174,7 +184,10 @@ def run_session(c: LinkConfig, managers: dict[str, SiteKeyManager] | None = None
         # 1-2 configure and verify readiness
         cc.send("A", "session_start", {"run_id": m.run_id, "n_pulses": c.n_pulses, "protocol": "BB84"})
         cc.send("B", "session_ready", {"run_id": m.run_id})
-        m.event("ready", "info", f"session {m.run_id} established; channel loss {m.channel_loss_db:.2f} dB")
+        m.event("ready", "info", f"session {m.run_id} established; channel loss {m.channel_loss_db:.2f} dB; execution mode: " + ("simulation, both sites in one process (shared state; not separate endpoints)" if record is None
+                                                        else "offline analysis of recorded site logs on one machine (not separate live endpoints)")
+                + "".join(f"; input {p['file']} sha256 {p['sha256']} origin {p['origin']}" for p in (inputs or []))
+                + f"; execution id {execution_id}; authentication pool: {'simulation ledger (seeded, not secret)' if getattr(cc.pool, 'simulated', False) else 'secret material' if cc.pool is not None else 'hmac session key'}")
         # 3-4 quantum transmission (simulated, or recorded by an experiment)
         if record is None:
             states = SiteA(rngs["site_a"]).prepare(c.n_pulses, c)

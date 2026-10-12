@@ -97,7 +97,7 @@ def load_horizons_csv(path: str) -> tuple[np.ndarray, np.ndarray]:
     import csv
 
     t, d = [], []
-    with open(path, newline="") as fh:
+    with open(path, newline="", encoding="utf-8") as fh:
         for row in csv.DictReader(fh):
             t.append(float(row["JD"]) - J2000_JD)
             d.append(float(row["delta"]) * AU_METERS)

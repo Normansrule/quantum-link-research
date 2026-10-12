@@ -70,7 +70,7 @@ def building() -> Tier:
                 OUT_STAGES, tuple(P), tuple(beams), OUT_SLIDERS,
                 {"simulate": "python -c \"from qll.link import outdoor_link as O; print(O.predict(O.OutdoorParts(distance_m=1000, receiver=O.RECEIVERS['spad'])))\"",
                  "real": "python -m qll.link.run ingest bldg_a.csv --bob bldg_b.csv --config bldg_measured.json"},
-                rooms=False, claim="Laboratory-grade key outdoors at night; turbulence fades the signal around the mean the twin predicts.")
+                rooms=False, claim="The model accepts a key outdoors at night (a model output, not a measured or security-reviewed key); turbulence fades the signal around the mean it predicts.")
 
 
 PASS_SLIDERS = (Slider("t", "Time from overhead", -200, 200, 1, -60, "s"), Slider("min_elevation_deg", "Lowest usable elevation", 5, 40, 1, 15, "°"),

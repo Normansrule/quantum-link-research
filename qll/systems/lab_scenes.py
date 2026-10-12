@@ -81,7 +81,7 @@ def _rooms_and_tables(a_label="Room A (Alice)", b_label="Room B (Bob)", hallway=
              Part("tableA", "table", "Bench A", (-5.0, 0.0, 0.0), "Any sturdy desk; bolt or tape the mounts down.", size=(1.8, 1.0)),
              Part("tableB", "table", "Bench B", (5.0, 0.0, 0.0), "Any sturdy desk, at least 1.3 m deep for the two analyzer arms.", size=(1.8, 1.3))]
     if hallway:
-        parts.append(Part("hall", "hallway", "Hallway", (0.0, 0.0, 0.0), "Free-space path between the two open doors; keep the beam below eye level.", size=(4.0, 2.2)))
+        parts.append(Part("hall", "hallway", "Hallway", (0.0, 0.0, 0.0), "Enclosed free-space path between the two doors (tubing or a covered channel, per the safety review); never an exposed beam.", size=(4.0, 2.2)))
     return parts
 
 
@@ -130,17 +130,17 @@ P10_BOM = (("Two fiber media converters and a 10–30 m duplex patch cord", "cla
            ("Film polarizers, a half-wave retarder, neutral-density filters (OD 1–4)", "encoding and attenuation", 50, 120),
            ("Four non-polarizing beamsplitters and two polarizing beamsplitters", "combining and analysis", 100, 250),
            ("Four onsemi MicroFC-30035 SiPMs, breakouts, a 30 V boost module, four fast comparators", "detection", 230, 350),
-           ("Two small FPGA boards", "timing", 30, 80),
+           ("Two small FPGA boards (planned; gateware not yet implemented)", "timing", 30, 80),
            ("A coaxial cable or second fiber for the pulse clock", "synchronization", 10, 30),
            ("3D-printed mounts, black tubes, lens pairs, black card, felt", "mechanics", 30, 80))
 P10_STAGES = (("Simulate first", "Predict the bench and write a synthetic run ($0)."),
               ("Classical channel", "Laptops, media converters, fiber through the door (M1.1)."),
-              ("Bright analogue across rooms", "Tier 1 down the hallway (M1.3)."),
+              ("Bright analogue across rooms", "Tier 1 through the enclosed path between the rooms (M1.3); an analogue, not secure QKD."),
               ("Single-photon receiver", "SiPMs, comparators, dark box; measure dark counts (M1.4)."),
               ("Source", "Four diodes, polarizers, combiners, filters to μ = 0.5 (M1.5)."),
               ("Receiver optics", "Passive basis choice, PBS arms, waveplate at 22.5°."),
               ("Sessions", "Clock over coax, gated counting, logs, twin check (M1.6)."),
-              ("Eavesdropper", "Optional intercept-resend station in the hallway."))
+              ("Eavesdropper", "Optional intercept-resend station inside the enclosed path."))
 
 
 def two_room_parts(channel: str = "free_space") -> tuple[list[Part], list[Beam]]:
@@ -186,7 +186,7 @@ def two_room_parts(channel: str = "free_space") -> tuple[list[Part], list[Beam]]
          # synchronization (stage 7)
          Part("coax", "coaxend", "Clock coax", _t(-5.65, -0.42, -0.05), "Room A's FPGA sends one clock edge per slot; timing is public.", 6, 7),
          # eavesdropper (stage 8)
-         Part("eveTable", "table", "Eavesdropper's cart", (0.0, 0.0, 0.0), "Optional: an intercept-resend station halfway down the hallway.", None, 8, size=(0.7, 0.5)),
+         Part("eveTable", "table", "Eavesdropper's cart", (0.0, 0.0, 0.0), "Optional: an intercept-resend station inside the enclosed path, halfway between the rooms.", None, 8, size=(0.7, 0.5)),
          Part("eveBS", "pbs", "Eve's analyzer", _t(-0.15, 0.0), "Measures each pulse in a random basis...", 3, 8, rot=45, param="eve_fraction"),
          Part("eveDet", "sipm", "Eve's detector", _t(-0.15, 0.18), "...with her own detector...", 4, 8, param="eve_fraction", rot=90),
          Part("eveLaser", "laser", "Eve's resend diodes", _t(0.15, 0.0), "...and re-sends what she saw: about 25 % errors where she guessed the basis wrong.", 1, 8, rot=0, param="eve_fraction"),
@@ -208,9 +208,9 @@ def two_room_parts(channel: str = "free_space") -> tuple[list[Part], list[Beam]]
 def two_room() -> Tier:
     parts, beams = two_room_parts()
     return Tier("two_room", "The two-room single-photon link", "main", ("P10", "T3"), ("M1.1", "M1.3", "M1.4", "M1.5", "M1.6"), "two_room",
-                "$530–1,180 (likely about $600)",
-                "Weak 405 nm pulses at 0.5 photons, four polarization states, decoy pulses, four SiPMs, FPGA gating, free space across a hallway; "
-                "a fiber classical channel carries the authenticated protocol. The twin predicts the clicks, errors, and key before you buy a part.",
+                "$530–1,180 (October 2026 planning range, no instruments)",
+                "Weak 405 nm pulses at 0.5 photons, four polarization states, decoy pulses, four SiPMs, planned FPGA gating, an enclosed free-space path between the rooms; "
+                "a separate fiber carries only the classical channel. The planning model predicts clicks, errors, and a test key before you buy a part (model outputs, not measurements).",
                 "experiments/protocols/P10_two_room_single_photon_link.md", P10_BOM, P10_STAGES, tuple(parts), tuple(beams),
                 (Slider("mu", "Signal mean photon number μ", 0.05, 1.0, 0.01, 0.5), Slider("mu_decoy", "Decoy μ", 0.01, 0.4, 0.01, 0.1),
                  Slider("free_space_loss_db", "Path loss (clipping, windows)", 0, 12, 0.1, 2.0, "dB"),

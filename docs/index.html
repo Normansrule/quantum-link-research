@@ -16,8 +16,10 @@
 <link rel="stylesheet" href="space.css">
 <link rel="stylesheet" href="vendor/katex/katex.min.css">
 <script type="importmap">{ "imports": { "three": "./vendor/three/three.module.js", "three/addons/": "./vendor/three/addons/" } }</script>
+<script defer src="js/nav.js"></script>
 </head>
 <body>
+<a class="skip" href="#content">Skip to content</a>
 <div class="aurora"></div>
 
 <header class="top">
@@ -28,13 +30,14 @@
     <a class="gh" href="https://github.com/Normansrule/quantum-link-research">GitHub ↗</a>
   </nav>
 </header>
+<main id="content" tabindex="-1">
 
 <section class="hero">
   <canvas id="hero-canvas" aria-label="The inner Solar System with Earth, Mars, a relay at Sun–Earth L4, entangled photons and classical bits"></canvas>
   <div class="hero-inner">
-    <span class="eyebrow"><b>●</b> v<span data-status="version">0.28</span> · <span data-status="tests">500+</span> tests · <span data-status="requirements_verified">24</span>/<span data-status="requirements">25</span> requirements verified</span>
-    <h1 class="title">Can Earth and Mars share a secret<br><span class="gradient-text">no computer can read?</span></h1>
-    <p class="lede">Physics says yes, with one catch: entanglement carries no message, and the two classical bits every teleportation needs take minutes at the speed of light. This project computes what that catch costs, what hardware can pay it, and what a student can build on the way, in code that is tested against the equations.</p>
+    <span class="eyebrow"><b>●</b> v<span data-status="version">…</span> · <span data-status="tests">…</span> tests collected · <span data-status="requirements_verified">…</span>/<span data-status="requirements">…</span> requirements mapped to tests · <a id="ci-status" href="https://github.com/Normansrule/quantum-link-research/actions/workflows/ci.yml">CI status: checking…</a></span>
+    <h1 class="title">Can Earth and Mars share a key<br><span class="gradient-text">no eavesdropper can learn?</span></h1>
+    <p class="lede">Under stated assumptions (trusted devices, authenticated messages, a matching finite-key proof), quantum physics allows it in principle; nothing here demonstrates it for Mars, and the Earth–Mars numbers are research models. There is also one catch: entanglement carries no message, and the two classical bits every teleportation needs take minutes at the speed of light. This project computes what that catch costs, what hardware can pay it, and what a student can build on the way, in code that is tested against the equations.</p>
     <div class="cta">
       <a class="btn primary" href="mars/">Open the Mars link simulator →</a>
       <a class="btn" href="#numbers">The numbers</a>
@@ -185,11 +188,11 @@
   <div class="kicker reveal">Everything in the repository</div>
   <h2 class="reveal">A library, a lab manual, a course, and a thesis</h2>
   <div class="grid">
-    <a class="card reveal" href="https://github.com/Normansrule/quantum-link-research/tree/main/learn"><span class="count"><span data-status="learn_files">120</span> files</span><h3>Learn</h3><p>Foundations, computing core, eight qubit platforms, communication — each with equations, a figure, references, and exercises.</p></a>
-    <a class="card reveal" href="https://github.com/Normansrule/quantum-link-research/tree/main/experiments"><span class="count"><span data-status="experiment_files">55</span> files</span><h3>Experiments</h3><p>Flagships, protocols, fifteen landmark experiments with cheap recreations, fifteen proposals, lessons from the field.</p></a>
-    <a class="card reveal" href="https://github.com/Normansrule/quantum-link-research/tree/main/research"><span class="count"><span data-status="research_files">40</span> files</span><h3>Research</h3><p>Timeline, open problems, watchlist, fifteen frontier theories, the design process, and the thesis chapters.</p></a>
+    <a class="card reveal" href="https://github.com/Normansrule/quantum-link-research/tree/main/learn"><span class="count"><span data-status="learn_files">…</span> files</span><h3>Learn</h3><p>Foundations, computing core, eight qubit platforms, communication — each with equations, a figure, references, and exercises.</p></a>
+    <a class="card reveal" href="https://github.com/Normansrule/quantum-link-research/tree/main/experiments"><span class="count"><span data-status="experiment_files">…</span> files</span><h3>Experiments</h3><p>Flagships, protocols, fifteen landmark experiments with cheap recreations, fifteen proposals, lessons from the field.</p></a>
+    <a class="card reveal" href="https://github.com/Normansrule/quantum-link-research/tree/main/research"><span class="count"><span data-status="research_files">…</span> files</span><h3>Research</h3><p>Timeline, open problems, watchlist, fifteen frontier theories, the design process, and the thesis chapters.</p></a>
     <a class="card reveal" href="https://github.com/Normansrule/quantum-link-research/blob/main/learn/COURSE_SYLLABUS.md"><h3>Course</h3><p>Fifteen weeks with readings, computations, labs, and four problem sets graded by machine.</p></a>
-    <a class="card reveal" href="https://github.com/Normansrule/quantum-link-research/blob/main/docs/references.md"><span class="count"><span data-status="references">300+</span> refs</span><h3>References</h3><p>Every citation in code must exist in the bibliography; a test enforces it.</p></a>
+    <a class="card reveal" href="https://github.com/Normansrule/quantum-link-research/blob/main/docs/references.md"><span class="count"><span data-status="references">…</span> refs</span><h3>References</h3><p>Every citation in code must exist in the bibliography; a test enforces it.</p></a>
     <a class="card reveal" href="https://github.com/Normansrule/quantum-link-research/blob/main/youtube/README.md"><h3>Youtube</h3><p>Verified videos in English, one row per topic, mapped to the file they accompany.</p></a>
   </div>
 </section>
@@ -207,6 +210,7 @@
   </div>
 </section>
 
+</main>
 <footer>
   Quantum Link Research · Aleksander Norman · MIT license · every number on this page is generated by <code>scripts/build_site_data.py</code> from tested code ·
   visual techniques inspired by open-source work credited in <a href="https://github.com/Normansrule/quantum-link-research/blob/main/CREDITS.md">CREDITS.md</a>.

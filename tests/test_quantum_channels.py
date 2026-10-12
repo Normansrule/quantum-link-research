@@ -183,9 +183,33 @@ def test_hand_written_channel_numbers_match_the_twin():
     from pathlib import Path
     root = Path(__file__).resolve().parents[1]
     h = hallway_channel()
-    p14 = (root / "experiments" / "protocols" / "P14_the_hallway_as_a_quantum_channel.md").read_text()
-    doc = (root / "systems" / "program" / "09_quantum_channels.md").read_text()
+    p14 = (root / "experiments" / "protocols" / "P14_the_hallway_as_a_quantum_channel.md").read_text(encoding="utf-8")
+    doc = (root / "systems" / "program" / "09_quantum_channels.md").read_text(encoding="utf-8")
     for text in (p14, doc):
         assert f"{100 * h['error_zx']:.1f} %" in text and f"{h['entanglement_fidelity']:.3f}" in text
         assert f"{h['certified_single_photon_fe']:.2f}" in text and f"{h['quantum_heralded']:.2f}" in text and f"{h['plob']:.3f}" in text
     assert f"{h['eta']:.3f}" in p14 and f"{100 * h['eta']:.1f} %" in doc
+
+
+def test_certificate_states_its_model_and_refuses_empty_data():
+    """Audit P04: the witness returns its assumptions and trial counts; empty or missing classes are insufficient data."""
+    from qll.link import channel_tomography as CT
+    counts = {(s, b): (900, 100) if s in "HD" else (100, 900) for s in CT.INPUTS for b in CT.BASES}
+    r = CT.certify(counts)
+    assert r["scope"].startswith("witness") and any("fair sampling" in a for a in r["assumptions"]) and r["trials"]["HZ"] == 1000
+    bad = dict(counts); bad[("H", "Z")] = (0, 0)
+    with pytest.raises(ValueError, match="insufficient"):
+        CT.certify(bad)
+    del bad[("H", "Z")]
+    with pytest.raises(ValueError, match="insufficient"):
+        CT.certify(bad)
+
+
+def test_unknown_memory_models_are_rejected():
+    from qll.network.memory_decoherence import MemoryPlatform, crossover_time_s, fraction_after_storage_analytic
+    with pytest.raises(ValueError):
+        fraction_after_storage_analytic(0.9, 1.0, 10.0, "dephsing")              # a typo no longer selects another model
+    with pytest.raises(ValueError):
+        crossover_time_s(0.9, 10.0, "amplitude")
+    with pytest.raises(ValueError):
+        MemoryPlatform("x", 1.0, 0.5, 4.0, 600, "ref", efficiency_status="measured")   # measured needs a source

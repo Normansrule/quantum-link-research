@@ -1,11 +1,24 @@
 name: ci
+# One release graph (audit C01): test on Linux and Windows, run the headless browser suite in the same pinned
+# environment, check traceability against what actually executed, and deploy the website only from a revision on
+# which every required job passed. Reports and logs are uploaded even when a job fails.
+#
+# One-time repository setting for gated deployment: Settings -> Pages -> Build and deployment -> Source:
+# "GitHub Actions". While the source is "Deploy from a branch", GitHub publishes docs/ on every push regardless of
+# this workflow.
 on:
   push:
     branches: [main]
   pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   test:
-    name: ci
+    name: tests (${{ matrix.os }})
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -14,30 +27,91 @@ jobs:
     defaults:
       run:
         shell: bash -el {0}
+    env:
+      PYTHONIOENCODING: utf-8          # console output only; file I/O names its encoding (tests/test_portability.py)
+      QLL_REQUIRE: node,qiskit_aer,qiskit_ibm_runtime,stim,qutip,pymatching,nbconvert,perceval,sequence
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
       - uses: conda-incubator/setup-miniconda@v3
         with:
           environment-file: environment.yml
           activate-environment: qll
           auto-activate-base: false
       - run: python scripts/check_env.py
-      - run: pytest -m phase1 -q
-      - run: pytest -m "not slow" -q
-      - run: python -m qll.systems.traceability
+      - run: mkdir -p reports
+      - run: python -m pytest -m phase1 -q -rfE --junitxml=reports/phase1-${{ matrix.os }}.xml
+      - run: python -m pytest -m "not slow" -q -rfE --junitxml=reports/fast-${{ matrix.os }}.xml
+      - run: python -m qll.systems.traceability --junit reports/fast-${{ matrix.os }}.xml
+      - run: python -m qll.link.run validate --out reports/validation-${{ matrix.os }}
       - run: python scripts/make_figures.py
         env:
           MPLBACKEND: Agg
       - run: python scripts/build_reference_index.py
       - run: python scripts/build_site_data.py && python scripts/make_banner.py && python scripts/make_readme_art.py && python scripts/build_systems_docs.py && python scripts/build_program_docs.py && python scripts/build_lab.py && python scripts/build_readme_build.py
-  pages:
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reports-${{ matrix.os }}
+          path: reports/
+          if-no-files-found: warn
+  browser:
     name: website (headless Chromium)
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash -el {0}
+    env:
+      QLL_REQUIRE: chromium,playwright,node
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - uses: conda-incubator/setup-miniconda@v3
+        with:
+          environment-file: environment.yml      # the same pinned environment as the tests (numpy for pytest's filters, qll itself)
+          activate-environment: qll
+          auto-activate-base: false
+      - run: pip install playwright==1.63.0 && python -m playwright install --with-deps chromium
+      - run: mkdir -p reports
+      - run: python -m pytest -q -m browser -rfE -p no:cacheprovider --junitxml=reports/browser.xml tests/test_pages_headless.py
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reports-browser
+          path: reports/
+          if-no-files-found: warn
+  deploy:
+    name: deploy the tested website
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: [test, browser]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - run: pip install pytest playwright
-      - run: python -m playwright install --with-deps chromium
-      - run: python -m pytest -q -m browser -p no:cacheprovider tests/test_pages_headless.py
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: reports-*
+          path: reports
+          merge-multiple: true
+      - run: mkdir -p site && cp -r docs/. site/
+      - run: python scripts/ci_status_from_junit.py --sha "$GITHUB_SHA" --out site --run-url "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" reports/fast-*.xml reports/browser.xml
+      - run: (cd site && find . -type f ! -name MANIFEST.sha256 -print0 | sort -z | xargs -0 sha256sum > MANIFEST.sha256) && echo "$GITHUB_SHA" > site/REVISION
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+      - id: deployment
+        uses: actions/deploy-pages@v4

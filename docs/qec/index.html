@@ -46,14 +46,16 @@
   .note { color: var(--muted); font-size: .88rem; margin: .5rem 0 0 }
   .ok { color: var(--green) } .bad { color: var(--mars) } .warm { color: var(--warm) } .cyan { color: var(--cyan) }
 </style>
+<script defer src="../js/nav.js"></script>
 </head>
 <body>
+<a class="skip" href="#content">Skip to content</a>
 <div class="aurora"></div>
 <header class="top">
   <a class="brand" href="../"><span class="dot"></span>Quantum Link Research</a>
   <nav><a href="../mars/">Mars simulator</a><a href="../teleport/">Teleportation explainer</a><a href="../repeater/">Repeater lab</a><a href="../coupler/">Coupler lab</a><a href="../budget/">Link budget</a><a href="../systems/">Traceability</a><a class="gh" href="https://github.com/Normansrule/quantum-link-research">GitHub ↗</a></nav>
 </header>
-<main class="lab">
+<main class="lab" id="content" tabindex="-1">
   <div class="intro">
     <div class="kicker">QEC lab · learn 01/15 · the surface code</div>
     <h1>Catch the errors <span class="gradient-text">without looking at the data</span>.</h1>

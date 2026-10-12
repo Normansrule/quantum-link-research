@@ -98,7 +98,7 @@ h2 { font-size: clamp(1.8rem, 3.4vw, 2.6rem); line-height: 1.15; margin: .4rem 0
 .bar > span { display: block; height: 100%; background: var(--grad); width: 50%; transition: width .5s }
 .ctrl { display: flex; flex-wrap: wrap; gap: .6rem; align-items: center; margin: 1rem 0 }
 .ctrl label { color: var(--muted); font-size: .88rem } .ctrl input[type=range] { width: min(420px, 90vw); accent-color: #22d3ee }
-.gallery { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)) }
+.gallery { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr)) }
 .gallery figure { margin: 0; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; background: #fff }
 .gallery img { display: block; width: 100%; height: auto }
 .gallery figcaption { background: var(--bg2); color: var(--muted); font-size: .85rem; padding: .55rem .8rem }
@@ -107,7 +107,7 @@ h2 { font-size: clamp(1.8rem, 3.4vw, 2.6rem); line-height: 1.15; margin: .4rem 0
 @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; filter: none } .aurora, .gradient-text { animation: none } }
 footer { max-width: var(--maxw); margin: 4rem auto 0; padding: 2rem 5vw 3rem; color: var(--faint); font-size: .85rem; border-top: 1px solid var(--line) }
 @media (max-width: 1380px) { .top nav a.opt { display: none } }
-@media (max-width: 860px) { .top nav a:not(.gh) { display: none } .live { font-size: .72rem; gap: .7rem; flex-wrap: wrap; white-space: normal; width: 92vw; justify-content: center } }
+@media (max-width: 860px) { html.js .top nav a:not(.gh) { display: none } html.js .nav-toggle { display: inline-flex } html:not(.js) .top { flex-wrap: wrap } html:not(.js) .top nav { flex-wrap: wrap } .live { font-size: .72rem; gap: .7rem; flex-wrap: wrap; white-space: normal; width: 92vw; justify-content: center } }
 
 /* animated beams (after Magic UI AnimatedBeam) */
 svg.beams { width: 100%; height: auto; display: block }
@@ -125,3 +125,20 @@ svg.beams .n2 { fill: #93a1b8; font: 12px "JetBrains Mono", monospace; text-anch
 @keyframes mq { to { transform: translateX(-50%) } }
 .readout .bad, .bad { color: var(--mars) } .readout .ok { color: var(--green) }
 @media (prefers-reduced-motion: reduce) { .mq-track, svg.beams .beam { animation: none } }
+/* Navigation, landmarks, and status (audit U02, U03) */
+.skip { position: absolute; left: .5rem; top: -4rem; z-index: 60; padding: .55rem .9rem; border-radius: 8px; background: var(--ink); color: #05070d; font-weight: 600 }
+.skip:focus { top: .5rem; text-decoration: none }
+.nav-toggle { display: none; align-items: center; gap: .4rem; margin-left: auto; margin-right: .6rem; min-height: 44px; padding: .35rem .95rem;
+  border: 1px solid var(--line); border-radius: 999px; background: transparent; color: var(--ink); font: inherit; font-size: .9rem; cursor: pointer }
+.nav-toggle:focus-visible, .top nav a:focus-visible, .skip:focus-visible, [tabindex="-1"]:focus-visible { outline: 2px solid var(--cyan); outline-offset: 2px }
+@media (max-width: 1380px) { html.js .top:has(nav a.opt) .nav-toggle { display: inline-flex } html.js .top nav:has(a.opt) a:not(.gh) { display: none } }
+html.js .top nav.open { position: absolute; top: 100%; left: 0; right: 0; flex-direction: column; align-items: stretch; max-height: calc(100vh - 4rem); overflow-y: auto;
+  padding: .4rem 4vw 1rem; background: rgba(5,7,13,.97); border-bottom: 1px solid var(--line) }
+html.js .top nav.open a, html.js .top nav.open a.opt { display: block !important; margin: 0; padding: .75rem .2rem; min-height: 44px; font-size: 1rem; color: var(--ink); border-bottom: 1px solid var(--line); border-radius: 0 }
+.stale { color: var(--warm, #ffb86b) }
+#ci-status { pointer-events: auto }
+@media (max-width: 480px) { .top { padding: .55rem 12px } .brand { font-size: .88rem; gap: .4rem } .nav-toggle { margin-right: 0; padding: .3rem .7rem } html.js .top nav:not(.open) a.gh { display: none } }
+@media (max-width: 640px) { .hero-inner { max-width: 100%; min-width: 0; padding-left: 16px; padding-right: 16px } .eyebrow { display: inline; white-space: normal; line-height: 1.9 } .title { overflow-wrap: anywhere } }
+main code, main a, .lab-head a, .panel a { overflow-wrap: anywhere } .compose { flex-wrap: wrap }
+.compose input { min-width: 8rem }
+.dash > * { min-width: 0 } .dash .st { flex-wrap: wrap }

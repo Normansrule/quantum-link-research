@@ -17,7 +17,8 @@ and the teleportation fidelity is F = (2 f + 1)/3 [horodecki1996], which beats e
     t_b < (T_mem ln(4 f0 - 1) - t_c)/2,
 and a link of light time t_c needs T_mem > t_c / ln(4 f0 - 1) even with no banking at all. Each use succeeds with
 probability eta_mem^2 p_bsm (two retrievals and one Bell measurement, which linear optics completes half the time
-[calsamiglia2001]).
+[calsamiglia2001]). Memory coherence times come from the cited experiments; their photon efficiencies are assumed
+operating points (memory_decoherence.MemoryPlatform), so success rates here are conditional on those assumptions.
 
 Swapping node. With a node C halfway, pairs A-C and C-B of fractions f1 and f2 become one A-B pair when C measures
 in the Bell basis; for Werner pairs the Werner parameters multiply, f = f1 f2 + (1 - f1)(1 - f2)/3

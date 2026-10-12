@@ -21,7 +21,7 @@ IMPORT_NAMES = {
 
 def parse_pins(path: Path) -> dict[str, str]:
     pins: dict[str, str] = {}
-    for line in path.read_text().splitlines():
+    for line in path.read_text(encoding="utf-8").splitlines():
         m = re.match(r"\s*-\s*([A-Za-z0-9_.-]+)\s*(?:==|=)\s*([0-9][^\s]*)\s*$", line)
         if m and m.group(1) not in {"python", "pip"}:
             pins[m.group(1)] = m.group(2)

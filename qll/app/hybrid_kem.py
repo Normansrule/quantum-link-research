@@ -8,6 +8,11 @@ under the physics of Phase 3 but need an authenticated classical channel. A hybr
 session key K = KDF(K_kem || K_qkd || context) so that an adversary must break both [bindel2019]. One ML-KEM
 exchange costs one classical round trip (encapsulation key out, ciphertext back): 6-45 minutes at Mars, so
 keys are established in advance and rotated per policy, never on demand.
+
+Scope (audit S07): ML-KEM here comes from kyber-py, which its authors describe as an educational implementation not
+intended for cryptographic use (no constant-time guarantees). It makes the combiner's logic testable; it is not a
+production backend, and "secure if either is secure" holds only for a reviewed ML-KEM implementation and a QKD key
+from a link whose security has itself been established.
 """
 from __future__ import annotations
 

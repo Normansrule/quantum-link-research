@@ -89,7 +89,7 @@
     const p = Object.assign({}, LINK, pp || {}), r = link(p), mem = memoryName && MEMORIES[memoryName];
     return [
       S("Light time", "t_c = n L / c", `L = ${f(p.distance_m / 1000)} km, n = ${p.index}`, dur(r.light_time_s), "qll/channels/light_time_delay.py", "The two bits travel at light speed at best; nothing reaches Bob sooner."),
-      S("Memories", "T_mem, η_mem", mem ? memoryName : "custom", `${dur(p.T_mem_s)}, ${f(p.eta_mem * 100, 3)} %`, mem ? mem.bibkey : "qll/network/memory_decoherence.py", "Each end keeps its half of the pair in a quantum memory until it is used."),
+      S("Memories", "T_mem (as reported), η_mem (assumed)", mem ? memoryName : "custom", `${dur(p.T_mem_s)}, ${f(p.eta_mem * 100, 3)} %`, mem ? mem.bibkey : "qll/network/memory_decoherence.py", "Each end keeps its half in a memory. The coherence time is from the cited experiment; the photon storage efficiency is an assumed operating point."),
       S("Waiting", "Alice t_b, Bob t_b + t_c", `t_b = ${dur(p.bank_s)}`, `${dur(r.alice_wait_s)} and ${dur(r.bob_wait_s)}`, "qll/network/teleport_across.py", "Bob waits longest: he must hold his half until the bits arrive."),
       S("Pair after storage", "w = w₀ e^(−(t_A + t_B)/T_mem), f = (3w + 1)/4", `f₀ = ${f(p.f0)}`, f(r.fraction), "werner1989", "Stored entanglement fades; f is how close the pair still is to perfect."),
       S("Fidelity with the bits", "F = (2f + 1)/3", "", f(r.fidelity_with_bits), "horodecki1996", "Above 2/3, no classical trick could do as well; that is the quantum part."),

@@ -8,9 +8,9 @@ Each trade names the alternatives, the criterion, the result computed by tested 
 <!-- trade:architecture:start -->
 | architecture | pairs/day, closest | pairs/day, farthest | days with a link (of 780) | herald purity, farthest | loss at closest |
 |---|---|---|---|---|---|
-| source in space, lunar distance from Earth (baseline) | 3.7e+07 | 1.1e+06 | 759 | 0.962 | -94 dB |
-| source at a ground station, night only | 8.2e+06 | 0 | 447 | 0.956 | -100 dB |
-| relay at L4, two downlinks | 1.6e-05 | 6e-06 | 755 | 0.956 | -217 dB |
+| source in space, lunar distance from Earth (baseline) | 6.0e+06 | 1.8e+05 | 759 | 0.962 | -102 dB |
+| source at a ground station, night only | 1.3e+06 | 0 | 447 | 0.956 | -108 dB |
+| relay at L4, two downlinks | 2.5e-06 | 9.5e-07 | 755 | 0.956 | -225 dB |
 <!-- trade:architecture:end -->
 
 **Decision.** Source in space. Through 0.39 the baseline was the ground source, because the budget counted photons but not background. A 4 m receiver near Mars resolves Earth's disk, so it looks straight at the patch of ground around the transmitter: in daylight that patch sends a few hundred photons per second into each 100 MHz mode against a signal of 0.03 to 1 per second, and over 99 % of heralds would be noise (learn 03/21). The ground station can work only at night with Mars high, a window that closes for months around conjunction, so it fails REQ-CAP-003 on the days it cannot see Mars in a dark sky. Moving the transmitter off Earth's disk turns Earth into an off-axis point that the receiver rejects, drops the atmosphere, and restores every day outside the conjunction weeks. Diffraction over an astronomical distance still costs about 87 dB; the dual-downlink relay pays it twice and keeps its value as a store-and-forward node during conjunction (REQ-SPC-002). The price of the baseline is an Earth-end node in cislunar space, which serves ground users over a short link.
@@ -21,8 +21,8 @@ Each trade names the alternatives, the criterion, the result computed by tested 
 <!-- trade:wavelength:start -->
 | wavelength | pairs/day, farthest | diffraction factor | Earthshine per mode, farthest | herald purity, farthest | ground atmosphere factor |
 |---|---|---|---|---|---|
-| 810 nm | 3.6e+06 | 1.96e-10 | 0.001 /s | 0.993 | 0.58 |
-| 1550 nm | 1.1e+06 | 5.34e-11 | 0.0016 /s | 0.962 | 0.79 |
+| 810 nm | 5.8e+05 | 1.96e-10 | 0.001 /s | 0.993 | 0.58 |
+| 1550 nm | 1.8e+05 | 5.34e-11 | 0.0016 /s | 0.962 | 0.79 |
 <!-- trade:wavelength:end -->
 
 **Decision.** Open, leaning 810 nm for the space segment. Diffraction scales as λ², so 810 nm delivers more pairs, and the background no longer counts against it: the Sun is about 4.3 times brighter per nanometre at 810 nm, but a 100 MHz filter is (810/1550)² as wide in wavelength and each photon carries more energy, so the Earthshine per mode is lower, and the Airy wing falls faster at the shorter wavelength. With the source in space the atmosphere factor applies only to the short ground link. What still favours 1550 nm is outside this budget: fiber-compatible memories and frequency conversion (learn 03/05).
@@ -33,12 +33,12 @@ Each trade names the alternatives, the criterion, the result computed by tested 
 <!-- trade:memory:start -->
 | memory | coherence | retrieval | pairs/day to Mars, farthest | fidelity after storage | useful fiber-repeater range |
 |---|---|---|---|---|---|
-| Rb/Cs atomic ensemble (DLCZ) | 0.001 s | 50 % | 2.8e+05 | 0.50 | none |
-| SiV nuclear spin in cavity | 1 s | 90 % | 9.1e+05 | 0.50 | none |
-| NV 13C register | 60 s | 90 % | 9.1e+05 | 0.50 | 409–897 km |
-| 171Yb+ hyperfine | 3600 s | 99 % | 1.1e+06 | 0.72 | 389–2242 km |
-| Eu:YSO nuclear spin, 6 h (ZEFOZ+DD) | 21600 s | 1 % | 1.1e+02 | 0.90 | none |
-| Eu:YSO nuclear spin, 13.1 h | 47160 s | 0.5 % | 28 | 0.92 | none |
+| Rb/Cs atomic ensemble (DLCZ) | 0.001 s | 50 % | 4.5e+04 | 0.50 | none |
+| SiV nuclear spin in cavity | 1 s | 90 % | 1.4e+05 | 0.50 | none |
+| NV 13C register | 60 s | 90 % | 1.4e+05 | 0.50 | 409–897 km |
+| 171Yb+ hyperfine | 3600 s | 99 % | 1.8e+05 | 0.72 | 389–2242 km |
+| Eu:YSO nuclear spin, 6 h (ZEFOZ+DD) | 21600 s | 1 % | 18 | 0.90 | none |
+| Eu:YSO nuclear spin, 13.1 h | 47160 s | 0.5 % | 4.5 | 0.92 | none |
 <!-- trade:memory:end -->
 
 **Decision.** Trapped-ion (¹⁷¹Yb⁺) memories as the baseline: the only platform both fast and useful at every point of the orbit and in fiber chains. Rare-earth crystals are the high-fidelity, low-rate alternative for the Mars end if their retrieval efficiency rises; nitrogen-vacancy registers qualify for terrestrial chains only. This refines trade E8.
@@ -49,11 +49,11 @@ Each trade names the alternatives, the criterion, the result computed by tested 
 <!-- trade:aperture:start -->
 | Mars receiver | transmit waist 0.15 m | 0.5 m (baseline) | 1.5 m |
 |---|---|---|---|
-| 1 m | 6.4e+03 | 6.8e+04 | 4.7e+05 |
-| 2 m | 2.6e+04 | 2.7e+05 | 1.9e+06 |
-| 4 m | 1.0e+05 | 1.1e+06 | 7.5e+06 |
-| 8 m | 4.1e+05 | 4.4e+06 | 3.0e+07 |
-| 16 m | 1.6e+06 | 1.8e+07 | 1.2e+08 |
+| 1 m | 1e+03 | 1.1e+04 | 7.5e+04 |
+| 2 m | 4.1e+03 | 4.4e+04 | 3.0e+05 |
+| 4 m | 1.6e+04 | 1.8e+05 | 1.2e+06 |
+| 8 m | 6.5e+04 | 7.0e+05 | 4.8e+06 |
+| 16 m | 2.6e+05 | 2.8e+06 | 1.9e+07 |
 <!-- trade:aperture:end -->
 
 **Decision.** In the far field the rate scales as (transmit waist × receiver diameter)², so the two trade against each other one for one; mass and pointing (100 nrad is already demanding) decide the split. The baseline 0.5 m waist and 4 m receiver clear REQ-CAP-003 with a margin of about 11 at the farthest point; the receiver diameter does not change the herald purity once the stray-light floor dominates, because signal and Earthshine grow with the same area (TS-6).
@@ -79,17 +79,17 @@ A purity of 0.99 at the farthest point needs a total off-axis rejection of 2.6e-
 **Decision.** The lunar distance with a 10⁻⁹ floor. At geostationary distance Earth is only about 0.1 mrad from the transmitter at maximum range, and the diffraction wing of a clear 4 m aperture already leaks more than the floor. From the lunar distance onward the floor decides, and 10⁻⁹ keeps at least 95 % of heralds clean on every day with a link. A floor of 10⁻⁹ at a few thousand λ/D is the regime of coronagraph-grade optics, which makes the Mars receiver's stray-light design a driving requirement (risk R-9). The geometry assumes the offset is seen side-on from Mars; an orbit that carries the transmitter across Earth's disk as seen from Mars must pause, as for conjunction.
 
 ## TS-7 Spending the key: how much to bank, and how to use it
-**Alternatives.** A constant daily demand from 10⁵ bits to the mean supply, spent as a one-time pad (one key bit per message bit, information-theoretically secure) or as 256-bit hybrid session keys. **Criterion.** Days on which the messenger must refuse (REQ-APP-001 forbids sending unkeyed), and the key bank that removes every refusal (REQ-APP-003). Key is measured on arrival and needs no quantum memory, so it flows on every day with a link; it stops only for the three conjunction weeks, and near maximum range it falls to about 5 × 10⁵ bits per day.
+**Alternatives.** A constant daily demand from 10⁵ bits to the mean supply, spent as a one-time pad (one key bit per message bit, information-theoretically secure) or as 256-bit hybrid session keys. **Criterion.** Days on which the messenger must refuse (REQ-APP-001 forbids sending unkeyed), and the key bank that removes every refusal (REQ-APP-003). Key is measured on arrival and needs no quantum memory, so it flows on every day with a link; it stops only for the three conjunction weeks, and near maximum range it falls to about 2 × 10⁵ bits per day (after basis sifting and the test sample).
 
 <!-- trade:keyspend:start -->
 | daily demand | one-time pad per day | 256-bit session keys per day | days refused with no bank | key bank needed |
 |---|---|---|---|---|
 | 1e+05 bits | 12 kB | 391 | 21 of 780 | 0.26 MB |
-| 3e+05 bits | 38 kB | 1,172 | 21 of 780 | 0.79 MB |
-| 1e+06 bits (baseline) | 125 kB | 3,906 | 341 of 780 | 16.73 MB |
-| 2e+06 bits | 250 kB | 7,812 | 467 of 780 | 68.72 MB |
-| 4.1e+06 bits (the mean supply: the most any bank can carry) | 518 kB | 16,185 | 567 of 780 | 209.37 MB |
+| 3e+05 bits | 38 kB | 1,172 | 222 of 780 | 2.11 MB |
+| 1e+06 bits (baseline) | 125 kB | 3,906 | 484 of 780 | 36.86 MB |
+| 1.5e+06 bits | 188 kB | 5,859 | 540 of 780 | 68.98 MB |
+| 1.9e+06 bits (the mean supply: the most any bank can carry) | 233 kB | 7,283 | 567 of 780 | 94.22 MB |
 <!-- trade:keyspend:end -->
 
-**Decision.** A demand of 10⁶ bits per day with a bank of about 17 MB: 125 kB of one-time pad a day, enough for text and telemetry, or thousands of session keys. Without a bank that demand is refused on most days of the far half of the orbit, not only in conjunction. The bank is small enough to be nothing as storage and large enough to matter as a target, so its protection is the design problem (R-10). A demand near the mean supply needs a bank of about 200 MB; the baseline leaves a factor of four in hand.
+**Decision.** A demand of 10⁶ bits per day with a bank of about 37 MB: 125 kB of one-time pad a day, enough for text and telemetry, or thousands of session keys. Without a bank that demand is refused on most days of the far half of the orbit, not only in conjunction. The bank is small enough to be nothing as storage and large enough to matter as a target, so its protection is the design problem (R-10). A demand near the mean supply needs a bank of about 94 MB; the baseline leaves a factor of about two in hand.
 

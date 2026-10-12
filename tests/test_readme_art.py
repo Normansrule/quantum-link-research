@@ -1,6 +1,7 @@
-"""The README's pictures tell the truth: the animated SVGs are valid XML, carry the tested numbers as their final
-(static) frame, match the landmark files, and every local link and image in the README resolves. The shields.io
-endpoint badges follow the endpoint schema and quote docs/status.json."""
+"""The README's and the project tour's pictures tell the truth: the animated SVGs are valid XML, carry the tested
+numbers as their final (static) frame, match the landmark files, and every local link and image in both pages resolves.
+The shields.io endpoint badges follow the endpoint schema and quote docs/status.json, and the README's tests badge
+reads the result the CI run deployed with the website (audit C01, U03), not a count committed to the source tree."""
 import json
 import re
 import sys
@@ -21,7 +22,7 @@ NAMES = ("stats", "timescales", "stack", "marquee", "equations")
 def test_readme_art_is_valid_svg_and_referenced(name):
     path = DOCS / "figures" / f"readme_{name}.svg"
     xml.dom.minidom.parseString(path.read_bytes())
-    assert f"docs/figures/readme_{name}.svg" in (ROOT / "README.md").read_text(encoding="utf-8")
+    assert f"docs/figures/readme_{name}.svg" in (ROOT / "PROJECT_TOUR.md").read_text(encoding="utf-8")
 
 
 def test_stats_card_shows_the_tested_numbers_as_its_static_frame():
@@ -59,8 +60,9 @@ def test_marquee_has_one_pill_per_landmark_file():
     assert f"{len(files)} LANDMARK EXPERIMENTS" in art.marquee()
 
 
-def test_every_local_link_and_image_in_the_readme_exists():
-    text = (ROOT / "README.md").read_text(encoding="utf-8")
+@pytest.mark.parametrize("page", ["README.md", "PROJECT_TOUR.md", "START_HERE.md"])
+def test_every_local_link_and_image_in_the_readme_exists(page):
+    text = (ROOT / page).read_text(encoding="utf-8")
     targets = re.findall(r'(?:src|href)="([^"]+)"', text) + re.findall(r"\]\(([^)\s]+)\)", text)
     local = {t.split("#")[0] for t in targets if not re.match(r"[a-z]+:", t) and not t.startswith("#")}
     missing = [t for t in sorted(local) if t and not (ROOT / t).exists()]
@@ -76,5 +78,20 @@ def test_endpoint_badges_follow_the_schema_and_quote_status():
     assert json.loads((DOCS / "badges" / "requirements.json").read_text(encoding="utf-8"))["message"].startswith(
         f"{status['requirements_verified']}/{status['requirements']}")
     text = (ROOT / "README.md").read_text(encoding="utf-8")
-    for name in ("version", "tests", "requirements", "references", "learn"):
+    for name in ("version", "requirements", "references", "learn"):
         assert f"docs%2Fbadges%2F{name}.json" in text
+    assert "normansrule.github.io%2Fquantum-link-research%2Fbadges%2Ftests.json" in text      # written by CI at deploy
+    assert "docs%2Fbadges%2Ftests.json" not in text
+    committed = json.loads((DOCS / "badges" / "tests.json").read_text(encoding="utf-8"))
+    assert "passed" not in committed["message"] and "CI" in committed["message"]                # an inventory, never a result
+
+
+def test_readme_is_short_and_states_its_scope():
+    text = (ROOT / "README.md").read_text(encoding="utf-8")
+    head = text.split("<!-- build-guide:start -->")[0]
+    assert head.count("\n# ") == 0 and head.startswith("# Quantum Link Research")                # one live-text H1
+    assert ".gif" not in text and "hero_banner.svg" not in head                                   # static posters only
+    assert "research models" in head and "Development status" in head and "not a production" in head
+    for anchor in ("## Run a simulation", "## Explore the labs", "## Build the two-room experiment", "## What is implemented?"):
+        assert anchor in head
+    assert len(re.sub(r"<[^>]+>|\(http[^)]*\)", "", head).split()) < 1600

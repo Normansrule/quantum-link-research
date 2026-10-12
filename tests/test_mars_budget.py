@@ -61,7 +61,9 @@ def test_fidelity_and_key_follow_the_memory_model():
     assert b.fraction == pytest.approx(0.25 + b.purity * (f_stored - 0.25), rel=1e-12)     # noise heralds are Werner 1/4
     assert b.teleport_fidelity == pytest.approx((2 * b.fraction + 1) / 3, rel=1e-12)
     perfect = budget(replace(D, f0=1.0, memory="Eu:YSO nuclear spin, 13.1 h", storage_factor=0.0, stray_light=0.0), T_CLOSE)
-    assert perfect.key_bits_per_pair == pytest.approx(1.0) and perfect.teleport_fidelity == pytest.approx(1.0)
+    # unbiased BBM92 keeps half the heralds after sifting, and 10 % of those test the channel: 0.45 key bits per herald
+    assert perfect.key_bits_per_pair == pytest.approx(0.5 * 0.9) and perfect.teleport_fidelity == pytest.approx(1.0)
+    assert perfect.extra["secret_fraction_per_sifted_pair"] == pytest.approx(1.0) and perfect.extra["sift_probability"] == 0.5
     # the Werner error rate Q = 2(1 - f)/3 crosses the BB84/BBM92 threshold near 11 %: at f = 0.83 no key is left
     assert budget(replace(D, f0=0.83, storage_factor=0.0), T_CLOSE).key_bits_per_pair == 0.0
 
@@ -159,3 +161,16 @@ def test_key_does_not_wait_for_the_memory():
     # so key flows on every day with a link, even at maximum range where the stored pairs are too noisy for key
     far = budget(D, T_FAR)
     assert far.key_bits_per_day > 1e5 and 2 * (1 - far.fraction) / 3 > 0.11
+
+
+def test_basis_sifting_and_conversion_are_explicit():
+    """Audit P01/P02: 1,000 ideal heralds give about 500 sifted pairs with unbiased bases, not 1,000 key bits; a biased
+    protocol must be chosen explicitly; a memory at another wavelength pays frequency conversion at both ends."""
+    ideal = replace(D, f0=1.0, memory="Eu:YSO nuclear spin, 13.1 h", storage_factor=0.0, stray_light=0.0, test_fraction=0.0)
+    assert budget(ideal, T_CLOSE).key_bits_per_pair == pytest.approx(0.5)
+    assert budget(replace(ideal, p_key_basis=0.9), T_CLOSE).key_bits_per_pair == pytest.approx(0.82)
+    yb = budget(D, T_FAR)                                   # 369 nm ion memory on a 1550 nm link
+    assert yb.extra["conversion"] and yb.memory_factor == pytest.approx(0.99 ** 2 * 0.4 ** 2)
+    assert yb.extra["pending_attempts_if_held"] == pytest.approx(D.source_rate_hz * D.modes * 2 * yb.range_m / 299792458.0)
+    with pytest.raises(ValueError):
+        replace(D, p_key_basis=1.0)

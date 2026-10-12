@@ -12,13 +12,16 @@
 <meta name="twitter:image" content="https://normansrule.github.io/quantum-link-research/og.png">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔴</text></svg>">
 <link rel="stylesheet" href="../space.css">
+<script defer src="../js/nav.js"></script>
 </head>
 <body>
+<a class="skip" href="#content">Skip to content</a>
 <div class="aurora"></div>
 <header class="top">
   <a class="brand" href="../"><span class="dot"></span>Quantum Link Research</a>
   <nav><a href="../#numbers">Numbers</a><a href="../#memories">Memories</a><a href="../apps/">Explorers</a><a href="../coupler/">Coupler lab</a><a href="../repeater/">Repeater lab</a><a href="../qec/">QEC lab</a><a href="../budget/">Link budget</a><a href="../systems/">Traceability</a><a class="gh" href="https://github.com/Normansrule/quantum-link-research">GitHub ↗</a></nav>
 </header>
+<main id="content" tabindex="-1">
 <section class="band" style="padding-top:6.5rem">
   <div class="kicker">Mars link simulator</div>
   <h2>The Earth–Mars link, day by day</h2>
@@ -36,6 +39,7 @@
     <div class="card readout" id="mems"></div>
   </div>
 </section>
+</main>
 <footer>Model limits: coplanar mean elements (range good to ~1 %), a geometric blackout criterion for the direct path (relay legs are drawn but not checked against the Sun here; <code>qll.space.relay_constellation</code> checks them), and memory lifetimes from the repository's table at f₀ = 0.95. See <a href="https://github.com/Normansrule/quantum-link-research/blob/main/qll/space">qll/space</a>.</footer>
 <script src="../js/ephemeris.js"></script>
 <script>

@@ -44,9 +44,11 @@ def phase1() -> str:
     steps = "\n".join(f"{i}. **{a}.** {b}" for i, (a, b) in enumerate(L.P10_STAGES))
     return f"""## Build the main experiment: Phase 1
 
-The main experiment is [P10](experiments/protocols/P10_two_room_single_photon_link.md): single photons between two rooms. Weak 405 nm pulses at about half a photon each carry four polarizations across a hallway, decoy pulses guard against photon-number attacks, and four silicon photomultipliers read them in the other room. A fiber classical channel carries the authenticated protocol. The digital twin predicts the run before you buy a part: a click on {p['click_prob_per_pulse'] * 100:.2f} % of pulses, an error rate of {s['qber'] * 100:.1f} %, and an expected {round(s['key_bits'], -3):,.0f} or so secret bits from each ten-second session. The [link lab](https://normansrule.github.io/quantum-link-research/lab/link/#two_room) shows every part in 3D at the price below.
+The main experiment is [P10](experiments/protocols/P10_two_room_single_photon_link.md): single photons between two rooms. Weak 405 nm pulses at about half a photon each carry four polarizations through an enclosed free-space path between the rooms, decoy pulses guard against photon-number attacks, and four silicon photomultipliers read them in the other room. A separate fiber Ethernet link carries only the classical channel. The planning model predicts a click on {p['click_prob_per_pulse'] * 100:.2f} % of pulses, an error rate of {s['qber'] * 100:.1f} %, and about {round(s['key_bits'], -3):,.0f} test-key bits from each ten-second session; these are model outputs, not measurements, and the key would have no security review. The [link lab](https://normansrule.github.io/quantum-link-research/lab/link/#two_room) shows every part in 3D at the price below.
 
-**Bill of materials (planning prices, October 2026; verify before buying)**
+> **Before building.** P10 is a planning document, not a laser-safety authorization: its build status is BLOCKED until a qualified review of the actual source, accessible emissions, and alignment is recorded in the [evaluation specification](experiments/specs/two_room_evaluation_spec.md). The FPGA timing system is planned, not implemented. Do not buy the whole list before the detector noise, timing, loss budget, instruments, and a safe test arrangement are checked.
+
+**Bill of materials (planning prices, October 2026; verify before buying; instruments and contingency not included)**
 
 | Item | For | Cost |
 |---|---|---|
@@ -61,7 +63,7 @@ The main experiment is [P10](experiments/protocols/P10_two_room_single_photon_li
 {mrows}
 | **Phase 1** | | **${tot[0]:,.0f}** | **${tot[1]:,.0f}** | **${tot[2]:,.0f}** |
 
-**Build order.** Each stage is checked against the twin before the next one starts.
+**Build order.** Each stage is checked against the planning model before the next one starts.
 
 {steps}
 

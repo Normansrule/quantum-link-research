@@ -8,6 +8,8 @@
 
 **Extra cost.** About $10–30: two quarter-wave retarders cut from one plastic film sheet, and a 3D-printed flip mount. This is mission milestone M1.8, verifying requirement MR-1.9. Part C runs the same analysis on teleportation over a free cloud processor (milestone M4.7, $0).
 
+**Safety and scope.** Every optical step here uses the P10 apparatus and inherits its [safety gate](P10_two_room_single_photon_link.md#safety): no build or alignment until the qualified review is recorded, and no exposed beam in the hallway. The certificate is a statement within a trusted qubit model (trusted, characterized source and detectors; fair sampling of the detected events; post-selection on clicks), not a device-independent proof or a security result; the code returns these assumptions with every certificate.
+
 **The twin.**
 - [`qll/circuits/qubit_channel.py`](../../qll/circuits/qubit_channel.py): representations, figures of merit, the certificate, and capacities.
 - [`qll/link/hallway_channel.py`](../../qll/link/hallway_channel.py): the P10 parts as a quantum channel.

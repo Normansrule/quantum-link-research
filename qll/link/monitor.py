@@ -98,9 +98,9 @@ def summary(m: SessionMetrics) -> str:
         ("Sifted Key Bits", f"{m.sifted_bits:,}"), ("Errors", f"{m.sample_errors} of {m.sample_bits} sampled bits"),
         ("QBER", f"{100 * m.qber_estimate:.2f} % estimated (upper bound {100 * m.qber_upper_bound:.2f} %)"),
         ("Adversary", m.adversary), ("Key Accepted", "yes" if m.accepted else f"no: {REJECT_REASONS.get(m.reject_reason, m.reject_reason)}"),
-        ("Final Usable Key Length", f"{m.final_key_bits:,} bits ({m.secret_key_rate_bps:,.1f} bit/s at the pulse rate)"),
+        ("Final Usable Key Length", f"{m.final_key_bits:,} bits ({m.secret_key_rate_bps:,.1f} bit/s at the pulse rate; simplified finite-key estimate, not a composable proof)"),
         ("Authentication", f"{m.auth_mode}: {m.auth_bits_consumed} key bits spent; net key {m.net_key_bits:,} bits"
-                           + (f" (forgery probability below {m.forgery_probability:.1e})" if m.forgery_probability else "")),
+                           + (f" (forgery probability below {m.forgery_probability:.1e} if the authentication key is secret)" if m.forgery_probability else "")),
         ("Random Seed", str(m.seed)), ("Execution Time", f"{m.execution_time_s:.3f} s"),
     ]
     w = max(len(k) for k, _ in rows)

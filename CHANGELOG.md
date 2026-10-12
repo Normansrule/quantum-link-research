@@ -1,5 +1,32 @@
 # Changelog
 
+## 0.56.0 — 2026-10-12 (the October 2026 technical audit, answered finding by finding)
+- **Every finding of the independent audit is closed with one status** in [`docs/audit/2026-10-11_findings.md`](docs/audit/2026-10-11_findings.md): 15 fixed and verified by tests, 4 deferred with every affected claim qualified (S05, S06, P03, U04), and 3 blocked by evidence that software cannot supply (C01 until a passing CI run is observed; H01 and H02 until a safety review, calibration, and timing hardware exist). The release is assessed separately as an educational simulation, a network prototype, an optical experiment, a finite-key implementation, and a production system; only the first is ready, pending CI confirmation.
+- **Release gates (C01–C03).**
+  - CI tests Linux and Windows, runs the browser suite in the same pinned environment, uploads JUnit reports even on failure, and deploys the website only after every required job passes, with `ci_status.json`, a tests badge from the executed results, `REVISION`, and `MANIFEST.sha256`.
+  - A skip of a tool the job requires (`QLL_REQUIRE`) fails it; all text I/O names UTF-8.
+  - `validate` and `demo` exit 1 on failure; traceability proves a requirement only from executed JUnit outcomes.
+- **Security state (S01–S04, S07).**
+  - A labelled simulation ledger and a secret byte pool that is consumed once and replenished only from accepted key with provenance.
+  - OPEN/VERIFIED/FAILED channel states with a sealed transcript that key release must name.
+  - A one-time key store: unique executions, remembered digests, tombstones, validated atomic requests, and one lock.
+  - Session-bound transport frames (fresh nonces, identities, HKDF), with deadlines and partial-frame, reflection, and replay checks.
+  - The messenger shows delivery only after an authenticated acknowledgment, and says its supply and key exchange are simulated.
+- **Scope and science (S05, S06, P01–P04, D01, D02).**
+  - Reconciliation publishes each permutation seed, and every run states its execution mode.
+  - Key lengths and forgery bounds are qualified; the device-independent routines reject impossible inputs.
+  - The Mars budget sifts bases and sets aside a test sample (key × 0.45), and adds wavelength conversion. Every dependent number is regenerated: the bank for 10⁶ bits per day is now 36.9 MB.
+  - Memory efficiencies are labelled assumed; channel certificates state their trusted qubit model.
+  - Hardware logs parse exactly and carry SHA-256 provenance; bank functions validate their inputs and report unsustainable demand.
+- **Hardware plans (H01, H02).**
+  - P10, P04, P14, and the ladder are planning documents, not laser-safety authorizations: beams are contained, there is no exposed beam in a hallway, and alignment happens inside an enclosure.
+  - The FPGA timing system is marked planned, with the evidence it needs; the fiber classical path and the free-space quantum path are kept apart.
+  - A new [two-room evaluation specification](experiments/specs/two_room_evaluation_spec.md) separates model predictions from measurements and marks every missing approval BLOCKED.
+- **README and website (U01–U04).**
+  - A short README with three paths and a capability table that separates implemented, tested, measured, and security-reviewed; the long tour moved to [`PROJECT_TOUR.md`](PROJECT_TOUR.md), and START_HERE matches.
+  - An accessible mobile menu, skip links, and main landmarks, with no sideways scrolling at 320 pixels.
+  - The landing page shows "unavailable" instead of old counters, and quotes test results only from the deployed CI status.
+
 ## 0.55.0 — 2026-10-11 (build it: the Phase 1 bill of materials, and scaling the Majorana research)
 - **The README now ends with a build guide, generated from the code by [`scripts/build_readme_build.py`](scripts/build_readme_build.py)** and checked by `tests/test_readme_build.py`, so its prices and results cannot drift.
   - **Build the main experiment: Phase 1.**

@@ -7,16 +7,16 @@ An entangled pair is perishable. The trapped-ion memory holds it for about an ho
 In BBM92 [bennett1992bbm92] each end measures its half of the pair in a random basis as soon as it has it; the bases are compared later over the classical channel, whenever those bits arrive. Nothing is stored except the measurement results. The key therefore sees the source's pair fraction $f_0$ reduced only by the background light (lesson 03/21), $f = \tfrac14 + w(f_0 - \tfrac14)$, and the Werner error rate $Q = 2(1-f)/3$ stays between 3.3 % and 5.1 % over the whole orbit, well under the 11 % limit [shor2000]. It pays neither the 44-minute wait nor the memory's retrieval efficiency, so even a 0.5 %-efficient crystal memory would not cost the key a single bit.
 
 ## A synodic period of key
-Evaluated day by day with the baseline design (`qll/systems/key_ledger.py`), the link makes
+Evaluated day by day with the baseline design (`qll/systems/key_ledger.py`), counting only the pairs both ends measure in the same basis (probability ½ with unbiased random bases) and setting aside a tenth of those to estimate the error rate, the link makes
 
 | | secret bits per day |
 |---|---|
-| closest approach (0.45 au) | 2.2 × 10⁷ |
-| farthest point (2.6 au) | 4.9 × 10⁵ |
+| closest approach (0.45 au) | 9.9 × 10⁶ |
+| farthest point (2.6 au) | 2.2 × 10⁵ |
 | the 21 days around conjunction | 0 |
-| mean over the 780-day cycle | 4.1 × 10⁶ |
+| mean over the 780-day cycle | 1.9 × 10⁶ |
 
-The supply swings by a factor of 45 with range and stops completely at conjunction. A messenger that fails closed (REQ-APP-001) and lives off each day's key would have to refuse on every conjunction day, and on most of the far half of the orbit too if it spends more than about 5 × 10⁵ bits a day.
+The supply swings by a factor of 45 with range and stops completely at conjunction. A messenger that fails closed (REQ-APP-001) and lives off each day's key would have to refuse on every conjunction day, and on most of the far half of the orbit too if it spends more than about 2 × 10⁵ bits a day.
 
 ## Sizing the bank: the sequent-peak rule
 Hydrologists size reservoirs against rivers that flood and run dry. The sequent-peak rule [loucks2017] accumulates the deficit of demand $d_t$ over supply $s_t$,
@@ -26,13 +26,13 @@ $$S_t = \max(0,\; S_{t-1} + d_t - s_t), \qquad S_0 = 0,$$
 over two repetitions of a periodic record, so that a dry season straddling the end of the first repetition is caught in the second. The capacity $K = \max_t S_t$ is the smallest store that, starting full, never runs dry. The proof is one line: a bank of capacity $C$ starting full has level $L_t = \min(C, L_{t-1} + s_t - d_t)$, so $K - L_t = S_t$ for as long as nothing is refused. The test suite checks that identity day by day, the square-wave case (supply $s$ for $n_\text{on}$ days, none for $n_\text{off}$: $K = d\,n_\text{off}$), and that a bank 1 % smaller than $K$ does refuse. No bank of any size can carry a demand above the mean supply.
 
 ## What the numbers say
-For a steady 10⁶ key bits per day (125 kB of one-time pad, or about 3,900 256-bit session keys), with no bank the messenger would refuse on 341 of the 780 days. A bank of **16.7 MB** at each end, starting full, refuses on none. The level drains through conjunction and on through the far half of the orbit, touches zero about five months after conjunction, when the daily key finally climbs back above the demand, and refills over the following three and a half months as Mars approaches. The whole trade is in `systems/trade_studies.md` (TS-7):
+For a steady 10⁶ key bits per day (125 kB of one-time pad, or about 3,900 256-bit session keys), with no bank the messenger would refuse on 484 of the 780 days. A bank of **36.9 MB** at each end, starting full, refuses on none. The level drains through conjunction and on through the far half of the orbit, touches zero when the daily key finally climbs back above the demand, and refills as Mars approaches. These are model outputs of an analytic budget, not measurements. The whole trade is in `systems/trade_studies.md` (TS-7):
 
 | daily demand | one-time pad | bank needed |
 |---|---|---|
 | 10⁵ bits | 12 kB | 0.26 MB |
-| 10⁶ bits (baseline) | 125 kB | 16.7 MB |
-| 4.1 × 10⁶ bits (the mean supply) | 518 kB | 209 MB |
+| 10⁶ bits (baseline) | 125 kB | 36.9 MB |
+| 1.9 × 10⁶ bits (the mean supply) | 233 kB | 94 MB |
 
 The bank is negligible as storage. As a target it is not: a copy of the bank is a copy of every message it will ever encrypt. A one-time pad is information-theoretically secure [vernam1926] [shannon1949] only while the pad stays secret, which is why the bank's protection, not its size, is the open risk (R-10).
 

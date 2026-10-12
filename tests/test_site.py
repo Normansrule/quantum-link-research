@@ -8,6 +8,7 @@ import sys
 import xml.dom.minidom
 from pathlib import Path
 
+import numpy as np
 import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -20,16 +21,16 @@ sys.path.insert(0, str(ROOT / "scripts"))
 def test_site_data_matches_the_code():
     from build_site_data import compute_data
     live = json.loads(json.dumps(compute_data(), default=float))
-    saved = json.loads((DOCS / "site_data.json").read_text())
+    saved = json.loads((DOCS / "site_data.json").read_text(encoding="utf-8"))
     for k, v in live["headline"].items():
         assert saved["headline"][k] == pytest.approx(v, rel=1e-9), k
     assert [m["name"] for m in saved["memories"]] == [m["name"] for m in live["memories"]]
 
 
 def test_readme_numbers_block_is_generated_and_current():
-    text = (ROOT / "README.md").read_text(encoding="utf-8")
+    text = (ROOT / "PROJECT_TOUR.md").read_text(encoding="utf-8")
     block = text.split("<!-- numbers:start -->")[1].split("<!-- numbers:end -->")[0]
-    h = json.loads((DOCS / "site_data.json").read_text())["headline"]
+    h = json.loads((DOCS / "site_data.json").read_text(encoding="utf-8"))["headline"]
     assert f"{h['round_trip_max_min']:.1f} min" in block and f"{h['bb84_threshold_pct']:.2f} %" in block
 
 
@@ -41,35 +42,35 @@ def test_js_ephemeris_matches_python(tmp_path):
     script = tmp_path / "check.js"
     script.write_text(
         "const fs=require('fs');const E=require(process.argv[2]);const d=JSON.parse(fs.readFileSync(process.argv[3],'utf8'));"
-        "E.configure(d);let w=0;d.ephemeris_check.t_days.forEach((t,i)=>{const p=d.ephemeris_check.range_m[i];w=Math.max(w,Math.abs(E.rangeM(t)-p)/p)});console.log(w);")
-    out = subprocess.run([node, str(script), str(DOCS / "js" / "ephemeris.js"), str(DOCS / "site_data.json")], capture_output=True, text=True, check=True)
+        "E.configure(d);let w=0;d.ephemeris_check.t_days.forEach((t,i)=>{const p=d.ephemeris_check.range_m[i];w=Math.max(w,Math.abs(E.rangeM(t)-p)/p)});console.log(w);", encoding="utf-8")
+    out = subprocess.run([node, str(script), str(DOCS / "js" / "ephemeris.js"), str(DOCS / "site_data.json")], capture_output=True, text=True, encoding="utf-8", check=True)
     assert float(out.stdout) < 1e-9
 
 
 @pytest.mark.skipif(node is None, reason="node not installed")
 def test_all_site_javascript_parses(tmp_path):
     for js in (DOCS / "js").glob("*.js"):
-        src = js.read_text()
+        src = js.read_text(encoding="utf-8")
         target = tmp_path / (js.stem + (".mjs" if re.search(r"^\s*import ", src, re.M) else ".js"))
-        target.write_text(src)
-        r = subprocess.run([node, "--check", str(target)], capture_output=True, text=True)
+        target.write_text(src, encoding="utf-8")
+        r = subprocess.run([node, "--check", str(target)], capture_output=True, text=True, encoding="utf-8")
         assert r.returncode == 0, f"{js.name}: {r.stderr}"
     for page in [DOCS / p for p in ("mars/index.html", "teleport/index.html", "monitor/index.html", "link/index.html")] + LAB_PAGES:
-        html = page.read_text()
+        html = page.read_text(encoding="utf-8")
         for kind, ext in (("<script>", ".js"), ('<script type="module">', ".mjs")):
             for i, body in enumerate(re.findall(re.escape(kind) + r"(.*?)</script>", html, re.S)):
-                f = tmp_path / f"inline_{i}{ext}"; f.write_text(body)
-                r = subprocess.run([node, "--check", str(f)], capture_output=True, text=True)
+                f = tmp_path / f"inline_{i}{ext}"; f.write_text(body, encoding="utf-8")
+                r = subprocess.run([node, "--check", str(f)], capture_output=True, text=True, encoding="utf-8")
                 assert r.returncode == 0, f"{page}: {r.stderr}"
-    f = tmp_path / "sw.js"; f.write_text((DOCS / "lab" / "sw.js").read_text())
-    assert subprocess.run([node, "--check", str(f)], capture_output=True, text=True).returncode == 0
+    f = tmp_path / "sw.js"; f.write_text((DOCS / "lab" / "sw.js").read_text(encoding="utf-8"), encoding="utf-8")
+    assert subprocess.run([node, "--check", str(f)], capture_output=True, text=True, encoding="utf-8").returncode == 0
 
 
 @pytest.mark.parametrize("page", ["index.html", "mars/index.html", "teleport/index.html", "monitor/index.html", "link/index.html",
                                   "lab/index.html", "lab/link/index.html", "lab/circuits/index.html", "lab/channel/index.html", "lab/outdoor/index.html", "lab/frontier/index.html", "lab/messenger/index.html"])
 def test_local_links_resolve(page):
     path = DOCS / page
-    html = path.read_text()
+    html = path.read_text(encoding="utf-8")
     for ref in re.findall(r'(?:href|src)="([^"]+)"', html):
         if ref.startswith(("http", "#", "data:", "mailto:")) or "${" in ref:
             continue
@@ -80,9 +81,9 @@ def test_local_links_resolve(page):
 
 
 def test_banner_is_valid_svg_with_computed_numbers():
-    svg = (DOCS / "figures" / "hero_banner.svg").read_text()
+    svg = (DOCS / "figures" / "hero_banner.svg").read_text(encoding="utf-8")
     xml.dom.minidom.parseString(svg)
-    h = json.loads((DOCS / "site_data.json").read_text())["headline"]
+    h = json.loads((DOCS / "site_data.json").read_text(encoding="utf-8"))["headline"]
     assert f"{h['round_trip_max_min']:.1f}-min" in svg and "<animateMotion" in svg
 
 
@@ -94,8 +95,8 @@ def test_js_teleportation_matches_qiskit(tmp_path):
     from qiskit.quantum_info import Statevector
     script = tmp_path / "tp.js"
     script.write_text("const T=require(process.argv[2]);const out=[];for(const m of [[0,0],[0,1],[1,0],[1,1]]){const r=T.steps([0.6,0],[0,0.8],m[0],m[1]);"
-                      "out.push({s2:r.s2,p:r.p,F:T.fidelity(r.bob,[0.6,0],[0,0.8])})}console.log(JSON.stringify(out));")
-    res = json.loads(subprocess.run([node, str(script), str(DOCS / "js" / "teleport_core.js")], capture_output=True, text=True, check=True).stdout)
+                      "out.push({s2:r.s2,p:r.p,F:T.fidelity(r.bob,[0.6,0],[0,0.8])})}console.log(JSON.stringify(out));", encoding="utf-8")
+    res = json.loads(subprocess.run([node, str(script), str(DOCS / "js" / "teleport_core.js")], capture_output=True, text=True, encoding="utf-8", check=True).stdout)
     qc = QuantumCircuit(3); qc.initialize([0.6, 0.8j], 0); qc.h(1); qc.cx(1, 2); qc.cx(0, 1); qc.h(0)
     sv = Statevector(qc).data
     perm = [((i >> 2) & 1) + 2 * ((i >> 1) & 1) + 4 * (i & 1) for i in range(8)]     # ours: 4 q0 + 2 q1 + q2
@@ -110,8 +111,8 @@ def test_js_buffer_rule_matches_messenger(tmp_path):
     from qll.app.messenger import required_buffer_bytes
     cases = [(0.0, 1.0e11, 32, 1.0, 1 / 60), (100.0, 4.0e11, 32, 2.0, 0.5), (1e4, 2.2e11, 64, 1.0, 1.0)]
     script = tmp_path / "b.js"
-    script.write_text("const L=require(process.argv[2]);const c=JSON.parse(process.argv[3]);console.log(JSON.stringify(c.map(a=>L.requiredBufferBytes(...a))));")
-    out = json.loads(subprocess.run([node, str(script), str(DOCS / "js" / "linkmodel.js"), json.dumps(cases)], capture_output=True, text=True, check=True).stdout)
+    script.write_text("const L=require(process.argv[2]);const c=JSON.parse(process.argv[3]);console.log(JSON.stringify(c.map(a=>L.requiredBufferBytes(...a))));", encoding="utf-8")
+    out = json.loads(subprocess.run([node, str(script), str(DOCS / "js" / "linkmodel.js"), json.dumps(cases)], capture_output=True, text=True, encoding="utf-8", check=True).stdout)
     for a, v in zip(cases, out):
         assert v == pytest.approx(required_buffer_bytes(*a[:3], sessions_per_message=a[3], messages_per_s=a[4]), rel=1e-12)
 
@@ -119,7 +120,7 @@ def test_js_buffer_rule_matches_messenger(tmp_path):
 def test_pages_need_no_cdn_and_vendored_files_exist():
     for page in ("index.html", "mars/index.html", "teleport/index.html", "monitor/index.html", "link/index.html", "lab/index.html",
                  "lab/link/index.html", "lab/circuits/index.html", "lab/channel/index.html", "lab/outdoor/index.html", "lab/frontier/index.html", "lab/messenger/index.html"):
-        html = (DOCS / page).read_text()
+        html = (DOCS / page).read_text(encoding="utf-8")
         assert "cdn.jsdelivr" not in html and "unpkg.com" not in html, page
     for f in ("three/three.module.js", "three/three.core.js", "three/addons/controls/OrbitControls.js", "gsap/gsap.min.js",
               "gsap/ScrollTrigger.min.js", "katex/katex.min.js", "katex/katex.min.css", "katex/contrib/auto-render.min.js", "three/LICENSE", "katex/LICENSE"):
@@ -140,9 +141,9 @@ def test_js_repeater_model_matches_python(tmp_path):
         "const R=require(process.argv[2]);const g=JSON.parse(process.argv[3]);"
         "console.log(JSON.stringify({chain:g.map(([L,n,T])=>R.memoryChain(L,n,T)),direct:g.map(([L])=>R.directRate(L)),"
         "plob:g.map(([L])=>R.plobRate(L)),ap:g.map(([L,n])=>R.allPhotonic(L,Math.pow(2,n))),x:R.crossover(3,1.0),"
-        "mc:R.meanRunTime(800,3,{},8000,3)}))")
+        "mc:R.meanRunTime(800,3,{},8000,3)}))", encoding="utf-8")
     out = json.loads(subprocess.run([node, str(script), str(DOCS / "js" / "repeater_core.js"), json.dumps(grid)],
-                                    capture_output=True, text=True, check=True).stdout)
+                                    capture_output=True, text=True, encoding="utf-8", check=True).stdout)
     for k, (L, n, T) in enumerate(grid):
         py = memory_chain(L, n, T)
         js = out["chain"][k]
@@ -169,9 +170,9 @@ def test_js_purified_chain_matches_python(tmp_path):
         "const R=require(process.argv[2]);const c=JSON.parse(process.argv[3]);const b=JSON.parse(process.argv[4]);"
         "console.log(JSON.stringify({pc:c.map(([L,n,T,r])=>R.purifiedChain(L,n,T,r)),"
         "best:b.map(([L,T])=>{const x=R.bestUsefulChain(L,T);return x&&[x.rate_hz,x.teleport_fidelity,x.n_segments,x.rounds]}),"
-        "tmin:[500,1000,2000].map((L)=>R.minimumUsefulMemory(L))}))")
+        "tmin:[500,1000,2000].map((L)=>R.minimumUsefulMemory(L))}))", encoding="utf-8")
     out = json.loads(subprocess.run([node, str(script), str(DOCS / "js" / "repeater_core.js"), json.dumps(cases), json.dumps(best)],
-                                    capture_output=True, text=True, check=True).stdout)
+                                    capture_output=True, text=True, encoding="utf-8", check=True).stdout)
     for (L, n, T, r), js in zip(cases, out["pc"]):
         py = purified_chain(L, n, T, r)
         for key in ("rate_hz", "fidelity_fraction", "hold_time_s", "pairs_per_output"):
@@ -192,9 +193,9 @@ def test_js_qec_checks_agree_with_every_decoded_shot(tmp_path):
         "const Q=require(process.argv[2]);const D=JSON.parse(require('fs').readFileSync(process.argv[3],'utf8')).qec;let n=0,bad=[];"
         "for(const [d,c] of Object.entries(D.codes))for(const [p,shots] of Object.entries(c.shots))shots.forEach((s,i)=>{n++;"
         "const r=Q.checkShot(+d,c.plaquettes,s);if(!r.syndromeMatches||!r.residualClean||r.logicalError!==s.logical_error)bad.push([d,p,i]);});"
-        "console.log(JSON.stringify({n,bad}))")
+        "console.log(JSON.stringify({n,bad}))", encoding="utf-8")
     out = json.loads(subprocess.run([node, str(script), str(DOCS / "js" / "qec_core.js"), str(DOCS / "site_data.json")],
-                                    capture_output=True, text=True, check=True).stdout)
+                                    capture_output=True, text=True, encoding="utf-8", check=True).stdout)
     assert out["n"] == 3 * 5 * 16 and out["bad"] == []
 
 
@@ -214,10 +215,10 @@ def test_js_mars_budget_matches_python(tmp_path):
         "const fs=require('fs');const E=require(process.argv[2]);const B=require(process.argv[3])(E);"
         "const data=JSON.parse(fs.readFileSync(process.argv[4],'utf8'));E.configure(data);const ds=JSON.parse(process.argv[5]);const ts=JSON.parse(process.argv[6]);"
         "console.log(JSON.stringify(ds.map(d=>ts.map(t=>{const b=B.budget(d,t,data.memories);"
-        "return [b.stages.map(s=>s.rate_per_s),b.teleport_fidelity,b.key_bits_per_pair,b.storage_s,b.purity,b.noise_per_mode_s,b.key_bits_per_day];}))))")
+        "return [b.stages.map(s=>s.rate_per_s),b.teleport_fidelity,b.key_bits_per_pair,b.storage_s,b.purity,b.noise_per_mode_s,b.key_bits_per_day];}))))", encoding="utf-8")
     out = json.loads(subprocess.run([node, str(script), str(DOCS / "js" / "ephemeris.js"), str(DOCS / "js" / "budget_core.js"),
                                      str(DOCS / "site_data.json"), json.dumps(designs), json.dumps(days)],
-                                    capture_output=True, text=True, check=True).stdout)
+                                    capture_output=True, text=True, encoding="utf-8", check=True).stdout)
     for d, rows in zip(designs, out):
         for t, (rates, F, key, ts, w, noise, kday) in zip(days, rows):
             b = budget(replace(MarsLinkDesign(), **d), t)
@@ -235,33 +236,37 @@ def test_js_key_bank_matches_python(tmp_path):
     from qll.systems.mars_budget import MarsLinkDesign
 
     key = [float(x) for x in daily_key_bits(MarsLinkDesign())]
-    cases = [1e5, 1e6, 3e6]
+    cases = [1e5, 1e6, 1.5e6]
     script = tmp_path / "bank.js"
     script.write_text(
         "const K=require(process.argv[2]);const s=JSON.parse(process.argv[3]);const ds=JSON.parse(process.argv[4]);"
         "console.log(JSON.stringify(ds.map(d=>{const c=K.sequentPeak(s,d);const r=K.simulate(s,d,0.5*c);"
-        "return [c,r.level,r.refusedDays];})))")
+        "return [c,r.level,r.refusedDays];})))", encoding="utf-8")
     out = json.loads(subprocess.run([node, str(script), str(DOCS / "js" / "key_bank.js"), json.dumps(key), json.dumps(cases)],
-                                    capture_output=True, text=True, check=True).stdout)
+                                    capture_output=True, text=True, encoding="utf-8", check=True).stdout)
     for dem, (cap, level, refused) in zip(cases, out):
         assert cap == pytest.approx(sequent_peak(key, dem), rel=1e-12)
         run = simulate(key, dem, 0.5 * cap)
         assert level == pytest.approx(list(run.level), rel=1e-12, abs=1e-6) and refused == run.refused_days
+    over = 2 * float(np.mean(key))                                              # above the mean supply: no bank suffices
+    js = subprocess.run([node, "-e", "const K=require(process.argv[1]);console.log(String(K.sequentPeak(JSON.parse(process.argv[2]),+process.argv[3])))",
+                         str(DOCS / "js" / "key_bank.js"), json.dumps(key), str(over)], capture_output=True, text=True, encoding="utf-8", check=True).stdout.strip()
+    assert js == "Infinity" and sequent_peak(key, over) == float("inf")
 
 
 def test_lab_app_manifest_and_offline_cache_point_at_real_files():
     lab = DOCS / "lab"
-    m = json.loads((lab / "manifest.webmanifest").read_text())
+    m = json.loads((lab / "manifest.webmanifest").read_text(encoding="utf-8"))
     assert m["display"] == "standalone" and m["start_url"] == "./"
     for icon in m["icons"]:
         assert (lab / icon["src"]).exists(), icon
-    sw = (lab / "sw.js").read_text()
+    sw = (lab / "sw.js").read_text(encoding="utf-8")
     core = re.search(r"const CORE = \[(.*?)\];", sw, re.S).group(1)
     for ref in re.findall(r'"([^"]+)"', core):
         target = (lab / ref).resolve()
         assert (target / "index.html").exists() if ref.endswith("/") else target.exists(), ref
     version = re.search(r'VERSION = "qll-lab-([\d.]+)"', sw).group(1)
-    pyproject = (DOCS.parent / "pyproject.toml").read_text()
+    pyproject = (DOCS.parent / "pyproject.toml").read_text(encoding="utf-8")
     assert f'version = "{version}"' in pyproject, "bump the service worker cache with the release"
     for page in LAB_PAGES:
-        assert 'rel="manifest"' in page.read_text() and "registerApp" in page.read_text(), page
+        assert 'rel="manifest"' in page.read_text(encoding="utf-8") and "registerApp" in page.read_text(encoding="utf-8"), page

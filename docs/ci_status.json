@@ -1,0 +1,4 @@
+{
+ "outcome": "unknown",
+ "note": "No CI result is recorded in the source tree. The deployment job replaces this file with the executed results of the run that built the site (scripts/ci_status_from_junit.py)."
+}

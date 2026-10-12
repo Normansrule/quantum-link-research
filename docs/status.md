@@ -1,6 +1,8 @@
 # Status
 
-Version 0.55.0 · 905 tests · 36/37 requirements verified · 453 references (29 verified) · 93 learn files · 8 simulations · 45 figures
+This is an inventory of the source tree, not a test result. Whether the mapped tests ran and passed comes from CI: `python -m qll.systems.traceability --junit <report.xml>` and the deployed `ci_status.json`.
+
+Version 0.56.0 · 951 tests collected · 36/37 requirements labelled verified · 454 references (29 verified) · 93 learn files · 8 simulations · 45 figures
 
 | Requirement | Statement | Phase | Status |
 |---|---|---|---|

@@ -1,7 +1,9 @@
 # P04 — Campus free-space link: loss versus distance and daylight background
 
 ## Safety
-Never point the alignment laser at people, windows, aircraft, or vehicles; use a red alignment laser < 1 mW for visual alignment and the 810 nm photons (invisible, eye-safe at these powers) for data; check campus and aviation rules for outdoor beams.
+> This is a planning document, not a laser-safety authorization. Use a qualified review of the actual source, pulse behavior, accessible emissions, and alignment configuration before operating it, and record the approval in the [evaluation specification](../specs/two_room_evaluation_spec.md). Nominal attenuation is not a substitute for measurement or fault assessment.
+
+Never point the alignment laser at people, windows, aircraft, or vehicles; use a red alignment laser < 1 mW for visual alignment. The 810 nm pair photons carry the data and are invisible; the pair-source pump laser that makes them is far brighter and must stay enclosed and terminated inside the source, and the accessible emission of the whole assembly must be assessed, not assumed safe. Check campus and aviation rules for any outdoor beam.
 
 ## Parts
 The P03 source · 50 mm achromatic lenses or 2× beam expanders at both ends · a receiver telescope (50–100 mm) with a 3 nm 810 nm filter and a field stop · fiber coupling to a detector · a GPS-disciplined 1 pps clock or a shared cable for coincidence timing · tripods and a sunshade baffle.

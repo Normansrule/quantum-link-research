@@ -12,7 +12,8 @@
   const DEFAULT = { architecture: "space_source", source_rate_hz: 1e9, modes: 1000, wavelength_m: 1550e-9, tx_waist_m: 0.5,
     rx_diameter_earth_m: 4.0, rx_diameter_mars_m: 4.0, pointing_rad: 1e-7, eta_tx: 0.8, eta_rx: 0.7, eta_det: 0.9,
     earth_elevation_deg: 40.0, duty: 0.5, memory: "171Yb+ hyperfine", f0: 0.95, storage_factor: 2.0,
-    tx_offset_m: 3.84e8, filter_hz: 1e8, stray_light: 1e-9, sun_depression_deg: 12.0, night_radiance: 1e-7 };
+    tx_offset_m: 3.84e8, filter_hz: 1e8, stray_light: 1e-9, sun_depression_deg: 12.0, night_radiance: 1e-7,
+    p_key_basis: 0.5, test_fraction: 0.1, conversion_efficiency: 0.4 };
   const nearest = (table, lam) => { let best = null; for (const k of Object.keys(table).map(Number)) if (best === null || Math.abs(k - lam) < Math.abs(best - lam)) best = k; return table[best]; };
   const filterNm = (lam, B) => lam * lam * B / C * 1e9;
   const lambertPhase = (a) => { a = Math.min(Math.max(a, 0), Math.PI); return (Math.sin(a) + (Math.PI - a) * Math.cos(a)) / Math.PI; };
@@ -76,19 +77,21 @@
       noise = night + nM;
       w = purity(d.source_rate_hz * d.eta_tx * toAperture(lgE), night) * purity(d.source_rate_hz * d.eta_tx * toAperture(lgM), nM);
     }
-    factors.push(["memories (write and read, both ends)", mem.efficiency * mem.efficiency]);
+    const conv = Math.abs(mem.wavelength_nm - d.wavelength_m * 1e9) > 1.0, memF = mem.efficiency * mem.efficiency * (conv ? d.conversion_efficiency * d.conversion_efficiency : 1);
+    factors.push([`memories (write and read, both ends${conv ? ", with frequency conversion" : ""})`, memF]);
     factors.push(["availability (conjunction x duty)", available ? d.duty : 0]);
     let rate = d.source_rate_hz * d.modes;
     const stages = [{ name: "source", factor: 1, rate_per_s: rate }];
     for (const [name, f] of factors) { rate *= f; stages.push({ name, factor: f, rate_per_s: rate }); }
     const tStore = d.storage_factor * L / C, fStored = stored(d.f0, tStore, mem.lifetime_s), f = 0.25 + w * (fStored - 0.25);
     // key is measured on arrival (BBM92): no storage decay and no memory stage
-    const F = (2 * f + 1) / 3, fKey = 0.25 + w * (d.f0 - 0.25), Q = 2 * (1 - fKey) / 3, key = Q < 0.5 ? Math.max(0, 1 - 2 * h2(Q)) : 0;
-    const perDay = rate * 86400, heralds = w > 0 ? perDay / w : Infinity, useful = F > 2 / 3, memFactor = mem.efficiency * mem.efficiency;
+    const F = (2 * f + 1) / 3, fKey = 0.25 + w * (d.f0 - 0.25), Q = 2 * (1 - fKey) / 3, secret = Q < 0.5 ? Math.max(0, 1 - 2 * h2(Q)) : 0;
+    const sift = d.p_key_basis * d.p_key_basis + (1 - d.p_key_basis) * (1 - d.p_key_basis), key = sift * (1 - d.test_fraction) * secret;   // per herald
+    const perDay = rate * 86400, heralds = w > 0 ? perDay / w : Infinity, useful = F > 2 / 3, memFactor = memF;
     return { range_m: L, legs_m: legs, stages, storage_s: tStore, fraction: f, fraction_stored: fStored, teleport_fidelity: F,
              key_bits_per_pair: key, pairs_per_day: perDay, purity: w, noise_per_mode_s: noise, heralds_per_day: heralds, useful,
              teleportations_per_day: useful && perDay > 0 ? heralds : 0, key_bits_per_day: perDay > 0 ? heralds / memFactor * key : 0,
-             key_error_rate: Q, memory_factor: memFactor,
+             key_error_rate: Q, memory_factor: memFactor, sift_probability: sift, secret_fraction_per_sifted_pair: secret, conversion: conv,
              total_db: stages.slice(1).reduce((s, x) => s + (x.factor > 0 ? 10 * Math.log10(x.factor) : -Infinity), 0), available, extra };
   }
   return { DEFAULT, geometric, pointing, atmosphere, h2, lambertPhase, sunlitRadiance, singleMode, earthshineFlux, airy, darkFraction, budget };

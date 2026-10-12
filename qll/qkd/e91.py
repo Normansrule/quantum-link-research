@@ -15,10 +15,25 @@ import math
 from qll.qkd.binary_entropy import h2
 
 
+TSIRELSON = 2 * math.sqrt(2)
+
+
+def _check(S: float, Q: float) -> None:
+    """Impossible inputs are errors, not values to clip into range (audit S06): no quantum correlation exceeds
+    Tsirelson's bound 2 sqrt 2 [cirelson1980], and an error rate lies in [0, 1/2]."""
+    if not (math.isfinite(S) and math.isfinite(Q)):
+        raise ValueError("S and Q must be finite")
+    if S > TSIRELSON * (1 + 1e-9):
+        raise ValueError(f"S = {S} exceeds Tsirelson's bound 2 sqrt 2: an estimate this high is an error, not a stronger key")
+    if not 0.0 <= Q <= 0.5:
+        raise ValueError(f"error rate Q = {Q} is outside [0, 1/2]")
+
+
 def di_rate_per_round(S: float, Q: float) -> float:
+    _check(S, Q)
     if S <= 2.0:
         return 0.0
-    S = min(S, 2 * math.sqrt(2))
+    S = min(S, TSIRELSON)                                   # only rounding above the bound reaches here
     return max(0.0, 1 - h2((1 + math.sqrt(S**2 / 4 - 1)) / 2) - h2(Q))
 
 
@@ -38,12 +53,15 @@ def di_rate_finite_key(S: float, Q: float, n_rounds: int, eps: float = 1e-10) ->
     shape of the entropy-accumulation bound [arnon2018] with the constants simplified; it is a model for
     scheduling, not a security proof. r -> di_rate_per_round(S, Q) as n -> infinity.
     """
-    import math
-
-    if n_rounds <= 0:
-        return 0.0
+    if isinstance(n_rounds, bool) or not isinstance(n_rounds, int) or n_rounds <= 0:
+        raise ValueError(f"n_rounds must be a positive integer, got {n_rounds!r}")
+    if not 0.0 < eps < 1.0:
+        raise ValueError(f"eps must lie in (0, 1), got {eps}")
     delta = 4 * math.sqrt(2 * math.log(2 / eps) / n_rounds)
-    r = di_rate_per_round(S - delta, Q) - 2 * math.log2(1 / eps) / n_rounds
+    # S here is an estimate from n rounds, which may exceed 2 sqrt 2 by statistical fluctuation; only an estimate
+    # whose pessimistic value S - delta still exceeds the bound is inconsistent with quantum mechanics
+    _check(min(S - delta, S), Q)
+    r = di_rate_per_round(min(S - delta, TSIRELSON), Q) - 2 * math.log2(1 / eps) / n_rounds
     return max(0.0, r)
 
 

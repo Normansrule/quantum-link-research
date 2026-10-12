@@ -99,7 +99,7 @@ def load_pass_table(path: str, key_column: str = "key_bits", duration_column: st
     import csv
 
     out = []
-    with open(path, newline="") as fh:
+    with open(path, newline="", encoding="utf-8") as fh:
         for row in csv.DictReader(fh):
             v = row.get(key_column, "").strip()
             if v:

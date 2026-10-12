@@ -21,7 +21,7 @@ A 10 km link runs a session of 1,000,000 pulses every 15 minutes for 24 hours. T
 
 | sessions | accepted | of which clean | with alert | with loss flagged | rejected | keys delivered | keys served | requests refused | lowest pool (bits) | lowest store (keys) |
 |---|---|---|---|---|---|---|---|---|---|---|
-| 96 | 87 | 75 | 10 | 2 | 9 | 7,862 | 7,814 | 106 | 3,715 | 0 |
+| 96 | 87 | 75 | 10 | 2 | 9 | 7,865 | 7,816 | 104 | 3,715 | 0 |
 
 What the day shows, within this model:
 

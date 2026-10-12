@@ -37,7 +37,7 @@ A 405 nm diode attenuated to 0.5 photons per pulse, polarization BB84 with decoy
 
 | Path | Loss | Click probability per pulse | Clicks per second | Error rate (model) | Simulated 10 s session |
 |---|---|---|---|---|---|
-| Free space across a hallway | 2.0 dB | 0.0585 | 58,543 | 3.67 % | accepted, 12,774 net key bits |
+| Free space across a hallway | 2.0 dB | 0.0585 | 58,543 | 3.67 % | accepted, 12,777 net key bits |
 | Single-mode fiber through the wall | 6.3 dB | 0.0241 | 24,075 | 7.26 % | rejected (no_key) |
 
 The twin's verdict shapes the build: start across a hallway in free space. At 405 nm the fiber's coupling loss lets the SiPMs' dark counts win; fiber becomes worthwhile with cooled sensors, shorter gates, or a telecom wavelength and InGaAs detectors (Tier 3, far costlier). Without decoy pulses the worst-case analysis finds no key at all, because a 0.5-photon pulse carries two or more photons 9 % of the time, more often than a pulse clicks.

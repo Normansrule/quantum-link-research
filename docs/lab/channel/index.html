@@ -14,15 +14,17 @@
 <script src="../../js/lab_channel.js"></script>
 <script src="../../js/lab_ui.js"></script>
 <script type="importmap">{ "imports": { "three": "../../vendor/three/three.module.js", "three/addons/": "../../vendor/three/addons/" } }</script>
+<script defer src="../../js/nav.js"></script>
 </head>
 <body>
+<a class="skip" href="#content">Skip to content</a>
 <div class="aurora"></div>
 <header class="top">
   <a class="brand" href="../../"><span class="dot"></span>Quantum Link Research</a>
   <nav><a href="../">Lab</a><a href="../link/">Two-room link</a><a href="./">Quantum channels</a><a href="../outdoor/">Outdoors and orbit</a><a href="../frontier/">Frontier</a><a href="../messenger/">Messenger</a><a href="../circuits/">Cloud circuits</a><a class="gh" href="https://github.com/Normansrule/quantum-link-research">GitHub ↗</a></nav>
 </header>
 
-<section class="lab-head">
+<section class="lab-head" id="content" tabindex="-1">
   <div class="kicker" id="kicker">Quantum channels · P14, E19</div>
   <h1 id="title">Quantum channels</h1>
   <p class="sub" id="summary"></p>
@@ -137,7 +139,7 @@ function update(anim) {
   U.terminal($("term"), ch.prompt, C.steps(R, info), { animate: anim });
   let m = metric("Entanglement fidelity", f3(Fe), Fe > 0.5) + metric("Certified from Z, X errors", f3(cert), cert > 0.5) + metric("Error rate Z / X / Y", `${(100 * e.z).toFixed(1)} / ${(100 * e.x).toFixed(1)} / ${(100 * e.y).toFixed(1)} %`, e.z < 0.11) + metric("Quantum capacity ≥", `${f3(cap.quantum)} qubits`, cap.quantum > 0);
   if (info) m += metric("Photons that click", `${(100 * info.eta).toFixed(1)} %`, true) + metric("Qubits per photon, heralded", f3(info.quantum_heralded), info.quantum_heralded > 0);
-  m += `<div class="verdict ${eb ? "bad" : ""}" id="verdict">${eb ? "Entanglement breaking: a measure-and-resend relay could imitate this channel. Nothing quantum gets through." : cert > 0.5 ? "Certified quantum: the Z and X error rates alone rule out every classical relay." : "Quantum, but the Z and X error rates alone cannot prove it; full tomography can."}</div>`;
+  m += `<div class="verdict ${eb ? "bad" : ""}" id="verdict">${eb ? "Entanglement breaking: a measure-and-resend relay could imitate this channel. Nothing quantum gets through." : cert > 0.5 ? "Certified quantum within the trusted qubit model: the Z and X error rates alone rule out every measure-and-resend relay, assuming single-photon signals, trusted preparation and measurement, and fair sampling." : "Quantum, but the Z and X error rates alone cannot prove it; full tomography can."}</div>`;
   $("metrics").innerHTML = m;
   const capRows = [{ label: "classical bits", value: cap.classical ?? 0, text: cap.classical === null ? "n/a (non-unital)" : undefined, color: U.C.cyan }, { label: "bits, with shared pairs", value: cap.entanglement_assisted, color: U.C.violet },
     { label: "qubits (lower bound)", value: cap.quantum, color: U.C.green }, { label: "secret bits (BB84)", value: cap.private_bb84, color: U.C.gold }];

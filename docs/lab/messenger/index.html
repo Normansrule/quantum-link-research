@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="../../space.css">
 <link rel="stylesheet" href="../lab.css">
 <style>
-  .chat { grid-column: 1 / -1; display: grid; grid-template-columns: 1fr 1fr; gap: 1rem }
+  .chat { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 1rem }
   .chat .side-a, .chat .side-b { border: 1px solid var(--line); border-radius: 14px; padding: .7rem .8rem; background: rgba(10,15,28,.45); min-height: 260px; display: flex; flex-direction: column; gap: .5rem }
   .chat h4 { margin: 0; font-size: .9rem } .chat .who { color: var(--muted); font-size: .75rem }
   .msgs { display: flex; flex-direction: column; gap: .45rem; max-height: 330px; overflow-y: auto; flex: 1 }
@@ -24,21 +24,23 @@
   table.sec { width: 100%; border-collapse: collapse; font-size: .78rem } table.sec th, table.sec td { padding: .35rem .3rem; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top }
   table.sec tr.sel td { background: rgba(94,242,224,.08) }
   .chartcard.wide { grid-column: 1 / -1 }
-  @media (max-width: 760px) { .chat { grid-template-columns: 1fr } }
+  @media (max-width: 760px) { .chat { grid-template-columns: minmax(0, 1fr) } }
 </style>
 <script src="../../js/lab_twin.js"></script>
 <script src="../../js/lab_outdoor.js"></script>
 <script src="../../js/lab_messenger.js"></script>
 <script src="../../js/lab_ui.js"></script>
 <script type="importmap">{ "imports": { "three": "../../vendor/three/three.module.js", "three/addons/": "../../vendor/three/addons/" } }</script>
+<script defer src="../../js/nav.js"></script>
 </head>
 <body>
+<a class="skip" href="#content">Skip to content</a>
 <div class="aurora"></div>
 <header class="top">
   <a class="brand" href="../../"><span class="dot"></span>Quantum Link Research</a>
   <nav><a href="../">Lab</a><a href="../link/">Two-room link</a><a href="../channel/">Quantum channels</a><a href="../outdoor/">Outdoors and orbit</a><a href="../frontier/">Frontier</a><a href="./">Messenger</a><a href="../circuits/">Cloud circuits</a><a class="gh" href="https://github.com/Normansrule/quantum-link-research">GitHub ↗</a></nav>
 </header>
-<section class="lab-head">
+<section class="lab-head" id="content" tabindex="-1">
   <div class="kicker" id="kicker">The application · P15</div>
   <h1 id="title">A messenger keyed by the link</h1>
   <p class="sub" id="summary"></p>
@@ -62,7 +64,9 @@
     </div>
   </aside>
   <section class="panel chat" id="chatbox" aria-label="Try the messenger">
-    <div class="chatbar"><b style="color:var(--ink)">Try it:</b> messages are really encrypted in your browser (Web Crypto AES-256-GCM, or a one-time pad with a Wegman–Carter tag), spend key from the bank, and arrive after the light time.
+    <div class="chatbar" role="note" id="simnote" style="border:1px solid rgba(255,138,76,.5);border-radius:10px;padding:.45rem .6rem;color:var(--ink)"><b>Local demonstration:</b>&nbsp;simulated QKD supply and simulated hybrid key exchange. Both endpoints run in this browser, the key bank is accounting, and the hybrid's ML-KEM secret is random bytes standing in for a real exchange. Do not enter sensitive information.</div>
+    <div class="chatbar"><b style="color:var(--ink)">Try it:</b> messages are encrypted in your browser (Web Crypto AES-256-GCM, or a one-time pad with a Wegman–Carter tag), spend key from the simulated bank, and arrive after the light time; the sender's status changes only when the recipient's authenticated acknowledgment comes back.
+      <label><input type="checkbox" id="tamper"> Alter the next message in transit</label>
       <label>Time runs <select id="speed"><option value="1">in real time</option><option value="60">60× faster</option><option value="600" selected>600× faster</option></select></label>
       <span id="clock"></span></div>
     <div class="side-a"><h4 id="nameA">Alice</h4><div class="who">Key bank: <span id="bankText"></span></div><div class="bankbar"><i id="bankBar" style="width:100%"></i></div>
@@ -147,8 +151,9 @@ const chat = (() => {
   const enc = new TextEncoder(), dec = new TextDecoder(), hex = (b) => [...b].map((x) => x.toString(16).padStart(2, "0")).join("");
   const rand = (n) => crypto.getRandomValues(new Uint8Array(n));
   let bank = 0, cap = 1, supply = [], oneWay = 0, simT = 9 * 3600, last = performance.now(), sessionLeft = 0, sessionKey = null, n = 0, plan = null, o = null, mars = false;
-  const stats = { sent: 0, delivered: 0, refused: 0, rejected: 0 }; window.__chat = stats;
-  const inflight = [];
+  const stats = { sent: 0, delivered: 0, refused: 0, rejected: 0, acknowledged: 0, nacked: 0 }; window.__chat = stats;
+  const inflight = [], acks = [];
+  const setStatus = (m, status, cls) => { m.a.className = `bubble ${cls}`; m.a.dataset.status = status; const st = m.a.querySelector(".st"); st.textContent = st.textContent.replace(/ · (SENT|QUEUED).*$/, "") + ` · ${status}`; };
   function bankUI() {
     $("bankText").textContent = `${M.bitsText(bank)} of ${M.bitsText(cap)}${policy.startsWith("conventional") ? " (not used: public-key exchange)" : ""}`;
     $("bankBar").style.width = `${Math.max(0, Math.min(100, 100 * bank / cap))}%`;
@@ -157,7 +162,10 @@ const chat = (() => {
   function reconfigure(r, oo, sup, isMars) {
     plan = r; o = oo; supply = sup; oneWay = r.one_way_s; mars = isMars;
     const want = isMars ? oo.preloaded_bits : Math.max(isFinite(r.bank_bits) ? r.bank_bits : 0, 50 * r.bits_per_message, 4096);
-    if (want !== cap) { cap = want; bank = want; }
+    if (want !== cap) {
+      cap = want; bank = want;
+      if ($("msgsA").children.length) bubble($("msgsA"), "wait", `<b>Simulation reset.</b> The bank was set to ${M.bitsText(want)} for the new settings; no key was generated.`);
+    }
     sessionLeft = 0; bankUI();
   }
   async function encrypt(text) {
@@ -186,8 +194,10 @@ const chat = (() => {
     bank -= cost; bankUI();
     const box = await encrypt(text), id = ++n, eta = simT + oneWay;
     stats.sent++;
-    const a = bubble($("msgsA"), "wait", `${U.esc(text)}<div class="ct">${hex(box.ct).slice(0, 96)}${box.ct.length > 48 ? "…" : ""}</div><div class="st">#${id} · ${box.label} · ${conv ? "no link key" : M.bitsText(cost) + " of key"} · in flight, ${lightText(oneWay)}</div>`);
-    inflight.push({ id, eta, box, a, text });
+    const a = bubble($("msgsA"), "wait", `${U.esc(text)}<div class="ct">${hex(box.ct).slice(0, 96)}${box.ct.length > 48 ? "…" : ""}</div><div class="st">#${id} · ${box.label} · ${conv ? "no link key" : M.bitsText(cost) + " of key"} · SENT, in flight, ${lightText(oneWay)}</div>`);
+    a.dataset.status = "SENT";
+    const tampered = $("tamper").checked; if (tampered) $("tamper").checked = false;
+    inflight.push({ id, eta, box, a, text, tampered });
   }
   function tick() {
     const now = performance.now(), dt = (now - last) / 1000 * +$("speed").value; last = now;
@@ -197,14 +207,20 @@ const chat = (() => {
       const m = inflight[i];
       if (simT >= m.eta) {
         inflight.splice(i, 1);
-        m.box.open(m.box.ct, m.box.tag).then((plain) => {
+        const ct = m.tampered ? m.box.ct.map((x, j) => (j === 0 ? x ^ 1 : x)) : m.box.ct;   // an attacker flips one bit
+        m.box.open(ct, m.box.tag).then((plain) => {
           const ok = plain === m.text; ok ? stats.delivered++ : stats.rejected++;
-          bubble($("msgsB"), ok ? "ok" : "bad", ok ? `${U.esc(plain)}<div class="st">#${m.id} · ${policy === "one-time pad" ? "tag verified, " : "GCM tag verified, "}decrypted after ${lightText(oneWay)}</div>` : `<b>Rejected</b> #${m.id}: tag check failed`);
-          m.a.className = "bubble ok"; const st = m.a.querySelector(".st"); st.textContent = st.textContent.replace(/in flight.*$/, `delivered after ${lightText(oneWay)}`);
+          bubble($("msgsB"), ok ? "ok" : "bad", ok ? `${U.esc(plain)}<div class="st">#${m.id} · ${policy === "one-time pad" ? "tag verified, " : "GCM tag verified, "}decrypted after ${lightText(oneWay)}</div>` : `<b>Rejected</b> #${m.id}: tag check failed; nothing was decrypted`);
+          acks.push({ m, ok, eta: simT + oneWay });                         // Bob's authenticated ACK or NACK travels back
+          setStatus(m, "awaiting acknowledgment", "wait");
         });
       } else {
         const left = m.eta - simT; m.a.querySelector(".st").textContent = m.a.querySelector(".st").textContent.replace(/in flight.*$/, `in flight, ${lightText(left)} to go`);
       }
+    }
+    for (let i = acks.length - 1; i >= 0; i--) {
+      const k = acks[i];
+      if (simT >= k.eta) { acks.splice(i, 1); k.ok ? stats.acknowledged++ : stats.nacked++; setStatus(k.m, k.ok ? "AUTHENTICATED (acknowledged)" : "REJECTED by the recipient", k.ok ? "ok" : "bad"); }
     }
     bankUI(); requestAnimationFrame(tick);
   }
@@ -212,7 +228,7 @@ const chat = (() => {
   $("send").addEventListener("click", () => send($("text").value));
   $("text").addEventListener("keydown", (e) => { if (e.key === "Enter") send($("text").value); });
   $("burst").addEventListener("click", async () => { for (let i = 0; i < 50; i++) await send(`${$("text").value} (${i + 1})`); });
-  return { reconfigure, send, clear: () => { $("msgsA").innerHTML = ""; $("msgsB").innerHTML = ""; inflight.length = 0; Object.assign(stats, { sent: 0, delivered: 0, refused: 0, rejected: 0 }); cap = -1; } };
+  return { reconfigure, send, clear: () => { $("msgsA").innerHTML = ""; $("msgsB").innerHTML = ""; inflight.length = 0; acks.length = 0; Object.assign(stats, { sent: 0, delivered: 0, refused: 0, rejected: 0, acknowledged: 0, nacked: 0 }); cap = -1; } };
 })();
 
 function renderTabs() {

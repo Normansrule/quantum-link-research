@@ -100,7 +100,7 @@ def test_cli(tmp_path, capsys):
     main(["predict"])
     assert "purity" in capsys.readouterr().out
     main(["schedule", "--out", str(tmp_path / "s.csv"), "--steps", "40"])
-    lines = (tmp_path / "s.csv").read_text().splitlines()
+    lines = (tmp_path / "s.csv").read_text(encoding="utf-8").splitlines()
     assert len(lines) == 41 and "inf" in "".join(lines)            # conjunction closes the shutter
     assert predictions(B)["mode_ratio"] == pytest.approx(mode_ratio(B))
 

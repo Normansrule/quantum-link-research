@@ -390,8 +390,14 @@ def test_messenger_lab_encrypts_delivers_and_fails_closed(browser, server):
     page, errors = _lab(browser, server, "/lab/messenger/#rooms")
     py = K.plan("two rooms (P10)", "one-time pad", 500, 200, 100, 10.0)
     assert page.evaluate("window.__twin.r.messages_per_day_max") == pytest.approx(py["messages_per_day_max"], rel=1e-9)
+    assert "Local demonstration" in page.inner_text("#simnote") and "Do not enter sensitive information" in page.inner_text("#simnote")
     page.click("#send"); page.click("#send")
-    page.wait_for_function("window.__chat.delivered === 2", timeout=20000)          # one-time pad with a Wegman-Carter tag, verified at Bob
+    page.wait_for_function("window.__chat.delivered === 2 && window.__chat.acknowledged === 2", timeout=20000)   # pad + Wegman-Carter tag, then ACK
+    page.check("#tamper"); page.click("#send")                                        # an attacker flips one bit in transit
+    page.wait_for_function("window.__chat.rejected === 1 && window.__chat.nacked === 1", timeout=20000)
+    assert page.evaluate("document.querySelector('#msgsA .bubble').dataset.status") == "REJECTED by the recipient"
+    assert "bad" in page.get_attribute("#msgsA .bubble", "class")                      # never shown as delivered after rejection
+    page.click("button[data-tier='rooms']"); page.wait_for_function("window.__chat.sent === 0")
     page.select_option("#policy", "hybrid ML-KEM + QKD")
     page.click("#send")
     page.wait_for_function("window.__chat.delivered === 1", timeout=20000)          # Web Crypto HKDF + AES-256-GCM
@@ -407,3 +413,83 @@ def test_messenger_lab_encrypts_delivers_and_fails_closed(browser, server):
     assert page.evaluate("window.__chat.refused") > 0 and "Refused" in page.inner_text("#msgsA")   # an empty bank refuses; no weaker fallback
     assert not errors, errors
     page.close()
+
+
+# ------------------------------------------------------------------------------------- navigation and status (U02, U03)
+def _page_at(browser, url, width, routes=()):
+    while _OPEN:
+        try:
+            _OPEN.pop().close()
+        except Exception:
+            pass
+    page = browser.new_page(viewport={"width": width, "height": 800})
+    _OPEN.append(page)
+    page.route("**/*", lambda r: r.continue_() if r.request.url.startswith("http://127.0.0.1") else r.abort())
+    for pattern, handler in routes:                           # later routes take precedence in Playwright
+        page.route(pattern, handler)
+    page.goto(url, wait_until="commit")
+    page.wait_for_function("document.readyState === 'complete' && !!document.querySelector('.skip')", timeout=60000)
+    return page
+
+
+@pytest.mark.parametrize("width", [320, 375, 768])
+@pytest.mark.parametrize("path", ["/", "/lab/link/", "/budget/"])
+def test_small_screens_keep_the_navigation_reachable_by_keyboard(browser, server, path, width):
+    page = _page_at(browser, server + path, width)
+    toggle = page.locator(".nav-toggle")
+    toggle.wait_for(state="visible", timeout=10000)
+    assert toggle.get_attribute("aria-expanded") == "false" and page.locator("nav#site-nav a:not(.gh)").first.is_hidden()
+    box = toggle.bounding_box()
+    assert box["height"] >= 44 and box["x"] + box["width"] <= width            # touch-sized and on screen
+    page.keyboard.press("Tab")                                                  # the first stop is the skip link
+    assert page.evaluate("document.activeElement.className") == "skip"
+    toggle.focus(); page.keyboard.press("Enter")
+    assert toggle.get_attribute("aria-expanded") == "true"
+    links = page.locator("nav#site-nav a")
+    assert links.count() >= 3 and all(links.nth(i).is_visible() for i in range(links.count()))
+    assert page.evaluate("document.activeElement === document.querySelector('nav#site-nav a')")
+    assert page.evaluate("document.documentElement.scrollWidth") <= width + 1    # no horizontal page scroll
+    page.keyboard.press("Escape")
+    assert toggle.get_attribute("aria-expanded") == "false" and page.evaluate("document.activeElement.classList.contains('nav-toggle')")
+    assert page.locator("main").count() == 1
+
+
+def test_wide_screens_show_the_links_without_a_menu(browser, server):
+    page = _page_at(browser, server + "/lab/link/", 1440)
+    assert page.locator(".nav-toggle").is_hidden() and page.locator("nav#site-nav a").first.is_visible()
+
+
+def test_missing_data_reads_unavailable_not_old_success(browser, server):
+    page = _page_at(browser, server + "/", 1280, routes=[("**/site_data.json", lambda r: r.fulfill(status=404, body="")),
+                                                         ("**/ci_status.json", lambda r: r.fulfill(status=404, body=""))])
+    page.wait_for_function("document.querySelector('[data-status=\"tests\"]').textContent === 'unavailable'", timeout=30000)
+    for key in ("version", "tests", "requirements_verified", "requirements", "references"):
+        assert page.locator(f'[data-status="{key}"]').first.text_content() == "unavailable", key
+    assert page.locator('[data-num="headline.round_trip_max_min"]').text_content() == "unavailable"
+    assert "unavailable" in page.locator("#ci-status").text_content()
+    assert "500+" not in page.content() and "requirements verified" not in page.content()
+
+
+def test_landing_page_quotes_the_deployed_ci_result(browser, server):
+    import json
+    ci = {"revision": "abcdef1234567", "generated_utc": "2026-10-12T00:00:00+00:00", "outcome": "fail", "run_url": "",
+          "totals": {"tests": 12, "passed": 10, "failed": 1, "skipped": 1}}
+    page = _page_at(browser, server + "/", 1280, routes=[("**/ci_status.json", lambda r: r.fulfill(status=200, body=json.dumps(ci), content_type="application/json"))])
+    page.wait_for_function("document.getElementById('ci-status').textContent.startsWith('CI @')", timeout=30000)
+    text = page.locator("#ci-status").text_content()
+    assert "abcdef1" in text and "10 passed" in text and "1 failed" in text
+    assert "stale" in page.locator("#ci-status").get_attribute("class")          # a failing run is never shown as success
+
+
+ALL_PAGES = ["/", "/lab/", "/lab/link/", "/lab/channel/", "/lab/outdoor/", "/lab/frontier/", "/lab/messenger/", "/lab/circuits/", "/mars/",
+             "/budget/", "/teleport/", "/monitor/", "/link/", "/repeater/", "/coupler/", "/qec/", "/systems/"]
+
+
+@pytest.mark.parametrize("path", ALL_PAGES)
+def test_every_page_fits_a_320_pixel_screen_and_has_one_main_landmark(browser, server, path):
+    page = _page_at(browser, server + path, 320)
+    page.wait_for_timeout(1500)                                                 # let data-driven content render
+    assert page.evaluate("document.documentElement.scrollWidth") <= 321, "horizontal page scroll at 320 px"
+    assert page.locator("main").count() == 1 and page.locator(".nav-toggle").is_visible()
+    target = page.locator(".skip").get_attribute("href")
+    assert page.locator(target).count() == 1                                    # the skip link lands somewhere

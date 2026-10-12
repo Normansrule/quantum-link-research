@@ -101,7 +101,7 @@ def compute_data() -> dict:
     from qll.space.ephemeris import EARTH, MARS, SYNODIC_PERIOD_DAYS, earth_mars_range_m, range_envelope_m
     from qll.space.relativity import gravitational_redshift_earth_mars
 
-    status = json.loads((ROOT / "docs" / "status.json").read_text()) if (ROOT / "docs" / "status.json").exists() else {}
+    status = json.loads((ROOT / "docs" / "status.json").read_text(encoding="utf-8")) if (ROOT / "docs" / "status.json").exists() else {}
     from qll.systems.mars_budget import MarsLinkDesign
     from qll.systems.mars_budget import budget as mars_budget
     from qll.systems.key_ledger import ledger as _key_ledger
@@ -151,7 +151,8 @@ def compute_data() -> dict:
             "n_memories": len(MEMORY_TABLE),
             "messenger_buffer_kB_mars_max": required_buffer_bytes(0.0, EARTH_MARS_MAX_M, 32, messages_per_s=1 / 60) / 1e3,
         },
-        "memories": [{"name": p.name, "lifetime_s": p.lifetime_s, "efficiency": p.efficiency, "T_K": p.T_kelvin,
+        "memories": [{"name": p.name, "lifetime_s": p.lifetime_s, "efficiency": p.efficiency, "efficiency_status": p.efficiency_status,
+                      "wavelength_nm": p.wavelength_nm, "lifetime_ref": p.bibkey, "T_K": p.T_kelvin,
                       "crossover_s": crossover_time_s(0.95, p.lifetime_s, p.model), "survives": cm[p.name]} for p in MEMORY_TABLE],
         "baselines_round_trip_s": BASELINES,
         "elements": {name: {"a_au": el.a_au, "e": el.e, "L_deg": el.L_deg, "varpi_deg": el.varpi_deg, "period_days": el.period_days}
@@ -171,13 +172,13 @@ def compute_data() -> dict:
 
 def main() -> None:
     data = json.loads(json.dumps(compute_data(), default=float))
-    (ROOT / "docs" / "site_data.json").write_text(json.dumps(data, indent=1) + "\n")
+    (ROOT / "docs" / "site_data.json").write_text(json.dumps(data, indent=1) + "\n", encoding="utf-8")
     print("wrote docs/site_data.json")
     write_readme_numbers(data)
 
 
 def write_readme_numbers(data: dict) -> None:
-    """Regenerate the table between the numbers markers in README.md from the same data."""
+    """Regenerate the table between the numbers markers in PROJECT_TOUR.md from the same data."""
     from qll.systems.mars_budget import MarsLinkDesign
     h = data["headline"]
     rows = [
@@ -198,7 +199,7 @@ def write_readme_numbers(data: dict) -> None:
         ("Key buffer to message once a minute through a Mars round trip", f"{h['messenger_buffer_kB_mars_max']:.2f} kB", "`qll/app/messenger.py`"),
     ]
     table = "| Question | Answer from the code | Module |\n|---|---|---|\n" + "\n".join(f"| {a} | **{b}** | {c} |" for a, b, c in rows)
-    readme = ROOT / "README.md"
+    readme = ROOT / "PROJECT_TOUR.md"
     text = readme.read_text(encoding="utf-8")
     start, end = "<!-- numbers:start -->", "<!-- numbers:end -->"
     if start in text and end in text:

@@ -14,7 +14,7 @@ A disagreement points at the assumption that failed (03).
 | 0 | Simulation only (done) | $0 | done | nothing physical | none (a model) | all, in simulation |
 | 1 | Bright-light polarization analogue: laser pointer, polarizer film on servos, photodiode, Arduino | $40–120 | 2–3 weekends | bases, sifting, errors from optics, interception disturbance, the whole processing chain on measured data | none: bright light can be tapped | SN-01, SN-02 (analogue), SN-04, SN-07, SN-08 |
 | 2 | Fiber channel characterization: telecom transceivers, power meter, attenuator, spool, wavelength multiplexer | $80–350 | 2–4 weekends | the channel's loss, connector loss, polarization drift, and cross-talk from classical traffic | none (no quantum states) | SN-06, SN-11, SN-14 |
-| 2½ | **Two rooms, under $1,000** ([P10](../../experiments/protocols/P10_two_room_single_photon_link.md)): four 405 nm diodes behind polarizers, decoy drive, four silicon photomultipliers, FPGA gating, free space across a hallway; preset [`hardware/two_room.json`](hardware/two_room.json) from `qll/link/two_room.py` | $530–1,180 | one semester part-time | single-photon-level states between rooms, real dark counts and errors, decoy-state bounds, a key from a real channel, per-site logs | laboratory-grade; source side channels and detector attacks not addressed | SN-02, SN-03, SN-06, SN-07, SN-11 |
+| 2½ | **Two rooms, under $1,000** ([P10](../../experiments/protocols/P10_two_room_single_photon_link.md)): four 405 nm diodes behind polarizers, decoy drive, four silicon photomultipliers, FPGA gating, an enclosed free-space path between the rooms (fiber carries only the classical channel); preset [`hardware/two_room.json`](hardware/two_room.json) from `qll/link/two_room.py` | $530–1,180 | one semester part-time | single-photon-level states between rooms, real dark counts and errors, decoy-state bounds, a key from a real channel, per-site logs | laboratory demonstration, no security review; trusted devices; source side channels and detector attacks excluded | SN-02, SN-03, SN-06, SN-07, SN-11 |
 | 3 | Decoy-state BB84 at the single-photon level: pulsed laser near 850 nm at three intensities, four-state encoder, single-photon detectors, timing | $2,000–8,000 | one semester | single-photon detection, real dark counts, real error rates, decoy-state bounds, real key from a real channel | laboratory-grade against photon-number splitting; detector attacks not addressed | SN-02, SN-03, SN-06, SN-07, SN-11 |
 | 4 | Entanglement-based BBM92: down-conversion pair source, analyzers at both sites, time tagger | $15,000–60,000 (or a lent teaching kit) | one semester to a year | entangled pairs, a Bell test, key measured on arrival | laboratory-grade, not device-independent | SN-02, SN-03, SN-05, SN-07 |
 | 5 | Commercial or testbed link over deployed fiber | $100,000+ or a partnership | months | a production system and real infrastructure | as certified by the vendor | SN-12, SN-13, SN-14, SN-15 |
@@ -70,9 +70,9 @@ A commercial version of the same idea, with half-wave plates and polarizing beam
 
 **What it does not prove.** Any security at all. Bright light splits instead of choosing, so Site B's coin stands in for quantum randomness, and an eavesdropper could tap part of the beam without being seen. The documents and the summary must say "classical analogue" every time.
 
-**Safety (SN-10).**
-- Use class 2 lasers only, and never look into the beam.
-- Keep beams below eye level and terminate them on the photodiode.
+**Safety (SN-10).** These tiers are planning documents, not laser-safety authorizations; follow your institution's laser safety program and record its review before operating any source.
+- Use class 2 lasers only (confirm the label and, where possible, the measured output), and never look into the beam.
+- Keep beams below eye level, on the bench, and terminate them on the photodiode or a beam block; never route a beam through a hallway or other occupied space.
 - Power the servos separately from the Arduino's 5 V pin.
 
 ---
@@ -163,7 +163,7 @@ A commercial version of the same idea, with half-wave plates and polarizing beam
 
 **What it proves.** Real single-photon detection statistics and a real key, with every processing step checked against the model, and the decoy-state bound on the single-photon detections [ma2005] computed from your own gains. **What it does not prove.** Security against detector blinding and similar attacks on the detectors. Running without decoys (one intensity) is a useful comparison: the worst-case analysis then guarantees no key beyond a few dB of loss, as scenario 8 shows.
 
-**Safety (SN-10).** Laser diodes near 850 nm, before attenuation, can be class 3B and are invisible.
+**Safety (SN-10).** Laser diodes near 850 nm, before attenuation, can be class 3B and are invisible. Nominal attenuation is not a substitute for measurement or fault assessment: the beam is at full power during alignment and if an attenuator moves or fails.
 - Enclose the beam path.
 - Use an infrared viewer card.
 - Wear laser safety eyewear rated for the wavelength.

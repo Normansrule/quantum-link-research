@@ -45,14 +45,16 @@
   .risk.open { border-color: var(--mars) } .risk.mit { border-color: var(--green) } .risk.part { border-color: var(--warm) }
   .note { color: var(--muted); font-size: .88rem; margin: .5rem 0 0 }
 </style>
+<script defer src="../js/nav.js"></script>
 </head>
 <body>
+<a class="skip" href="#content">Skip to content</a>
 <div class="aurora"></div>
 <header class="top">
   <a class="brand" href="../"><span class="dot"></span>Quantum Link Research</a>
   <nav><a href="../budget/">Link budget</a><a href="../repeater/">Repeater lab</a><a href="../qec/">QEC lab</a><a class="gh" href="https://github.com/Normansrule/quantum-link-research">GitHub ↗</a></nav>
 </header>
-<main class="lab">
+<main class="lab" id="content" tabindex="-1">
   <div class="intro">
     <div class="kicker">Systems engineering · needs → requirements → tests</div>
     <h1>Every requirement points at <span class="gradient-text">the test that proves it</span>.</h1>
