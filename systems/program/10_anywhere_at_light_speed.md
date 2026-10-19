@@ -38,11 +38,22 @@ The project's three tracks already contain the mechanism. Work that would otherw
 |---|---|---|---|
 | L0 | The floor and every route are computed correctly | closed-form tests: no route beats d/c; the geometry of each route; JavaScript equals Python for every pair of places | tested |
 | L1 | The authenticated classical channel between two rooms adds little above its light time | P10 Stage 1 round-trip measurement (99th percentile under 5 ms on a 15 m path whose light round trip is 0.1 µs) | planned |
-| L2 | A banked key delivers a secure message in one trip between two computers | two-process demonstration with a pre-shared key store, timing each delivery against the measured path delay | not implemented |
+| L2 | A banked key delivers a secure message in one trip between two independent ends | [`qll/link/banked_messenger.py`](../../qll/link/banked_messenger.py): two operating-system processes, each loading only its own bank file from an accepted session, over the session-bound transport with an emulated path delay; `tests/test_banked_messenger.py` measures about 1.0 trip for banked key and 3.0 for key made on demand, as the model counts | tested on one machine (emulated delay); between two computers, planned |
 | L3 | A free-space path between buildings carries the classical channel at its light time | Phase 3 outdoor link with timestamped frames | planned |
 | L4 | Teleportation from banked pairs costs only the classical bits | cloud-processor E01 rehearsal now; memories later | modelled; rehearsal only |
 
 Nothing in this ladder claims faster-than-light communication, and nothing will: the target is the floor itself.
+
+## Running L2 yourself
+
+```bash
+python -m qll.link.banked_messenger bank --out-a bank_a.json --out-b bank_b.json      # one accepted session, one file per site
+python -m qll.link.net_transport newkey link.key                                       # the transport's pre-shared key
+python -m qll.link.banked_messenger serve --bank bank_b.json --key link.key --port 7070 --delay-ms 35.4 &
+python -m qll.link.banked_messenger send --bank bank_a.json --key link.key --port 7070 --delay-ms 35.4 -n 10
+```
+
+With the Los Angeles to London delay of the low-orbit route (35.4 ms), a typical run reads banked messages after about 36 ms (1.02 trips) and messages keyed on demand after about 108 ms (3.06 trips); the small excess is the two computers' processing. The bank is a demonstration key from a simulated session, and each key is recorded as spent on disk before it is used, so no key serves twice, even after a restart.
 
 ## References
 

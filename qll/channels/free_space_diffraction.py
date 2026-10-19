@@ -31,7 +31,9 @@ def beam_radius_m(L_m: float, lambda_m: float, w0_m: float) -> float:
 def geometric_transmittance(L_m: float, lambda_m: float, w0_m: float, D_rx_m: float) -> float:
     """Exact fraction of a Gaussian beam caught by a centred circular aperture of diameter D_rx."""
     w = beam_radius_m(L_m, lambda_m, w0_m)
-    return 1.0 - math.exp(-2.0 * (D_rx_m / 2.0) ** 2 / w**2)
+    # -expm1(-x), not 1 - exp(-x): at planetary range x is ~1e-9 and the subtraction keeps only ~8 digits, so two
+    # correctly rounded exp() implementations (Linux and Windows, Python and JavaScript) disagree at the 1e-8 level
+    return -math.expm1(-2.0 * (D_rx_m / 2.0) ** 2 / w**2)
 
 
 def geometric_transmittance_far_field(L_m: float, lambda_m: float, w0_m: float, D_rx_m: float) -> float:

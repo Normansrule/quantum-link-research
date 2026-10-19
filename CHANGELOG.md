@@ -1,5 +1,46 @@
 # Changelog
 
+## 0.59.0 — 2026-10-19 (a network that heals: the October 18 roadmap)
+- **The pair ledger (`qll/network/pair_ledger.py`).** Entanglement becomes a resource that is created, aged, consumed, and replaced, and never resurrected.
+  - Statuses only move forward (pending, available, consumed, expired), recorded in an append-only event log.
+  - A pair is pending until its herald, or a swap's measurement outcome, has reached both ends at light speed.
+  - Swaps and purifications consume their inputs even when they fail, and a success gets a new identifier.
+  - Every run checks created = in use + consumed + expired; randomized operation sequences hold it.
+- **Sustained service, not immortality.** A three-node service (Alice · Relay · Charlie) reports availability, delivered fidelity, and waste.
+  - With 0.5 s memories, a supply of 3 pairs/s against 2 requests/s still misses about a quarter of requests, because swapped pairs decay in about 60 ms.
+  - With 5 s memories nearly all are served, and the serving policy trades waste against fidelity.
+  - `survival_probability` gives (1 − p_L)^N, which reaches zero for any p_L > 0.
+- **Logical memory with reused ancillas (`qll/circuits/logical_memory.py`).** Rotated surface codes at distances 3, 5, and 7 (17, 49, and 97 qubits) run d rounds of syndrome extraction, measure and reset every ancilla every round, and decode by matching.
+  - Below a threshold near 0.6 %, more distance means fewer logical errors; above it, more.
+- **The off-grid mesh (`qll/link/mesh_messenger.py`).**
+  - Radio: LoRa sensitivity from the noise floor and spreading factor, time on air (57 ms at SF7, 1.3 s at SF12 for 20 bytes), the radio horizon, and flooding with a hop limit.
+  - Delivery: states only move forward, and only the recipient's end-to-end acknowledgment marks a message delivered, never a relay's rebroadcast.
+  - Two valleys and a ridge: delivered in 1.3 s with a ridge relay, unreachable without one. The U.S. amateur-band encryption prohibition is stated.
+- **Jupiter.** Jupiter joins the ephemeris and the latency model: 32.9 to 53.7 minutes one way.
+- **New page: [A network that heals](https://normansrule.github.io/quantum-link-research/network/).** It replays the ledger, the distance scan, and the mesh, labelled SIMULATED, with play, pause, step, and reset, and a survival calculator. Its data comes from `scripts/build_network_data.py` and is checked against a fresh computation.
+- **README and docs.**
+  - The three paths are now send messages offline, explore quantum science, and build the quantum testbed.
+  - Results carry four labels: SIMULATED, VERIFIED SOFTWARE, MEASURED HARDWARE, and FUTURE RESEARCH.
+  - New: program document [11](systems/program/11_healing_network.md) and the [roadmap response](docs/audit/2026-10-18_roadmap_response.md), which corrects the roadmap's swap example (0.9033, not 0.9042) and its Jupiter range.
+- **Yours to write:** `deadline_aware` in `qll/network/pair_ledger.py`, a serving policy that the tests compare against oldest-first and freshest-first.
+
+## 0.58.0 — 2026-10-14 (step L2: a secure message in one trip, between two processes)
+- **`qll/link/banked_messenger.py`: the goal's verification step L2.** With key banked in advance, a secure message is readable after one trip, between two ends that share nothing but their own bank files.
+  - **Banks.** One accepted session puts Site A's key in A's file and Site B's in B's, cut into 256-bit keys with the same identifiers, so the files are never compared or copied. Files are created exclusively with owner-only permissions, are never overwritten, and are refused when edited.
+  - **Messages.** Each message travels as AES-256-GCM under a one-time key, with the key's identifier as associated data, over the session-bound authenticated transport.
+  - **One use per key.** Each key is written to a spent ledger on disk before it is used, so a replayed, altered, or repeated message is refused and no key serves twice, even after a restart. An empty bank refuses to send.
+  - **Measured against the model.** Two operating-system processes ran with the 35.4 ms Los Angeles to London delay of the low-orbit route. Banked messages were read after 1.02 trips and messages keyed on demand after 3.06, the 1 and 3 that `qll/space/latency_floor.py` counts.
+  - The on-demand key is a labelled timing stand-in that reproduces QKD's message pattern, not its security.
+- **Docs.** Program document 10 marks L2 tested on one machine and gives the commands; the README's capability table and the evaluation specification list the messenger as a second program with independent ends; the latency page quotes the measurement.
+- **Includes 0.57.1** (the Windows CI fix) for anyone applying this release directly over 0.57.0.
+
+## 0.57.1 — 2026-10-13 (the Windows job, fixed from its own annotations)
+- **The cause, read from CI.** The new failure annotations named the one failing Windows test: `test_js_mars_budget_matches_python`, where JavaScript and Python disagreed by 2 × 10⁻⁸ from the diffraction stage on.
+- **The root cause is a cancellation.** At planetary range the collected fraction is 1 − exp(−x) with x near 10⁻⁹. The subtraction keeps only about 8 significant digits, so two correctly rounded `exp` implementations (Windows and Linux, Python and V8) differ in the eighth digit.
+  - The geometric transmittance now uses −expm1(−x) in `qll/channels/free_space_diffraction.py`, `docs/js/budget_core.js`, and `docs/js/lab_outdoor.js`, which is accurate to the last digit at any range.
+  - Dependent numbers change only in the ninth significant digit and are regenerated.
+- **A latent bug the cancellation was hiding.** The budget page's beam-waist and receiver sliders started at 10^−0.30103 and 10^0.60206, which are 0.5 and 4 only to about seven digits. They now start at the exact logarithms, so the page computes the default design exactly.
+
 ## 0.57.0 — 2026-10-12 (anywhere, at the speed of light)
 - **The goal, made computable: communication as close to instantaneous as physics allows, wherever the two ends are, and secure.**
   - Physics sets the floor exactly: no signal outruns light, and entanglement alone carries no message (Eberhard and Ross, 1989; Ghirardi et al., 1980).

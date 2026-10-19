@@ -14,7 +14,7 @@
   // ----------------------------------------------------------------------------------------- channel modules
   const rayleighRange = (lam, w0) => Math.PI * w0 * w0 / lam;
   const beamRadius = (L, lam, w0) => w0 * Math.sqrt(1 + (L / rayleighRange(lam, w0)) ** 2);
-  const geometric = (L, lam, w0, D) => { const w = beamRadius(L, lam, w0); return 1 - Math.exp(-2 * (D / 2) ** 2 / (w * w)); };
+  const geometric = (L, lam, w0, D) => { const w = beamRadius(L, lam, w0); return -Math.expm1(-2 * (D / 2) ** 2 / (w * w)); };   // expm1: no cancellation at long range
   const pointing = (sigma, L, w) => (w * w) / (w * w + 4 * sigma * sigma * L * L);
   const airmass = (e) => 1 / Math.sin(e * Math.PI / 180);
   const TAU = [[810e-9, 0.35], [850e-9, 0.32], [1550e-9, 0.15]];

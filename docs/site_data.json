@@ -1,10 +1,10 @@
 {
  "status": {
-  "version": "0.57.0",
-  "tests": 983,
+  "version": "0.59.0",
+  "tests": 1018,
   "requirements": 37,
   "requirements_verified": 36,
-  "references": 462,
+  "references": 468,
   "references_verified": 31,
   "learn_files": 93,
   "experiment_files": 68,
@@ -86,6 +86,18 @@
     "lat_deg": null,
     "lon_deg": null,
     "range_m": 400922293476.0
+   },
+   {
+    "name": "Jupiter at its closest",
+    "lat_deg": null,
+    "lon_deg": null,
+    "range_m": 591371133192.1261
+   },
+   {
+    "name": "Jupiter at its farthest",
+    "lat_deg": null,
+    "lon_deg": null,
+    "range_m": 965185756242.8105
    }
   ],
   "constants": {
@@ -163,6 +175,15 @@
     "stretch": 1.0,
     "fiber_s": null,
     "tls_s": 6686.664103404496
+   },
+   {
+    "to": "Jupiter at its farthest",
+    "floor_s": 3219.5131347927722,
+    "best": "free space",
+    "best_s": 3219.5131347927722,
+    "stretch": 1.0,
+    "fiber_s": null,
+    "tls_s": 16097.565673963862
    }
   ]
  },
@@ -178,23 +199,23 @@
   "range_max_au": 2.675490432483772,
   "synodic_days": 779.9342507242231,
   "bb84_threshold_pct": 11.00278644383603,
-  "micius_two_link_loss_db_30deg": 65.73332293496932,
+  "micius_two_link_loss_db_30deg": 65.7333229349693,
   "fiber_attenuation_length_km": 21.714724095162588,
   "nbar_5ghz_300K": 1249.6972140558073,
   "nbar_5ghz_15mK": 1.128194821837113e-07,
   "chain_crossover_km_1s_memory": 392.6313401706839,
   "chain_teleport_fidelity_at_crossover": 0.5828465965902333,
   "min_useful_memory_s_1000km": 38.803168306709914,
-  "mars_pairs_per_day_closest": 5956004.137226342,
-  "mars_pairs_per_day_farthest": 175216.91190781203,
-  "mars_fidelity_farthest": 0.7171198775788238,
-  "mars_relay_pairs_per_day_closest": 2.480849774366224e-06,
-  "mars_purity_farthest": 0.9622762609985798,
-  "mars_key_bits_per_day_farthest": 219072.4267102794,
-  "mars_key_bits_per_day_closest": 9882118.14948422,
-  "key_bank_mb_1e6": 36.864074183260676,
+  "mars_pairs_per_day_closest": 5956004.173567149,
+  "mars_pairs_per_day_farthest": 175216.78394678113,
+  "mars_fidelity_farthest": 0.7171198715972382,
+  "mars_relay_pairs_per_day_closest": 2.4808497176098437e-06,
+  "mars_purity_farthest": 0.9622762344881653,
+  "mars_key_bits_per_day_farthest": 219072.21820216865,
+  "mars_key_bits_per_day_closest": 9882118.209793132,
+  "key_bank_mb_1e6": 36.864074517679455,
   "key_bank_refused_days_no_bank": 484,
-  "mars_ground_purity_daylight_closest": 0.00589050344462578,
+  "mars_ground_purity_daylight_closest": 0.005890503480355221,
   "mars_ground_days_without_dark_sky": 333,
   "min_useful_memory_segments_1000km": 16,
   "min_useful_memory_rounds_1000km": 2,

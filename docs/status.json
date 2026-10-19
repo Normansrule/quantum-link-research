@@ -1,9 +1,9 @@
 {
- "version": "0.57.0",
- "tests": 983,
+ "version": "0.59.0",
+ "tests": 1018,
  "requirements": 37,
  "requirements_verified": 36,
- "references": 462,
+ "references": 468,
  "references_verified": 31,
  "learn_files": 93,
  "experiment_files": 68,

@@ -9,7 +9,8 @@ her half of a shared pair, Bob's local statistics are unchanged until a classica
 1. **The floor.** The one-way delay can never be less than d/c, with d the straight-line distance [bipm2019]. On Earth
    a signal that stays above the ground follows at least the great circle, R*theta, so that is the practical floor;
    the chord 2R sin(theta/2) through the planet is the absolute one. Earth radius R = 6371.0088 km, the IUGG mean
-   radius [moritz2000]; the Moon at its mean distance [williams2024moon]; Mars from the tested Kepler ephemeris.
+   radius [moritz2000]; the Moon at its mean distance [williams2024moon]; Mars and Jupiter from the tested Kepler ephemeris (Jupiter: 33 to 54
+   minutes one way).
 2. **The route.** Each medium and path stretches the floor:
    - terrestrial fiber: group index n = 1.47 (the repository's fiber value) times a route that wanders by a factor s
      over the great circle (s = 1.5 here, an assumed planning value; measured paths vary [bozkurt2015]);
@@ -39,12 +40,14 @@ from dataclasses import dataclass
 from qll.channels.light_time_delay import one_way_delay_s
 from qll.constants.astro import EARTH_MARS_MAX_M, EARTH_MARS_MIN_M
 from qll.network.teleport_across import FIBER_INDEX
+from qll.space.ephemeris import jupiter_range_envelope_m
 
 EARTH_RADIUS_M = 6_371_008.8                 # IUGG mean radius R1 [moritz2000]
 MOON_MEAN_DISTANCE_M = 384_400e3              # mean Earth-Moon distance [williams2024moon]
 GEO_ALTITUDE_M = 35_786e3                     # geostationary altitude, from GM and the sidereal day [petit2010]
 LEO_ALTITUDE_M = 550e3                        # a typical laser-mesh shell (assumed planning value) [handley2018]
 HOLLOW_CORE_INDEX = 1.003                     # about 99.7 % of c [poletti2013]
+JUPITER_MIN_M, JUPITER_MAX_M = jupiter_range_envelope_m()   # from the mean-element ephemeris: 3.95 to 6.45 au
 FIBER_ROUTE_STRETCH = 1.5                     # assumed: real fiber paths wander from the great circle [bozkurt2015]
 
 # Trips of one-way delay before the receiver can read the message (see the module docstring).
@@ -79,6 +82,7 @@ SITES = {s.name: s for s in (
     Site("Sydney", -33.869, 151.209), Site("São Paulo", -23.551, -46.633), Site("Cape Town", -33.925, 18.424),
     Site("the Moon", range_m=MOON_MEAN_DISTANCE_M), Site("Mars at its closest", range_m=EARTH_MARS_MIN_M),
     Site("Mars at its farthest", range_m=EARTH_MARS_MAX_M),
+    Site("Jupiter at its closest", range_m=JUPITER_MIN_M), Site("Jupiter at its farthest", range_m=JUPITER_MAX_M),
 )}
 
 

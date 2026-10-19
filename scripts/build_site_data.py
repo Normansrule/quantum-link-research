@@ -124,7 +124,7 @@ def compute_data() -> dict:
         "from_la": [{"to": x, "floor_s": rr["floor_s"], "best": rr["best"], "best_s": rr["best_delay_s"], "stretch": rr["best_stretch"],
                      "fiber_s": rr["routes"].get("terrestrial fiber", {}).get("delay_s"),
                      "tls_s": rr["latency"]["secure message"]["TCP + TLS 1.3, new connection"]}
-                    for x in ("New York", "London", "Tokyo", "Sydney", "the Moon", "Mars at its closest", "Mars at its farthest")
+                    for x in ("New York", "London", "Tokyo", "Sydney", "the Moon", "Mars at its closest", "Mars at its farthest", "Jupiter at its farthest")
                     for rr in [LF.report("Los Angeles", x)]],
     }
     _la_ldn = LF.report("Los Angeles", "London")
@@ -203,7 +203,8 @@ def latency_table() -> str:
         return f"{s * 1e3:.1f} ms" if s < 1 else f"{s:.2f} s" if s < 120 else f"{s / 60:.1f} min"
     rows = ["| From Los Angeles to | Light-time floor | Terrestrial fiber | Fastest route | Secure message, banked key | QKD on demand | New TCP + TLS 1.3 |",
             "|---|---|---|---|---|---|---|"]
-    for to in ("New York", "London", "Tokyo", "Sydney", "Cape Town", "the Moon", "Mars at its closest", "Mars at its farthest"):
+    for to in ("New York", "London", "Tokyo", "Sydney", "Cape Town", "the Moon", "Mars at its closest", "Mars at its farthest",
+               "Jupiter at its closest", "Jupiter at its farthest"):
         r = LF.report("Los Angeles", to)
         fiber = r["routes"].get("terrestrial fiber")
         sm = r["latency"]["secure message"]

@@ -299,3 +299,13 @@ def test_js_latency_floor_matches_python(tmp_path):
             assert js["routes"][name]["delay_s"] == pytest.approx(r["delay_s"], rel=1e-12) and js["routes"][name]["note"] == r["note"], (a, b, name)
         for kind, rows in LF.message_latency_s(js["best_delay_s"]).items():
             assert js["latency"][kind] == pytest.approx(rows, rel=1e-12), kind
+
+
+def test_network_page_data_is_current():
+    """docs/network/data.json is what scripts/build_network_data.py computes from the tested models (seeded)."""
+    sys.path.insert(0, str(ROOT / "scripts"))
+    import build_network_data as N
+    saved = json.loads((DOCS / "network" / "data.json").read_text(encoding="utf-8"))
+    live = json.loads(json.dumps(N.compute(), default=float))
+    assert saved == live, "run python scripts/build_network_data.py"
+    assert saved["label"].startswith("SIMULATED")

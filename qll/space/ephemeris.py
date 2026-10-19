@@ -1,4 +1,4 @@
-"""Earth-Mars geometry versus time.
+"""Earth-Mars (and Earth-Jupiter) geometry versus time.
 
 Physics
 -------
@@ -37,6 +37,7 @@ class MeanElements:
 # Mean elements at J2000 (Standish 1992 / JPL "Keplerian elements for approximate positions"), inclination dropped.
 EARTH = MeanElements(1.00000011, 0.01671022, 100.46435, 102.94719, 365.256)
 MARS = MeanElements(1.52366231, 0.09341233, 355.45332, 336.04084, 686.980)
+JUPITER = MeanElements(5.20288700, 0.04838624, 34.39644051, 14.72847983, 4332.589)   # inclination 1.30 deg dropped
 
 
 def kepler_E(M: float, e: float, tol: float = 1e-12) -> float:
@@ -69,6 +70,27 @@ def earth_mars_range_m(t_days: float | np.ndarray) -> float | np.ndarray:
         mx, my = heliocentric_xy_au(MARS, ti)
         out[i] = math.hypot(mx - ex, my - ey) * AU_METERS
     return out if out.size > 1 else float(out[0])
+
+
+def earth_body_range_m(body: MeanElements, t_days: float | np.ndarray) -> float | np.ndarray:
+    """Range from Earth to any body with mean elements (Jupiter's 1.3 deg inclination changes it by under 0.1 %)."""
+    t = np.atleast_1d(np.asarray(t_days, dtype=float))
+    out = np.empty_like(t)
+    for i, ti in enumerate(t):
+        ex, ey = heliocentric_xy_au(EARTH, ti)
+        bx, by = heliocentric_xy_au(body, ti)
+        out[i] = math.hypot(bx - ex, by - ey) * AU_METERS
+    return out if out.size > 1 else float(out[0])
+
+
+def earth_jupiter_range_m(t_days: float | np.ndarray) -> float | np.ndarray:
+    return earth_body_range_m(JUPITER, t_days)
+
+
+def jupiter_range_envelope_m(years: float = 24.0, step_days: float = 2.0) -> tuple[float, float]:
+    """Min and max Earth-Jupiter range over two of Jupiter's 11.9-year orbits."""
+    d = earth_jupiter_range_m(np.arange(0.0, years * 365.25, step_days))
+    return float(d.min()), float(d.max())
 
 
 def sun_earth_mars_angle_deg(t_days: float) -> float:

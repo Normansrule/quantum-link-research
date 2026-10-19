@@ -76,6 +76,7 @@ Five rules hold in every phase:
 | 08 | [Papers](08_first_paper.md) | the first paper's plan in detail, and the two after it |
 | 09 | [From classical links to quantum channels](09_quantum_channels.md) | three ways to build a quantum channel, how each is certified, mapped, and measured, and the ladder from the hallway to a network |
 | 10 | [Anywhere at light speed](10_anywhere_at_light_speed.md) | the goal stated so it can be verified: the light-time floor, the latency budget (route stretch, handshake trips, key latency), why banked key and banked entanglement reach the floor, and the verification ladder |
+| 11 | [A network that heals](11_healing_network.md) | the off-grid messenger and the fault-tolerant research platform side by side: the pair ledger, logical memory, the mountain mesh, stages from tabletop to Jupiter, and a label on every result |
 | — | [Gate reviews](reviews/README.md) | the record of each gate |
 | — | [The lab](https://normansrule.github.io/quantum-link-research/lab/) ([source](../../docs/lab/)) | every experiment in one gallery; the two-room link and the cloud circuits in 3D, tier by tier, with the twin's math in a terminal and every part priced ([`qll/systems/lab_scenes.py`](../../qll/systems/lab_scenes.py)) |
 | — | [Paper drafts](../../research/papers/README.md) | each paper's draft, generated results, figures, and data (paper 1 rehearsed on simulators) |

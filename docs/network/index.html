@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Network that heals · Quantum Link Research</title>
+<meta name="description" content="Entanglement as a renewable resource: a pair ledger that never resurrects a spent pair, logical qubits kept alive by reused ancillas, and an off-grid radio mesh that never mistakes a relay for delivery. Every number is a simulation from the tested code.">
+<meta property="og:title" content="A network that heals · Quantum Link Research">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://normansrule.github.io/quantum-link-research/network/">
+<meta property="og:image" content="https://normansrule.github.io/quantum-link-research/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>♾️</text></svg>">
+<link rel="stylesheet" href="../space.css">
+<style>
+  canvas#timeline { height: 300px; background: #03060c }
+  canvas#qec { height: 300px }
+  canvas#mesh { height: 260px; background: radial-gradient(circle at 50% 80%, #0b1426, #04070f 75%) }
+  .seg { display: inline-flex; border: 1px solid var(--line); border-radius: 12px; overflow: hidden }
+  .seg .ui-btn { border: 0; border-radius: 0 }
+  .badge { display: inline-block; padding: .2rem .55rem; border-radius: 999px; font: 700 .72rem "JetBrains Mono", monospace; letter-spacing: .06em }
+  .badge.sim { background: rgba(94,168,255,.15); color: var(--blue) }
+  .badge.ok { background: rgba(69,224,160,.15); color: var(--green) } .badge.bad { background: rgba(255,107,74,.15); color: var(--mars) }
+  ol.rules { margin: .2rem 0 0; padding-left: 1.2rem; color: #c2cde0; font-size: .9rem; line-height: 1.6 }
+  .surv { display: grid; grid-template-columns: 1fr 1fr; gap: .6rem }
+</style>
+<script defer src="../js/nav.js"></script>
+</head>
+<body>
+<a class="skip" href="#content">Skip to content</a>
+<div class="aurora"></div>
+<header class="top">
+  <a class="brand" href="../"><span class="dot"></span>Quantum Link Research</a>
+  <nav><a href="../">Home</a><a href="../latency/">Anywhere</a><a aria-current="page" href="../network/">Network</a><a href="../lab/">Lab</a><a href="../mars/">Mars</a><a href="../budget/">Budget</a><a href="../teleport/">Teleport</a><a class="opt" href="../monitor/">Monitor</a><a class="opt" href="../link/">Link ops</a><a class="opt" href="../repeater/">Repeater</a><a class="opt" href="../coupler/">Coupler</a><a class="opt" href="../qec/">QEC</a><a class="opt" href="../systems/">Systems</a><a class="gh" href="https://github.com/Normansrule/quantum-link-research">GitHub ↗</a></nav>
+</header>
+<main class="page" id="content" tabindex="-1">
+  <div class="page-intro">
+    <div class="kicker">Fault tolerance · resources that are spent and replaced</div>
+    <h1>A network that <span class="gradient-text">heals</span>, not a pair that lives for ever.</h1>
+    <p class="sub">A quantum network keeps a service alive by making fresh entanglement, spending it, retiring what decays, and protecting stored qubits with error correction. This page replays runs of the tested models: the pair ledger (<code>qll/network/pair_ledger.py</code>), the logical memory (<code>qll/circuits/logical_memory.py</code>), and the off-grid mesh (<code>qll/link/mesh_messenger.py</code>). <span class="badge sim">SIMULATED</span> everywhere: none of it is a measurement.</p>
+  </div>
+
+  <div class="physics" role="note">
+    <p><b>What physics allows.</b> No finite noisy memory keeps one state for ever: a logical qubit that fails with probability p<sub>L</sub> per cycle survives N cycles with probability (1 − p<sub>L</sub>)<sup>N</sup>. A destroyed unknown state cannot be rebuilt from blank qubits, and a consumed pair never comes back. What can last is the <i>service</i>: new pairs replace spent ones, as long as usable pairs arrive faster than requests. And no amount of entanglement carries a message without a classical path.</p>
+  </div>
+
+  <div class="ui-grid">
+    <section class="ui-panel span-8" aria-labelledby="h-t">
+      <h4 id="h-t">Three nodes, one ledger: Alice · Relay · Charlie</h4>
+      <div class="ui-row">
+        <span class="ui-note" style="margin:0">Memory lifetime</span>
+        <span class="seg" role="group" aria-label="Memory lifetime"><button class="ui-btn" data-mem="0.5" aria-pressed="true">0.5 s</button><button class="ui-btn" data-mem="5" aria-pressed="false">5 s</button></span>
+        <span class="ui-note" style="margin:0 0 0 .6rem">Spend</span>
+        <span class="seg" role="group" aria-label="Serving policy"><button class="ui-btn" data-pol="oldest_first" aria-pressed="true">oldest first</button><button class="ui-btn" data-pol="freshest_first" aria-pressed="false">freshest first</button></span>
+      </div>
+      <canvas id="timeline" role="img" aria-label="Cumulative pairs consumed and expired, requests served and missed, and the end-to-end inventory over time"></canvas>
+      <div class="ui-row">
+        <button class="ui-btn" id="play" type="button" aria-pressed="false">▶ Play</button>
+        <button class="ui-btn" id="step" type="button">Step</button>
+        <button class="ui-btn" id="reset" type="button">Reset</button>
+        <span class="ui-note" id="clock" style="margin:0"></span>
+      </div>
+      <div class="ui-legend" aria-hidden="true"><span><i style="background:#45e0a0"></i>consumed (by swaps and requests)</span><span><i style="background:#ff8a4c"></i>expired (decayed below the floor)</span><span><i style="background:#5ef2e0"></i>requests served</span><span><i style="background:#ff6b4a"></i>requests missed</span><span><i style="background:#a78bfa"></i>usable Alice–Charlie pairs</span></div>
+    </section>
+    <section class="ui-panel span-4" aria-labelledby="h-k">
+      <h4 id="h-k">This run</h4>
+      <div class="ui-kpis" id="kpis" aria-live="polite"></div>
+      <p class="ui-note" id="lesson"></p>
+    </section>
+
+    <section class="ui-panel span-5" aria-labelledby="h-r">
+      <h4 id="h-r">The ledger's rules</h4>
+      <ol class="rules">
+        <li>A pair is <b>pending</b> until its herald, or the Bell-measurement outcome, has reached both ends at light speed.</li>
+        <li>A swap <b>consumes both inputs</b>, whether it succeeds or not; a failure restores nothing.</li>
+        <li>A success creates a <b>new</b> pair with a new identifier and fidelity F₁F₂ + (1 − F₁)(1 − F₂)/3: two 0.95 pairs give 0.9033.</li>
+        <li>Stored pairs decay; below the floor they <b>expire</b>, and expired is final.</li>
+        <li>Every run checks the conservation law: created = in use + consumed + expired.</li>
+      </ol>
+    </section>
+    <section class="ui-panel span-7" aria-labelledby="h-q">
+      <h4 id="h-q">A logical qubit with reused ancillas: distance 3, 5, 7</h4>
+      <canvas id="qec" role="img" aria-label="Logical error per shot against physical error rate for surface-code distances 3, 5, and 7"></canvas>
+      <div class="matrix" style="margin-top:.5rem"><table id="res"></table></div>
+      <p class="ui-note">Below the threshold (about 0.6 % here) more distance means fewer logical errors; above it, more qubits make it worse. Rotated surface code, d rounds of syndrome extraction with every ancilla measured and reset each round, decoded by matching.</p>
+    </section>
+
+    <section class="ui-panel span-7" aria-labelledby="h-m">
+      <h4 id="h-m">Messages with no internet: two valleys and a ridge</h4>
+      <div class="ui-row"><span class="seg" role="group" aria-label="Ridge relay"><button class="ui-btn" data-mesh="with ridge relay" aria-pressed="true">with ridge relay</button><button class="ui-btn" data-mesh="without ridge relay" aria-pressed="false">without</button></span> <span id="meshstate"></span></div>
+      <canvas id="mesh" role="img" aria-label="Map of the mesh: hikers, relays, and the radio links between them"></canvas>
+      <p class="ui-note" id="meshnote"></p>
+    </section>
+    <section class="ui-panel span-5" aria-labelledby="h-s">
+      <h4 id="h-s">How long can one logical qubit last?</h4>
+      <div class="surv">
+        <label class="ui-slider">Logical error per cycle <b id="v-pl"></b><input id="pl" type="range" min="-12" max="-2" step="0.1" value="-6"></label>
+        <label class="ui-slider">Cycles <b id="v-n"></b><input id="n" type="range" min="0" max="12" step="0.1" value="6"></label>
+      </div>
+      <div class="ui-kpis" id="surv"></div>
+      <p class="ui-note">(1 − p<sub>L</sub>)<sup>N</sup> falls to zero for any p<sub>L</sub> &gt; 0. The network's answer is replacement, not immortality.</p>
+    </section>
+  </div>
+</main>
+<footer>A network that heals. Models: <code>qll/network/pair_ledger.py</code> [rfc9340, werner1989, zukowski1993, briegel1998, bennett1996], <code>qll/circuits/logical_memory.py</code> [fowler2012, gidney2021stim, higgott2023pymatching], <code>qll/link/mesh_messenger.py</code> [semtech2015an1200_22, semtech2013sx1276, friis1946, rappaport2002, meshtastic2024, cfr47_97_113]. Data written by <code>scripts/build_network_data.py</code>. All results are simulations.</footer>
+<!-- site-foot:start --><div class="site-foot" role="contentinfo"><span class="brand-s">Quantum Link Research</span><span>v0.59.0</span><a href="../latency/">Anywhere at light speed</a><a href="https://github.com/Normansrule/quantum-link-research">Source</a><a href="https://github.com/Normansrule/quantum-link-research/blob/main/CHANGELOG.md">Changelog</a><a href="https://github.com/Normansrule/quantum-link-research/blob/main/docs/audit/2026-10-11_findings.md">Audit findings</a><a href="https://github.com/Normansrule/quantum-link-research/blob/main/CREDITS.md">Credits</a><span class="grow">No signal outruns light. Numbers are model outputs unless a page says measured; nothing here is a security-reviewed link.</span></div><!-- site-foot:end -->
+<script>
+(() => {
+  const $ = (id) => document.getElementById(id);
+  const COL = { consumed: "#45e0a0", expired: "#ff8a4c", served: "#5ef2e0", missed: "#ff6b4a", e2e: "#a78bfa" };
+  let D = null, mem = "0.5", pol = "oldest_first", meshKey = "with ridge relay", cursor = 1, playing = false, last = 0;
+  function fit(cv) { const r = cv.getBoundingClientRect(), d = Math.min(devicePixelRatio || 1, 2); cv.width = Math.max(1, r.width * d); cv.height = Math.max(1, r.height * d); const g = cv.getContext("2d"); g.setTransform(d, 0, 0, d, 0, 0); return [g, r.width, r.height]; }
+  const run = () => D.service[`${mem}s/${pol}`];
+  const sciTxt = (x) => x === 0 ? "0" : x < 1e-3 || x >= 1e4 ? x.toExponential(1) : x.toPrecision(3);
+
+  function kpis() {
+    const r = run();
+    const cells = [["availability", `${(100 * r.availability).toFixed(1)} %`, `${r.served} of ${r.requests} requests served`],
+      ["fidelity delivered", r.mean_fidelity ? r.mean_fidelity.toFixed(4) : "—", "mean, at the moment of use"],
+      ["end-to-end pairs", `${r.end_to_end_rate_hz.toFixed(2)} /s`, "swaps that succeeded"],
+      ["expired", `${r.counts.expired}`, `of ${r.counts.created} created`]];
+    $("kpis").innerHTML = cells.map(([l, v, s]) => `<div class="ui-k"><div class="l">${l}</div><div class="v">${v}</div><div class="s">${s}</div></div>`).join("");
+    $("lesson").textContent = mem === "0.5"
+      ? `Supply (${r.end_to_end_rate_hz.toFixed(1)} pairs/s) exceeds demand (2 requests/s), yet a quarter of requests miss: a swapped pair decays below the 0.8 floor in about 60 ms, before most requests arrive.`
+      : `A ten-times longer memory keeps pairs usable until requests come. Compare the policies: oldest first wastes less; freshest first delivers higher fidelity.`;
+  }
+  function timeline() {
+    const [g, w, h] = fit($("timeline")), s = run().samples, n = Math.max(1, Math.min(cursor, s.length));
+    g.clearRect(0, 0, w, h);
+    const L = 44, R = 12, T = 12, B = 26, tmax = s[s.length - 1].t, ymax = Math.max(...s.map((x) => Math.max(x.consumed, x.expired))) * 1.05;
+    const emax = Math.max(4, ...s.map((x) => x.e2e)) * 1.2;
+    const X = (t) => L + (w - L - R) * t / tmax, Y = (v) => h - B - (h - T - B) * v / ymax, Ye = (v) => h - B - (h - T - B) * 0.35 * v / emax;
+    g.strokeStyle = "rgba(147,161,184,.15)"; g.fillStyle = "#5b6780"; g.font = "11px JetBrains Mono, monospace"; g.textAlign = "right";
+    for (let k = 0; k <= 4; k++) { const v = ymax * k / 4, y = Y(v); g.beginPath(); g.moveTo(L, y); g.lineTo(w - R, y); g.stroke(); g.fillText(Math.round(v), L - 6, y + 4); }
+    g.textAlign = "center"; for (let k = 0; k <= 6; k++) g.fillText(`${(tmax * k / 6).toFixed(0)} s`, X(tmax * k / 6), h - 8);
+    for (let i = 0; i < n; i++) { const x = X(s[i].t); g.fillStyle = "rgba(167,139,250,.55)"; g.fillRect(x - 1, Ye(s[i].e2e), 2, h - B - Ye(s[i].e2e)); }
+    for (const key of ["consumed", "expired", "served", "missed"]) {
+      g.strokeStyle = COL[key]; g.lineWidth = 2; g.beginPath();
+      for (let i = 0; i < n; i++) { const x = X(s[i].t), y = Y(s[i][key]); i ? g.lineTo(x, y) : g.moveTo(x, y); }
+      g.stroke();
+    }
+    const cur = s[n - 1];
+    $("clock").textContent = `t = ${cur.t.toFixed(1)} s of ${tmax.toFixed(0)} s (replayed from the simulation) · served ${cur.served} · missed ${cur.missed} · queued ${cur.queued}`;
+  }
+  function tick(now) {
+    if (!playing) return;
+    cursor += Math.max(1, Math.round((now - last) / 25)); last = now;
+    if (cursor >= run().samples.length) { cursor = run().samples.length; setPlay(false); }
+    timeline(); if (playing) requestAnimationFrame(tick);
+  }
+  function setPlay(p) { playing = p; $("play").setAttribute("aria-pressed", String(p)); $("play").textContent = p ? "❚❚ Pause" : "▶ Play"; if (p) { if (cursor >= run().samples.length) cursor = 1; last = performance.now(); requestAnimationFrame(tick); } }
+
+  function qec() {
+    const [g, w, h] = fit($("qec")), q = D.qec, cols = { 3: "#ff8a4c", 5: "#5ea8ff", 7: "#45e0a0" };
+    g.clearRect(0, 0, w, h);
+    const L = 52, R = 16, T = 12, B = 30, lx = (p) => Math.log10(p), xs = q.ps.map(lx), x0 = Math.min(...xs), x1 = Math.max(...xs), y0 = -5, y1 = 0;
+    const X = (p) => L + (w - L - R) * (lx(p) - x0) / (x1 - x0), Y = (v) => T + (h - T - B) * (y1 - Math.log10(Math.max(v, 1e-5))) / (y1 - y0);
+    g.font = "11px JetBrains Mono, monospace"; g.fillStyle = "#5b6780"; g.strokeStyle = "rgba(147,161,184,.15)";
+    for (let e = y0; e <= y1; e++) { const y = Y(10 ** e); g.beginPath(); g.moveTo(L, y); g.lineTo(w - R, y); g.stroke(); g.textAlign = "right"; g.fillText(`1e${e}`, L - 6, y + 4); }
+    g.textAlign = "center"; q.ps.forEach((p) => g.fillText(`${(100 * p).toFixed(1)}%`, X(p), h - 10));
+    for (const d of ["3", "5", "7"]) {
+      g.strokeStyle = cols[d]; g.fillStyle = cols[d]; g.lineWidth = 2; g.beginPath();
+      q.rows[d].forEach((r, i) => { const x = X(r.p), y = Y(r.p_shot); i ? g.lineTo(x, y) : g.moveTo(x, y); }); g.stroke();
+      q.rows[d].forEach((r) => { g.beginPath(); g.arc(X(r.p), Y(r.p_shot), r.failures ? 3.5 : 2, 0, 7); g.fill(); });
+      const first = q.rows[d][0]; g.textAlign = "left"; g.fillText(`d = ${d}`, X(first.p) + 8, Y(first.p_shot) + 4);   // labelled where the curves are apart
+    }
+    g.fillStyle = "#93a1b8"; g.textAlign = "left"; g.fillText("logical error per shot (d rounds) vs physical error p", L, T + 2);
+    $("res").innerHTML = "<thead><tr><th>distance</th><th>data qubits</th><th>ancillas</th><th>total</th><th>faults corrected</th></tr></thead><tbody>" +
+      q.resources.map((r) => `<tr><td>${r.distance}</td><td>${r.data}</td><td>${r.ancillas}</td><td>${r.total}</td><td>${r.correctable_faults}</td></tr>`).join("") + "</tbody>";
+  }
+  function mesh() {
+    const [g, w, h] = fit($("mesh")), m = D.mesh[meshKey], xs = m.nodes.map((n) => n.x_km), ys = m.nodes.map((n) => n.y_km);
+    g.clearRect(0, 0, w, h);
+    const pad = 46, x0 = Math.min(...xs) - 1, x1 = Math.max(...xs) + 1, y0 = Math.min(...ys) - 3, y1 = Math.max(...ys) + 3;
+    const X = (x) => pad + (w - 2 * pad) * (x - x0) / (x1 - x0), Y = (y) => h - pad - (h - 2 * pad) * (y - y0) / (y1 - y0), pos = Object.fromEntries(m.nodes.map((n) => [n.name, n]));
+    g.fillStyle = "rgba(147,161,184,.12)"; g.beginPath(); g.moveTo(X(8.2), h); g.lineTo(X(9), Y(y1)); g.lineTo(X(9.8), h); g.fill();   // the ridge
+    g.fillStyle = "#5b6780"; g.font = "11px JetBrains Mono, monospace"; g.textAlign = "center"; g.fillText("ridge", X(9), h - 8);
+    for (const [a, b] of m.links) { g.strokeStyle = "rgba(94,242,224,.75)"; g.lineWidth = 2; g.beginPath(); g.moveTo(X(pos[a].x_km), Y(pos[a].y_km)); g.lineTo(X(pos[b].x_km), Y(pos[b].y_km)); g.stroke(); }
+    for (const n of m.nodes) {
+      const x = X(n.x_km), y = Y(n.y_km);
+      g.fillStyle = n.relay ? (n.height_m > 100 ? "#a78bfa" : "#5ea8ff") : "#e8eef8"; g.beginPath(); g.arc(x, y, n.relay ? 7 : 6, 0, 7); g.fill();
+      g.fillStyle = "#e8eef8"; g.font = "600 12px Inter, system-ui"; g.fillText(n.name, x, y - 13);
+      g.fillStyle = "#93a1b8"; g.font = "10px JetBrains Mono, monospace"; g.fillText(`${n.height_m} m`, x, y + 20);
+    }
+    const ok = m.state === "delivered";
+    $("meshstate").innerHTML = `<span class="badge ${ok ? "ok" : "bad"}">${m.state.toUpperCase()}</span>`;
+    const hist = m.history.map(([t, s, why]) => `${s} at ${t.toFixed(2)} s (${why})`).join("; ");
+    $("meshnote").textContent = `${hist}. A 64-byte message spends ${(1e3 * m.airtime_64B_s).toFixed(0)} ms on air per hop at SF9: hops times airtime, not light time, set a mesh's latency. A relay's rebroadcast is never counted as delivery.`;
+  }
+  function surv() {
+    const p = 10 ** +$("pl").value, n = 10 ** +$("n").value, s = Math.exp(n * Math.log1p(-p));
+    $("v-pl").textContent = sciTxt(p); $("v-n").textContent = sciTxt(n);
+    const half = Math.floor(Math.log(0.5) / Math.log1p(-p));
+    $("surv").innerHTML = [["survives N cycles", `${(100 * s).toPrecision(3)} %`, "(1 − p_L)^N"], ["half-life", `${sciTxt(half)} cycles`, "where survival falls to 50 %"]]
+      .map(([l, v, sub]) => `<div class="ui-k"><div class="l">${l}</div><div class="v">${v}</div><div class="s">${sub}</div></div>`).join("");
+  }
+  function press(sel, attr, val) { document.querySelectorAll(sel).forEach((b) => b.setAttribute("aria-pressed", String(b.dataset[attr] === val))); }
+  function all() { kpis(); timeline(); qec(); mesh(); surv(); }
+  fetch("data.json", { cache: "no-cache" }).then((r) => { if (!r.ok) throw new Error(r.status); return r.json(); }).then((d) => {
+    D = d; cursor = matchMedia("(prefers-reduced-motion: reduce)").matches ? 1e9 : D.service[`${mem}s/${pol}`].samples.length;
+    document.querySelectorAll("[data-mem]").forEach((b) => (b.onclick = () => { mem = b.dataset.mem; press("[data-mem]", "mem", mem); kpis(); timeline(); }));
+    document.querySelectorAll("[data-pol]").forEach((b) => (b.onclick = () => { pol = b.dataset.pol; press("[data-pol]", "pol", pol); kpis(); timeline(); }));
+    document.querySelectorAll("[data-mesh]").forEach((b) => (b.onclick = () => { meshKey = b.dataset.mesh; press("[data-mesh]", "mesh", meshKey); mesh(); }));
+    $("play").onclick = () => setPlay(!playing);
+    $("step").onclick = () => { setPlay(false); cursor = Math.min(run().samples.length, cursor + 15); timeline(); };
+    $("reset").onclick = () => { setPlay(false); cursor = 1; timeline(); };
+    $("pl").oninput = surv; $("n").oninput = surv;
+    addEventListener("resize", all);
+    all(); document.body.dataset.ready = "1";
+  }).catch((e) => { console.warn("data.json unavailable", e); $("kpis").innerHTML = '<div class="ui-k"><div class="l">status</div><div class="v stale">unavailable</div><div class="s">data could not be loaded</div></div>'; });
+})();
+</script>
+</body>
+</html>

@@ -14,7 +14,7 @@ DOCS = ROOT / "docs"
 REPO = "https://github.com/Normansrule/quantum-link-research"
 
 # (path under docs/, label, optional): optional links fold into the menu first on narrower screens
-NAV = [("", "Home", False), ("latency/", "Anywhere", False), ("lab/", "Lab", False), ("mars/", "Mars", False), ("budget/", "Budget", False),
+NAV = [("", "Home", False), ("latency/", "Anywhere", False), ("network/", "Network", False), ("lab/", "Lab", False), ("mars/", "Mars", False), ("budget/", "Budget", False),
        ("teleport/", "Teleport", False), ("monitor/", "Monitor", True), ("link/", "Link ops", True), ("repeater/", "Repeater", True),
        ("coupler/", "Coupler", True), ("qec/", "QEC", True), ("systems/", "Systems", True)]
 LABS = [("lab/", "All labs"), ("lab/link/", "Two-room link"), ("lab/channel/", "Quantum channels"), ("lab/outdoor/", "Outdoors and orbit"),

@@ -56,7 +56,7 @@
 <div class="aurora"></div>
 <header class="top">
   <a class="brand" href="../"><span class="dot"></span>Quantum Link Research</a>
-  <nav><a href="../">Home</a><a href="../latency/">Anywhere</a><a href="../lab/">Lab</a><a href="../mars/">Mars</a><a aria-current="page" href="../budget/">Budget</a><a href="../teleport/">Teleport</a><a class="opt" href="../monitor/">Monitor</a><a class="opt" href="../link/">Link ops</a><a class="opt" href="../repeater/">Repeater</a><a class="opt" href="../coupler/">Coupler</a><a class="opt" href="../qec/">QEC</a><a class="opt" href="../systems/">Systems</a><a class="gh" href="https://github.com/Normansrule/quantum-link-research">GitHub ↗</a></nav>
+  <nav><a href="../">Home</a><a href="../latency/">Anywhere</a><a href="../network/">Network</a><a href="../lab/">Lab</a><a href="../mars/">Mars</a><a aria-current="page" href="../budget/">Budget</a><a href="../teleport/">Teleport</a><a class="opt" href="../monitor/">Monitor</a><a class="opt" href="../link/">Link ops</a><a class="opt" href="../repeater/">Repeater</a><a class="opt" href="../coupler/">Coupler</a><a class="opt" href="../qec/">QEC</a><a class="opt" href="../systems/">Systems</a><a class="gh" href="https://github.com/Normansrule/quantum-link-research">GitHub ↗</a></nav>
 </header>
 <main class="lab" id="content" tabindex="-1">
   <div class="intro">
@@ -83,8 +83,8 @@
       <div class="sl" style="margin-top:.6rem"><span>memory</span><b></b><select id="mem"></select></div>
     </div>
     <div class="p w4"><h4>hardware</h4>
-      <div class="sl"><span>transmit beam waist w₀</span><b id="v-w0"></b><input type="range" id="w0" min="-1" max="0.7" step="any" value="-0.30103"></div>
-      <div class="sl"><span>Mars receiver diameter</span><b id="v-D"></b><input type="range" id="D" min="0" max="1.5" step="any" value="0.60206"></div>
+      <div class="sl"><span>transmit beam waist w₀</span><b id="v-w0"></b><input type="range" id="w0" min="-1" max="0.7" step="any" value="-0.3010299956639812"></div>
+      <div class="sl"><span>Mars receiver diameter</span><b id="v-D"></b><input type="range" id="D" min="0" max="1.5" step="any" value="0.6020599913279624"></div>
       <div class="sl"><span>pointing jitter (per axis)</span><b id="v-pt"></b><input type="range" id="pt" min="-9" max="-5" step="any" value="-7"></div>
     </div>
     <div class="p w4"><h4>source and operations</h4>
@@ -135,7 +135,7 @@
   </section>
 </main>
 <footer>Link budget. Physics from <code>qll/systems/mars_budget.py</code> and the channel, memory, and key-rate modules it composes and the background light of <code>qll/channels/planetshine.py</code> [siegman1986, bourgoin2013, sinclair2014, yin2017, bennett1992bbm92, shor2000, gueymard2004, russell1916, hapke2012, born1999, rousselot2000, meeus1998]. Design after Remotion and Magic UI (flowing streams and beams), llm-viz (the real numbers at every stage), and worldmonitor (a live dashboard). See <a href="https://github.com/Normansrule/quantum-link-research/blob/main/CREDITS.md">CREDITS.md</a>.</footer>
-<!-- site-foot:start --><div class="site-foot" role="contentinfo"><span class="brand-s">Quantum Link Research</span><span>v0.57.0</span><a href="../latency/">Anywhere at light speed</a><a href="https://github.com/Normansrule/quantum-link-research">Source</a><a href="https://github.com/Normansrule/quantum-link-research/blob/main/CHANGELOG.md">Changelog</a><a href="https://github.com/Normansrule/quantum-link-research/blob/main/docs/audit/2026-10-11_findings.md">Audit findings</a><a href="https://github.com/Normansrule/quantum-link-research/blob/main/CREDITS.md">Credits</a><span class="grow">No signal outruns light. Numbers are model outputs unless a page says measured; nothing here is a security-reviewed link.</span></div><!-- site-foot:end -->
+<!-- site-foot:start --><div class="site-foot" role="contentinfo"><span class="brand-s">Quantum Link Research</span><span>v0.59.0</span><a href="../latency/">Anywhere at light speed</a><a href="https://github.com/Normansrule/quantum-link-research">Source</a><a href="https://github.com/Normansrule/quantum-link-research/blob/main/CHANGELOG.md">Changelog</a><a href="https://github.com/Normansrule/quantum-link-research/blob/main/docs/audit/2026-10-11_findings.md">Audit findings</a><a href="https://github.com/Normansrule/quantum-link-research/blob/main/CREDITS.md">Credits</a><span class="grow">No signal outruns light. Numbers are model outputs unless a page says measured; nothing here is a security-reviewed link.</span></div><!-- site-foot:end -->
 <script src="../js/ephemeris.js"></script>
 <script src="../js/budget_core.js"></script>
 <script src="../js/key_bank.js"></script>

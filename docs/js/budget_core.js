@@ -25,7 +25,7 @@
   const purity = (S, N) => (S + N > 0 ? S / (S + N) : 0);
   const zR = (lam, w0) => Math.PI * w0 * w0 / lam;
   const beamRadius = (L, lam, w0) => w0 * Math.sqrt(1 + Math.pow(L / zR(lam, w0), 2));
-  const geometric = (L, lam, w0, D) => { const w = beamRadius(L, lam, w0); return 1 - Math.exp(-2 * (D / 2) * (D / 2) / (w * w)); };
+  const geometric = (L, lam, w0, D) => { const w = beamRadius(L, lam, w0); return -Math.expm1(-2 * (D / 2) * (D / 2) / (w * w)); };   // expm1: no cancellation at planetary range
   const pointing = (s, L, w) => w * w / (w * w + 4 * s * s * L * L);
   const atmosphere = (elev, lam) => Math.exp(-nearest(TAU, lam) / Math.sin(elev * Math.PI / 180));
   const h2 = (x) => (x <= 0 || x >= 1) ? 0 : -x * Math.log2(x) - (1 - x) * Math.log2(1 - x);

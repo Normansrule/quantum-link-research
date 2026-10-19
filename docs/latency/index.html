@@ -29,7 +29,7 @@
 <div class="aurora"></div>
 <header class="top">
   <a class="brand" href="../"><span class="dot"></span>Quantum Link Research</a>
-  <nav><a href="../">Home</a><a aria-current="page" href="../latency/">Anywhere</a><a href="../lab/">Lab</a><a href="../mars/">Mars</a><a href="../budget/">Budget</a><a href="../teleport/">Teleport</a><a class="opt" href="../monitor/">Monitor</a><a class="opt" href="../link/">Link ops</a><a class="opt" href="../repeater/">Repeater</a><a class="opt" href="../coupler/">Coupler</a><a class="opt" href="../qec/">QEC</a><a class="opt" href="../systems/">Systems</a><a class="gh" href="https://github.com/Normansrule/quantum-link-research">GitHub ↗</a></nav>
+  <nav><a href="../">Home</a><a aria-current="page" href="../latency/">Anywhere</a><a href="../network/">Network</a><a href="../lab/">Lab</a><a href="../mars/">Mars</a><a href="../budget/">Budget</a><a href="../teleport/">Teleport</a><a class="opt" href="../monitor/">Monitor</a><a class="opt" href="../link/">Link ops</a><a class="opt" href="../repeater/">Repeater</a><a class="opt" href="../coupler/">Coupler</a><a class="opt" href="../qec/">QEC</a><a class="opt" href="../systems/">Systems</a><a class="gh" href="https://github.com/Normansrule/quantum-link-research">GitHub ↗</a></nav>
 </header>
 <main class="page" id="content" tabindex="-1">
   <div class="page-intro">
@@ -82,7 +82,7 @@
     <section class="ui-panel span-5" aria-labelledby="h-sec">
       <h4 id="h-sec">When can it be read?</h4>
       <canvas id="secure" role="img" aria-label="Time until the receiver can read a secure message or use a teleported qubit, for each way of preparing"></canvas>
-      <p class="ui-note">On the fastest route. Banked key or banked pairs need one trip; key made on demand needs three, and a fresh internet connection with TLS 1.3 five.</p>
+      <p class="ui-note">On the fastest route. Banked key or banked pairs need one trip; key made on demand needs three, and a fresh internet connection with TLS 1.3 five. Measured between two independent processes with a 35.4 ms emulated path (<code>qll/link/banked_messenger.py</code>, verification step L2): 1.02 trips with banked key, 3.06 on demand.</p>
     </section>
 
     <section class="ui-panel span-12" aria-labelledby="h-math">
@@ -92,7 +92,7 @@
   </div>
 </main>
 <footer>Anywhere at light speed. Physics from <code>qll/space/latency_floor.py</code> [eberhard1989, ghirardi1980, moritz2000, williams2024moon, poletti2013, handley2018, bozkurt2015, rfc8446, rfc9293, bennett1993]. Times are compressed or expanded in the race so every route fits on screen; the scale is printed beside the controls. The fiber route factor and the orbit altitude are assumed planning values.</footer>
-<!-- site-foot:start --><div class="site-foot" role="contentinfo"><span class="brand-s">Quantum Link Research</span><span>v0.57.0</span><a href="../latency/">Anywhere at light speed</a><a href="https://github.com/Normansrule/quantum-link-research">Source</a><a href="https://github.com/Normansrule/quantum-link-research/blob/main/CHANGELOG.md">Changelog</a><a href="https://github.com/Normansrule/quantum-link-research/blob/main/docs/audit/2026-10-11_findings.md">Audit findings</a><a href="https://github.com/Normansrule/quantum-link-research/blob/main/CREDITS.md">Credits</a><span class="grow">No signal outruns light. Numbers are model outputs unless a page says measured; nothing here is a security-reviewed link.</span></div><!-- site-foot:end -->
+<!-- site-foot:start --><div class="site-foot" role="contentinfo"><span class="brand-s">Quantum Link Research</span><span>v0.59.0</span><a href="../latency/">Anywhere at light speed</a><a href="https://github.com/Normansrule/quantum-link-research">Source</a><a href="https://github.com/Normansrule/quantum-link-research/blob/main/CHANGELOG.md">Changelog</a><a href="https://github.com/Normansrule/quantum-link-research/blob/main/docs/audit/2026-10-11_findings.md">Audit findings</a><a href="https://github.com/Normansrule/quantum-link-research/blob/main/CREDITS.md">Credits</a><span class="grow">No signal outruns light. Numbers are model outputs unless a page says measured; nothing here is a security-reviewed link.</span></div><!-- site-foot:end -->
 <script src="../js/ephemeris.js"></script>
 <script src="../js/latency_core.js"></script>
 <script>
@@ -166,7 +166,7 @@
   function space(g, w, h) {
     const r = rep, d = r.distances.great_circle_m, y = h * 0.52, x0 = 70, x1 = w - 70;
     g.fillStyle = "#1d3a66"; g.beginPath(); g.arc(x0, y, 22, 0, 7); g.fill(); g.fillStyle = "#e8eef8"; g.font = "600 12px Inter, system-ui"; g.textAlign = "center"; g.fillText("Earth", x0, y + 40);
-    const body = r.to.includes("Mars") || r.from.includes("Mars") ? ["#ff6b4a", 14, "Mars"] : ["#c9d1dc", 10, "Moon"];
+    const far = `${r.from} ${r.to}`, body = far.includes("Jupiter") ? ["#d9b38c", 18, "Jupiter"] : far.includes("Mars") ? ["#ff6b4a", 14, "Mars"] : ["#c9d1dc", 10, "Moon"];
     g.fillStyle = body[0]; g.beginPath(); g.arc(x1, y, body[1], 0, 7); g.fill(); g.fillStyle = "#e8eef8"; g.fillText(body[2], x1, y + 36);
     g.strokeStyle = COL["free space"]; g.lineWidth = 2; g.beginPath(); g.moveTo(x0 + 24, y); g.lineTo(x1 - body[1] - 2, y); g.stroke();
     // light-second ticks on a log scale

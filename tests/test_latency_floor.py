@@ -103,3 +103,9 @@ def test_leo_crossover_is_where_the_routes_tie():
         assert r["LEO laser mesh"]["delay_s"] == pytest.approx(r[name]["delay_s"], rel=1e-9)
     assert 900 < L.leo_crossover_km() < 1100 and 2400 < L.leo_crossover_km(L.HOLLOW_CORE_INDEX) < 2800
     assert L.leo_crossover_km(1.0, 1.0) == math.inf                      # straight vacuum-speed fiber: the climb never pays
+
+
+def test_jupiter_is_half_an_hour_to_most_of_an_hour_away():
+    near, far = L.report("Los Angeles", "Jupiter at its closest"), L.report("Los Angeles", "Jupiter at its farthest")
+    assert 32 * 60 < near["best_delay_s"] < 34 * 60 and 53 * 60 < far["best_delay_s"] < 55 * 60
+    assert near["best"] == "free space" and near["latency"]["secure message"]["QKD on demand"] == pytest.approx(3 * near["best_delay_s"])
