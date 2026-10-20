@@ -71,3 +71,4 @@
 - 2026-10-13 0.57.1: Windows CI failure read from the new annotations; geometric transmittance via expm1 (cancellation at 1e-9); budget page sliders start at exact logarithms.
 - 2026-10-14 0.58.0: banked-key messenger (L2): per-site banks from an accepted session, one-time AES-256-GCM keys with a write-ahead spent ledger, two-process delivery measured at 1.02 and 3.06 trips against the model.
 - 2026-10-19 0.59.0: pair ledger and three-node sustained service; circuit-level surface-code memory d=3/5/7; off-grid LoRa mesh model with honest delivery states; Jupiter; network page; README three paths and result labels; program doc 11; roadmap response.
+- 2026-10-19 0.60.0: P16 LoRa range walk ($60, eye-safe): survey log ingest with honest labels, log-distance fit, model comparison, Meshtastic stop logger; REQ-HW-003.

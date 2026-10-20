@@ -2,7 +2,7 @@
 
 This is an inventory of the source tree, not a test result. Whether the mapped tests ran and passed comes from CI: `python -m qll.systems.traceability --junit <report.xml>` and the deployed `ci_status.json`.
 
-Version 0.59.0 · 1018 tests collected · 36/37 requirements labelled verified · 468 references (31 verified) · 93 learn files · 8 simulations · 46 figures
+Version 0.60.0 · 1037 tests collected · 37/38 requirements labelled verified · 471 references (31 verified) · 93 learn files · 8 simulations · 46 figures
 
 | Requirement | Statement | Phase | Status |
 |---|---|---|---|
@@ -38,6 +38,7 @@ Version 0.59.0 · 1018 tests collected · 36/37 requirements labelled verified �
 | REQ-CAP-005 | Background light: with the Mars receiver's off-axis rejection floor at 1e-9 at least 95 % of heralds are signal on every day with a link; a ground transmitter is shown to fail REQ-CAP-003 | 5 | verified |
 | REQ-HW-001 | The processor node's simulated CZ gate reaches coherent average fidelity of at least 0.999 with leakage at most 1e-3 | 2 | verified |
 | REQ-HW-002 | Static ZZ at the tunable coupler's idle point is below the conditional-Ramsey resolution of 1.5 kHz, and the experiment recovers the model's ZZ elsewhere within 3 % | 2 | verified |
+| REQ-HW-003 | A radio-survey log is labelled MEASURED HARDWARE only when its operator declared it measured; a synthetic walk is SIMULATED, a log without its radio settings or with a malformed field is refused, and the fit recovers the path-loss exponent of a synthetic walk | 3 | verified |
 | REQ-QEC-001 | A matching-decoded surface code shows threshold behaviour: larger codes fail less below 5 % and more above 13 % bit-flip probability, crossing between 8.5 % and 10.5 % | 2 | verified |
 | REQ-WEB-001 | Every number the website and README show is computed by the tested code, and every JavaScript port agrees with its Python model | 6 | verified |
 | REQ-APP-003 | A key bank sized by the sequent-peak rule carries the messenger's demand of 1e6 key bits per day through every day of a synodic period including conjunction; 1 % less capacity refuses | 6 | verified |

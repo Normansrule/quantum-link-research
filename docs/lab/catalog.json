@@ -678,6 +678,21 @@
    ]
   },
   {
+   "id": "P16",
+   "title": "The LoRa range walk: measure what the off-grid mesh model assumes",
+   "path": "experiments/protocols/P16_lora_range_walk.md",
+   "status": "replicable",
+   "phases": [
+    3
+   ],
+   "twin": "qll/link/radio_survey.py",
+   "test": "tests/test_radio_survey.py",
+   "procedure": "experiments/protocols/P16_lora_range_walk.md",
+   "cost": "60-90",
+   "role": "the first MEASURED HARDWARE step: path-loss exponent, excess loss, and delivery ratio from two radio boards, compared with the mesh model's link rule",
+   "lab": []
+  },
+  {
    "id": "T1",
    "title": "Tier 1: bright-light polarization analogue",
    "path": "systems/see510/10_real_world_experiments.md",

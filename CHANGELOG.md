@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.60.0 — 2026-10-19 (an experiment you can run: the LoRa range walk)
+- **New protocol [P16](experiments/protocols/P16_lora_range_walk.md): the LoRa range walk.** Two $30 radio boards, a power bank, and a laptop measure what the off-grid mesh model only assumes. It is eye-safe, lawful on unlicensed 902–928 MHz settings, and about $60 in total (prices checked 2026-10-19).
+  - It measures the path-loss exponent, the excess loss over free space (which plugs straight into `Mesh(excess_loss_db=...)`), and the packet delivery ratio at each stop with a 95 % Clopper–Pearson interval.
+  - The model predicts that every link inside the 10.1 km radio horizon works for antennas at 1.5 m. The walk tests that claim.
+- **`qll/link/radio_survey.py`.** Strict ingest of a survey log and its radio settings, with SHA-256 provenance. A survey is labelled MEASURED HARDWARE only when its sidecar says "measured"; anything the module writes is SIMULATED.
+  - It recovers the signal from RSSI and SNR below the noise floor, fits the log-distance law, compares each stop with the model's link rule, and has a command-line report.
+  - `simulate_survey` writes synthetic walks, and the tests check that the fit recovers the law they were drawn from.
+- **`scripts/lora_survey_logger.py`.** Records one stop from a Meshtastic board over USB. It keeps only direct Range Test packets and fills sequence gaps as losses. It needs `pip install meshtastic` and has not been tested on hardware.
+- **Traceability.** REQ-HW-003 covers honest labelling and the fit. Roadmap item R11 is now VERIFIED SOFTWARE, with the walk itself still FUTURE RESEARCH.
+
 ## 0.59.0 — 2026-10-19 (a network that heals: the October 18 roadmap)
 - **The pair ledger (`qll/network/pair_ledger.py`).** Entanglement becomes a resource that is created, aged, consumed, and replaced, and never resurrected.
   - Statuses only move forward (pending, available, consumed, expired), recorded in an append-only event log.

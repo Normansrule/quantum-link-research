@@ -133,6 +133,10 @@ CATALOG: tuple[Experiment, ...] = (
                "procedure", (1, 3), twin="qll/link/keyed_messaging.py", test="tests/test_keyed_messaging.py",
                procedure=P + "P15_messages_keyed_by_the_link.md", cost="0",
                role="the application: a messenger that spends the link's key by one-time pad, link-keyed AES, or the hybrid, sized by the sequent-peak bank, failing closed"),
+    Experiment("P16", "The LoRa range walk: measure what the off-grid mesh model assumes", P + "P16_lora_range_walk.md",
+               "replicable", (3,), twin="qll/link/radio_survey.py", test="tests/test_radio_survey.py",
+               procedure=P + "P16_lora_range_walk.md", cost="60-90",
+               role="the first MEASURED HARDWARE step: path-loss exponent, excess loss, and delivery ratio from two radio boards, compared with the mesh model's link rule"),
     # ---------------------------------------------------------------- the two-site link's hardware ladder
     Experiment("T1", "Tier 1: bright-light polarization analogue", "systems/see510/10_real_world_experiments.md", "replicable", (1,),
                twin="qll/link/bench_tier1.py", test="tests/test_two_site_link.py", procedure="systems/see510/10_real_world_experiments.md",

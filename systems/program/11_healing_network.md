@@ -38,7 +38,7 @@ The [network page](https://normansrule.github.io/quantum-link-research/network/)
 
 ## Next steps, in order
 
-1. **Mountain mesh on real radios.** Two or three LoRa radios on lawful equipment and bands, the delivery states of `mesh_messenger.py` in a phone app, and measured coverage across real terrain (MEASURED HARDWARE when done).
+1. **Mountain mesh on real radios.** Two or three LoRa radios on lawful equipment and bands, the delivery states of `mesh_messenger.py` in a phone app, and measured coverage across real terrain (MEASURED HARDWARE when done). The first step is ready: [P16](../../experiments/protocols/P16_lora_range_walk.md), a $60 two-board range walk whose log `qll/link/radio_survey.py` fits and compares with the model.
 2. **Ledger plus logical memory.** Store pairs in logical qubits whose failure per cycle comes from `logical_memory.py`, and compare the service's availability with physical memories.
 3. **Contact-aware scheduling.** Generate and bank resources around satellite passes and solar conjunction (the key bank already does this for classical key).
 4. **Two-computer runs.** The banked messenger and, later, a two-process ledger with authenticated heralds, so a forged or stale herald cannot create a pair that does not exist.

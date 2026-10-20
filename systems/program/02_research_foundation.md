@@ -6,7 +6,7 @@ Nothing done so far is dropped. Each phase below lists the experiments it builds
 
 | Status | Count |
 |---|---|
-| replicable | 8 |
+| replicable | 9 |
 | procedure | 12 |
 | landmark | 15 |
 | proposed | 20 |
@@ -70,6 +70,7 @@ Nothing done so far is dropped. Each phase below lists the experiments it builds
 | [P04](../../experiments/protocols/P04_rooftop_free_space_link.md) | Rooftop free-space link | procedure | [`free_space_diffraction.py`](../../qll/channels/free_space_diffraction.py) | [`test_phase3_links.py`](../../tests/test_phase3_links.py) | — | Phase 3's first outdoor step: loss and daylight background |
 | [P08](../../experiments/protocols/P08_time_bin_encoding.md) | Time-bin encoding and a fiber interferometer | procedure | — | — | $500-1k | the encoding that survives long fiber; Phase 3 option |
 | [P15](../../experiments/protocols/P15_messages_keyed_by_the_link.md) | Messages keyed by the link: how many a day, and how big a key bank | procedure | [`keyed_messaging.py`](../../qll/link/keyed_messaging.py) | [`test_keyed_messaging.py`](../../tests/test_keyed_messaging.py) | $0 | the application: a messenger that spends the link's key by one-time pad, link-keyed AES, or the hybrid, sized by the sequent-peak bank, failing closed |
+| [P16](../../experiments/protocols/P16_lora_range_walk.md) | The LoRa range walk: measure what the off-grid mesh model assumes | replicable | [`radio_survey.py`](../../qll/link/radio_survey.py) | [`test_radio_survey.py`](../../tests/test_radio_survey.py) | $60-90 | the first MEASURED HARDWARE step: path-loss exponent, excess loss, and delivery ratio from two radio boards, compared with the mesh model's link rule |
 | [T5](../../systems/see510/10_real_world_experiments.md) | Tier 5: a commercial or testbed link | procedure | — | — | — | deployed fiber through a partner |
 | [E03](../../experiments/proposed/E03_constellation_scheduling_on_real_pass_data.md) | Constellation scheduling on real pass data | proposed | [`relay_constellation.py`](../../qll/space/relay_constellation.py) | [`test_phase5_space.py`](../../tests/test_phase5_space.py) | $0 | satellite work with public data, before hardware |
 | [E04](../../experiments/proposed/E04_sun_angle_background.md) | Daylight background at solar elongation | proposed | [`thermal_background.py`](../../qll/channels/thermal_background.py) | [`test_phase1_channels.py`](../../tests/test_phase1_channels.py) | — | — |
