@@ -18,31 +18,25 @@
   .intro h1 { font-size: clamp(1.9rem, 3.6vw, 3rem); line-height: 1.08; margin: .5rem 0 .7rem; letter-spacing: -.02em }
   .grid { display: grid; gap: 1rem; grid-template-columns: repeat(12, 1fr); margin-bottom: 1rem }
   .grid > * { min-width: 0 }
-  .p { border: 1px solid var(--line); border-radius: 16px; background: var(--glass); padding: .95rem 1.05rem; position: relative; overflow: hidden }
-  .p::before { content: ""; position: absolute; inset: -1px; border-radius: 16px; padding: 1px; pointer-events: none; opacity: .5;
-    background: conic-gradient(from var(--a, 0deg), transparent 0 70%, rgba(94,168,255,.9) 80%, rgba(255,107,74,.9) 88%, transparent 96%);
-    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude;
-    animation: spin 8s linear infinite }
-  @property --a { syntax: "<angle>"; initial-value: 0deg; inherits: false }
-  @keyframes spin { to { --a: 360deg } }
-  .p h4 { margin: 0 0 .55rem; font-size: .74rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); font-weight: 700 }
+  .p { border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); padding: .95rem 1.05rem; position: relative; overflow: hidden }
+  .p h4 { margin: 0 0 .7rem; font-size: .95rem; color: var(--ink); font-weight: 600 }
   .w8 { grid-column: span 8 } .w4 { grid-column: span 4 } .w12 { grid-column: span 12 } .w6 { grid-column: span 6 } .w5 { grid-column: span 5 } .w7 { grid-column: span 7 }
   @media (max-width: 1000px) { .w8, .w4, .w6, .w5, .w7 { grid-column: span 12 } }
   canvas#bank { width: 100%; height: 240px; display: block }
   .legend { display: flex; gap: 1.1rem; flex-wrap: wrap; font-size: .78rem; color: var(--muted); margin: .35rem 0 0 }
   .legend i { display: inline-block; width: 14px; height: 3px; border-radius: 2px; vertical-align: middle; margin-right: .35rem }
-  canvas#sky { width: 100%; height: 300px; display: block; border-radius: 12px; background: radial-gradient(ellipse at 50% 50%, #0b1224 0%, #04070f 75%) }
+  canvas#sky { width: 100%; height: 300px; display: block; border-radius: 12px; background: #06080c }
   canvas#flow { width: 100%; height: 360px; display: block }
   canvas#dates { width: 100%; height: 120px; display: block }
-  .lab button { font: 600 .84rem/1 "JetBrains Mono", ui-monospace, monospace; padding: .5rem .75rem; border-radius: 10px; border: 1px solid var(--line); background: var(--bg2); color: var(--ink); cursor: pointer }
-  .lab button.on { border-color: var(--cyan); box-shadow: 0 0 14px rgba(94,242,224,.3) }
-  .lab select { font: 600 .84rem "JetBrains Mono", monospace; padding: .45rem; border-radius: 10px; background: var(--bg2); color: var(--ink); border: 1px solid var(--line); max-width: 100% }
+  .lab button { font: 500 .84rem/1 Geist, system-ui, sans-serif; padding: .5rem .75rem; border-radius: 10px; border: 1px solid var(--line); background: var(--bg2); color: var(--ink); cursor: pointer }
+  .lab button.on { border-color: var(--accent); background: var(--accent-soft) }
+  .lab select { font: 500 .84rem Geist, system-ui, sans-serif; padding: .45rem; border-radius: 10px; background: var(--bg2); color: var(--ink); border: 1px solid var(--line); max-width: 100% }
   .row { display: flex; gap: .5rem; flex-wrap: wrap; align-items: center; margin: .3rem 0 }
   .sl { display: grid; grid-template-columns: 1fr auto; gap: .1rem .6rem; font-size: .84rem; color: var(--muted); margin: .4rem 0 }
-  .sl b { color: var(--ink); font: 600 .84rem "JetBrains Mono", monospace } .sl input { grid-column: 1 / -1; width: 100%; accent-color: #22d3ee }
+  .sl b { color: var(--ink); font: 600 .84rem "Geist Mono", monospace } .sl input { grid-column: 1 / -1; width: 100%; accent-color: #22d3ee }
   .kpis { display: grid; grid-template-columns: repeat(auto-fill, minmax(165px, 1fr)); gap: .7rem }
-  .k { border: 1px solid var(--line); border-radius: 12px; padding: .6rem .7rem; background: rgba(10,15,28,.55) }
-  .k .v { font: 700 1.35rem/1.15 "JetBrains Mono", monospace; font-variant-numeric: tabular-nums } .k .s { font-size: .74rem; color: var(--faint) }
+  .k { border-radius: var(--radius-s); padding: .65rem .75rem; background: var(--surface-2) }
+  .k .v { font: 650 1.35rem/1.15 Geist, system-ui, sans-serif; font-variant-numeric: tabular-nums; letter-spacing: -.02em } .k .s { font-size: .74rem; color: var(--faint) }
   table.mem { width: 100%; border-collapse: collapse; font-size: .84rem } table.mem td, table.mem th { padding: .35rem .5rem; border-bottom: 1px solid var(--line); text-align: right }
   table.mem td:first-child, table.mem th:first-child { text-align: left } table.mem th { color: var(--muted); font-weight: 600 }
   table.mem tr.sel td { color: var(--cyan) }
@@ -53,7 +47,6 @@
 </head>
 <body>
 <a class="skip" href="#content">Skip to content</a>
-<div class="aurora"></div>
 <header class="top">
   <a class="brand" href="../"><span class="dot"></span>Quantum Link Research</a>
   <nav><a href="../">Home</a><a href="../latency/">Anywhere</a><a href="../network/">Network</a><a href="../lab/">Lab</a><a href="../mars/">Mars</a><a aria-current="page" href="../budget/">Budget</a><a href="../teleport/">Teleport</a><a class="opt" href="../monitor/">Monitor</a><a class="opt" href="../link/">Link ops</a><a class="opt" href="../repeater/">Repeater</a><a class="opt" href="../coupler/">Coupler</a><a class="opt" href="../qec/">QEC</a><a class="opt" href="../systems/">Systems</a><a class="gh" href="https://github.com/Normansrule/quantum-link-research">GitHub ↗</a></nav>
@@ -135,7 +128,7 @@
   </section>
 </main>
 <footer>Link budget. Physics from <code>qll/systems/mars_budget.py</code> and the channel, memory, and key-rate modules it composes and the background light of <code>qll/channels/planetshine.py</code> [siegman1986, bourgoin2013, sinclair2014, yin2017, bennett1992bbm92, shor2000, gueymard2004, russell1916, hapke2012, born1999, rousselot2000, meeus1998]. Design after Remotion and Magic UI (flowing streams and beams), llm-viz (the real numbers at every stage), and worldmonitor (a live dashboard). See <a href="https://github.com/Normansrule/quantum-link-research/blob/main/CREDITS.md">CREDITS.md</a>.</footer>
-<!-- site-foot:start --><div class="site-foot" role="contentinfo"><span class="brand-s">Quantum Link Research</span><span>v0.60.0</span><a href="../latency/">Anywhere at light speed</a><a href="https://github.com/Normansrule/quantum-link-research">Source</a><a href="https://github.com/Normansrule/quantum-link-research/blob/main/CHANGELOG.md">Changelog</a><a href="https://github.com/Normansrule/quantum-link-research/blob/main/docs/audit/2026-10-11_findings.md">Audit findings</a><a href="https://github.com/Normansrule/quantum-link-research/blob/main/CREDITS.md">Credits</a><span class="grow">No signal outruns light. Numbers are model outputs unless a page says measured; nothing here is a security-reviewed link.</span></div><!-- site-foot:end -->
+<!-- site-foot:start --><div class="site-foot" role="contentinfo"><span class="brand-s">Quantum Link Research</span><span>v0.61.0</span><a href="../latency/">Anywhere at light speed</a><a href="https://github.com/Normansrule/quantum-link-research">Source</a><a href="https://github.com/Normansrule/quantum-link-research/blob/main/CHANGELOG.md">Changelog</a><a href="https://github.com/Normansrule/quantum-link-research/blob/main/docs/audit/2026-10-11_findings.md">Audit findings</a><a href="https://github.com/Normansrule/quantum-link-research/blob/main/CREDITS.md">Credits</a><span class="grow">No signal outruns light. Numbers are model outputs unless a page says measured; nothing here is a security-reviewed link.</span></div><!-- site-foot:end -->
 <script src="../js/ephemeris.js"></script>
 <script src="../js/budget_core.js"></script>
 <script src="../js/key_bank.js"></script>
@@ -165,7 +158,7 @@
     const [g, W, H] = ctx($("dates")), X = (x) => 40 + (W - 50) * x / 1560, Y = (r) => H - 16 - (H - 26) * (r - 0.3) / 2.5;
     g.fillStyle = "rgba(255,107,74,.18)"; TS.forEach((x, i) => { if (BLOCK[i]) g.fillRect(X(x) - 1, 4, 3, H - 20); });
     g.strokeStyle = "#5ea8ff"; g.lineWidth = 2; g.beginPath(); TS.forEach((x, i) => i ? g.lineTo(X(x), Y(RS[i])) : g.moveTo(X(x), Y(RS[i]))); g.stroke();
-    g.fillStyle = "#5b6780"; g.font = "11px JetBrains Mono, monospace"; [0.5, 1.5, 2.5].forEach((r) => g.fillText(r + " au", 2, Y(r) + 4));
+    g.fillStyle = "#5b6780"; g.font = "11px 'Geist Mono', monospace"; [0.5, 1.5, 2.5].forEach((r) => g.fillText(r + " au", 2, Y(r) + 4));
     g.strokeStyle = "#5ef2e0"; g.setLineDash([3, 3]); g.beginPath(); g.moveTo(X(t), 4); g.lineTo(X(t), H - 16); g.stroke(); g.setLineDash([]);
     g.fillStyle = "#e8fffb"; g.beginPath(); g.arc(X(t), Y(E.rangeM(t) / E.AU), 5, 0, 7); g.fill();
   }
@@ -193,7 +186,7 @@
       g.fillStyle = "rgba(232,255,251,.85)"; g.fillRect(p.x, y, 2, 2); }
     if (parts.length > 900) parts.splice(0, parts.length - 900);
     // stage labels
-    g.font = "11px JetBrains Mono, monospace"; g.textAlign = "center";
+    g.font = "11px 'Geist Mono', monospace"; g.textAlign = "center";
     for (let i = 0; i < n; i++) { const x = x0 + i * dx, s = st[i], db = s.factor > 0 ? 10 * Math.log10(s.factor) : -Infinity;
       g.strokeStyle = "rgba(148,170,210,.2)"; g.beginPath(); g.moveTo(x, 10); g.lineTo(x, H - 70); g.stroke();
       if (i > 0) { g.fillStyle = db < -20 ? "#ff6b4a" : db < -3 ? "#ff8a4c" : "#93a1b8"; g.fillText(isFinite(db) ? db.toFixed(1) + " dB" : "blocked", x, H - 52); }
@@ -218,7 +211,7 @@
     const key = cycleKey(d), dem = Math.pow(10, +$("dem").value), mean = KB.sustainableDemand(key);
     const [g, W, H] = ctx($("bank")), x0 = 52, x1 = W - 58, y0 = 10, y1 = H - 26, X = (i) => x0 + (x1 - x0) * i / 779;
     const lo = 4, hi = 8, Y = (v) => y1 - (y1 - y0) * (Math.log10(Math.max(v, Math.pow(10, lo))) - lo) / (hi - lo);
-    g.font = "11px JetBrains Mono, monospace"; g.fillStyle = "#5b6780";
+    g.font = "11px 'Geist Mono', monospace"; g.fillStyle = "#5b6780";
     for (let e = lo; e <= hi; e++) { g.fillText("10" + String(e).split("").map((c) => SUP[c]).join(""), 8, Y(Math.pow(10, e)) + 4);
       g.strokeStyle = "rgba(148,170,210,.1)"; g.beginPath(); g.moveTo(x0, Y(Math.pow(10, e))); g.lineTo(x1, Y(Math.pow(10, e))); g.stroke(); }
     [0, 200, 400, 600].forEach((i) => g.fillText("day " + i, X(i) - 14, H - 8));
@@ -278,7 +271,7 @@
     const pulse = 1 + 0.15 * Math.sin(performance.now() / 300);
     g.strokeStyle = col; g.lineWidth = 2; g.beginPath(); g.arc(tx, ty, 14 * pulse, 0, 7); g.stroke();
     g.fillStyle = "#e8fffb"; g.beginPath(); g.arc(tx, ty, 3.5, 0, 7); g.fill();
-    g.font = "11px JetBrains Mono, monospace"; g.fillStyle = "#93a1b8"; g.textAlign = "center";
+    g.font = "11px 'Geist Mono', monospace"; g.fillStyle = "#93a1b8"; g.textAlign = "center";
     g.fillText("Earth, phase angle " + (alpha * 180 / Math.PI).toFixed(0) + "°", cx, cy + R + 22);
     g.fillText("Sun →", W - 34, 18);
     if (arch === "space_source") {

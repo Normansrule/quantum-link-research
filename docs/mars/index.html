@@ -16,7 +16,6 @@
 </head>
 <body>
 <a class="skip" href="#content">Skip to content</a>
-<div class="aurora"></div>
 <header class="top">
   <a class="brand" href="../"><span class="dot"></span>Quantum Link Research</a>
   <nav><a href="../">Home</a><a href="../latency/">Anywhere</a><a href="../network/">Network</a><a href="../lab/">Lab</a><a aria-current="page" href="../mars/">Mars</a><a href="../budget/">Budget</a><a href="../teleport/">Teleport</a><a class="opt" href="../monitor/">Monitor</a><a class="opt" href="../link/">Link ops</a><a class="opt" href="../repeater/">Repeater</a><a class="opt" href="../coupler/">Coupler</a><a class="opt" href="../qec/">QEC</a><a class="opt" href="../systems/">Systems</a><a class="gh" href="https://github.com/Normansrule/quantum-link-research">GitHub ↗</a></nav>
@@ -41,7 +40,7 @@
 </section>
 </main>
 <footer>Model limits: coplanar mean elements (range good to ~1 %), a geometric blackout criterion for the direct path (relay legs are drawn but not checked against the Sun here; <code>qll.space.relay_constellation</code> checks them), and memory lifetimes from the repository's table at f₀ = 0.95. See <a href="https://github.com/Normansrule/quantum-link-research/blob/main/qll/space">qll/space</a>.</footer>
-<!-- site-foot:start --><div class="site-foot" role="contentinfo"><span class="brand-s">Quantum Link Research</span><span>v0.60.0</span><a href="../latency/">Anywhere at light speed</a><a href="https://github.com/Normansrule/quantum-link-research">Source</a><a href="https://github.com/Normansrule/quantum-link-research/blob/main/CHANGELOG.md">Changelog</a><a href="https://github.com/Normansrule/quantum-link-research/blob/main/docs/audit/2026-10-11_findings.md">Audit findings</a><a href="https://github.com/Normansrule/quantum-link-research/blob/main/CREDITS.md">Credits</a><span class="grow">No signal outruns light. Numbers are model outputs unless a page says measured; nothing here is a security-reviewed link.</span></div><!-- site-foot:end -->
+<!-- site-foot:start --><div class="site-foot" role="contentinfo"><span class="brand-s">Quantum Link Research</span><span>v0.61.0</span><a href="../latency/">Anywhere at light speed</a><a href="https://github.com/Normansrule/quantum-link-research">Source</a><a href="https://github.com/Normansrule/quantum-link-research/blob/main/CHANGELOG.md">Changelog</a><a href="https://github.com/Normansrule/quantum-link-research/blob/main/docs/audit/2026-10-11_findings.md">Audit findings</a><a href="https://github.com/Normansrule/quantum-link-research/blob/main/CREDITS.md">Credits</a><span class="grow">No signal outruns light. Numbers are model outputs unless a page says measured; nothing here is a security-reviewed link.</span></div><!-- site-foot:end -->
 <script src="../js/ephemeris.js"></script>
 <script>
 (async function () {
@@ -81,7 +80,7 @@
     });
     const dot = (p, r, c, glow) => { const q = g.createRadialGradient(p[0], p[1], 0, p[0], p[1], r * 4); q.addColorStop(0, glow); q.addColorStop(1, "rgba(0,0,0,0)"); g.fillStyle = q; g.beginPath(); g.arc(p[0], p[1], r * 4, 0, 7); g.fill(); g.fillStyle = c; g.beginPath(); g.arc(p[0], p[1], r, 0, 7); g.fill(); };
     dot(pe, 6, "#4f8cff", "rgba(94,168,255,.6)"); dot(pm, 5, "#ff6b4a", "rgba(255,107,74,.6)"); relays.forEach((r) => dot(r, 4, "#45e0a0", "rgba(69,224,160,.6)"));
-    g.fillStyle = "#93a1b8"; g.font = "12px JetBrains Mono, monospace"; g.fillText("Earth", pe[0] + 10, pe[1] - 8); g.fillText("Mars", pm[0] + 10, pm[1] - 8);
+    g.fillStyle = "#93a1b8"; g.font = "12px 'Geist Mono', monospace"; g.fillText("Earth", pe[0] + 10, pe[1] - 8); g.fillText("Mars", pm[0] + 10, pm[1] - 8);
     relays.forEach((r, i) => g.fillText(i ? "L5" : "L4", r[0] + 8, r[1] - 6));
     const d = E.rangeM(t), lt = d / E.C, rt = 2 * lt, avail = !blocked || relays.length > 0;
     $("state").innerHTML = `date <b>J2000 + ${Math.floor(t)} d</b> (${(2000 + t / 365.25).toFixed(2)})<br>range <b>${(d / E.AU).toFixed(3)} au</b><br>one-way light time <b>${human(lt)}</b><br>round trip <b>${human(rt)}</b><br>Sun–Earth–Mars angle <b>${sep.toFixed(1)}°</b><br>direct line of sight ${blocked ? '<b class="bad">blocked (conjunction)</b>' : '<b class="ok">clear</b>'}<br>link available ${avail ? '<b class="ok">yes</b>' : '<b class="bad">no</b>'}${blocked && relays.length ? " (via L4/L5)" : ""}`;

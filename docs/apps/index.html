@@ -4,35 +4,41 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Explorers · Quantum Link Research</title>
-<link rel="stylesheet" href="../site.css">
-<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+<link rel="stylesheet" href="../space.css">
+<link rel="stylesheet" href="../vendor/katex/katex.min.css">
+<script defer src="../vendor/katex/katex.min.js"></script>
+<script defer src="../vendor/katex/contrib/auto-render.min.js" onload="renderMathInElement(document.body,{delimiters:[{left:'\\(',right:'\\)',display:false}],throwOnError:false})"></script>
+<script defer src="../js/nav.js"></script>
 <style>
-.skip{position:absolute;left:.5rem;top:-4rem;padding:.5rem .9rem;background:#e8eef8;color:#05070d;border-radius:8px;z-index:60}.skip:focus{top:.5rem}
-  :root { --fg:#1b1f23; --bg:#fff; --muted:#666; --accent:#0b5fff; --warm:#d9480f; --grid:#e5e7eb; }
-  @media (prefers-color-scheme: dark) { :root { --fg:#e6e6e6; --bg:#0f1115; --muted:#9aa; --grid:#2a2e36; } }
-  body { font: 15px/1.5 system-ui, sans-serif; color: var(--fg); background: var(--bg); margin: 0; padding: 1.5rem; max-width: 1100px; margin-inline: auto; }
-  h1 { font-size: 1.6rem; margin: 0 0 .25rem; } h2 { font-size: 1.15rem; margin-top: 2rem; border-bottom: 1px solid var(--grid); padding-bottom: .25rem; }
-  .card { display: grid; grid-template-columns: 1fr 320px; gap: 1rem; align-items: start; }
-  @media (max-width: 800px) { .card { grid-template-columns: 1fr; } }
-  svg { width: 100%; height: auto; background: var(--bg); }
-  .axis line, .axis path { stroke: var(--muted); } .grid line { stroke: var(--grid); }
-  text { fill: var(--fg); font-size: 11px; } .muted { color: var(--muted); font-size: .9rem; }
-  label { display: block; margin: .5rem 0 .1rem; font-size: .9rem; } input[type=range] { width: 100%; }
-  .readout { font-family: ui-monospace, monospace; font-size: .85rem; background: rgba(127,127,127,.08); padding: .5rem .75rem; border-radius: 6px; }
-  .ref { font-size: .8rem; color: var(--muted); }
-  a { color: var(--accent); }
+  /* Explorers: the site's tokens from space.css; only the chart vocabulary is local. */
+  :root { --fg: var(--ink); --grid: var(--line); --accent: var(--cyan) }
+  main#content { max-width: 1100px; margin: 0 auto; padding: 5.8rem 3vw 2rem }
+  main#content > h1 { font-size: clamp(2rem, 3.8vw, 3.1rem); line-height: 1.06; letter-spacing: -.028em; margin: .35rem 0 .8rem }
+  main#content > h2 { font-size: 1.25rem; line-height: 1.3; letter-spacing: -.01em; margin: 3rem 0 .6rem }
+  .card { display: grid; grid-template-columns: 1fr 320px; gap: 1.2rem; align-items: start; padding: 1.1rem 1.2rem; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface) }
+  .card:hover { background: var(--surface) }
+  @media (max-width: 800px) { .card { grid-template-columns: 1fr } }
+  svg { width: 100%; height: auto }
+  .axis line, .axis path { stroke: var(--muted) } .grid line { stroke: var(--grid) }
+  text { fill: var(--fg); font-size: 11px } .muted { color: var(--muted); font-size: .95rem; max-width: 72ch }
+  label { display: block; margin: .6rem 0 .15rem; font-size: .9rem; color: var(--muted) } label b { color: var(--ink); font-variant-numeric: tabular-nums } input[type=range] { width: 100% }
+  .readout { font-family: var(--mono); font-size: .84rem; color: var(--muted); background: var(--surface-2); padding: .6rem .8rem; border-radius: var(--radius-s); line-height: 1.7 }
+  .ref { font-size: .82rem; color: var(--faint) }
+  .card button { font: 500 .88rem/1 Geist, system-ui, sans-serif; min-height: 40px; padding: .5rem .8rem; border-radius: var(--radius-s); border: 1px solid var(--line-strong); background: var(--surface-2); color: var(--ink); cursor: pointer }
+  .card button:hover { border-color: var(--accent) } .card button:active { transform: scale(.97) }
+  .eq { overflow-x: auto; overflow-y: hidden; padding: .2rem 0 }   /* a long equation scrolls in place on a phone */
 </style>
 </head>
 <body>
 <a class="skip" href="#content">Skip to content</a>
 <header class="top"><a class="brand" href="../">Quantum Link Research</a><nav><a href="../">Home</a><a href="../latency/">Anywhere</a><a href="../network/">Network</a><a href="../lab/">Lab</a><a href="../mars/">Mars</a><a href="../budget/">Budget</a><a href="../teleport/">Teleport</a><a class="opt" href="../monitor/">Monitor</a><a class="opt" href="../link/">Link ops</a><a class="opt" href="../repeater/">Repeater</a><a class="opt" href="../coupler/">Coupler</a><a class="opt" href="../qec/">QEC</a><a class="opt" href="../systems/">Systems</a><a class="gh" href="https://github.com/Normansrule/quantum-link-research">GitHub ↗</a></nav></header>
 <main id="content" tabindex="-1">
-<h1 style="margin-top:1.2rem">Explorers</h1>
+<h1>Explorers</h1>
 <p class="muted">Every curve here is the same formula as the Python module named beside it; the Python version is the one the pytest suite validates, and the spot values shown in each panel can be checked against it in one line (see README, section "Apps"). Sliders are live.</p>
 
 
 <h2>0 · A qubit on the Bloch sphere: apply gates and watch it move — <code>qll/viz/bloch_sphere.py</code></h2>
-<p>\( |\psi\rangle=\cos\tfrac{\theta}{2}|0\rangle+e^{i\varphi}\sin\tfrac{\theta}{2}|1\rangle,\qquad \vec r=(\sin\theta\cos\varphi,\ \sin\theta\sin\varphi,\ \cos\theta) \)</p>
+<p class="eq">\( |\psi\rangle=\cos\tfrac{\theta}{2}|0\rangle+e^{i\varphi}\sin\tfrac{\theta}{2}|1\rangle,\qquad \vec r=(\sin\theta\cos\varphi,\ \sin\theta\sin\varphi,\ \cos\theta) \)</p>
 <div class="card">
   <svg id="p0" viewBox="0 0 640 360"></svg>
   <div>
@@ -47,7 +53,7 @@
 </div>
 
 <h2>1 · The temperature hurdle — <code>qll/circuits/noise/thermal.py</code></h2>
-<p>\( \bar n(\omega,T)=\dfrac{1}{e^{\hbar\omega/k_BT}-1},\qquad T_1(T)=\dfrac{T_1(0)}{2\bar n+1},\qquad p_{\rm exc}=\dfrac{\bar n}{2\bar n+1} \)</p>
+<p class="eq">\( \bar n(\omega,T)=\dfrac{1}{e^{\hbar\omega/k_BT}-1},\qquad T_1(T)=\dfrac{T_1(0)}{2\bar n+1},\qquad p_{\rm exc}=\dfrac{\bar n}{2\bar n+1} \)</p>
 <div class="card">
   <svg id="p1" viewBox="0 0 640 360"></svg>
   <div>
@@ -59,7 +65,7 @@
 </div>
 
 <h2>2 · Channel loss versus distance — <code>qll/channels/fiber_loss.py</code>, <code>free_space_diffraction.py</code>, <code>qll/qkd/plob_bound.py</code></h2>
-<p>\( \eta_{\rm fiber}=10^{-\alpha L/10},\qquad \theta=\dfrac{\lambda}{\pi w_0},\quad \eta_{\rm free}=\min\!\Big(1,\big(\tfrac{D_{\rm rx}}{2\theta L}\big)^2\Big),\qquad K_{\rm PLOB}=-\log_2(1-\eta) \)</p>
+<p class="eq">\( \eta_{\rm fiber}=10^{-\alpha L/10},\qquad \theta=\dfrac{\lambda}{\pi w_0},\quad \eta_{\rm free}=\min\!\Big(1,\big(\tfrac{D_{\rm rx}}{2\theta L}\big)^2\Big),\qquad K_{\rm PLOB}=-\log_2(1-\eta) \)</p>
 <div class="card">
   <svg id="p2" viewBox="0 0 640 360"></svg>
   <div>
@@ -72,7 +78,7 @@
 </div>
 
 <h2>3 · Light time versus memory lifetime — <code>qll/channels/light_time_delay.py</code></h2>
-<p>\( \tau_{\rm one\,way}=\dfrac{d}{c},\qquad \tau_{\rm RT}=\dfrac{2d}{c},\qquad \text{teleportation completes only if } T_{\rm mem}\gtrsim \tau_{\rm RT} \)</p>
+<p class="eq">\( \tau_{\rm one\,way}=\dfrac{d}{c},\qquad \tau_{\rm RT}=\dfrac{2d}{c},\qquad \text{teleportation completes only if } T_{\rm mem}\gtrsim \tau_{\rm RT} \)</p>
 <div class="card">
   <svg id="p3" viewBox="0 0 640 360"></svg>
   <div>
@@ -83,7 +89,7 @@
 </div>
 
 <h2>4 · BB84 secret fraction — <code>qll/qkd/key_rate.py</code></h2>
-<p>\( r(Q)=\max\big(0,\,1-2h_2(Q)\big),\qquad h_2(x)=-x\log_2 x-(1-x)\log_2(1-x),\qquad r=0 \text{ at } Q=11.0\% \)</p>
+<p class="eq">\( r(Q)=\max\big(0,\,1-2h_2(Q)\big),\qquad h_2(x)=-x\log_2 x-(1-x)\log_2(1-x),\qquad r=0 \text{ at } Q=11.0\% \)</p>
 <div class="card">
   <svg id="p4" viewBox="0 0 640 300"></svg>
   <div>
@@ -94,7 +100,7 @@
 </div>
 
 </main>
-<!-- site-foot:start --><div class="site-foot" role="contentinfo"><span class="brand-s">Quantum Link Research</span><span>v0.60.0</span><a href="../latency/">Anywhere at light speed</a><a href="https://github.com/Normansrule/quantum-link-research">Source</a><a href="https://github.com/Normansrule/quantum-link-research/blob/main/CHANGELOG.md">Changelog</a><a href="https://github.com/Normansrule/quantum-link-research/blob/main/docs/audit/2026-10-11_findings.md">Audit findings</a><a href="https://github.com/Normansrule/quantum-link-research/blob/main/CREDITS.md">Credits</a><span class="grow">No signal outruns light. Numbers are model outputs unless a page says measured; nothing here is a security-reviewed link.</span></div><!-- site-foot:end -->
+<!-- site-foot:start --><div class="site-foot" role="contentinfo"><span class="brand-s">Quantum Link Research</span><span>v0.61.0</span><a href="../latency/">Anywhere at light speed</a><a href="https://github.com/Normansrule/quantum-link-research">Source</a><a href="https://github.com/Normansrule/quantum-link-research/blob/main/CHANGELOG.md">Changelog</a><a href="https://github.com/Normansrule/quantum-link-research/blob/main/docs/audit/2026-10-11_findings.md">Audit findings</a><a href="https://github.com/Normansrule/quantum-link-research/blob/main/CREDITS.md">Credits</a><span class="grow">No signal outruns light. Numbers are model outputs unless a page says measured; nothing here is a security-reviewed link.</span></div><!-- site-foot:end -->
 <script>
 const C=299792458, H=6.62607015e-34, HBAR=H/(2*Math.PI), KB=1.380649e-23, AU=149597870700;
 const nbar=(omega,T)=>{ if(T<=0) return 0; const x=HBAR*omega/(KB*T); return x>700?0:1/Math.expm1(x); };
@@ -131,7 +137,7 @@ function draw1(){ const f=+f1.value*1e9, lam=+l1.value*1e-9; f1v.textContent=(+f
   r1.innerHTML=`n̄(qubit, 15 mK) = ${nbar(wq,0.015).toExponential(2)}<br>n̄(qubit, 300 K) = ${nbar(wq,300).toFixed(0)}<br>n̄(photon, 300 K) = ${nbar(wo,300).toExponential(2)}<br>T₁(300 K)/T₁(0) = ${(1/(2*nbar(wq,300)+1)).toExponential(2)}`; }
 function draw2(){ const D=+d.value,w0=+w.value,lam=+l.value*1e-9; dv.textContent=D.toFixed(1); wv.textContent=w0.toFixed(2); lv.textContent=l.value;
   const L=logspace(0,8.5,400); const fs=L.map(x=>[x,freeSpace(x*1e3,lam,w0,D)]);
-  plot('p2',[{pts:L.map(x=>[x,fiber(x,0.2)]),color:'var(--accent)',label:'fiber 0.2 dB/km'},{pts:L.map(x=>[x,fiber(x,2.0)]),color:'var(--accent)',dash:true,label:'fiber 2 dB/km'},{pts:fs,color:'#2b8a3e',label:'free space'},{pts:fs.map(([x,e])=>[x,plob(e)]),color:'var(--muted)',label:'PLOB bits/use'}],
+  plot('p2',[{pts:L.map(x=>[x,fiber(x,0.2)]),color:'var(--accent)',label:'fiber 0.2 dB/km'},{pts:L.map(x=>[x,fiber(x,2.0)]),color:'var(--accent)',dash:true,label:'fiber 2 dB/km'},{pts:fs,color:'#4fd69c',label:'free space'},{pts:fs.map(([x,e])=>[x,plob(e)]),color:'var(--muted)',label:'PLOB bits/use'}],
     {x:[1,10**8.5],y:[1e-18,2],logx:true,logy:true,xl:'distance L (km)',yl:'η  /  bits per use',vlines:[{x:1200,label:'Micius'},{x:384400,label:'Moon'},{x:5.57e7,label:'Mars min'}]});
   const th=lam/(Math.PI*w0); r2.innerHTML=`θ = ${(th*1e6).toFixed(2)} µrad<br>η(1200 km) = ${freeSpace(1.2e6,lam,w0,D).toExponential(2)}<br>η(Moon) = ${freeSpace(3.844e8,lam,w0,D).toExponential(2)}<br>η(Mars min) = ${freeSpace(0.372*AU,lam,w0,D).toExponential(2)}<br>spot radius at Mars min = ${(th*0.372*AU/1e3).toFixed(0)} km`; }
 const MEM=[{y:1e-3,label:'atomic ensemble ~ms'},{y:1,label:'SiV nuclear spin ~1 s'},{y:60,label:'NV C-13 ~1 min'},{y:3600,label:'Yb⁺ ion > 1 h'},{y:6*3600,label:'Eu:YSO 6 h'},{y:13.1*3600,label:'Eu:YSO 13.1 h'}];

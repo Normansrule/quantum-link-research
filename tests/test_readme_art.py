@@ -57,7 +57,7 @@ def test_marquee_has_one_pill_per_landmark_file():
 
     files = sorted((ROOT / "experiments" / "done").glob("[0-9][0-9]_*.md"))
     assert len(art.LANDMARKS) == len(files)
-    assert f"{len(files)} LANDMARK EXPERIMENTS" in art.marquee()
+    assert f"{len(files)} landmark experiments" in art.marquee()
 
 
 @pytest.mark.parametrize("page", ["README.md", "START_HERE.md"])

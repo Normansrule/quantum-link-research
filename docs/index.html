@@ -12,7 +12,7 @@
 <meta property="og:image" content="https://normansrule.github.io/quantum-link-research/og.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://normansrule.github.io/quantum-link-research/og.png">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛰️</text></svg>">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><path d='M16 6 L28 26 H24 L16 12.5 L8 26 H4 Z' fill='%232340ff'/></svg>">
 <link rel="stylesheet" href="space.css">
 <link rel="stylesheet" href="vendor/katex/katex.min.css">
 <script type="importmap">{ "imports": { "three": "./vendor/three/three.module.js", "three/addons/": "./vendor/three/addons/" } }</script>
@@ -20,38 +20,74 @@
 </head>
 <body>
 <a class="skip" href="#content">Skip to content</a>
-<div class="aurora"></div>
 
 <header class="top">
-  <a class="brand" href="#"><span class="dot"></span>Quantum Link Research</a>
+  <a class="brand" href="#">Quantum Link Research</a>
   <nav><a aria-current="page" href="./">Home</a><a href="latency/">Anywhere</a><a href="network/">Network</a><a href="lab/">Lab</a><a href="mars/">Mars</a><a href="budget/">Budget</a><a href="teleport/">Teleport</a><a class="opt" href="monitor/">Monitor</a><a class="opt" href="link/">Link ops</a><a class="opt" href="repeater/">Repeater</a><a class="opt" href="coupler/">Coupler</a><a class="opt" href="qec/">QEC</a><a class="opt" href="systems/">Systems</a><a class="gh" href="https://github.com/Normansrule/quantum-link-research">GitHub ↗</a></nav>
 </header>
 <main id="content" tabindex="-1">
 
-<section class="hero">
-  <canvas id="hero-canvas" aria-label="The inner Solar System with Earth, Mars, a relay at Sun–Earth L4, entangled photons and classical bits"></canvas>
-  <div class="hero-inner">
-    <span class="eyebrow"><b>●</b> v<span data-status="version">…</span> · <span data-status="tests">…</span> tests · <span data-status="requirements_verified">…</span>/<span data-status="requirements">…</span> requirements mapped · <a id="ci-status" href="https://github.com/Normansrule/quantum-link-research/actions/workflows/ci.yml">CI status: checking…</a></span>
-    <h1 class="title">Talk to anywhere,<br><span class="gradient-text">as fast as light allows.</span></h1>
+<section class="cone-hero" id="cone" aria-labelledby="hero-title">
+  <div class="cone-copy">
+    <h1 class="title" id="hero-title">Talk to anywhere,<br><span class="gradient-text">as fast as light allows.</span></h1>
     <p class="lede">The goal is communication that is as close to instantaneous as physics permits, wherever the two ends are, and secure. Physics sets the floor exactly: no signal, and no use of entanglement, outruns light. So the work is to reach that floor: routes that travel at nearly c, and key and entanglement banked before the message exists, so nothing waits on top. On Earth the floor is at most 67 ms; to Mars it is 3 to 22 minutes. Everything here is tested code and research models; nothing is yet a measured link.</p>
-    <div class="cta">
-      <a class="btn primary" href="latency/">Anywhere at light speed →</a>
-      <a class="btn" href="mars/">Mars link simulator</a>
-      <a class="btn" href="#numbers">The numbers</a>
-      <a class="btn" href="https://github.com/Normansrule/quantum-link-research/blob/main/research/thesis/THESIS_DRAFT.md">Read the thesis draft</a>
+    <div class="cone-controls">
+      <label for="cone-date">Date of the message<input type="date" id="cone-date" min="1990-01-01" max="2100-12-31"></label>
+      <span class="label-sim ver">Verified software: the tested ephemeris</span>
     </div>
+    <div class="cone-readout" aria-live="polite">
+      <div>Earth to Mars<b id="cone-range">…</b></div>
+      <div class="floor">The floor, one way<b id="cone-floor">…</b></div>
+      <div>Fresh TLS connection<b id="cone-tls">…</b></div>
+    </div>
+    <div class="cta">
+      <a class="btn primary" href="latency/">Pick any two places</a>
+      <a class="btn" href="#bench">Run the main experiment</a>
+      <a class="btn quiet" href="https://github.com/Normansrule/quantum-link-research/blob/main/research/thesis/THESIS_DRAFT.md">Read the thesis draft</a>
+    </div>
+    <p class="status-line">v<span data-status="version">…</span> · <span data-status="tests">…</span> tests · <span data-status="requirements_verified">…</span>/<span data-status="requirements">…</span> requirements mapped · <a id="ci-status" href="https://github.com/Normansrule/quantum-link-research/actions/workflows/ci.yml">CI status: checking…</a></p>
   </div>
-  <div class="live" aria-live="polite">
-    <span><span data-live="day">J2000</span></span>
-    <span>range <b data-live="range">—</b></span>
-    <span>one-way light time <b data-live="lt">—</b></span>
-    <span>Sun–Earth–Mars <b data-live="sep" class="ok">—</b></span>
-    <span style="color:var(--green)">● entangled photons</span><span style="color:var(--warm)">● classical bits</span>
+  <figure class="cone-fig" id="cone-fig" aria-describedby="cone-note"></figure>
+  <p class="cone-note" id="cone-note">Scroll to let time pass. Light runs at 45° here, so nothing on this diagram can move faster than its edge. QKD is quantum key distribution; TLS is Transport Layer Security, set up over TCP (Transmission Control Protocol).</p>
+</section>
+
+<section id="bench" class="band">
+  <h2>The main experiment: one photon at a time, across two rooms</h2>
+  <p class="sub">Alice's laser fires pulses so weak they carry half a photon on average, each polarized to encode a random bit in a random basis. Most are lost on the way. Bob's beamsplitter picks his basis for him, and over the fiber they keep only the bits where their bases matched. If anyone measured the photons in between, the error rate gives them away. This is protocol P10, built from about $530 to $1,180 of parts; until it is built, every count below is drawn from the tested planning model.</p>
+  <div class="bench instrument">
+    <div class="bench-table" id="bench-table"></div>
+    <div class="bench-side" id="bench-side">
+      <div class="col">
+      <span class="label-sim sim">Simulated: drawn from qll/link/two_room.py</span>
+      <div class="bench-ctl">
+        <button type="button" class="go" id="bench-one">Send one pulse</button>
+        <button type="button" id="bench-many">Send 10,000</button>
+        <button type="button" id="bench-eve" aria-pressed="false">Eve listens</button>
+        <button type="button" id="bench-reset">Reset</button>
+      </div>
+      </div>
+      <div class="col">
+      <label class="bench-sl">Mean photon number μ <b id="bench-mu">0.50</b><input id="bench-mu-in" type="range" min="0.05" max="1" step="0.05" value="0.5"></label>
+      <label class="bench-sl">Hallway loss <b id="bench-loss">2.0 dB</b><input id="bench-loss-in" type="range" min="0" max="12" step="0.5" value="2"></label>
+      </div>
+      <div class="col">
+      <dl class="bench-tally">
+        <div><dt>Pulses sent</dt><dd id="bench-sent">0</dd></div>
+        <div><dt>Detector clicks</dt><dd><span id="bench-clicks">0</span><small id="bench-clicks-r">of pulses</small></dd></div>
+        <div><dt>Sifted bits</dt><dd id="bench-sifted">0</dd></div>
+        <div><dt>Error rate</dt><dd><span id="bench-qber">—</span><small id="bench-qber-r">no sifted bits yet</small></dd></div>
+      </dl>
+      </div>
+      <div class="col full">
+      <p class="bench-verdict" id="bench-verdict" aria-live="polite"></p>
+      <p class="ui-note" id="bench-model"></p>
+      <a href="lab/link/">Open the full build in the Lab: every part, the 3-D rooms, and the math</a>
+      </div>
+    </div>
   </div>
 </section>
 
 <section id="numbers" class="band">
-  <div class="kicker reveal">The catch, in numbers</div>
   <h2 class="reveal">Every figure below is computed by the repository's tested functions</h2>
   <p class="sub reveal">Generated into <code>site_data.json</code> by <code>scripts/build_site_data.py</code> on every commit. Change the physics and the page changes with it.</p>
   <div class="tickers">
@@ -67,7 +103,6 @@
 </section>
 
 <section id="equations" class="band">
-  <div class="kicker reveal">The physics</div>
   <h2 class="reveal">Nine equations carry the whole argument</h2>
   <p class="sub reveal">Each is implemented in a module with an analytic test; the value shown is the module's output.</p>
   <div class="grid">
@@ -84,7 +119,6 @@
 </section>
 
 <section id="flagships" class="band">
-  <div class="kicker reveal">Three experiments, one physics</div>
   <h2 class="reveal">The same protocol at three distances</h2>
   <div class="bento">
     <a class="card c2 reveal" href="https://github.com/Normansrule/quantum-link-research/blob/main/experiments/flagship/F1_earth_to_earth.md"><span class="tag">F1</span><h3>Two computers, one city</h3><p>Heralded entanglement and teleportation over deployed fiber; herald round trip 0.25 ms. Done in the field in 2024; our version starts on a bench.</p><div class="pass">pass: herald &gt; 1 Hz · S &gt; 2.2 · F &gt; 0.7</div></a>
@@ -96,14 +130,12 @@
 </section>
 
 <section id="memories" class="band">
-  <div class="kicker reveal">The thesis question, answered</div>
   <h2 class="reveal">Which memory outlives which round trip</h2>
   <p class="sub reveal">A Bell pair of fraction 0.95 stored in each demonstrated memory, decaying by the exact Kraus map, compared with the classical round trip of each baseline. Only hour-class ions and rare-earth crystals reach Mars, and the crystals pay for it in retrieval efficiency.</p>
   <div class="matrix reveal" id="matrix"><p style="padding:1rem;color:var(--muted)">Loading the capability matrix…</p></div>
 </section>
 
 <section id="bloch" class="band">
-  <div class="kicker reveal">Play with a qubit</div>
   <h2 class="reveal">Gates are rotations of a sphere</h2>
   <div class="split">
     <canvas id="bloch-canvas" class="stage reveal" aria-label="Interactive Bloch sphere"></canvas>
@@ -119,7 +151,6 @@
 
 
 <section id="stack" class="band">
-  <div class="kicker reveal">How the code fits together</div>
   <h2 class="reveal">From a thermal occupation to a message that refuses to send without a key</h2>
   <div class="reveal"><svg class="beams" viewBox="0 0 1160 280" role="img" aria-label="The qll software stack from constants to the messenger">
 <defs><linearGradient id="bm" x1="0" x2="1"><stop offset="0" stop-color="#5ea8ff" stop-opacity="0"/><stop offset=".5" stop-color="#5ef2e0"/><stop offset="1" stop-color="#a78bfa" stop-opacity="0"/></linearGradient><radialGradient id="dotg"><stop offset="0" stop-color="#e8fffb"/><stop offset=".45" stop-color="#5ef2e0"/><stop offset="1" stop-color="#5ef2e0" stop-opacity="0"/></radialGradient></defs>
@@ -153,7 +184,6 @@
 </section>
 
 <section id="interference" class="band">
-  <div class="kicker reveal">Interference lab · WebGL</div>
   <h2 class="reveal">Which-path information erases the fringes</h2>
   <p class="sub reveal">Each pixel sums the two waves from the slits exactly. Move the pointer across the field to shift their relative phase; tick <em>which-path</em> and the cross term vanishes, the same physics as protocol P06, the quantum eraser.</p>
   <canvas id="slit-canvas" class="stage wide reveal" style="aspect-ratio:21/9;cursor:ew-resize" aria-label="Two-slit interference simulation"></canvas>
@@ -164,7 +194,6 @@
 </section>
 
 <section id="explore" class="band">
-  <div class="kicker reveal">Interactive</div>
   <h2 class="reveal">Eleven ways in</h2>
   <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr))">
     <a class="card reveal" href="latency/"><span class="tag green">the goal</span><h3>Anywhere, at the speed of light</h3><p>Pick any two places on Earth, the Moon, or Mars: the light-time floor between them, how close fiber, hollow-core fiber, a low-orbit laser mesh, and a geostationary relay come to it, and why banked key and banked entanglement bring a secure message down to one trip at the floor.</p></a>
@@ -183,7 +212,6 @@
 </section>
 
 <section id="library" class="band">
-  <div class="kicker reveal">Everything in the repository</div>
   <h2 class="reveal">A library, a lab manual, a course, and a thesis</h2>
   <div class="grid">
     <a class="card reveal" href="https://github.com/Normansrule/quantum-link-research/tree/main/learn"><span class="count"><span data-status="learn_files">…</span> files</span><h3>Learn</h3><p>Foundations, computing core, eight qubit platforms, communication — each with equations, a figure, references, and exercises.</p></a>
@@ -196,7 +224,6 @@
 </section>
 
 <section class="band">
-  <div class="kicker reveal">Figures</div>
   <h2 class="reveal">Drawn by functions under test</h2>
   <div class="gallery">
     <figure class="reveal"><img loading="lazy" src="figures/memory_crossover.svg" alt=""><figcaption>Which memory outlives which round trip</figcaption></figure>
@@ -214,13 +241,16 @@
   visual techniques inspired by open-source work credited in <a href="https://github.com/Normansrule/quantum-link-research/blob/main/CREDITS.md">CREDITS.md</a>.
 </footer>
 
-<!-- site-foot:start --><div class="site-foot" role="contentinfo"><span class="brand-s">Quantum Link Research</span><span>v0.60.0</span><a href="latency/">Anywhere at light speed</a><a href="https://github.com/Normansrule/quantum-link-research">Source</a><a href="https://github.com/Normansrule/quantum-link-research/blob/main/CHANGELOG.md">Changelog</a><a href="https://github.com/Normansrule/quantum-link-research/blob/main/docs/audit/2026-10-11_findings.md">Audit findings</a><a href="https://github.com/Normansrule/quantum-link-research/blob/main/CREDITS.md">Credits</a><span class="grow">No signal outruns light. Numbers are model outputs unless a page says measured; nothing here is a security-reviewed link.</span></div><!-- site-foot:end -->
+<!-- site-foot:start --><div class="site-foot" role="contentinfo"><span class="brand-s">Quantum Link Research</span><span>v0.61.0</span><a href="latency/">Anywhere at light speed</a><a href="https://github.com/Normansrule/quantum-link-research">Source</a><a href="https://github.com/Normansrule/quantum-link-research/blob/main/CHANGELOG.md">Changelog</a><a href="https://github.com/Normansrule/quantum-link-research/blob/main/docs/audit/2026-10-11_findings.md">Audit findings</a><a href="https://github.com/Normansrule/quantum-link-research/blob/main/CREDITS.md">Credits</a><span class="grow">No signal outruns light. Numbers are model outputs unless a page says measured; nothing here is a security-reviewed link.</span></div><!-- site-foot:end -->
 <script src="vendor/gsap/gsap.min.js"></script>
 <script src="vendor/gsap/ScrollTrigger.min.js"></script>
 <script defer src="vendor/katex/katex.min.js"></script>
 <script defer src="vendor/katex/contrib/auto-render.min.js"></script>
 <script src="js/ephemeris.js"></script>
-<script type="module" src="js/hero.js"></script>
+<script src="js/latency_core.js"></script>
+<script src="js/cone.js"></script>
+<script src="js/lab_twin.js"></script>
+<script src="js/bench.js"></script>
 <script type="module" src="js/bloch.js"></script>
 <script defer src="js/interference.js"></script>
 <script defer src="js/site.js"></script>

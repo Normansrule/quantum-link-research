@@ -12,7 +12,7 @@
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
 <link rel="stylesheet" href="../space.css">
 <style>
-  canvas#geo { height: 380px; background: radial-gradient(circle at 50% 70%, #0b1426 0%, #04070f 75%) }
+  canvas#geo { height: 380px; background: #06080c }
   canvas#bars { height: 204px }
   canvas#race { height: 260px; background: #03060c }
   canvas#secure { height: 250px }
@@ -26,7 +26,6 @@
 </head>
 <body>
 <a class="skip" href="#content">Skip to content</a>
-<div class="aurora"></div>
 <header class="top">
   <a class="brand" href="../"><span class="dot"></span>Quantum Link Research</a>
   <nav><a href="../">Home</a><a aria-current="page" href="../latency/">Anywhere</a><a href="../network/">Network</a><a href="../lab/">Lab</a><a href="../mars/">Mars</a><a href="../budget/">Budget</a><a href="../teleport/">Teleport</a><a class="opt" href="../monitor/">Monitor</a><a class="opt" href="../link/">Link ops</a><a class="opt" href="../repeater/">Repeater</a><a class="opt" href="../coupler/">Coupler</a><a class="opt" href="../qec/">QEC</a><a class="opt" href="../systems/">Systems</a><a class="gh" href="https://github.com/Normansrule/quantum-link-research">GitHub ↗</a></nav>
@@ -92,7 +91,7 @@
   </div>
 </main>
 <footer>Anywhere at light speed. Physics from <code>qll/space/latency_floor.py</code> [eberhard1989, ghirardi1980, moritz2000, williams2024moon, poletti2013, handley2018, bozkurt2015, rfc8446, rfc9293, bennett1993]. Times are compressed or expanded in the race so every route fits on screen; the scale is printed beside the controls. The fiber route factor and the orbit altitude are assumed planning values.</footer>
-<!-- site-foot:start --><div class="site-foot" role="contentinfo"><span class="brand-s">Quantum Link Research</span><span>v0.60.0</span><a href="../latency/">Anywhere at light speed</a><a href="https://github.com/Normansrule/quantum-link-research">Source</a><a href="https://github.com/Normansrule/quantum-link-research/blob/main/CHANGELOG.md">Changelog</a><a href="https://github.com/Normansrule/quantum-link-research/blob/main/docs/audit/2026-10-11_findings.md">Audit findings</a><a href="https://github.com/Normansrule/quantum-link-research/blob/main/CREDITS.md">Credits</a><span class="grow">No signal outruns light. Numbers are model outputs unless a page says measured; nothing here is a security-reviewed link.</span></div><!-- site-foot:end -->
+<!-- site-foot:start --><div class="site-foot" role="contentinfo"><span class="brand-s">Quantum Link Research</span><span>v0.61.0</span><a href="../latency/">Anywhere at light speed</a><a href="https://github.com/Normansrule/quantum-link-research">Source</a><a href="https://github.com/Normansrule/quantum-link-research/blob/main/CHANGELOG.md">Changelog</a><a href="https://github.com/Normansrule/quantum-link-research/blob/main/docs/audit/2026-10-11_findings.md">Audit findings</a><a href="https://github.com/Normansrule/quantum-link-research/blob/main/CREDITS.md">Credits</a><span class="grow">No signal outruns light. Numbers are model outputs unless a page says measured; nothing here is a security-reviewed link.</span></div><!-- site-foot:end -->
 <script src="../js/ephemeris.js"></script>
 <script src="../js/latency_core.js"></script>
 <script>
@@ -134,7 +133,7 @@
     if (r.routes["geostationary relay"]) {
       const [ax, ay] = pt(a0, ER), [bx, by] = pt(a1, ER), top = [cx, 14];
       g.strokeStyle = "rgba(255,107,74,.75)"; g.setLineDash([5, 5]); g.lineWidth = 1.4; g.beginPath(); g.moveTo(ax, ay); g.lineTo(...top); g.lineTo(bx, by); g.stroke(); g.setLineDash([]);
-      g.fillStyle = "#ff6b4a"; g.font = "11px JetBrains Mono, monospace"; g.textAlign = "center"; g.fillText("GEO relay, 35,786 km up (off scale) ↑", cx, 28);
+      g.fillStyle = "#ff6b4a"; g.font = "11px 'Geist Mono', monospace"; g.textAlign = "center"; g.fillText("GEO relay, 35,786 km up (off scale) ↑", cx, 28);
     }
     // fiber: wanders below the surface, drawn as a wiggle whose excess length is the route factor
     g.strokeStyle = COL["terrestrial fiber"]; g.lineWidth = 2; g.beginPath();
@@ -152,12 +151,12 @@
     // ends
     for (const [x, y, name] of [[ax, ay, r.from], [bx, by, r.to]]) {
       g.fillStyle = "#e8eef8"; g.beginPath(); g.arc(x, y, 5, 0, 7); g.fill(); g.strokeStyle = "#5ef2e0"; g.lineWidth = 2; g.beginPath(); g.arc(x, y, 9, 0, 7); g.stroke();
-      g.font = "600 12px Inter, system-ui, sans-serif"; g.fillStyle = "#e8eef8";
+      g.font = "600 12px Geist, system-ui, sans-serif"; g.fillStyle = "#e8eef8";
       const tw = g.measureText(name).width, side = x < cx ? -1 : 1;
       if ((side < 0 && x - 14 - tw < 4) || (side > 0 && x + 14 + tw > w - 4)) { g.textAlign = "center"; g.fillText(name, Math.min(Math.max(x, tw / 2 + 4), w - tw / 2 - 4), y + 26); }
       else { g.textAlign = side < 0 ? "right" : "left"; g.fillText(name, x + side * 14, y + 4); }
     }
-    g.textAlign = "center"; g.fillStyle = "#93a1b8"; g.font = "11px JetBrains Mono, monospace";
+    g.textAlign = "center"; g.fillStyle = "#93a1b8"; g.font = "11px 'Geist Mono', monospace";
     const info = `${(th * 180 / Math.PI).toFixed(1)}° apart · ${km(r.distances.great_circle_m)} on the surface · ${km(r.distances.chord_m)} through it`;
     if (g.measureText(info).width < w - 16) g.fillText(info, cx, h - 10);
     else { g.fillText(`${(th * 180 / Math.PI).toFixed(1)}° apart · ${km(r.distances.great_circle_m)} on the surface`, cx, h - 24); g.fillText(`${km(r.distances.chord_m)} through the planet`, cx, h - 9); }
@@ -165,13 +164,13 @@
 
   function space(g, w, h) {
     const r = rep, d = r.distances.great_circle_m, y = h * 0.52, x0 = 70, x1 = w - 70;
-    g.fillStyle = "#1d3a66"; g.beginPath(); g.arc(x0, y, 22, 0, 7); g.fill(); g.fillStyle = "#e8eef8"; g.font = "600 12px Inter, system-ui"; g.textAlign = "center"; g.fillText("Earth", x0, y + 40);
+    g.fillStyle = "#1d3a66"; g.beginPath(); g.arc(x0, y, 22, 0, 7); g.fill(); g.fillStyle = "#e8eef8"; g.font = "600 12px Geist, system-ui"; g.textAlign = "center"; g.fillText("Earth", x0, y + 40);
     const far = `${r.from} ${r.to}`, body = far.includes("Jupiter") ? ["#d9b38c", 18, "Jupiter"] : far.includes("Mars") ? ["#ff6b4a", 14, "Mars"] : ["#c9d1dc", 10, "Moon"];
     g.fillStyle = body[0]; g.beginPath(); g.arc(x1, y, body[1], 0, 7); g.fill(); g.fillStyle = "#e8eef8"; g.fillText(body[2], x1, y + 36);
     g.strokeStyle = COL["free space"]; g.lineWidth = 2; g.beginPath(); g.moveTo(x0 + 24, y); g.lineTo(x1 - body[1] - 2, y); g.stroke();
     // light-second ticks on a log scale
     const lsec = d / L.C, X = (t) => x0 + 24 + (x1 - x0 - 48) * Math.log10(1 + t) / Math.log10(1 + lsec);
-    g.font = "11px JetBrains Mono, monospace"; g.fillStyle = "#93a1b8";
+    g.font = "11px 'Geist Mono', monospace"; g.fillStyle = "#93a1b8";
     for (const t of [1, 10, 60, 600].filter((t) => t < lsec)) { const x = X(t); g.fillRect(x, y - 6, 1, 12); g.fillText(t < 60 ? `${t} s` : `${t / 60} min`, x, y - 12); }
     g.fillStyle = "#5ef2e0"; g.fillText(`${km(d)} · ${fmt(lsec)} one way at the speed of light (log scale)`, w / 2, h - 12);
   }
@@ -184,20 +183,20 @@
     g.clearRect(0, 0, w, h);
     const left = narrow ? 8 : Math.min(170, w * 0.36), right = 18, top = narrow ? 22 : 14, rowH = (h - top - 30) / Math.max(items.length, 1);
     const tmax = Math.max(...items.map(([, x]) => x.delay_s)) * 1.05, X = (t) => left + (w - left - right) * t / tmax;
-    g.font = "12px Inter, system-ui, sans-serif";
+    g.font = "12px Geist, system-ui, sans-serif";
     items.forEach(([name, x], i) => {
       const y = top + i * rowH, bh = rowH * 0.55;
       g.fillStyle = "#93a1b8"; if (narrow) { g.textAlign = "left"; g.fillText(name, left, y - 5); } else { g.textAlign = "right"; g.fillText(name, left - 10, y + bh * 0.8); }
       const grd = g.createLinearGradient(left, 0, X(x.delay_s), 0); grd.addColorStop(0, COL[name] + "55"); grd.addColorStop(1, COL[name]);
       g.fillStyle = grd; g.beginPath(); g.roundRect ? g.roundRect(left, y, X(x.delay_s) - left, bh, 5) : g.rect(left, y, X(x.delay_s) - left, bh); g.fill();
-      g.fillStyle = "#e8eef8"; g.textAlign = "left"; g.font = "11px JetBrains Mono, monospace";
+      g.fillStyle = "#e8eef8"; g.textAlign = "left"; g.font = "11px 'Geist Mono', monospace";
       const lab = `${fmt(x.delay_s)} · ${x.stretch.toFixed(2)}×`, lx = X(x.delay_s) + 6;
       if (lx + g.measureText(lab).width < w) g.fillText(lab, lx, y + bh * 0.8); else { g.textAlign = "right"; g.fillStyle = "#03060c"; g.fillText(lab, X(x.delay_s) - 6, y + bh * 0.8); }
-      g.font = "12px Inter, system-ui, sans-serif";
+      g.font = "12px Geist, system-ui, sans-serif";
     });
     const fx = X(r.floor_s);
     g.strokeStyle = "#45e0a0"; g.setLineDash([4, 4]); g.lineWidth = 1.5; g.beginPath(); g.moveTo(fx, top - 6); g.lineTo(fx, top + items.length * rowH); g.stroke(); g.setLineDash([]);
-    g.fillStyle = "#45e0a0"; g.textAlign = "center"; g.font = "11px JetBrains Mono, monospace"; g.fillText(`floor ${fmt(r.floor_s)}`, Math.min(Math.max(fx, 50), w - 50), h - 6);
+    g.fillStyle = "#45e0a0"; g.textAlign = "center"; g.font = "11px 'Geist Mono', monospace"; g.fillText(`floor ${fmt(r.floor_s)}`, Math.min(Math.max(fx, 50), w - 50), h - 6);
     $("table").innerHTML = "<thead><tr><th style='text-align:left'>route</th><th>path length</th><th>index</th><th>one way</th><th>× floor</th><th style='text-align:left'>how</th></tr></thead><tbody>" +
       items.map(([n, x]) => `<tr><td style="text-align:left">${n}</td><td>${km(x.length_m)}</td><td>${x.index}</td><td>${fmt(x.delay_s)}</td><td>${x.stretch.toFixed(3)}</td><td style="text-align:left;color:var(--muted)">${x.note}</td></tr>`).join("") + "</tbody>";
   }
@@ -213,14 +212,14 @@
     items.forEach(([name, x], i) => {
       const y = 18 + i * rowH + rowH / 2;
       g.strokeStyle = "rgba(147,161,184,.25)"; g.lineWidth = 1; g.beginPath(); g.moveTo(left, y); g.lineTo(w - right, y); g.stroke();
-      g.fillStyle = "#93a1b8"; g.font = "11px Inter, system-ui"; g.textAlign = "left"; g.fillText(name, left + 14, y - 9);
+      g.fillStyle = "#93a1b8"; g.font = "11px Geist, system-ui"; g.textAlign = "left"; g.fillText(name, left + 14, y - 9);
       const done = simT >= x.delay_s, px = X(Math.min(simT, x.delay_s));
       g.strokeStyle = COL[name]; g.lineWidth = 3; g.beginPath(); g.moveTo(left, y); g.lineTo(px, y); g.stroke();
       g.fillStyle = COL[name]; g.shadowColor = COL[name]; g.shadowBlur = done ? 0 : 14; g.beginPath(); g.arc(px, y, done ? 4 : 6, 0, 7); g.fill(); g.shadowBlur = 0;
-      if (done) { g.fillStyle = "#e8eef8"; g.font = "11px JetBrains Mono, monospace"; g.textAlign = "right"; g.fillText(`arrived ${fmt(x.delay_s)}`, w - right, y - 8); }
+      if (done) { g.fillStyle = "#e8eef8"; g.font = "11px 'Geist Mono', monospace"; g.textAlign = "right"; g.fillText(`arrived ${fmt(x.delay_s)}`, w - right, y - 8); }
     });
     const fx = X(rep.floor_s); g.strokeStyle = "#45e0a0"; g.setLineDash([3, 4]); g.beginPath(); g.moveTo(fx, 8); g.lineTo(fx, h - 14); g.stroke(); g.setLineDash([]);
-    g.fillStyle = "#45e0a0"; g.font = "11px JetBrains Mono, monospace"; g.textAlign = "center"; g.fillText("floor", fx, h - 3);
+    g.fillStyle = "#45e0a0"; g.font = "11px 'Geist Mono', monospace"; g.textAlign = "center"; g.fillText("floor", fx, h - 3);
     const f = k >= 1 ? `slowed ${k.toLocaleString("en-US", { maximumSignificantDigits: 3 })}×` : `sped up ${(1 / k).toLocaleString("en-US", { maximumSignificantDigits: 3 })}×`;
     $("scale").textContent = `Time ${f} · t = ${fmt(simT)}`;
   }
@@ -241,10 +240,10 @@
     const left = narrow ? 8 : Math.min(230, w * 0.5), rowH = (h - 16) / rows.length, tmax = lat["secure message"]["TCP + TLS 1.3, new connection"] * 1.05;
     rows.forEach(([kind, k, col], i) => {
       const t = kind === "secure" ? lat["secure message"][k] : lat["teleported qubit"][k], y = (narrow ? 22 : 8) + i * rowH, bh = rowH * (narrow ? 0.38 : 0.5);
-      g.fillStyle = "#93a1b8"; g.font = "11px Inter, system-ui"; g.textAlign = narrow ? "left" : "right"; g.fillText(`${kind === "secure" ? "message" : "qubit"} · ${k.replace("TCP + TLS 1.3, new connection", "new TLS 1.3 connection")}`, narrow ? left : left - 8, narrow ? y - 5 : y + bh * 0.85);
+      g.fillStyle = "#93a1b8"; g.font = "11px Geist, system-ui"; g.textAlign = narrow ? "left" : "right"; g.fillText(`${kind === "secure" ? "message" : "qubit"} · ${k.replace("TCP + TLS 1.3, new connection", "new TLS 1.3 connection")}`, narrow ? left : left - 8, narrow ? y - 5 : y + bh * 0.85);
       const x1 = left + (w - left - 12) * t / tmax;
       g.fillStyle = col; g.globalAlpha = 0.9; g.beginPath(); g.roundRect ? g.roundRect(left, y, x1 - left, bh, 4) : g.rect(left, y, x1 - left, bh); g.fill(); g.globalAlpha = 1;
-      g.fillStyle = "#e8eef8"; g.textAlign = "left"; g.font = "11px JetBrains Mono, monospace";
+      g.fillStyle = "#e8eef8"; g.textAlign = "left"; g.font = "11px 'Geist Mono', monospace";
       const lab = fmt(t); if (x1 + 6 + g.measureText(lab).width < w) g.fillText(lab, x1 + 6, y + bh * 0.85); else { g.textAlign = "right"; g.fillStyle = "#03060c"; g.fillText(lab, x1 - 6, y + bh * 0.85); }
     });
   }

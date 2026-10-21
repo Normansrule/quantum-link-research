@@ -7,17 +7,17 @@
 <p align="center"><b>Talk to anywhere, as fast as light allows.</b><br>Physics-first simulations, interactive labs, and a staged two-room experiment toward secure communication at the light-time floor, wherever the two ends are.</p>
 
 <p align="center">
-  <a href="https://Normansrule.github.io/quantum-link-research/"><img src="https://img.shields.io/badge/Open_the_website-5ef2e0?style=for-the-badge&logo=githubpages&logoColor=0b1224" alt="Open the website"></a>
-  <a href="https://Normansrule.github.io/quantum-link-research/latency/"><img src="https://img.shields.io/badge/Anywhere_at_light_speed-45e0a0?style=for-the-badge" alt="Anywhere at light speed"></a>
-  <a href="https://Normansrule.github.io/quantum-link-research/lab/"><img src="https://img.shields.io/badge/The_lab-a78bfa?style=for-the-badge&logo=threedotjs&logoColor=white" alt="The lab"></a>
-  <a href="https://Normansrule.github.io/quantum-link-research/mars/"><img src="https://img.shields.io/badge/Mars_link_simulator-ff6b4a?style=for-the-badge&logo=threedotjs&logoColor=white" alt="Mars link simulator"></a>
-  <a href="https://Normansrule.github.io/quantum-link-research/budget/"><img src="https://img.shields.io/badge/Link_budget-5ea8ff?style=for-the-badge" alt="Earth–Mars link budget"></a>
-  <a href="https://Normansrule.github.io/quantum-link-research/teleport/"><img src="https://img.shields.io/badge/Teleportation,_step_by_step-a78bfa?style=for-the-badge&logo=qiskit&logoColor=white" alt="Teleportation explainer"></a>
-  <a href="https://Normansrule.github.io/quantum-link-research/repeater/"><img src="https://img.shields.io/badge/Repeater_lab-45e0a0?style=for-the-badge" alt="Repeater lab"></a>
-  <a href="https://Normansrule.github.io/quantum-link-research/qec/"><img src="https://img.shields.io/badge/QEC_lab-ffd166?style=for-the-badge" alt="QEC lab"></a>
-  <a href="research/thesis/THESIS_DRAFT.md"><img src="https://img.shields.io/badge/Read_the_thesis-45e0a0?style=for-the-badge" alt="Thesis draft"></a>
-  <a href="#build-the-main-experiment-phase-1"><img src="https://img.shields.io/badge/Build_Phase_1:_bill_of_materials-fde68a?style=for-the-badge" alt="Build Phase 1: bill of materials"></a>
-  <a href="#scale-the-majorana-research-from-one-hop-to-a-chain"><img src="https://img.shields.io/badge/Scale_the_Majorana_research-ff6fb5?style=for-the-badge" alt="Scale the Majorana research"></a>
+  <a href="https://Normansrule.github.io/quantum-link-research/"><img src="https://img.shields.io/badge/Open_the_website-2340ff?style=for-the-badge&logo=githubpages&logoColor=white" alt="Open the website"></a>
+  <a href="https://Normansrule.github.io/quantum-link-research/latency/"><img src="https://img.shields.io/badge/Anywhere_at_light_speed-1b1d21?style=for-the-badge" alt="Anywhere at light speed"></a>
+  <a href="https://Normansrule.github.io/quantum-link-research/lab/"><img src="https://img.shields.io/badge/The_lab-1b1d21?style=for-the-badge&logo=threedotjs&logoColor=white" alt="The lab"></a>
+  <a href="https://Normansrule.github.io/quantum-link-research/mars/"><img src="https://img.shields.io/badge/Mars_link_simulator-1b1d21?style=for-the-badge&logo=threedotjs&logoColor=white" alt="Mars link simulator"></a>
+  <a href="https://Normansrule.github.io/quantum-link-research/budget/"><img src="https://img.shields.io/badge/Link_budget-1b1d21?style=for-the-badge" alt="Earth–Mars link budget"></a>
+  <a href="https://Normansrule.github.io/quantum-link-research/teleport/"><img src="https://img.shields.io/badge/Teleportation,_step_by_step-1b1d21?style=for-the-badge&logo=qiskit&logoColor=white" alt="Teleportation explainer"></a>
+  <a href="https://Normansrule.github.io/quantum-link-research/repeater/"><img src="https://img.shields.io/badge/Repeater_lab-1b1d21?style=for-the-badge" alt="Repeater lab"></a>
+  <a href="https://Normansrule.github.io/quantum-link-research/qec/"><img src="https://img.shields.io/badge/QEC_lab-1b1d21?style=for-the-badge" alt="QEC lab"></a>
+  <a href="research/thesis/THESIS_DRAFT.md"><img src="https://img.shields.io/badge/Read_the_thesis-1b1d21?style=for-the-badge" alt="Thesis draft"></a>
+  <a href="#build-the-main-experiment-phase-1"><img src="https://img.shields.io/badge/Build_Phase_1:_bill_of_materials-1b1d21?style=for-the-badge" alt="Build Phase 1: bill of materials"></a>
+  <a href="#scale-the-majorana-research-from-one-hop-to-a-chain"><img src="https://img.shields.io/badge/Scale_the_Majorana_research-1b1d21?style=for-the-badge" alt="Scale the Majorana research"></a>
 </p>
 
 <p align="center">
@@ -48,9 +48,23 @@
 > **Development status: experimental research software, not a production cryptographic system.** Numbers are model outputs unless a section says measured, and nothing here is a security-reviewed link; the [audit findings matrix](docs/audit/2026-10-11_findings.md) records what is fixed, tested, deferred, and blocked. The tests badge is written by the CI run that built the deployed website. Do not use simulated keys or the browser messenger for sensitive data.
 
 <p align="center">
-  <a href="https://Normansrule.github.io/quantum-link-research/"><img src="docs/figures/anim_hero.gif" alt="The landing page: the inner Solar System in WebGL, driven by the tested Kepler ephemeris, with live range and light time" width="100%"></a>
-  <br><sub>The live landing page, recorded in headless Chromium: planets placed by the same Kepler ephemeris the Python tests check.</sub>
+  <a href="https://Normansrule.github.io/quantum-link-research/"><img src="docs/figures/anim_cone.gif" alt="The landing page's light-cone diagram: Earth and Mars as vertical worldlines, light at 45 degrees, and the light front reaching Mars after one, three, and five trips as the page scrolls" width="100%"></a>
+  <br><sub>The landing page, recorded in headless Chromium. Time runs down the page and light runs at 45°; as you scroll, the light front reaches Mars after one trip (a banked key), three (a key made on demand), and five (a fresh TCP plus TLS 1.3 connection). The distance comes from the same Kepler ephemeris the Python tests check.</sub>
 </p>
+
+## What this is, and who it's for
+
+Quantum Link Research is a research notebook you can run. It asks how close two people can get to talking at the speed of light, anywhere from across a city to across the Solar System, and still keep the conversation secret. The answer lives in a tested Python package (`qll`), a website of interactive labs built on the same numbers, and a staged two-room experiment that starts with a $40 bright-light analogue. It's for students who want to see quantum communication work rather than read about it, for anyone planning the two-room experiment, and for reviewers who want every number traced to a formula, a citation, and a test.
+
+## Key features
+
+- **The light-time floor, computed.** Pick any two places on Earth, the Moon, or Mars and see how close fiber, a low-orbit laser mesh, or a relay comes to the speed of light, and how a banked key gets a secure message there in one trip.
+- **An optical bench for the main experiment.** The two-room single-photon link (protocol P10) drawn as a laser table you can run: send pulses, change the photon number and the hallway loss, and watch an eavesdropper push the error rate past the 11 % abort line. SIMULATED until the hardware is built.
+- **Interactive labs.** Teleportation step by step, a repeater chain, a surface code catching errors, a tunable coupler, an Earth–Mars link budget, and a 3-D lab for each build, from a $40 starter to entangled photons.
+- **Physics you can check.** Every formula in the code cites a source in the bibliography, every module has an analytic test, and the JavaScript models are held to the Python by tests.
+- **Honest labels.** Every result is SIMULATED, VERIFIED SOFTWARE, MEASURED HARDWARE, or FUTURE RESEARCH. Nothing is measured hardware yet.
+- **A thesis and a systems trail.** A draft thesis, requirements traced to the tests that prove them, risks, and a phased plan from two rooms to orbit.
+- **Works offline.** The website vendors its libraries and fonts, and the Lab installs as an offline app.
 
 ## The goal: anywhere, at the speed of light
 
@@ -170,7 +184,12 @@ This is the thesis question in one picture. A stored Bell pair decays toward the
 
 ## The website
 
-Ten interactive pages and an installable lab with six builds, one menu and one design across all of them, all driven by the same tested numbers and tested themselves in headless Chromium on every push. Animations compress time and use illustrative quantities; a 3D reenactment is not a measurement record. The animations are recordings of the real pages ([`scripts/record_site.py`](scripts/record_site.py)); click one to open it. Every lab opens with a six-step picture of how the experiment works, shows where the photons go and where the decibels are lost, labels every part in 3D on request, and adds a plain-language note under every line of the math terminal.
+Ten interactive pages and an installable lab with six builds, one menu and one design across all of them (see [Design](#design)), all driven by the same tested numbers and tested themselves in headless Chromium on every push. Animations compress time and use illustrative quantities; a 3D reenactment is not a measurement record. The animations are recordings of the real pages ([`scripts/record_site.py`](scripts/record_site.py)); click one to open it. Every lab opens with a six-step picture of how the experiment works, shows where the photons go and where the decibels are lost, labels every part in 3D on request, and adds a plain-language note under every line of the math terminal.
+
+<p align="center">
+  <a href="https://Normansrule.github.io/quantum-link-research/#bench"><img src="docs/figures/anim_bench.gif" alt="The optical bench: a top view of the two rooms with laser, polarizer, beamsplitters, and four detectors; 10,000 pulses are sent, then Eve listens and the error rate jumps past 11 percent" width="80%"></a>
+  <br><sub><b>The optical bench</b> <sup>new</sup>: the main experiment from above, on the landing page and the two-room Lab page. Ten thousand pulses at the planning values give an error rate near 3.7 %; with Eve measuring every pulse it jumps to about 27 % and the bench refuses to make a key. Counts are drawn from the tested twin, so they are SIMULATED.</sub>
+</p>
 
 <table>
 <tr>
@@ -178,7 +197,7 @@ Ten interactive pages and an installable lab with six builds, one menu and one d
 <td width="50%" valign="top"><a href="https://Normansrule.github.io/quantum-link-research/network/"><img src="docs/figures/lab_mesh.jpg" alt="Messages with no internet: hikers in two valleys joined by a solar relay on the ridge" width="100%"></a><br><b>Messages with no internet</b> <sup>new</sup><br><sub>Two hikers in neighbouring valleys, a base camp, and a solar relay on the ridge: LoRa link budgets, time on air, and a delivery record that reads delivered only when the recipient acknowledges, never when a relay rebroadcasts. A model now; real radios are the next build.</sub></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><a href="https://Normansrule.github.io/quantum-link-research/latency/"><img src="docs/figures/lab_latency.jpg" alt="Anywhere at light speed: the light-time floor between Los Angeles and Sydney, with the great circle, the chord, a fiber route, and a low-orbit laser mesh drawn to scale" width="100%"></a><br><b>Anywhere at light speed</b> <sup>new</sup><br><sub>The goal, made concrete: pick any two places on Earth, the Moon, or Mars and see the light-time floor, how close fiber, hollow-core fiber, a low-orbit laser mesh, and a geostationary relay come to it, a race of pulses you can pause and step, and how banked key brings a secure message down to one trip.</sub></td>
+<td width="50%" valign="top"><a href="https://Normansrule.github.io/quantum-link-research/latency/"><img src="docs/figures/lab_latency.jpg" alt="Anywhere at light speed: the light-time floor between Los Angeles and London, with the great circle, the chord, a fiber route, and a low-orbit laser mesh drawn to scale" width="100%"></a><br><b>Anywhere at light speed</b> <sup>new</sup><br><sub>The goal, made concrete: pick any two places on Earth, the Moon, or Mars and see the light-time floor, how close fiber, hollow-core fiber, a low-orbit laser mesh, and a geostationary relay come to it, a race of pulses you can pause and step, and how banked key brings a secure message down to one trip.</sub></td>
 <td width="50%" valign="top"><a href="https://Normansrule.github.io/quantum-link-research/lab/link/"><img src="docs/figures/lab_link.jpg" alt="Two-room link lab: room B's analyzer in 3D beside the twin's numbers" width="100%"></a><br><b>Two-room link lab</b> <sup>new</sup><br><sub>The main experiment as it would stand in the rooms, from the $40–120 starter to entangled photons: every part placed, priced, and tied to its build stage; sliders for the parts you will measure; a terminal printing every formula, substitution, and citation; and a session sampled in the browser that downloads as the two per-site logs the Python pipeline ingests.</sub></td>
 </tr>
 <tr>
@@ -210,6 +229,18 @@ Ten interactive pages and an installable lab with six builds, one menu and one d
 <td width="50%" valign="top"><a href="https://Normansrule.github.io/quantum-link-research/systems/"><img src="docs/figures/site_systems.jpg" alt="The traceability page: needs, requirements, trades, risks, and the V model" width="100%"></a><br><b>Traceability</b><br><sub>Needs, requirements, trades, and risks on a V model you can filter, each requirement pointing at the test that must pass in CI.</sub></td>
 </tr>
 </table>
+
+## Design
+
+The site's visual direction is called **Light cone**: every page is drawn a little like a spacetime diagram, because that is what the project is about.
+
+- **One signature color, used for light.** Cone blue (`#2340ff` on white, `#8593ff` on graphite) marks light, links, and the one primary action on a page. Everything else is graphite and white. Green, orange, and red appear only when they mean something: a key accepted, a warning, an abort.
+- **Instruments are screens.** Any panel that holds a canvas, a 3-D view, or a terminal stays dark in both themes, like the screen of a lab instrument, so plots read the same everywhere. Reading text sits on the page itself.
+- **Light and dark modes.** The site follows your system setting until you pick one with the switch in the header; the choice is remembered in that browser only.
+- **Type.** Geist for reading and Geist Mono for code and terminals, both self-hosted. One type scale (`--fs-*`) and one spacing scale (`--s1` to `--s10`) in [`docs/space.css`](docs/space.css) replace one-off sizes. Numbers use tabular figures so they don't jitter as they count.
+- **Motion with a job.** Interface motion is short (160 to 220 ms) on one easing curve. Anything that stands for light moves linearly, at a constant speed, because that is what light does. There is no decorative motion: the aurora, gradient text, glows, spinning borders, and moving marquee from earlier versions are gone. With reduced motion turned on, diagrams are drawn complete and nothing follows the scroll.
+- **Two centerpieces.** The [light-cone diagram](docs/js/cone.js) on the landing page and the [optical bench](docs/js/bench.js) for the main experiment. Both take their numbers from tested code, and both say which label their numbers carry.
+- **Accessible by default.** Text meets WCAG (Web Content Accessibility Guidelines) AA contrast in both themes, every control is reachable by keyboard with a visible focus ring, touch targets are at least 44 px, and every page fits a 320 px phone without sideways scrolling. The headless browser tests check the last two on every push.
 
 ## The argument in five equations
 
@@ -413,8 +444,8 @@ Do not buy the whole hardware list before checking detector noise, timing, the o
 
 </details>
 
-<details>
-<summary><b>Map of the repository</b></summary>
+
+## Project structure
 
 ```
 qll/            tested physics: constants → channels → circuits → qkd → network → space → app, plus hardware, analysis, viz
@@ -424,21 +455,30 @@ research/       frontier theories, timeline, thesis             docs/       webs
 systems/        needs, requirements, traceability, risks, TRL   tests/      500+ tests, run on every commit
 ```
 
-</details>
+The website is plain HTML, CSS, and JavaScript with no build step, so GitHub Pages serves `docs/` as it is:
+
+```
+docs/space.css          the design system: color tokens for both themes, type and spacing scales, shared components
+docs/index.html         the landing page: the light-cone diagram, the optical bench, and the headline numbers
+docs/js/                cone.js and bench.js (the two centerpieces), nav.js (menu and theme switch), and the JavaScript
+                        ports of tested Python (ephemeris, latency, the lab twin, teleportation), each held to it by tests
+docs/lab/               the installable Lab app: six builds in 3-D, its offline service worker, and lab.css
+docs/<page>/            one folder per page: latency, network, mars, budget, teleport, monitor, link, repeater, coupler, qec, systems
+docs/vendor/            pinned copies of three.js, GSAP, KaTeX, and the Geist fonts, with their licences
+scripts/                generators for the site data, README art, status, and docs; record_site.py re-records the README images
+```
 
 ## Built on the shoulders of
 
-The website and these README images re-implement ideas from twelve open-source projects. No code was copied; [CREDITS.md](CREDITS.md) records exactly what each one contributed.
+The website and these README images re-implement ideas from nine open-source projects. No code was copied; [CREDITS.md](CREDITS.md) records exactly what each one contributed.
 
 | Project | What it inspired here |
 |---|---|
 | [**Magic UI**](https://github.com/magicuidesign/magicui) | number tickers and bento grid (the numbers card above), AnimatedBeam (the stack diagram and the repeater lab's links), Marquee (the landmark strip) |
-| [**react-bits**](https://github.com/DavidHDev/react-bits) | gradient text, blur-in reveals, and spotlight cards on the website; the rotating "shine" borders on the README cards |
-| [**Animate UI**](https://animate-ui.com/) · [**motion-primitives**](https://github.com/ibelick/motion-primitives) | staggered entrances and easing curves; restrained glass panels |
+| [**Animate UI**](https://animate-ui.com/) | staggered entrances and easing curves |
 | [**llm-viz**](https://github.com/bbycroft/llm-viz) · [**transformer-explainer**](https://github.com/poloclub/transformer-explainer) | step-through explainers that show the real internal state: the teleportation page, the coupler lab's CZ player, the repeater lab's sampled run, the QEC lab's decoding steps, and the memory-versus-round-trip chart |
 | [**WebGL-Fluid-Simulation**](https://github.com/PavelDoGreat/WebGL-Fluid-Simulation) | a full-canvas fragment shader driven by the pointer: the interference lab |
-| [**folio-2019**](https://github.com/brunosimon/folio-2019) | the landing page as a 3-D scene to explore: the three.js Solar System |
-| [**gods-eye-view**](https://github.com/bilawalsidhu/gods-eye-view) · [**worldmonitor**](https://github.com/koala73/worldmonitor) | a live situation view and a dashboard of tiles, timelines, and an event feed: the hero's live strip, the link monitor, and the link budget |
+| [**gods-eye-view**](https://github.com/bilawalsidhu/gods-eye-view) · [**worldmonitor**](https://github.com/koala73/worldmonitor) | a live situation view and a dashboard of tiles, timelines, and an event feed: the link monitor and the link budget |
 | [**GSAP**](https://github.com/greensock/GSAP) | used directly for scroll reveals, tickers, and explainer steps |
 | [**Remotion**](https://github.com/remotion-dev/remotion) | rendering the product itself into the README's motion, done here with Playwright frame capture; the link budget's flowing pair stream |
 

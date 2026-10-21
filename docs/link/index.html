@@ -16,13 +16,13 @@
   .dash { max-width: 1320px; margin: 0 auto; padding: 5.2rem 3vw 2rem; display: grid; gap: 1rem; grid-template-columns: repeat(12, 1fr) }
   .dash > * { min-width: 0 }
   .p { border: 1px solid var(--line); border-radius: 14px; background: var(--glass); padding: .9rem 1rem; position: relative }
-  .p h4 { margin: 0 0 .5rem; font-size: .74rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); font-weight: 700 }
+  .p h4 { margin: 0 0 .7rem; font-size: .95rem; color: var(--ink); font-weight: 600 }
   .head { grid-column: span 12; display: flex; flex-wrap: wrap; gap: .6rem 1.2rem; align-items: baseline; justify-content: space-between }
   .head h1 { font-size: clamp(1.3rem, 2.2vw, 1.75rem); margin: 0; letter-spacing: -.01em }
   .head p { margin: .2rem 0 0; color: var(--muted); font-size: .92rem; max-width: 80ch }
   .replay { display: inline-flex; gap: .45rem; align-items: center; padding: .3rem .8rem; border-radius: 999px; border: 1px solid rgba(255,138,76,.45);
-    background: rgba(255,138,76,.1); color: var(--warm); font: 700 .74rem/1.2 Inter, system-ui, sans-serif; letter-spacing: .1em; text-transform: uppercase; white-space: nowrap }
-  .kpi { grid-column: span 2 } .kpi .v { font: 700 1.45rem/1.25 "JetBrains Mono", monospace; font-variant-numeric: tabular-nums; white-space: nowrap }
+    background: rgba(255,138,76,.1); color: var(--warm); font: 700 .74rem/1.2 Geist, system-ui, sans-serif; white-space: nowrap }
+  .kpi { grid-column: span 2 } .kpi .v { font: 650 1.45rem/1.25 Geist, system-ui, sans-serif; font-variant-numeric: tabular-nums; letter-spacing: -.02em; white-space: nowrap }
   .kpi .s { font-size: .78rem; color: var(--faint) }
   .wide { grid-column: span 8 } .side { grid-column: span 4 } .full { grid-column: span 12 }
   @media (max-width: 1000px) { .kpi { grid-column: span 4 } .wide, .side { grid-column: span 12 } }
@@ -31,22 +31,22 @@
   .charts h5 { margin: .7rem 0 .15rem; font-size: .78rem; color: var(--muted); font-weight: 600 } .charts h5:first-of-type { margin-top: 0 }
   .legend { display: flex; flex-wrap: wrap; gap: .3rem 1rem; font-size: .78rem; color: var(--muted); margin: .2rem 0 .4rem }
   .sw { display: inline-block; width: 12px; height: 12px; border-radius: 3px; vertical-align: -2px; margin-right: .3rem }
-  .feed { font: .78rem/1.6 "JetBrains Mono", monospace; color: var(--muted); max-height: 260px; overflow: auto }
+  .feed { font: .78rem/1.6 "Geist Mono", monospace; color: var(--muted); max-height: 260px; overflow: auto }
   .feed .ev { border-bottom: 1px dashed var(--line); padding: .3rem 0 } .feed .ev b { font-weight: 700 }
   .feed .event b { color: var(--cyan) } .feed .warning b { color: var(--warm) } .feed .alarm b { color: var(--mars) } .feed .info b { color: var(--green) }
   .st { display: inline-flex; align-items: center; gap: .45rem } .st svg { width: 1.15em; height: 1.15em; flex: none }
   .s-accepted { color: var(--green) } .s-degraded { color: var(--cyan) } .s-alert { color: var(--warm) } .s-rejected { color: var(--mars) }
-  .kv { display: grid; grid-template-columns: auto 1fr; gap: .15rem .9rem; font: .82rem/1.55 "JetBrains Mono", monospace; color: var(--muted) }
+  .kv { display: grid; grid-template-columns: auto 1fr; gap: .15rem .9rem; font: .82rem/1.55 "Geist Mono", monospace; color: var(--muted) }
   .kv b { color: var(--ink); font-weight: 600; overflow-wrap: anywhere }
   .ctrl { margin: 0 0 .4rem } .ctrl input[type=range] { width: 100% } .scrub { display: flex; gap: .6rem; align-items: center }
   .jumps { display: flex; flex-wrap: wrap; gap: .4rem; margin-top: .55rem }
-  .jumps button { font: 600 .74rem/1 Inter, system-ui, sans-serif; padding: .4rem .6rem; border-radius: 999px; border: 1px solid var(--line); background: var(--bg2); color: var(--muted); cursor: pointer }
+  .jumps button { font: 600 .74rem/1 Geist, system-ui, sans-serif; padding: .4rem .6rem; border-radius: 999px; border: 1px solid var(--line); background: var(--bg2); color: var(--muted); cursor: pointer }
   .jumps button:hover { color: var(--ink); border-color: var(--cyan) }
   #tip { position: fixed; z-index: 30; pointer-events: none; display: none; padding: .55rem .7rem; border-radius: 10px; border: 1px solid var(--line);
-    background: rgba(10,15,28,.96); font: .76rem/1.5 "JetBrains Mono", monospace; color: var(--muted); max-width: 300px; box-shadow: 0 10px 30px rgba(0,0,0,.4) }
+    background: rgba(10,15,28,.96); font: .76rem/1.5 "Geist Mono", monospace; color: var(--muted); max-width: 300px; box-shadow: 0 10px 30px rgba(0,0,0,.4) }
   #tip b { color: var(--ink) }
   table.plan { width: 100%; min-width: 680px; border-collapse: collapse; font-size: .84rem } table.plan th, table.plan td { text-align: left; padding: .45rem .5rem; border-bottom: 1px solid var(--line); vertical-align: top }
-  table.plan th { color: var(--muted); font-weight: 600; font-size: .76rem } table.plan td.n { font-family: "JetBrains Mono", monospace; white-space: nowrap }
+  table.plan th { color: var(--muted); font-weight: 600; font-size: .76rem } table.plan td.n { font-family: "Geist Mono", monospace; white-space: nowrap }
   .tablewrap { overflow-x: auto }
   .note { font-size: .82rem; color: var(--faint); margin: .5rem 0 0 }
 </style>
@@ -54,7 +54,6 @@
 </head>
 <body>
 <a class="skip" href="#content">Skip to content</a>
-<div class="aurora"></div>
 <header class="top">
   <a class="brand" href="../"><span class="dot"></span>Quantum Link Research</a>
   <nav><a href="../">Home</a><a href="../latency/">Anywhere</a><a href="../network/">Network</a><a href="../lab/">Lab</a><a href="../mars/">Mars</a><a href="../budget/">Budget</a><a href="../teleport/">Teleport</a><a class="opt" href="../monitor/">Monitor</a><a class="opt" aria-current="page" href="../link/">Link ops</a><a class="opt" href="../repeater/">Repeater</a><a class="opt" href="../coupler/">Coupler</a><a class="opt" href="../qec/">QEC</a><a class="opt" href="../systems/">Systems</a><a class="gh" href="https://github.com/Normansrule/quantum-link-research">GitHub ↗</a></nav>
@@ -104,7 +103,7 @@
 </main>
 <div id="tip" role="tooltip"></div>
 <footer style="max-width:1320px">Generated by <code>python -m qll.link.run operations</code> from tested Python (<code>qll/link/operations.py</code>); this page only draws <code>ops.json</code>. Dashboard pattern after the link monitor: state tiles, a timeline, and an event feed. See CREDITS.md.</footer>
-<!-- site-foot:start --><div class="site-foot" role="contentinfo"><span class="brand-s">Quantum Link Research</span><span>v0.60.0</span><a href="../latency/">Anywhere at light speed</a><a href="https://github.com/Normansrule/quantum-link-research">Source</a><a href="https://github.com/Normansrule/quantum-link-research/blob/main/CHANGELOG.md">Changelog</a><a href="https://github.com/Normansrule/quantum-link-research/blob/main/docs/audit/2026-10-11_findings.md">Audit findings</a><a href="https://github.com/Normansrule/quantum-link-research/blob/main/CREDITS.md">Credits</a><span class="grow">No signal outruns light. Numbers are model outputs unless a page says measured; nothing here is a security-reviewed link.</span></div><!-- site-foot:end -->
+<!-- site-foot:start --><div class="site-foot" role="contentinfo"><span class="brand-s">Quantum Link Research</span><span>v0.61.0</span><a href="../latency/">Anywhere at light speed</a><a href="https://github.com/Normansrule/quantum-link-research">Source</a><a href="https://github.com/Normansrule/quantum-link-research/blob/main/CHANGELOG.md">Changelog</a><a href="https://github.com/Normansrule/quantum-link-research/blob/main/docs/audit/2026-10-11_findings.md">Audit findings</a><a href="https://github.com/Normansrule/quantum-link-research/blob/main/CREDITS.md">Credits</a><span class="grow">No signal outruns light. Numbers are model outputs unless a page says measured; nothing here is a security-reviewed link.</span></div><!-- site-foot:end -->
 <script>
 (async function () {
   document.documentElement.classList.remove("no-js");
@@ -113,7 +112,8 @@
   try { D = await (await fetch("ops.json")).json(); }
   catch (e) { $("k-status").textContent = "no data"; $("feed").textContent = "ops.json could not be loaded; serve the docs folder over HTTP."; return; }
   const S = D.sessions, N = S.length, C = D.config, dt = D.interval_min / 60;
-  const css = getComputedStyle(document.documentElement), V = (n) => css.getPropertyValue(n).trim();
+  // colors come from an instrument panel, which keeps its dark screen tokens in both site themes
+  const css = getComputedStyle(document.querySelector(".p") || document.documentElement), V = (n) => css.getPropertyValue(n).trim();
   const COL = { accepted: V("--green"), degraded: V("--cyan"), alert: V("--warm"), rejected: V("--mars") };
   const LAB = { accepted: "accepted", degraded: "loss flagged", alert: "alert", rejected: "rejected" };
   const KIND = { degradation: "rgba(94,242,224,.10)", attack: "rgba(255,138,76,.13)", fault: "rgba(147,161,184,.13)" };
@@ -157,7 +157,7 @@
     g.setTransform(dpr, 0, 0, dpr, 0, 0); g.clearRect(0, 0, W, H);
     const Y = (v) => H - PADB - (H - PADB - PADT) * Math.min(v, ch.ymax) / ch.ymax;
     D.plan.forEach((e) => { g.fillStyle = KIND[e.kind]; g.fillRect(X(e.start_h), PADT, X(e.end_h) - X(e.start_h), H - PADB - PADT); });
-    g.font = "10.5px JetBrains Mono, monospace"; g.lineWidth = 1;
+    g.font = "10.5px 'Geist Mono', monospace"; g.lineWidth = 1;
     const ticks = ch.ticks || [0, ch.ymax / 2 / 1.12, ch.ymax / 1.12];
     ticks.forEach((v) => { g.strokeStyle = "rgba(148,170,210,.13)"; g.beginPath(); g.moveTo(PADL, Y(v)); g.lineTo(W - PADR, Y(v)); g.stroke(); g.fillStyle = V("--faint"); g.textAlign = "right"; g.fillText(ch.f(v), PADL - 6, Y(v) + 3.5); });
     g.textAlign = "center";

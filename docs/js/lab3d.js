@@ -17,8 +17,8 @@ function cyl(r, h, m, seg = 24) { return new THREE.Mesh(new THREE.CylinderGeomet
 function post(g, fromY, toY) { const p = cyl(0.006, toY - fromY, mat(0x9aa4b2, { metalness: 0.7 })); p.position.y = (fromY + toY) / 2 - BEAM_Y; g.add(p); }   // group origin at BEAM_Y
 function labelSprite(text, size = 0.22, color = "#e8eef8") {
   const c = document.createElement("canvas"), g = c.getContext("2d"), f = 48;
-  g.font = `600 ${f}px Inter, system-ui, sans-serif`; const w = Math.ceil(g.measureText(text).width) + 40;
-  c.width = w; c.height = f + 28; g.font = `600 ${f}px Inter, system-ui, sans-serif`;
+  g.font = `600 ${f}px Geist, system-ui, sans-serif`; const w = Math.ceil(g.measureText(text).width) + 40;
+  c.width = w; c.height = f + 28; g.font = `600 ${f}px Geist, system-ui, sans-serif`;
   g.fillStyle = "rgba(10,15,28,.72)"; g.beginPath(); g.roundRect(0, 0, w, f + 28, 18); g.fill();
   g.fillStyle = color; g.textBaseline = "middle"; g.fillText(text, 20, (f + 28) / 2 + 2);
   const s = new THREE.Sprite(new THREE.SpriteMaterial({ map: new THREE.CanvasTexture(c), depthWrite: false, transparent: true }));

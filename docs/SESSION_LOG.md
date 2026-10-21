@@ -72,3 +72,4 @@
 - 2026-10-14 0.58.0: banked-key messenger (L2): per-site banks from an accepted session, one-time AES-256-GCM keys with a write-ahead spent ledger, two-process delivery measured at 1.02 and 3.06 trips against the model.
 - 2026-10-19 0.59.0: pair ledger and three-node sustained service; circuit-level surface-code memory d=3/5/7; off-grid LoRa mesh model with honest delivery states; Jupiter; network page; README three paths and result labels; program doc 11; roadmap response.
 - 2026-10-19 0.60.0: P16 LoRa range walk ($60, eye-safe): survey log ingest with honest labels, log-distance fit, model comparison, Meshtastic stop logger; REQ-HW-003.
+- 2026-10-20 0.61.0: Light cone redesign of the website and Lab app (tokens, light and dark modes, Geist, retired decorative motion); light-cone diagram on the landing page; optical bench for P10 on the landing and two-room Lab pages; Explorers on vendored KaTeX; README Design section.

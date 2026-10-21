@@ -1,6 +1,6 @@
 """Record animated GIFs of the website for the README (GitHub cannot run the pages' JavaScript).
 Needs:  pip install playwright pillow && python -m playwright install chromium
-Usage:  python scripts/record_site.py [anim_mars ...]   # writes docs/figures/anim_*.gif (all nine by default)
+Usage:  python scripts/record_site.py [anim_mars ...]   # writes docs/figures/anim_*.gif and the lab_*.jpg stills (all by default)
 Frames are captured from a local server in headless Chromium, so the animation is the real page, not a mock-up."""
 from __future__ import annotations
 
@@ -15,7 +15,10 @@ DOCS, OUT = ROOT / "docs", ROOT / "docs" / "figures"
 
 SHOTS = {
     # name: (path, setup JS, clip (x, y, w, h) or None, frames, ms between frames)
-    "anim_hero": ("/", "", None, 24, 140),
+    # the landing page's light-cone diagram, scrolled so the light front reaches each arrival on Mars in turn
+    "anim_cone": ("/", None, "#cone", 30, 130),
+    # the optical bench: pulses crossing the hallway, then Eve listening (the error rate jumps)
+    "anim_bench": ("/", None, "#bench .bench", 34, 120),
     "anim_mars": ("/mars/", "document.getElementById('play').click(); document.getElementById('speed').value='40'",
                   "#orbit", 30, 120),
     "anim_teleport": ("/teleport/", None, None, 0, 0),   # handled specially: one frame per step
@@ -38,6 +41,20 @@ SHOTS = {
 # still screenshots (JPEG) of pages whose motion is too subtle for a GIF: name -> (path, clip selector, viewport height)
 STILLS = {
     "site_systems": ("/systems/", "main.lab", 1500),
+}
+
+# README cards: a 1020 x 450 crop from the top of an element, taken in the site's light theme (the instrument panels stay
+# dark in both themes). name -> (path, element whose top edge starts the crop, ancestor whose left edge and width it uses)
+CARDS = {
+    "lab_link": ("/lab/link/", "main.lab", "main.lab"),
+    "lab_circuits": ("/lab/circuits/", "main.lab", "main.lab"),
+    "lab_channel": ("/lab/channel/", "main.lab", "main.lab"),
+    "lab_outdoor": ("/lab/outdoor/", "main.lab", "main.lab"),
+    "lab_frontier": ("/lab/frontier/", "main.lab", "main.lab"),
+    "lab_messenger": ("/lab/messenger/", "main.lab", "main.lab"),
+    "lab_network": ("/network/", ".ui-panel:has(#timeline)", ".ui-grid"),
+    "lab_mesh": ("/network/", ".ui-panel:has(#mesh)", ".ui-grid"),
+    "lab_latency": ("/latency/", ".ui-panel:has(#geo)", ".ui-grid"),
 }
 
 
@@ -116,6 +133,29 @@ def main() -> None:
                     frames += [io.BytesIO(page.screenshot(timeout=120000))] * 4
                 save_gif(frames, OUT / f"{name}.gif", 400)
                 page.close(); continue
+            if name == "anim_cone":
+                # follow the diagram's own scroll rule: "now" is 55 % down the viewport, so scroll from its top to its end
+                page.evaluate("document.documentElement.style.scrollBehavior='auto'")
+                y0, y1 = page.evaluate("(() => { const r = document.getElementById('cone-fig').getBoundingClientRect(); return [r.top + scrollY - innerHeight * 0.55 + 60, r.bottom + scrollY - innerHeight * 0.55]; })()")
+                for k in range(n):
+                    page.evaluate(f"window.scrollTo(0, {y0 + (y1 - y0) * k / (n - 1)})"); page.wait_for_timeout(60)
+                    frames.append(io.BytesIO(page.screenshot(timeout=120000)))
+                frames += [frames[-1]] * 8
+                save_gif(frames, OUT / f"{name}.gif", ms)
+                page.close(); continue
+            if name == "anim_bench":
+                page.add_style_tag(content="header.top{display:none!important}")   # the sticky header would cover the crop
+                page.evaluate("document.documentElement.style.scrollBehavior='auto'; document.getElementById('bench').scrollIntoView({block:'start'})")
+                page.wait_for_timeout(500)
+                target = page.locator(clip)
+                for k in range(n):
+                    if k == 0: page.click("#bench-many")
+                    if k == n // 2: page.click("#bench-eve"); page.click("#bench-many")
+                    page.wait_for_timeout(ms)
+                    frames.append(io.BytesIO(target.screenshot(timeout=120000)))
+                frames += [frames[-1]] * 8
+                save_gif(frames, OUT / f"{name}.gif", ms)
+                page.close(); continue
             if name == "anim_budget":
                 page.add_style_tag(content=".p::before{animation:none!important}.aurora{animation:none!important}")
                 page.wait_for_function("document.body.dataset.ready === '1'", timeout=60000)
@@ -182,6 +222,23 @@ def main() -> None:
             im = Image.open(io.BytesIO(page.screenshot(clip={"x": 0, "y": 0, "width": 1280, "height": height}))).convert("RGB")
             im = im.resize((960, round(im.height * 960 / im.width)), Image.LANCZOS)
             im.save(OUT / f"{name}.jpg", quality=82, optimize=True)
+            print(f"wrote {(OUT / f'{name}.jpg').relative_to(ROOT)}  {(OUT / f'{name}.jpg').stat().st_size / 1e6:.2f} MB")
+            page.close()
+        for name, (path, top_sel, box_sel) in CARDS.items():
+            if only and name not in only:
+                continue
+            page = b.new_page(viewport={"width": 1100, "height": 900})
+            page.goto(base + path, wait_until="commit")
+            page.wait_for_function("document.readyState === 'complete'", timeout=60000)
+            page.add_style_tag(content="header.top{display:none!important}")   # the sticky header would cover the crop
+            page.evaluate("document.documentElement.style.scrollBehavior='auto'; document.querySelectorAll('.reveal').forEach((e) => { e.style.opacity = 1; e.style.transform = 'none'; })")
+            page.locator(top_sel).first.scroll_into_view_if_needed()
+            page.evaluate(f"window.scrollTo(0, document.querySelector({top_sel!r}).getBoundingClientRect().top + scrollY - 16)")
+            page.wait_for_timeout(3000)
+            x, y, w = page.evaluate(f"(() => {{ const t = document.querySelector({top_sel!r}), c = t.closest({box_sel!r}) || t; const a = t.getBoundingClientRect(), r = c.getBoundingClientRect(); return [r.left, a.top, r.width]; }})()")
+            from PIL import Image
+            im = Image.open(io.BytesIO(page.screenshot(clip={"x": x, "y": y, "width": min(w, 1020), "height": 450}))).convert("RGB")
+            im.save(OUT / f"{name}.jpg", quality=84, optimize=True)
             print(f"wrote {(OUT / f'{name}.jpg').relative_to(ROOT)}  {(OUT / f'{name}.jpg').stat().st_size / 1e6:.2f} MB")
             page.close()
         b.close()

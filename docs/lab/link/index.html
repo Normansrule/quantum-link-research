@@ -4,7 +4,7 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Two-Room Link Lab · Quantum Link Research</title>
 <meta name="description" content="The main experiment, from a $40 starter to entangled photons: a 3D model of the real build, every part and its cost, live parameters, and a terminal that shows the exact math.">
-<meta name="theme-color" content="#05070d">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#111317" media="(prefers-color-scheme: dark)">
 <link rel="manifest" href="../manifest.webmanifest">
 <link rel="icon" href="../icon-192.png">
 <link rel="apple-touch-icon" href="../icon-192.png">
@@ -14,10 +14,10 @@
 <script src="../../js/lab_ui.js"></script>
 <script type="importmap">{ "imports": { "three": "../../vendor/three/three.module.js", "three/addons/": "../../vendor/three/addons/" } }</script>
 <script defer src="../../js/nav.js"></script>
+<script defer src="../../js/bench.js"></script>
 </head>
 <body>
 <a class="skip" href="#content">Skip to content</a>
-<div class="aurora"></div>
 <header class="top">
   <a class="brand" href="../../"><span class="dot"></span>Quantum Link Research</a>
   <nav><a href="../../">Home</a><a href="../../latency/">Anywhere</a><a href="../../network/">Network</a><a aria-current="page" href="../../lab/">Lab</a><a href="../../mars/">Mars</a><a href="../../budget/">Budget</a><a href="../../teleport/">Teleport</a><a class="opt" href="../../monitor/">Monitor</a><a class="opt" href="../../link/">Link ops</a><a class="opt" href="../../repeater/">Repeater</a><a class="opt" href="../../coupler/">Coupler</a><a class="opt" href="../../qec/">QEC</a><a class="opt" href="../../systems/">Systems</a><a class="gh" href="https://github.com/Normansrule/quantum-link-research">GitHub ↗</a></nav>
@@ -32,6 +32,42 @@
 </section>
 
 <section class="how" id="how" aria-label="How the link works"></section>
+
+<section id="bench" class="band bench-band" aria-labelledby="bench-h">
+  <h2 id="bench-h">The optical bench</h2>
+  <p class="sub">The two rooms seen from above. Send one pulse or ten thousand, turn the two knobs, and let Eve listen in. The bench keeps its own knobs; the tiers and parameters further down drive the 3-D model and the terminal.</p>
+  <div class="bench instrument">
+    <div class="bench-table" id="bench-table"></div>
+    <div class="bench-side" id="bench-side">
+      <div class="col">
+      <span class="label-sim sim">Simulated: drawn from qll/link/two_room.py</span>
+      <div class="bench-ctl">
+        <button type="button" class="go" id="bench-one">Send one pulse</button>
+        <button type="button" id="bench-many">Send 10,000</button>
+        <button type="button" id="bench-eve" aria-pressed="false">Eve listens</button>
+        <button type="button" id="bench-reset">Reset</button>
+      </div>
+      </div>
+      <div class="col">
+      <label class="bench-sl">Mean photon number μ <b id="bench-mu">0.50</b><input id="bench-mu-in" type="range" min="0.05" max="1" step="0.05" value="0.5"></label>
+      <label class="bench-sl">Hallway loss <b id="bench-loss">2.0 dB</b><input id="bench-loss-in" type="range" min="0" max="12" step="0.5" value="2"></label>
+      </div>
+      <div class="col">
+      <dl class="bench-tally">
+        <div><dt>Pulses sent</dt><dd id="bench-sent">0</dd></div>
+        <div><dt>Detector clicks</dt><dd><span id="bench-clicks">0</span><small id="bench-clicks-r">of pulses</small></dd></div>
+        <div><dt>Sifted bits</dt><dd id="bench-sifted">0</dd></div>
+        <div><dt>Error rate</dt><dd><span id="bench-qber">—</span><small id="bench-qber-r">no sifted bits yet</small></dd></div>
+      </dl>
+      </div>
+      <div class="col full">
+      <p class="bench-verdict" id="bench-verdict" aria-live="polite"></p>
+      <p class="ui-note" id="bench-model"></p>
+      <a href="#view">See every part in 3-D, with costs and the exact math, below</a>
+      </div>
+    </div>
+  </div>
+</section>
 
 <main class="lab">
   <div>
@@ -72,7 +108,7 @@
   <section class="build panel" id="build"></section>
 </main>
 
-<!-- site-foot:start --><div class="site-foot" role="contentinfo"><span class="brand-s">Quantum Link Research</span><span>v0.60.0</span><a href="../../latency/">Anywhere at light speed</a><a href="https://github.com/Normansrule/quantum-link-research">Source</a><a href="https://github.com/Normansrule/quantum-link-research/blob/main/CHANGELOG.md">Changelog</a><a href="https://github.com/Normansrule/quantum-link-research/blob/main/docs/audit/2026-10-11_findings.md">Audit findings</a><a href="https://github.com/Normansrule/quantum-link-research/blob/main/CREDITS.md">Credits</a><span class="grow">No signal outruns light. Numbers are model outputs unless a page says measured; nothing here is a security-reviewed link.</span></div><!-- site-foot:end -->
+<!-- site-foot:start --><div class="site-foot" role="contentinfo"><span class="brand-s">Quantum Link Research</span><span>v0.61.0</span><a href="../../latency/">Anywhere at light speed</a><a href="https://github.com/Normansrule/quantum-link-research">Source</a><a href="https://github.com/Normansrule/quantum-link-research/blob/main/CHANGELOG.md">Changelog</a><a href="https://github.com/Normansrule/quantum-link-research/blob/main/docs/audit/2026-10-11_findings.md">Audit findings</a><a href="https://github.com/Normansrule/quantum-link-research/blob/main/CREDITS.md">Credits</a><span class="grow">No signal outruns light. Numbers are model outputs unless a page says measured; nothing here is a security-reviewed link.</span></div><!-- site-foot:end -->
 <script type="module">
 import { createLab } from "../../js/lab3d.js";
 const T = window.QLLTwin, U = window.QLLLabUI;

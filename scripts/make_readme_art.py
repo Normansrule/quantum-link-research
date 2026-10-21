@@ -3,7 +3,7 @@ the pictures is the tested code's output. GitHub renders SVG images with SMIL an
 
     python scripts/make_readme_art.py        # writes docs/figures/readme_{stats,timescales,latency,stack,marquee,equations}.svg
 
-Design patterns (re-implemented, nothing copied; see CREDITS.md): number-ticker tiles and bento grid (Magic UI
+Drawn in the site's Light cone style on its dark instrument tokens. Design patterns (re-implemented, nothing copied; see CREDITS.md): number-ticker tiles and bento grid (Magic UI
 NumberTicker/BentoGrid), animated beams between nodes (Magic UI AnimatedBeam), an infinite marquee (Magic UI
 Marquee), and a "show the real internal numbers" chart (llm-viz, transformer-explainer)."""
 from __future__ import annotations
@@ -15,19 +15,16 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "docs" / "figures"
-FONT = "Inter,Segoe UI,Helvetica,Arial,sans-serif"
-MONO = "JetBrains Mono,Menlo,Consolas,monospace"
-COL = {"warm": "#ff8a4c", "green": "#45e0a0", "blue": "#5ea8ff", "violet": "#a78bfa", "cyan": "#5ef2e0", "mars": "#ff6b4a"}
+FONT = "Geist,Inter,Segoe UI,Helvetica,Arial,sans-serif"
+MONO = "Geist Mono,Menlo,Consolas,monospace"
+# the site's dark "instrument screen" tokens (docs/space.css): one blue for light, other colors only where they mean something
+COL = {"warm": "#ff9a5c", "green": "#4fd69c", "blue": "#6aa8f0", "violet": "#a99af0", "cyan": "#8593ff", "mars": "#ff7a5c"}
 
 DEFS = f'''<defs>
-  <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#060a16"/><stop offset="1" stop-color="#0b1224"/></linearGradient>
-  <radialGradient id="aur" cx="0.15" cy="0" r="0.9"><stop offset="0" stop-color="#5ea8ff" stop-opacity=".16"/><stop offset="1" stop-color="#5ea8ff" stop-opacity="0"/></radialGradient>
-  <linearGradient id="shine" x1="0" y1="0" x2="1" y2="1" gradientUnits="objectBoundingBox">
-    <stop offset="0" stop-color="#5ea8ff" stop-opacity=".0"/><stop offset=".45" stop-color="#5ef2e0" stop-opacity=".9"/>
-    <stop offset=".55" stop-color="#a78bfa" stop-opacity=".9"/><stop offset="1" stop-color="#ff8a4c" stop-opacity="0"/>
-    <animateTransform attributeName="gradientTransform" type="rotate" from="0 .5 .5" to="360 .5 .5" dur="6s" repeatCount="indefinite"/>
-  </linearGradient>
-  <filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#111317"/><stop offset="1" stop-color="#111317"/></linearGradient>
+  <radialGradient id="aur" cx="0.15" cy="0" r="0.9"><stop offset="0" stop-color="#111317" stop-opacity="0"/><stop offset="1" stop-color="#111317" stop-opacity="0"/></radialGradient>
+  <linearGradient id="shine" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e9ebef" stop-opacity=".12"/><stop offset="1" stop-color="#e9ebef" stop-opacity=".12"/></linearGradient>
+  <filter id="glow"><feMerge><feMergeNode in="SourceGraphic"/></feMerge></filter>
 </defs>'''
 
 
@@ -54,8 +51,8 @@ def ticker(x: float, y: float, value: float, dec: int, unit: str, color: str, be
         else:
             vis = "hidden"
             sets = f'<set attributeName="visibility" to="visible" begin="{0 if k == 0 else t_on:.2f}s" end="{t_off:.2f}s"/>'
-        out.append(f'<text x="{x}" y="{y}" visibility="{vis}" font-family="{FONT}" font-weight="800" font-size="40" fill="{color}">'
-                   f'{fmt(v, dec)}<tspan dx="8" font-size="17" font-weight="600" fill="#93a1b8">{escape(unit)}</tspan>{sets}</text>')
+        out.append(f'<text x="{x}" y="{y}" visibility="{vis}" font-family="{FONT}" font-weight="650" font-size="40" fill="{color}">'
+                   f'{fmt(v, dec)}<tspan dx="8" font-size="17" font-weight="600" fill="#a4aab5">{escape(unit)}</tspan>{sets}</text>')
     return "".join(out)
 
 
@@ -83,16 +80,16 @@ def stats(site: dict, status: dict) -> str:
     ]
     W, H, cols, pad, gap = 1280, 404, 4, 28, 18
     tw, th = (W - 2 * pad - (cols - 1) * gap) / cols, 150
-    body = [f'<text x="{pad}" y="46" font-family="{FONT}" font-size="15" font-weight="700" letter-spacing="2.5" fill="{COL["cyan"]}">THE CATCH, IN NUMBERS</text>',
-            f'<text x="{W - pad}" y="46" text-anchor="end" font-family="{MONO}" font-size="13" fill="#5b6780">computed by the tested code · v{escape(str(status.get("version", "")))}</text>']
+    body = [f'<text x="{pad}" y="46" font-family="{FONT}" font-size="16" font-weight="600" fill="#e9ebef">The catch, in numbers</text>',
+            f'<text x="{W - pad}" y="46" text-anchor="end" font-family="{MONO}" font-size="13" fill="#8a919d">computed by the tested code · v{escape(str(status.get("version", "")))}</text>']
     for i, (val, dec, unit, label, c) in enumerate(tiles):
         x, y = pad + (i % cols) * (tw + gap), 70 + (i // cols) * (th + gap)
         d = 0.15 + 0.12 * i
         body.append(f'<g>{appear(d)}'
-                    f'<rect x="{x:.1f}" y="{y}" width="{tw:.1f}" height="{th}" rx="16" fill="#111a2e" fill-opacity=".85"/>'
+                    f'<rect x="{x:.1f}" y="{y}" width="{tw:.1f}" height="{th}" rx="16" fill="#181b21" fill-opacity=".85"/>'
                     f'<rect x="{x:.1f}" y="{y}" width="{tw:.1f}" height="{th}" rx="16" fill="none" stroke="url(#shine)" stroke-width="1.6"/>'
-                    f'<rect x="{x:.1f}" y="{y}" width="{tw:.1f}" height="{th}" rx="16" fill="none" stroke="rgba(148,170,210,.14)"/>')
-        body.append(ticker(round(x + 22, 1), y + 62, val, dec, unit, COL[c], d + 0.2))
+                    f'<rect x="{x:.1f}" y="{y}" width="{tw:.1f}" height="{th}" rx="16" fill="none" stroke="rgba(233,235,239,.14)"/>')
+        body.append(ticker(round(x + 22, 1), y + 62, val, dec, unit, "#e9ebef", d + 0.2))   # values in ink: no rainbow
         words, lines, cur = label.split(), [], ""
         for w_ in words:
             if len(cur) + len(w_) + 1 > 31:
@@ -101,7 +98,7 @@ def stats(site: dict, status: dict) -> str:
                 cur = (cur + " " + w_).strip()
         lines.append(cur)
         for j, ln in enumerate(lines[:3]):
-            body.append(f'<text x="{x + 22:.1f}" y="{y + 94 + 19 * j}" font-family="{FONT}" font-size="14.5" fill="#93a1b8">{escape(ln)}</text>')
+            body.append(f'<text x="{x + 22:.1f}" y="{y + 94 + 19 * j}" font-family="{FONT}" font-size="14.5" fill="#a4aab5">{escape(ln)}</text>')
         body.append("</g>")
     return frame(W, H, "".join(body), "Headline results computed by the tested code")
 
@@ -115,22 +112,22 @@ def timescales(site: dict) -> str:
     rts = site["baselines_round_trip_s"]
     top, row = 92, 42
     ybot = top + row * len(mems) + 8
-    body = [f'<text x="40" y="46" font-family="{FONT}" font-size="15" font-weight="700" letter-spacing="2.5" fill="{COL["cyan"]}">THE THESIS QUESTION, ANSWERED</text>',
-            f'<text x="40" y="74" font-family="{FONT}" font-size="21" font-weight="700" fill="#e8eef8">How long each memory keeps teleportation above 2/3, against each round trip</text>']
+    body = [f'<text x="40" y="46" font-family="{FONT}" font-size="16" font-weight="600" fill="#e9ebef">The thesis question, answered</text>',
+            f'<text x="40" y="74" font-family="{FONT}" font-size="21" font-weight="700" fill="#e9ebef">How long each memory keeps teleportation above 2/3, against each round trip</text>']
     for e in range(-4, 6):
-        body.append(f'<line x1="{X(10**e):.1f}" y1="{top - 6}" x2="{X(10**e):.1f}" y2="{ybot}" stroke="rgba(148,170,210,.10)"/>')
+        body.append(f'<line x1="{X(10**e):.1f}" y1="{top - 6}" x2="{X(10**e):.1f}" y2="{ybot}" stroke="rgba(233,235,239,.10)"/>')
     labels = {-3: "1 ms", 0: "1 s", 1: "10 s", 2: "100 s", 3: "1000 s", 4: "2.8 h", 5: "28 h", -4: "100 µs", -2: "10 ms", -1: "0.1 s"}
     for e, lab in labels.items():
-        body.append(f'<text x="{X(10**e):.1f}" y="{ybot + 22}" text-anchor="middle" font-family="{MONO}" font-size="12" fill="#5b6780">{lab}</text>')
+        body.append(f'<text x="{X(10**e):.1f}" y="{ybot + 22}" text-anchor="middle" font-family="{MONO}" font-size="12" fill="#8a919d">{lab}</text>')
     mars_max = rts["Mars max"]
     for i, m in enumerate(mems):
         y = top + i * row
         wbar = X(m["crossover_s"]) - x0
         ok = m["crossover_s"] >= mars_max
-        c = COL["green"] if ok else "#3d5a80"
+        c = COL["green"] if ok else "#4a505b"
         d = 0.3 + 0.18 * i
-        body.append(f'<text x="{x0 - 14}" y="{y + 20}" text-anchor="end" font-family="{FONT}" font-size="14" fill="#c9d4e6">{escape(m["name"])}</text>'
-                    f'<text x="{x0 - 14}" y="{y + 35}" text-anchor="end" font-family="{MONO}" font-size="11" fill="#5b6780">retrieval {100 * m["efficiency"]:.1f} %</text>')
+        body.append(f'<text x="{x0 - 14}" y="{y + 20}" text-anchor="end" font-family="{FONT}" font-size="14" fill="#c4c8d0">{escape(m["name"])}</text>'
+                    f'<text x="{x0 - 14}" y="{y + 35}" text-anchor="end" font-family="{MONO}" font-size="11" fill="#8a919d">retrieval {100 * m["efficiency"]:.1f} %</text>')
         f = d / (d + 1.1)
         body.append(f'<rect x="{x0}" y="{y + 8}" width="{wbar:.1f}" height="22" rx="6" fill="{c}" fill-opacity="{0.9 if ok else 0.55}">'
                     f'<animate attributeName="width" values="0;0;{wbar:.1f}" keyTimes="0;{f:.3f};1" dur="{d + 1.1:.2f}s" fill="freeze" '
@@ -138,7 +135,7 @@ def timescales(site: dict) -> str:
         if ok:
             g = (d + 1.1) / (d + 1.5)
             inside = x0 + wbar + 140 > W - 20                  # no room to the right: write it on the bar's end
-            tx, anchor, fc = (x0 + wbar - 12, "end", "#06241a") if inside else (x0 + wbar + 10, "start", COL["green"])
+            tx, anchor, fc = (x0 + wbar - 12, "end", "#13261e") if inside else (x0 + wbar + 10, "start", COL["green"])
             body.append(f'<text x="{tx:.1f}" y="{y + 25}" text-anchor="{anchor}" font-family="{FONT}" font-size="15" font-weight="800" fill="{fc}">'
                         f'✓ reaches Mars<animate attributeName="opacity" values="0;0;1" keyTimes="0;{g:.3f};1" dur="{d + 1.5:.2f}s" fill="freeze"/></text>')
     for name, s in rts.items():
@@ -150,7 +147,7 @@ def timescales(site: dict) -> str:
         xx = X(s)
         yl = ybot + 44 + (k % 2) * 18
         body.append(f'<text x="{xx:.1f}" y="{yl}" text-anchor="middle" font-family="{FONT}" font-size="12.5" font-weight="600" fill="{COL["warm"]}">{escape(name)}</text>')
-    body.append(f'<text x="40" y="{H - 18}" font-family="{FONT}" font-size="12.5" fill="#5b6780">Bars: how long a Bell pair of fidelity 0.95 stored in each demonstrated memory keeps teleportation above 2/3 (green: longer than Mars\' farthest round trip). '
+    body.append(f'<text x="40" y="{H - 18}" font-family="{FONT}" font-size="12.5" fill="#8a919d">Bars: how long a Bell pair of fidelity 0.95 stored in each demonstrated memory keeps teleportation above 2/3 (green: longer than Mars\' farthest round trip). '
                 f'Orange lines: classical round trips.</text>')
     return frame(W, H, "".join(body), "Memory useful time versus classical round trip, computed by qll.network.memory_decoherence")
 
@@ -164,15 +161,15 @@ def latency(site: dict) -> str:
     X = lambda s: x0 + (x1 - x0) * (math.log10(max(s, 1e-3)) - t0) / (t1 - t0)
     top = 112
     ybot = top + 50 * len(rows)
-    body = [f'<text x="40" y="46" font-family="{FONT}" font-size="15" font-weight="700" letter-spacing="2.5" fill="{COL["cyan"]}">THE GOAL: ANYWHERE, AT THE SPEED OF LIGHT</text>',
-            f'<text x="40" y="76" font-family="{FONT}" font-size="21" font-weight="700" fill="#e8eef8">From Los Angeles: the light-time floor, the fastest route, and what waits on top</text>']
+    body = [f'<text x="40" y="46" font-family="{FONT}" font-size="16" font-weight="600" fill="#e9ebef">The goal: anywhere, at the speed of light</text>',
+            f'<text x="40" y="76" font-family="{FONT}" font-size="21" font-weight="700" fill="#e9ebef">From Los Angeles: the light-time floor, the fastest route, and what waits on top</text>']
     for e, lab in {-3: "1 ms", -2: "10 ms", -1: "100 ms", 0: "1 s", 1: "10 s", 2: "100 s", 3: "17 min", 4: "2.8 h"}.items():
-        body.append(f'<line x1="{X(10**e):.1f}" y1="{top - 8}" x2="{X(10**e):.1f}" y2="{ybot}" stroke="rgba(148,170,210,.10)"/>'
-                    f'<text x="{X(10**e):.1f}" y="{ybot + 22}" text-anchor="middle" font-family="{MONO}" font-size="12" fill="#5b6780">{lab}</text>')
+        body.append(f'<line x1="{X(10**e):.1f}" y1="{top - 8}" x2="{X(10**e):.1f}" y2="{ybot}" stroke="rgba(233,235,239,.10)"/>'
+                    f'<text x="{X(10**e):.1f}" y="{ybot + 22}" text-anchor="middle" font-family="{MONO}" font-size="12" fill="#8a919d">{lab}</text>')
     for i, r in enumerate(rows):
         y, d = top + 50 * i, 0.25 + 0.15 * i
-        body.append(f'<text x="{x0 - 16}" y="{y + 20}" text-anchor="end" font-family="{FONT}" font-size="14.5" fill="#c9d4e6">{escape(r["to"])}</text>'
-                    f'<text x="{x0 - 16}" y="{y + 36}" text-anchor="end" font-family="{MONO}" font-size="11" fill="#5b6780">{escape(r["best"])} · {r["stretch"]:.2f}×</text>')
+        body.append(f'<text x="{x0 - 16}" y="{y + 20}" text-anchor="end" font-family="{FONT}" font-size="14.5" fill="#c4c8d0">{escape(r["to"])}</text>'
+                    f'<text x="{x0 - 16}" y="{y + 36}" text-anchor="end" font-family="{MONO}" font-size="11" fill="#8a919d">{escape(r["best"])} · {r["stretch"]:.2f}×</text>')
         body.append(f'<rect x="{x0}" y="{y + 9}" width="{X(r["tls_s"]) - x0:.1f}" height="22" rx="6" fill="none" stroke="{COL["warm"]}" stroke-opacity=".45" stroke-dasharray="4 4"/>')
         if r["fiber_s"]:
             body.append(f'<rect x="{x0}" y="{y + 13}" width="{X(r["fiber_s"]) - x0:.1f}" height="14" rx="5" fill="{COL["warm"]}" fill-opacity=".45"/>')
@@ -180,14 +177,14 @@ def latency(site: dict) -> str:
         f = d / (d + 1.0)
         body.append(f'<rect x="{x0}" y="{y + 13}" width="{wb:.1f}" height="14" rx="5" fill="{COL["cyan"]}">'
                     f'<animate attributeName="width" values="0;0;{wb:.1f}" keyTimes="0;{f:.3f};1" dur="{d + 1.0:.2f}s" fill="freeze"/></rect>'
-                    f'<circle cx="{x0 + wb:.1f}" cy="{y + 20}" r="5" fill="#e8fffb" filter="url(#glow)">'
+                    f'<circle cx="{x0 + wb:.1f}" cy="{y + 20}" r="5" fill="#e9ebef" filter="url(#glow)">'
                     f'<animate attributeName="cx" values="{x0};{x0 + wb:.1f}" dur="{1.6 + 0.2 * i:.1f}s" repeatCount="indefinite"/></circle>')
         fx = X(r["floor_s"])
         body.append(f'<line x1="{fx:.1f}" y1="{y + 4}" x2="{fx:.1f}" y2="{y + 36}" stroke="{COL["green"]}" stroke-width="2.4"/>')
-    lg = [(COL["green"], "light-time floor d/c"), (COL["cyan"], "fastest route (banked key: one trip)"), (COL["warm"], "terrestrial fiber"), ("#ff8a4c80", "new TCP + TLS 1.3 connection (5 trips)")]
+    lg = [(COL["green"], "light-time floor d/c"), (COL["cyan"], "fastest route (banked key: one trip)"), (COL["warm"], "terrestrial fiber"), ("#ff9a5c80", "new TCP + TLS 1.3 connection (5 trips)")]
     x = 40
     for c, lab in lg:
-        body.append((f'<rect x="{x}" y="{H - 36}" width="16" height="9" rx="3" fill="none" stroke="{COL["warm"]}" stroke-dasharray="3 2"/>' if "TLS" in lab else f'<rect x="{x}" y="{H - 34}" width="16" height="6" rx="3" fill="{c}"/>') + f'<text x="{x + 24}" y="{H - 27}" font-family="{FONT}" font-size="12.5" fill="#93a1b8">{escape(lab)}</text>')
+        body.append((f'<rect x="{x}" y="{H - 36}" width="16" height="9" rx="3" fill="none" stroke="{COL["warm"]}" stroke-dasharray="3 2"/>' if "TLS" in lab else f'<rect x="{x}" y="{H - 34}" width="16" height="6" rx="3" fill="{c}"/>') + f'<text x="{x + 24}" y="{H - 27}" font-family="{FONT}" font-size="12.5" fill="#a4aab5">{escape(lab)}</text>')
         x += 34 + 7.2 * len(lab)
     return frame(W, H, "".join(body), "Latency from Los Angeles to cities, the Moon, and Mars against the light-time floor, computed by qll.space.latency_floor")
 
@@ -200,22 +197,22 @@ def stack() -> str:
     W, H = 1280, 300
     xs = [120 + i * (W - 240) / (len(STACK) - 1) for i in range(len(STACK))]
     pos = [(x, 118 if i % 2 == 0 else 200) for i, x in enumerate(xs)]
-    body = [f'<text x="40" y="46" font-family="{FONT}" font-size="15" font-weight="700" letter-spacing="2.5" fill="{COL["cyan"]}">HOW THE CODE FITS TOGETHER</text>',
-            f'<text x="{W - 40}" y="46" text-anchor="end" font-family="{MONO}" font-size="13" fill="#5b6780">every node is a tested package · beams are the imports</text>']
+    body = [f'<text x="40" y="46" font-family="{FONT}" font-size="16" font-weight="600" fill="#e9ebef">How the code fits together</text>',
+            f'<text x="{W - 40}" y="46" text-anchor="end" font-family="{MONO}" font-size="13" fill="#8a919d">every node is a tested package · beams are the imports</text>']
     for i in range(len(pos) - 1):
         (x1, y1), (x2, y2) = pos[i], pos[i + 1]
         mx = (x1 + x2) / 2
         d = f"M{x1:.0f},{y1} C{mx:.0f},{y1} {mx:.0f},{y2} {x2:.0f},{y2}"
-        body.append(f'<path d="{d}" fill="none" stroke="rgba(148,170,210,.18)" stroke-width="2"/>')
+        body.append(f'<path d="{d}" fill="none" stroke="rgba(233,235,239,.18)" stroke-width="2"/>')
         body.append(f'<path d="{d}" fill="none" stroke="{COL["cyan"]}" stroke-width="3" stroke-linecap="round" stroke-dasharray="46 400" opacity=".9">'
                     f'<animate attributeName="stroke-dashoffset" from="446" to="0" dur="2.4s" begin="{0.35 * i:.2f}s" repeatCount="indefinite"/></path>')
-        body.append(f'<circle r="4.5" fill="#e8fffb" filter="url(#glow)"><animateMotion dur="2.4s" begin="{0.35 * i:.2f}s" repeatCount="indefinite" path="{d}"/></circle>')
+        body.append(f'<circle r="4.5" fill="#e9ebef" filter="url(#glow)"><animateMotion dur="2.4s" begin="{0.35 * i:.2f}s" repeatCount="indefinite" path="{d}"/></circle>')
     for (x, y), (name, eq) in zip(pos, STACK):
-        body.append(f'<rect x="{x - 72:.0f}" y="{y - 32}" width="144" height="64" rx="15" fill="#111a2e" stroke="rgba(148,170,210,.3)"/>'
+        body.append(f'<rect x="{x - 72:.0f}" y="{y - 32}" width="144" height="64" rx="15" fill="#181b21" stroke="rgba(233,235,239,.3)"/>'
                     f'<rect x="{x - 72:.0f}" y="{y - 32}" width="144" height="64" rx="15" fill="none" stroke="url(#shine)" stroke-width="1.2" opacity=".7"/>'
-                    f'<text x="{x:.0f}" y="{y - 4}" text-anchor="middle" font-family="{FONT}" font-size="16" font-weight="700" fill="#e8eef8">{escape(name)}</text>'
-                    f'<text x="{x:.0f}" y="{y + 17}" text-anchor="middle" font-family="{MONO}" font-size="13" fill="#93a1b8">{escape(eq)}</text>')
-    body.append(f'<text x="{W / 2}" y="{H - 24}" text-anchor="middle" font-family="{FONT}" font-size="13" fill="#5b6780">'
+                    f'<text x="{x:.0f}" y="{y - 4}" text-anchor="middle" font-family="{FONT}" font-size="16" font-weight="700" fill="#e9ebef">{escape(name)}</text>'
+                    f'<text x="{x:.0f}" y="{y + 17}" text-anchor="middle" font-family="{MONO}" font-size="13" fill="#a4aab5">{escape(eq)}</text>')
+    body.append(f'<text x="{W / 2}" y="{H - 24}" text-anchor="middle" font-family="{FONT}" font-size="13" fill="#8a919d">'
                 f'qll/constants → channels → circuits → qkd → network → space → app, plus hardware, analysis, and viz</text>')
     return frame(W, H, "".join(body), "The qll package stack from constants to the fail-closed messenger")
 
@@ -239,13 +236,13 @@ def marquee() -> str:
     track = []
     for rep in (0, total):
         for px, w, name in pills:
-            track.append(f'<rect x="{px + rep:.1f}" y="58" width="{w:.1f}" height="36" rx="18" fill="#111a2e" stroke="rgba(148,170,210,.22)"/>'
-                         f'<text x="{px + rep + w / 2:.1f}" y="81" text-anchor="middle" font-family="{FONT}" font-size="14" fill="#c9d4e6">{escape(name)}</text>')
+            track.append(f'<rect x="{px + rep:.1f}" y="58" width="{w:.1f}" height="36" rx="18" fill="#181b21" stroke="rgba(233,235,239,.22)"/>'
+                         f'<text x="{px + rep + w / 2:.1f}" y="81" text-anchor="middle" font-family="{FONT}" font-size="14" fill="#c4c8d0">{escape(name)}</text>')
     fade = ('<linearGradient id="fade" x1="0" x2="1"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".08" stop-color="#fff"/>'
             '<stop offset=".92" stop-color="#fff"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>'
             f'<mask id="m"><rect width="{W}" height="{H}" fill="url(#fade)"/></mask>')
     body = (f'<defs>{fade}</defs>'
-            f'<text x="40" y="38" font-family="{FONT}" font-size="15" font-weight="700" letter-spacing="2.5" fill="{COL["cyan"]}">{len(LANDMARKS)} LANDMARK EXPERIMENTS, EACH WITH A CHEAP RECREATION</text>'
+            f'<text x="40" y="38" font-family="{FONT}" font-size="16" font-weight="600" fill="#e9ebef">{len(LANDMARKS)} landmark experiments, each with a cheap recreation</text>'
             f'<g mask="url(#m)"><g>{"".join(track)}'
             f'<animateTransform attributeName="transform" type="translate" from="0 0" to="{-total:.1f} 0" dur="{total / 45:.1f}s" repeatCount="indefinite"/></g></g>')
     return frame(W, H, body, "Landmark experiments recreated in the repository")
@@ -276,22 +273,22 @@ def equations() -> str:
 
     plt.rcParams.update({"mathtext.fontset": "cm", "svg.hashsalt": "qll-readme", "font.family": "DejaVu Sans"})
     W, H = 12.8, 6.9
-    fig = plt.figure(figsize=(W, H), dpi=100, facecolor="#070b17")
+    fig = plt.figure(figsize=(W, H), dpi=100, facecolor="#111317")
     ax = fig.add_axes((0, 0, 1, 1)); ax.set_xlim(0, W); ax.set_ylim(0, H); ax.axis("off")
     ax.add_patch(FancyBboxPatch((0.02, 0.02), W - 0.04, H - 0.04, boxstyle="round,pad=0,rounding_size=0.22",
-                                fc="#0b1224", ec="#1d2a44", lw=1.2))
+                                fc="#111317", ec="#20242b", lw=1.2))
     ax.text(0.4, H - 0.45, "THE ARGUMENT IN FIVE EQUATIONS", color=COL["cyan"], fontsize=12, fontweight="bold")
-    ax.text(W - 0.4, H - 0.45, "each line is a tested module", color="#5b6780", fontsize=10, ha="right", family="monospace")
+    ax.text(W - 0.4, H - 0.45, "each line is a tested module", color="#8a919d", fontsize=10, ha="right", family="monospace")
     row, top = 1.2, H - 0.85
     for i, (tex, why, mod, c) in enumerate(EQUATIONS):
         y = top - (i + 1) * row + 0.1
         ax.add_patch(FancyBboxPatch((0.4, y), W - 0.8, row - 0.18, boxstyle="round,pad=0,rounding_size=0.14",
-                                    fc="#111a2e", ec="#22304d", lw=1))
+                                    fc="#181b21", ec="#2a2e36", lw=1))
         ax.add_patch(FancyBboxPatch((0.4, y), 0.07, row - 0.18, boxstyle="round,pad=0,rounding_size=0.03", fc=COL[c], ec="none"))
         ax.text(0.75, y + (row - 0.18) / 2, f"{i + 1}", color=COL[c], fontsize=20, fontweight="bold", va="center")
-        ax.text(1.2, y + (row - 0.18) / 2, tex, color="#e8eef8", fontsize=19, va="center")
-        ax.text(W - 0.65, y + (row - 0.18) / 2 + 0.16, why, color="#c9d4e6", fontsize=11.5, ha="right", va="center")
-        ax.text(W - 0.65, y + (row - 0.18) / 2 - 0.2, mod, color="#5b6780", fontsize=9.5, ha="right", va="center",
+        ax.text(1.2, y + (row - 0.18) / 2, tex, color="#e9ebef", fontsize=19, va="center")
+        ax.text(W - 0.65, y + (row - 0.18) / 2 + 0.16, why, color="#c4c8d0", fontsize=11.5, ha="right", va="center")
+        ax.text(W - 0.65, y + (row - 0.18) / 2 - 0.2, mod, color="#8a919d", fontsize=9.5, ha="right", va="center",
                 family="monospace")
     buf = io.StringIO()
     fig.savefig(buf, format="svg", metadata={"Date": None, "Creator": None}, facecolor=fig.get_facecolor())

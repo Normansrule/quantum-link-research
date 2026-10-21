@@ -22,7 +22,7 @@ if (canvas) {
   axis(phys(1, 0, 0), 0x93a1b8); axis(phys(0, 1, 0), 0x93a1b8); axis(phys(0, 0, 1), 0x93a1b8);
   function label(text, v) {
     const c = document.createElement("canvas"); c.width = 128; c.height = 64; const g = c.getContext("2d");
-    g.fillStyle = "#e8eef8"; g.font = "600 34px JetBrains Mono, monospace"; g.textAlign = "center"; g.fillText(text, 64, 44);
+    g.fillStyle = "#e8eef8"; g.font = "600 34px 'Geist Mono', monospace"; g.textAlign = "center"; g.fillText(text, 64, 44);
     const s = new THREE.Sprite(new THREE.SpriteMaterial({ map: new THREE.CanvasTexture(c), transparent: true })); s.scale.set(0.42, 0.21, 1); s.position.copy(v); scene.add(s);
   }
   label("|0⟩", phys(0, 0, 1.42)); label("|1⟩", phys(0, 0, -1.42)); label("|+⟩", phys(1.45, 0, 0)); label("|+i⟩", phys(0, 1.5, 0));

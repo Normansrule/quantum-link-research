@@ -84,7 +84,7 @@ def test_banner_is_valid_svg_with_computed_numbers():
     svg = (DOCS / "figures" / "hero_banner.svg").read_text(encoding="utf-8")
     xml.dom.minidom.parseString(svg)
     h = json.loads((DOCS / "site_data.json").read_text(encoding="utf-8"))["headline"]
-    assert f"{h['round_trip_max_min']:.1f}-min" in svg and "<animateMotion" in svg
+    assert f"{h['round_trip_max_min']:.1f}-min" in svg and "<animate " in svg   # the light front is drawn with stroke-dashoffset
 
 
 @pytest.mark.skipif(node is None, reason="node not installed")

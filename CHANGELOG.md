@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.61.0 — 2026-10-20 (Light cone: a redesign of the website and the Lab app)
+- **One visual direction, Light cone.** The site is now drawn like a spacetime diagram: graphite on white (or white on graphite), one signature blue for light, and the Geist and Geist Mono typefaces, self-hosted. Panels that hold a canvas, a 3-D view, or a terminal stay dark in both themes, like instrument screens.
+  - Light and dark modes follow the system until the reader picks one with the new switch in the header; the choice stays in that browser only.
+  - A type scale and a spacing scale replace one-off sizes, and faint text now meets WCAG (Web Content Accessibility Guidelines) AA contrast.
+  - Retired: the aurora background, gradient headline text, glass panels, glows, spinning borders, pulsing dots, the moving marquee, pointer spotlights, blur-in reveals, and the three.js hero (`docs/js/hero.js`). Interface motion is now one 160 to 220 ms curve; anything that stands for light moves linearly.
+- **New centerpiece: the light-cone diagram** (`docs/js/cone.js`) on the landing page. Earth and Mars are worldlines, light runs at 45°, and as you scroll, the light front reaches Mars after 1 trip (a banked key), 3 trips (a key made on demand), and 5 trips (a fresh TCP plus TLS 1.3 connection). Pick any date; distances come from the tested ephemeris. Labelled VERIFIED SOFTWARE.
+- **New: the optical bench** (`docs/js/bench.js`), on the landing page and the two-room Lab page. A top view of the main experiment (protocol P10): laser, attenuator, polarizer, the hallway, Bob's 50:50 beamsplitter, two polarizing analyzers, and four detectors. Send one pulse or 10,000, change μ and the hallway loss, and let Eve intercept and resend; the planning model puts the error rate at about 3.7 % without her and about 27 % with her. Every count is drawn from `QLLTwin` (held to `qll/link/two_room.py`), so it is labelled SIMULATED.
+- **README art in the same style.** The banner (`scripts/make_banner.py`) is now a small spacetime diagram, and the numbers card, latency chart, memory chart, stack diagram, and landmark strip (`scripts/make_readme_art.py`) use the dark instrument tokens, one blue for light, and sentence-case headings, without the rotating shine borders and glows.
+- **Explorers page** moved onto the site stylesheet, with vendored KaTeX instead of MathJax from a CDN (content delivery network).
+- **Lab app.** The offline cache adds the bench and the fonts; the theme color follows light and dark.
+
 ## 0.60.0 — 2026-10-19 (an experiment you can run: the LoRa range walk)
 - **New protocol [P16](experiments/protocols/P16_lora_range_walk.md): the LoRa range walk.** Two $30 radio boards, a power bank, and a laptop measure what the off-grid mesh model only assumes. It is eye-safe, lawful on unlicensed 902–928 MHz settings, and about $60 in total (prices checked 2026-10-19).
   - It measures the path-loss exponent, the excess loss over free space (which plugs straight into `Mesh(excess_loss_db=...)`), and the packet delivery ratio at each stop with a 95 % Clopper–Pearson interval.

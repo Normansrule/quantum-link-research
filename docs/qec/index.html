@@ -18,31 +18,25 @@
   .intro h1 { font-size: clamp(1.9rem, 3.6vw, 3rem); line-height: 1.08; margin: .5rem 0 .7rem; letter-spacing: -.02em }
   .grid { display: grid; gap: 1rem; grid-template-columns: repeat(12, 1fr); margin-bottom: 1rem }
   .grid > * { min-width: 0 }
-  .p { border: 1px solid var(--line); border-radius: 16px; background: var(--glass); padding: .95rem 1.05rem; position: relative; overflow: hidden }
-  .p::before { content: ""; position: absolute; inset: -1px; border-radius: 16px; padding: 1px; pointer-events: none; opacity: .5;
-    background: conic-gradient(from var(--a, 0deg), transparent 0 70%, rgba(255,209,102,.9) 80%, rgba(94,242,224,.9) 88%, transparent 96%);
-    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude;
-    animation: spin 8s linear infinite }
-  @property --a { syntax: "<angle>"; initial-value: 0deg; inherits: false }
-  @keyframes spin { to { --a: 360deg } }
-  .p h4 { margin: 0 0 .55rem; font-size: .74rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); font-weight: 700 }
+  .p { border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); padding: .95rem 1.05rem; position: relative; overflow: hidden }
+  .p h4 { margin: 0 0 .7rem; font-size: .95rem; color: var(--ink); font-weight: 600 }
   .w7 { grid-column: span 7 } .w5 { grid-column: span 5 } .w12 { grid-column: span 12 }
   @media (max-width: 1000px) { .w7, .w5 { grid-column: span 12 } }
   canvas#lat { width: 100%; height: 470px; display: block }
   canvas#curve { width: 100%; height: 300px; display: block }
-  .lab button { font: 600 .86rem/1 "JetBrains Mono", ui-monospace, monospace; padding: .55rem .8rem; border-radius: 10px; border: 1px solid var(--line); background: var(--bg2); color: var(--ink); cursor: pointer; transition: box-shadow .2s, border-color .2s }
-  .lab button:hover { border-color: var(--cyan); box-shadow: 0 0 16px rgba(94,242,224,.25) }
-  .lab button.on { border-color: var(--cyan); box-shadow: 0 0 14px rgba(94,242,224,.3) }
+  .lab button { font: 500 .88rem/1 Geist, system-ui, sans-serif; min-height: 44px; padding: .55rem .85rem; border-radius: var(--radius-s); border: 1px solid var(--line-strong); background: var(--surface-2); color: var(--ink); cursor: pointer; transition: background-color var(--t-fast) ease, border-color var(--t-fast) ease, transform var(--t-fast) var(--ease-out) }
+  .lab button:hover { border-color: var(--accent); background: var(--accent-soft) }
+  .lab button.on { border-color: var(--accent); background: var(--accent-soft) }
   .row { display: flex; gap: .5rem; flex-wrap: wrap; align-items: center; margin: .35rem 0 }
   .row .lbl { color: var(--muted); font-size: .84rem; min-width: 7.5rem }
   .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: .5rem; margin: .6rem 0 }
   .step { border: 1px solid var(--line); border-radius: 10px; padding: .45rem .6rem; font-size: .8rem; color: var(--faint); transition: all .25s }
-  .step b { display: block; color: var(--muted); font-size: .74rem; letter-spacing: .08em; text-transform: uppercase }
+  .step b { display: block; color: var(--muted); font-size: .82rem }
   .step.on { border-color: var(--cyan); color: var(--ink); background: rgba(94,242,224,.06) } .step.on b { color: var(--cyan) }
-  .banner { font: 700 1.05rem/1.3 Inter, sans-serif; margin: .4rem 0; min-height: 2.7em }
+  .banner { font: 700 1.05rem/1.3 Geist, sans-serif; margin: .4rem 0; min-height: 2.7em }
   .kpis { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: .6rem; margin-top: .6rem }
   .k { border: 1px solid var(--line); border-radius: 12px; padding: .55rem .7rem; background: rgba(10,15,28,.55) }
-  .k .v { font: 700 1.25rem/1.15 "JetBrains Mono", monospace; font-variant-numeric: tabular-nums } .k .s { font-size: .74rem; color: var(--faint) }
+  .k .v { font: 650 1.25rem/1.15 Geist, system-ui, sans-serif; font-variant-numeric: tabular-nums; letter-spacing: -.02em } .k .s { font-size: .74rem; color: var(--faint) }
   .note { color: var(--muted); font-size: .88rem; margin: .5rem 0 0 }
   .ok { color: var(--green) } .bad { color: var(--mars) } .warm { color: var(--warm) } .cyan { color: var(--cyan) }
 </style>
@@ -50,7 +44,6 @@
 </head>
 <body>
 <a class="skip" href="#content">Skip to content</a>
-<div class="aurora"></div>
 <header class="top">
   <a class="brand" href="../"><span class="dot"></span>Quantum Link Research</a>
   <nav><a href="../">Home</a><a href="../latency/">Anywhere</a><a href="../network/">Network</a><a href="../lab/">Lab</a><a href="../mars/">Mars</a><a href="../budget/">Budget</a><a href="../teleport/">Teleport</a><a class="opt" href="../monitor/">Monitor</a><a class="opt" href="../link/">Link ops</a><a class="opt" href="../repeater/">Repeater</a><a class="opt" href="../coupler/">Coupler</a><a class="opt" aria-current="page" href="../qec/">QEC</a><a class="opt" href="../systems/">Systems</a><a class="gh" href="https://github.com/Normansrule/quantum-link-research">GitHub ↗</a></nav>
@@ -94,7 +87,7 @@
   </section>
 </main>
 <footer>QEC lab. Physics from <code>qll/circuits/surface_code_capacity.py</code> [fowler2012, dennis2002, wang2003, higgott2023pymatching]; the page's parity checks in <code>docs/js/qec_core.js</code> agree with every stored shot (tested). Design after llm-viz and transformer-explainer (step through the real state), Magic UI (border beams), react-bits (glow); animation in plain canvas. See <a href="https://github.com/Normansrule/quantum-link-research/blob/main/CREDITS.md">CREDITS.md</a>.</footer>
-<!-- site-foot:start --><div class="site-foot" role="contentinfo"><span class="brand-s">Quantum Link Research</span><span>v0.60.0</span><a href="../latency/">Anywhere at light speed</a><a href="https://github.com/Normansrule/quantum-link-research">Source</a><a href="https://github.com/Normansrule/quantum-link-research/blob/main/CHANGELOG.md">Changelog</a><a href="https://github.com/Normansrule/quantum-link-research/blob/main/docs/audit/2026-10-11_findings.md">Audit findings</a><a href="https://github.com/Normansrule/quantum-link-research/blob/main/CREDITS.md">Credits</a><span class="grow">No signal outruns light. Numbers are model outputs unless a page says measured; nothing here is a security-reviewed link.</span></div><!-- site-foot:end -->
+<!-- site-foot:start --><div class="site-foot" role="contentinfo"><span class="brand-s">Quantum Link Research</span><span>v0.61.0</span><a href="../latency/">Anywhere at light speed</a><a href="https://github.com/Normansrule/quantum-link-research">Source</a><a href="https://github.com/Normansrule/quantum-link-research/blob/main/CHANGELOG.md">Changelog</a><a href="https://github.com/Normansrule/quantum-link-research/blob/main/docs/audit/2026-10-11_findings.md">Audit findings</a><a href="https://github.com/Normansrule/quantum-link-research/blob/main/CREDITS.md">Credits</a><span class="grow">No signal outruns light. Numbers are model outputs unless a page says measured; nothing here is a security-reviewed link.</span></div><!-- site-foot:end -->
 <script src="../js/qec_core.js"></script>
 <script>
 (async function () {
@@ -150,7 +143,7 @@
       g.strokeStyle = "rgba(255,107,74,.55)"; g.lineWidth = 7; g.lineJoin = "round"; g.beginPath();
       g.moveTo(G.X(0) - G.s * 0.5, G.Y(pts[0][1])); pts.forEach(([c, r]) => g.lineTo(G.X(c), G.Y(r)));
       g.lineTo(G.X(d - 1) + G.s * 0.5, G.Y(pts[pts.length - 1][1])); g.stroke(); }
-    g.fillStyle = "#5b6780"; g.font = "11px JetBrains Mono, monospace"; g.fillText("left and right edges: where bit-flip strings can end unseen", 12, H - 10);
+    g.fillStyle = "#5b6780"; g.font = "11px 'Geist Mono', monospace"; g.fillText("left and right edges: where bit-flip strings can end unseen", 12, H - 10);
     for (let k = 0; k < 4; k++) $("st" + k).classList.toggle("on", k === stage);
     $("banner").innerHTML = stage < 3 ? `<span class="warm">${["Errors happen; nobody can see them directly.", "Only the parity checks are measured: the lit ones bracket the errors.", "The decoder pairs lit checks (or sends one to an edge) along the shortest total path.", ""][stage]}</span>`
       : S.errors.length === 0 ? `<span class="ok">✓ No errors this time: nothing to fix.</span>`
@@ -165,7 +158,7 @@
   function drawCurve() {
     const [g, W, H] = ctx($("curve")), pad = 56, lo = -4, hi = Math.log10(0.5), px = DATA.p_grid;
     const X = (x) => pad + (W - pad - 14) * (x - 0.01) / 0.15, Y = (y) => H - 26 - (H - 38) * (Math.log10(Math.max(y, 1e-4)) - lo) / (hi - lo);
-    g.font = "11px JetBrains Mono, monospace"; g.fillStyle = "#5b6780"; g.strokeStyle = "rgba(148,170,210,.12)";
+    g.font = "11px 'Geist Mono', monospace"; g.fillStyle = "#5b6780"; g.strokeStyle = "rgba(148,170,210,.12)";
     [1e-4, 1e-3, 1e-2, 1e-1].forEach((y) => { g.beginPath(); g.moveTo(pad, Y(y)); g.lineTo(W - 10, Y(y)); g.stroke(); g.fillText(y >= 0.01 ? (100 * y) + " %" : y.toExponential(0), 6, Y(y) + 4); });
     [0.02, 0.05, 0.08, 0.11, 0.14].forEach((x) => g.fillText((100 * x).toFixed(0) + " %", X(x) - 10, H - 8));
     g.fillStyle = "rgba(94,242,224,.07)"; g.fillRect(X(0.095), 8, X(0.103) - X(0.095), H - 34);

@@ -14,11 +14,11 @@
 <style>
   canvas#timeline { height: 300px; background: #03060c }
   canvas#qec { height: 300px }
-  canvas#mesh { height: 260px; background: radial-gradient(circle at 50% 80%, #0b1426, #04070f 75%) }
+  canvas#mesh { height: 260px; background: #06080c }
   .seg { display: inline-flex; border: 1px solid var(--line); border-radius: 12px; overflow: hidden }
   .seg .ui-btn { border: 0; border-radius: 0 }
-  .badge { display: inline-block; padding: .2rem .55rem; border-radius: 999px; font: 700 .72rem "JetBrains Mono", monospace; letter-spacing: .06em }
-  .badge.sim { background: rgba(94,168,255,.15); color: var(--blue) }
+  .badge { display: inline-block; padding: .2rem .55rem; border-radius: 999px; font: 600 .8rem Geist, system-ui, sans-serif }
+  .badge.sim { background: var(--accent-soft); color: var(--accent) }
   .badge.ok { background: rgba(69,224,160,.15); color: var(--green) } .badge.bad { background: rgba(255,107,74,.15); color: var(--mars) }
   ol.rules { margin: .2rem 0 0; padding-left: 1.2rem; color: #c2cde0; font-size: .9rem; line-height: 1.6 }
   .surv { display: grid; grid-template-columns: 1fr 1fr; gap: .6rem }
@@ -27,7 +27,6 @@
 </head>
 <body>
 <a class="skip" href="#content">Skip to content</a>
-<div class="aurora"></div>
 <header class="top">
   <a class="brand" href="../"><span class="dot"></span>Quantum Link Research</a>
   <nav><a href="../">Home</a><a href="../latency/">Anywhere</a><a aria-current="page" href="../network/">Network</a><a href="../lab/">Lab</a><a href="../mars/">Mars</a><a href="../budget/">Budget</a><a href="../teleport/">Teleport</a><a class="opt" href="../monitor/">Monitor</a><a class="opt" href="../link/">Link ops</a><a class="opt" href="../repeater/">Repeater</a><a class="opt" href="../coupler/">Coupler</a><a class="opt" href="../qec/">QEC</a><a class="opt" href="../systems/">Systems</a><a class="gh" href="https://github.com/Normansrule/quantum-link-research">GitHub ↗</a></nav>
@@ -102,7 +101,7 @@
   </div>
 </main>
 <footer>A network that heals. Models: <code>qll/network/pair_ledger.py</code> [rfc9340, werner1989, zukowski1993, briegel1998, bennett1996], <code>qll/circuits/logical_memory.py</code> [fowler2012, gidney2021stim, higgott2023pymatching], <code>qll/link/mesh_messenger.py</code> [semtech2015an1200_22, semtech2013sx1276, friis1946, rappaport2002, meshtastic2024, cfr47_97_113]. Data written by <code>scripts/build_network_data.py</code>. All results are simulations.</footer>
-<!-- site-foot:start --><div class="site-foot" role="contentinfo"><span class="brand-s">Quantum Link Research</span><span>v0.60.0</span><a href="../latency/">Anywhere at light speed</a><a href="https://github.com/Normansrule/quantum-link-research">Source</a><a href="https://github.com/Normansrule/quantum-link-research/blob/main/CHANGELOG.md">Changelog</a><a href="https://github.com/Normansrule/quantum-link-research/blob/main/docs/audit/2026-10-11_findings.md">Audit findings</a><a href="https://github.com/Normansrule/quantum-link-research/blob/main/CREDITS.md">Credits</a><span class="grow">No signal outruns light. Numbers are model outputs unless a page says measured; nothing here is a security-reviewed link.</span></div><!-- site-foot:end -->
+<!-- site-foot:start --><div class="site-foot" role="contentinfo"><span class="brand-s">Quantum Link Research</span><span>v0.61.0</span><a href="../latency/">Anywhere at light speed</a><a href="https://github.com/Normansrule/quantum-link-research">Source</a><a href="https://github.com/Normansrule/quantum-link-research/blob/main/CHANGELOG.md">Changelog</a><a href="https://github.com/Normansrule/quantum-link-research/blob/main/docs/audit/2026-10-11_findings.md">Audit findings</a><a href="https://github.com/Normansrule/quantum-link-research/blob/main/CREDITS.md">Credits</a><span class="grow">No signal outruns light. Numbers are model outputs unless a page says measured; nothing here is a security-reviewed link.</span></div><!-- site-foot:end -->
 <script>
 (() => {
   const $ = (id) => document.getElementById(id);
@@ -129,7 +128,7 @@
     const L = 44, R = 12, T = 12, B = 26, tmax = s[s.length - 1].t, ymax = Math.max(...s.map((x) => Math.max(x.consumed, x.expired))) * 1.05;
     const emax = Math.max(4, ...s.map((x) => x.e2e)) * 1.2;
     const X = (t) => L + (w - L - R) * t / tmax, Y = (v) => h - B - (h - T - B) * v / ymax, Ye = (v) => h - B - (h - T - B) * 0.35 * v / emax;
-    g.strokeStyle = "rgba(147,161,184,.15)"; g.fillStyle = "#5b6780"; g.font = "11px JetBrains Mono, monospace"; g.textAlign = "right";
+    g.strokeStyle = "rgba(147,161,184,.15)"; g.fillStyle = "#5b6780"; g.font = "11px 'Geist Mono', monospace"; g.textAlign = "right";
     for (let k = 0; k <= 4; k++) { const v = ymax * k / 4, y = Y(v); g.beginPath(); g.moveTo(L, y); g.lineTo(w - R, y); g.stroke(); g.fillText(Math.round(v), L - 6, y + 4); }
     g.textAlign = "center"; for (let k = 0; k <= 6; k++) g.fillText(`${(tmax * k / 6).toFixed(0)} s`, X(tmax * k / 6), h - 8);
     for (let i = 0; i < n; i++) { const x = X(s[i].t); g.fillStyle = "rgba(167,139,250,.55)"; g.fillRect(x - 1, Ye(s[i].e2e), 2, h - B - Ye(s[i].e2e)); }
@@ -154,7 +153,7 @@
     g.clearRect(0, 0, w, h);
     const L = 52, R = 16, T = 12, B = 30, lx = (p) => Math.log10(p), xs = q.ps.map(lx), x0 = Math.min(...xs), x1 = Math.max(...xs), y0 = -5, y1 = 0;
     const X = (p) => L + (w - L - R) * (lx(p) - x0) / (x1 - x0), Y = (v) => T + (h - T - B) * (y1 - Math.log10(Math.max(v, 1e-5))) / (y1 - y0);
-    g.font = "11px JetBrains Mono, monospace"; g.fillStyle = "#5b6780"; g.strokeStyle = "rgba(147,161,184,.15)";
+    g.font = "11px 'Geist Mono', monospace"; g.fillStyle = "#5b6780"; g.strokeStyle = "rgba(147,161,184,.15)";
     for (let e = y0; e <= y1; e++) { const y = Y(10 ** e); g.beginPath(); g.moveTo(L, y); g.lineTo(w - R, y); g.stroke(); g.textAlign = "right"; g.fillText(`1e${e}`, L - 6, y + 4); }
     g.textAlign = "center"; q.ps.forEach((p) => g.fillText(`${(100 * p).toFixed(1)}%`, X(p), h - 10));
     for (const d of ["3", "5", "7"]) {
@@ -173,13 +172,13 @@
     const pad = 46, x0 = Math.min(...xs) - 1, x1 = Math.max(...xs) + 1, y0 = Math.min(...ys) - 3, y1 = Math.max(...ys) + 3;
     const X = (x) => pad + (w - 2 * pad) * (x - x0) / (x1 - x0), Y = (y) => h - pad - (h - 2 * pad) * (y - y0) / (y1 - y0), pos = Object.fromEntries(m.nodes.map((n) => [n.name, n]));
     g.fillStyle = "rgba(147,161,184,.12)"; g.beginPath(); g.moveTo(X(8.2), h); g.lineTo(X(9), Y(y1)); g.lineTo(X(9.8), h); g.fill();   // the ridge
-    g.fillStyle = "#5b6780"; g.font = "11px JetBrains Mono, monospace"; g.textAlign = "center"; g.fillText("ridge", X(9), h - 8);
+    g.fillStyle = "#5b6780"; g.font = "11px 'Geist Mono', monospace"; g.textAlign = "center"; g.fillText("ridge", X(9), h - 8);
     for (const [a, b] of m.links) { g.strokeStyle = "rgba(94,242,224,.75)"; g.lineWidth = 2; g.beginPath(); g.moveTo(X(pos[a].x_km), Y(pos[a].y_km)); g.lineTo(X(pos[b].x_km), Y(pos[b].y_km)); g.stroke(); }
     for (const n of m.nodes) {
       const x = X(n.x_km), y = Y(n.y_km);
       g.fillStyle = n.relay ? (n.height_m > 100 ? "#a78bfa" : "#5ea8ff") : "#e8eef8"; g.beginPath(); g.arc(x, y, n.relay ? 7 : 6, 0, 7); g.fill();
-      g.fillStyle = "#e8eef8"; g.font = "600 12px Inter, system-ui"; g.fillText(n.name, x, y - 13);
-      g.fillStyle = "#93a1b8"; g.font = "10px JetBrains Mono, monospace"; g.fillText(`${n.height_m} m`, x, y + 20);
+      g.fillStyle = "#e8eef8"; g.font = "600 12px Geist, system-ui"; g.fillText(n.name, x, y - 13);
+      g.fillStyle = "#93a1b8"; g.font = "10px 'Geist Mono', monospace"; g.fillText(`${n.height_m} m`, x, y + 20);
     }
     const ok = m.state === "delivered";
     $("meshstate").innerHTML = `<span class="badge ${ok ? "ok" : "bad"}">${m.state.toUpperCase()}</span>`;

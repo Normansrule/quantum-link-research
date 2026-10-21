@@ -4,7 +4,7 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Messenger Lab · Quantum Link Research</title>
 <meta name="description" content="The application: a messenger that spends the key each link makes, by one-time pad, link-keyed AES, or the hybrid, with a key bank that never refuses and the light time on every message.">
-<meta name="theme-color" content="#05070d">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#111317" media="(prefers-color-scheme: dark)">
 <link rel="manifest" href="../manifest.webmanifest">
 <link rel="icon" href="../icon-192.png">
 <link rel="apple-touch-icon" href="../icon-192.png">
@@ -16,10 +16,10 @@
   .chat h4 { margin: 0; font-size: .9rem } .chat .who { color: var(--muted); font-size: .75rem }
   .msgs { display: flex; flex-direction: column; gap: .45rem; max-height: 330px; overflow-y: auto; flex: 1 }
   .bubble { border: 1px solid var(--line); border-radius: 12px; padding: .45rem .6rem; font-size: .82rem; background: rgba(5,8,16,.7) }
-  .bubble .ct { font: .7rem "JetBrains Mono", ui-monospace, monospace; color: #93a1b8; word-break: break-all; margin-top: .2rem }
+  .bubble .ct { font: .7rem "Geist Mono", ui-monospace, monospace; color: #93a1b8; word-break: break-all; margin-top: .2rem }
   .bubble .st { font-size: .7rem; margin-top: .2rem } .bubble.ok { border-color: rgba(69,224,160,.45) } .bubble.wait { border-color: rgba(253,230,138,.4) } .bubble.bad { border-color: rgba(255,138,76,.55) }
   .compose { display: flex; gap: .4rem } .compose input { flex: 1; background: #02040a; color: var(--ink); border: 1px solid var(--line); border-radius: 10px; padding: .45rem .6rem; font: inherit }
-  .bankbar { height: 10px; border-radius: 6px; background: #1a2336; overflow: hidden } .bankbar i { display: block; height: 100%; background: linear-gradient(90deg, #45e0a0, #5ef2e0) }
+  .bankbar { height: 10px; border-radius: 6px; background: #1a2336; overflow: hidden } .bankbar i { display: block; height: 100%; background: var(--green) }
   .chatbar { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: center; gap: .8rem; font-size: .8rem; color: var(--muted) }
   table.sec { width: 100%; border-collapse: collapse; font-size: .78rem } table.sec th, table.sec td { padding: .35rem .3rem; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top }
   table.sec tr.sel td { background: rgba(94,242,224,.08) }
@@ -35,7 +35,6 @@
 </head>
 <body>
 <a class="skip" href="#content">Skip to content</a>
-<div class="aurora"></div>
 <header class="top">
   <a class="brand" href="../../"><span class="dot"></span>Quantum Link Research</a>
   <nav><a href="../../">Home</a><a href="../../latency/">Anywhere</a><a href="../../network/">Network</a><a aria-current="page" href="../../lab/">Lab</a><a href="../../mars/">Mars</a><a href="../../budget/">Budget</a><a href="../../teleport/">Teleport</a><a class="opt" href="../../monitor/">Monitor</a><a class="opt" href="../../link/">Link ops</a><a class="opt" href="../../repeater/">Repeater</a><a class="opt" href="../../coupler/">Coupler</a><a class="opt" href="../../qec/">QEC</a><a class="opt" href="../../systems/">Systems</a><a class="gh" href="https://github.com/Normansrule/quantum-link-research">GitHub ↗</a></nav>
@@ -87,7 +86,7 @@
   </section>
   <section class="build panel" id="build"></section>
 </main>
-<!-- site-foot:start --><div class="site-foot" role="contentinfo"><span class="brand-s">Quantum Link Research</span><span>v0.60.0</span><a href="../../latency/">Anywhere at light speed</a><a href="https://github.com/Normansrule/quantum-link-research">Source</a><a href="https://github.com/Normansrule/quantum-link-research/blob/main/CHANGELOG.md">Changelog</a><a href="https://github.com/Normansrule/quantum-link-research/blob/main/docs/audit/2026-10-11_findings.md">Audit findings</a><a href="https://github.com/Normansrule/quantum-link-research/blob/main/CREDITS.md">Credits</a><span class="grow">No signal outruns light. Numbers are model outputs unless a page says measured; nothing here is a security-reviewed link.</span></div><!-- site-foot:end -->
+<!-- site-foot:start --><div class="site-foot" role="contentinfo"><span class="brand-s">Quantum Link Research</span><span>v0.61.0</span><a href="../../latency/">Anywhere at light speed</a><a href="https://github.com/Normansrule/quantum-link-research">Source</a><a href="https://github.com/Normansrule/quantum-link-research/blob/main/CHANGELOG.md">Changelog</a><a href="https://github.com/Normansrule/quantum-link-research/blob/main/docs/audit/2026-10-11_findings.md">Audit findings</a><a href="https://github.com/Normansrule/quantum-link-research/blob/main/CREDITS.md">Credits</a><span class="grow">No signal outruns light. Numbers are model outputs unless a page says measured; nothing here is a security-reviewed link.</span></div><!-- site-foot:end -->
 <script type="module">
 import { createLab } from "../../js/lab3d.js";
 const M = window.QLLMessenger, U = window.QLLLabUI;
